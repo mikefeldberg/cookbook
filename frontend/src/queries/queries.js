@@ -90,3 +90,11 @@ export const CREATE_RECIPE_MUTATION = gql`
         }
     }
 `
+
+export const DELETE_RECIPE_MUTATION = gql`
+    mutation($recipeId: String!) {
+        deleteRecipe(recipeId: $recipeId) {
+            recipeId
+        }
+    }
+`

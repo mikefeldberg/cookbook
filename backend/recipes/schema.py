@@ -6,9 +6,11 @@ from django.db.models import Q
 from .models import Recipe
 from users.schema import UserType
 
+
 class RecipeType(DjangoObjectType):
     class Meta:
         model = Recipe
+
 
 class Query(graphene.ObjectType):
     recipes = graphene.List(RecipeType, search=graphene.String())
@@ -23,11 +25,12 @@ class Query(graphene.ObjectType):
             )
 
             return Recipe.objects.filter(filter)
-        
+
         return Recipe.objects.all()
 
     def resolve_recipe(self, info, id):
         return Recipe.objects.get(id=id)
+
 
 class CreateRecipe(graphene.Mutation):
     recipe = graphene.Field(RecipeType)
@@ -42,37 +45,19 @@ class CreateRecipe(graphene.Mutation):
         total_time = graphene.Int(required=True)
         servings = graphene.Int(required=True)
 
-    def mutate(self,
-        info,
-        title,
-        description,
-        skill_level,
-        prep_time,
-        wait_time,
-        cook_time,
-        total_time,
-        servings
-    ):
+    def mutate(self, info, title, description, skill_level, prep_time, wait_time, cook_time, total_time, servings):
         user = info.context.user
 
         if user.is_anonymous:
             raise GraphQLError('Log in to add a recipe')
 
-        recipe = Recipe(
-            title=title,
-            description=description,
-            skill_level=skill_level,
-            prep_time=prep_time,
-            wait_time=wait_time,
-            cook_time=cook_time,
-            total_time=total_time,
-            servings=servings,
-            user=user,
-        )
+        recipe = Recipe(title=title, description=description, skill_level=skill_level, prep_time=prep_time,
+                        wait_time=wait_time, cook_time=cook_time, total_time=total_time, servings=servings, user=user,)
 
         recipe.save()
 
         return CreateRecipe(recipe=recipe)
+
 
 class UpdateRecipe(graphene.Mutation):
     recipe = graphene.Field(RecipeType)
@@ -88,8 +73,10 @@ class UpdateRecipe(graphene.Mutation):
         total_time = graphene.Int(required=True)
         servings = graphene.Int(required=True)
 
-    def mutate(self,
+    def mutate(
+        self,
         info,
+        recipe_id,
         title,
         description,
         skill_level,
@@ -105,15 +92,38 @@ class UpdateRecipe(graphene.Mutation):
         if recipe.user != user:
             raise GraphQLError('You are not permitted to update this recipe.')
 
-        recipe.title = title
-        recipe.description = description
-        recipe.url = url
+        recipe.title=title
+        recipe.description=description
+        recipe.skill_level=skill_level
+        recipe.prep_time=prep_time
+        recipe.wait_time=wait_time
+        recipe.cook_time=cook_time
+        recipe.total_time=total_time
+        recipe.servings=servings
 
         recipe.save()
 
         return UpdateRecipe(recipe=recipe)
 
+class DeleteRecipe(graphene.Mutation):
+    recipe_id = graphene.String()
+
+    class Arguments:
+        recipe_id = graphene.String(required=True)
+
+    def mutate(self, info, recipe_id):
+        user = info.context.user
+        recipe = Recipe.objects.get(id=recipe_id)
+
+        if recipe.user != user:
+            raise GraphQLError('Not permitted to delete this recipe.')
+
+        recipe.delete()
+
+        return DeleteRecipe(recipe_id=recipe_id)
+
+
 class Mutation(graphene.ObjectType):
     create_recipe = CreateRecipe.Field()
-    # update_recipe = UpdateRecipe.Field()
-    # delete_recipe = DeleteRecipe.Field()
+    update_recipe = UpdateRecipe.Field()
+    delete_recipe = DeleteRecipe.Field()
