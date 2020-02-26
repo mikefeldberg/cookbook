@@ -19,7 +19,7 @@ class Query(graphene.ObjectType):
             filter = (
                 Q(title__icontains=search) |
                 Q(description__icontains=search) |
-                Q(posted_by__username__icontains=search)
+                Q(user__username__icontains=search)
             )
 
             return Recipe.objects.filter(filter)
@@ -67,11 +67,51 @@ class CreateRecipe(graphene.Mutation):
             cook_time=cook_time,
             total_time=total_time,
             servings=servings,
+            user=user,
         )
 
         recipe.save()
 
         return CreateRecipe(recipe=recipe)
+
+class UpdateRecipe(graphene.Mutation):
+    recipe = graphene.Field(RecipeType)
+
+    class Arguments:
+        recipe_id = graphene.String(required=True)
+        title = graphene.String()
+        description = graphene.String()
+        skill_level = graphene.String()
+        prep_time = graphene.Int(required=True)
+        wait_time = graphene.Int(required=False)
+        cook_time = graphene.Int(required=True)
+        total_time = graphene.Int(required=True)
+        servings = graphene.Int(required=True)
+
+    def mutate(self,
+        info,
+        title,
+        description,
+        skill_level,
+        prep_time,
+        wait_time,
+        cook_time,
+        total_time,
+        servings
+    ):
+        user = info.context.user
+        recipe = Recipe.objects.get(id=recipe_id)
+
+        if recipe.user != user:
+            raise GraphQLError('You are not permitted to update this recipe.')
+
+        recipe.title = title
+        recipe.description = description
+        recipe.url = url
+
+        recipe.save()
+
+        return UpdateRecipe(recipe=recipe)
 
 class Mutation(graphene.ObjectType):
     create_recipe = CreateRecipe.Field()
