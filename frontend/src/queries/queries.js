@@ -18,27 +18,42 @@ export const ME_QUERY = gql`
     }
 `
 
-export const PROFILE_QUERY = gql`
-    query ($id: Int!) {
-        user(id: $id) {
-            id
-            username
-            dateJoined
-            documentSet {
-                id
-                title
-                url
-            }
-        }
-    }
-`
-
 export const GET_USERS_QUERY = gql`
     {
         users {
             id
             username
             email
+        }
+    }
+`
+
+export const GET_RECIPES_QUERY = gql`
+    query getRecipesQuery {
+        recipes {
+            id
+            title
+            description
+            skillLevel
+            prepTime
+            cookTime
+            waitTime
+            totalTime
+            servings
+            user {
+                id
+                username
+            }
+        }
+    }
+`
+
+export const GET_RECIPE_QUERY = gql`
+    query getRecipeQuery($id: String!) {
+        recipe (id: $id) {
+            id
+            title
+            description
         }
     }
 `
@@ -60,6 +75,18 @@ export const LOGIN_MUTATION = gql`
     mutation ($username:String!, $password: String!) {
         tokenAuth(username: $username, password: $password) {
             token
+        }
+    }
+`
+
+export const CREATE_RECIPE_MUTATION = gql`
+    mutation ($title: String!, $description: String, $skillLevel: String!, $prepTime: Int!, $waitTime: Int, $cookTime: Int!, $totalTime: Int!, $servings: Int!) {
+        createRecipe(title: $title, description: $description, skillLevel: $skillLevel, prepTime: $prepTime, waitTime: $waitTime, cookTime: $cookTime, totalTime: $totalTime, servings: $servings,) {
+            recipe {
+                id
+                title
+                description
+            }
         }
     }
 `

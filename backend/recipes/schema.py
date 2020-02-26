@@ -12,6 +12,7 @@ class RecipeType(DjangoObjectType):
 
 class Query(graphene.ObjectType):
     recipes = graphene.List(RecipeType, search=graphene.String())
+    recipe = graphene.Field(RecipeType, id=graphene.String(required=True))
 
     def resolve_recipes(self, info, search=None):
         if search:
@@ -25,6 +26,9 @@ class Query(graphene.ObjectType):
         
         return Recipe.objects.all()
 
+    def resolve_recipe(self, info, id):
+        return Recipe.objects.get(id=id)
+
 class CreateRecipe(graphene.Mutation):
     recipe = graphene.Field(RecipeType)
 
@@ -33,12 +37,22 @@ class CreateRecipe(graphene.Mutation):
         description = graphene.String()
         skill_level = graphene.String()
         prep_time = graphene.Int(required=True)
-        wait_time = graphene.Int(required=True)
+        wait_time = graphene.Int(required=False)
         cook_time = graphene.Int(required=True)
         total_time = graphene.Int(required=True)
         servings = graphene.Int(required=True)
 
-    def mutate(self, info, title, description, skill_level, prep_time, wait_time, cook_time, total_time, servings):
+    def mutate(self,
+        info,
+        title,
+        description,
+        skill_level,
+        prep_time,
+        wait_time,
+        cook_time,
+        total_time,
+        servings
+    ):
         user = info.context.user
 
         if user.is_anonymous:
@@ -59,3 +73,7 @@ class CreateRecipe(graphene.Mutation):
 
         return CreateRecipe(recipe=recipe)
 
+class Mutation(graphene.ObjectType):
+    create_recipe = CreateRecipe.Field()
+    # update_recipe = UpdateRecipe.Field()
+    # delete_recipe = DeleteRecipe.Field()
