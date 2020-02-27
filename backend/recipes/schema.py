@@ -32,7 +32,7 @@ class RecipeType(DjangoObjectType):
     total_time = graphene.Int(required=True)
     servings = graphene.Int(required=True)
     # ingredients = graphene.List(IngredientType)
-    # instructions = graphene.List(InstructionType)
+    instructions = graphene.List(InstructionType)
 
     class Meta:
         model = Recipe
@@ -47,12 +47,11 @@ class RecipeInput(graphene.InputObjectType):
     total_time = graphene.Int(required=True)
     servings = graphene.Int(required=True)
     # ingredients = graphene.List(IngredientType)
-    # instructions = graphene.List(InstructionInput)
+    instructions = graphene.List(InstructionInput)
 
 class Query(graphene.ObjectType):
     recipes = graphene.List(RecipeType, search=graphene.String())
     recipe = graphene.Field(RecipeType, id=graphene.String(required=True))
-    # recipe = graphene.Field(RecipeType, id=graphene.String(required=True))
     
     def resolve_recipe(self, info, id):
         return Recipe.objects.get(id=id)
@@ -78,8 +77,8 @@ class CreateRecipe(graphene.Mutation):
     def mutate(self, info, recipe):
         print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         print(recipe)
-        # from IPython import embed; embed()
         user = info.context.user
+        from IPython import embed; embed()
 
         if user.is_anonymous:
             raise GraphQLError('Log in to add a recipe')
@@ -97,6 +96,12 @@ class CreateRecipe(graphene.Mutation):
         )
 
         new_recipe.save()
+
+        new_instructions = []
+        for instruction in recipe['instructions']:
+            new_instructions.append(Instruction(description=instruction['description'], order=instruction['order'], recipe=new_recipe))
+        
+        Instruction.objects.bulk_create(new_instructions)
 
         return CreateRecipe(recipe=new_recipe)
 
