@@ -2,7 +2,7 @@ import graphene
 from graphene_django import DjangoObjectType
 from graphql import GraphQLError
 from django.db.models import Q
-from datetime import datetime
+from django.utils import timezone
 
 from .models import Recipe, Ingredient, Instruction
 from users.schema import UserType
@@ -198,12 +198,15 @@ class DeleteRecipe(graphene.Mutation):
 
     def mutate(self, info, recipe_id):
         user = info.context.user
-        recipe = Recipe.objects.get(id=recipe_id)
+        recipe = Recipe.objects.filter(id=recipe_id, deleted_at=None).first()
+        
+        if not recipe:
+            raise GraphQLError('No record found.')
 
         if recipe.user != user:
             raise GraphQLError('Not permitted to delete this recipe.')
 
-        recipe.deleted_at = datetime.now()
+        recipe.deleted_at = timezone.now()
         recipe.save()
 
         return DeleteRecipe(recipe_id=recipe_id)
