@@ -86,6 +86,15 @@ export const CREATE_RECIPE_MUTATION = gql`
                 id
                 title
                 description
+                # ingredients {
+                #     quantity
+                #     preparation
+                #     name
+                # }
+                # instructions {
+                #     description
+                #     order
+                # }
             }
         }
     }

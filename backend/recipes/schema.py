@@ -7,9 +7,19 @@ from .models import Recipe, Ingredient, Instruction
 from users.schema import UserType
 
 
-# class IngredientType(DjangoObjectType):
-#     class Meta:
-#         model = Ingredient
+
+class IngredientType(DjangoObjectType):
+    quantity = graphene.String()
+    preparation = graphene.String()
+    name = graphene.String()
+
+    class Meta:
+        model = Ingredient
+
+class IngredientInput(graphene.InputObjectType):
+    quantity = graphene.String()
+    name = graphene.String()
+    preparation = graphene.String()
 
 class InstructionType(DjangoObjectType):
     description = graphene.String()
@@ -31,11 +41,17 @@ class RecipeType(DjangoObjectType):
     cook_time = graphene.Int(required=True)
     total_time = graphene.Int(required=True)
     servings = graphene.Int(required=True)
-    # ingredients = graphene.List(IngredientType)
+    ingredients = graphene.List(IngredientType)
     instructions = graphene.List(InstructionType)
 
     class Meta:
         model = Recipe
+
+    def resolve_ingredients(self, info):
+        return Ingredient.objects.filter(recipe_id=self.id)
+    
+    def resolve_instructions(self, info):
+        return Instruction.objects.filter(recipe_id=self.id)
 
 class RecipeInput(graphene.InputObjectType):
     title = graphene.String()
@@ -46,7 +62,7 @@ class RecipeInput(graphene.InputObjectType):
     cook_time = graphene.Int(required=True)
     total_time = graphene.Int(required=True)
     servings = graphene.Int(required=True)
-    # ingredients = graphene.List(IngredientType)
+    ingredients = graphene.List(IngredientInput)
     instructions = graphene.List(InstructionInput)
 
 class Query(graphene.ObjectType):
@@ -75,10 +91,7 @@ class CreateRecipe(graphene.Mutation):
         recipe = RecipeInput(required=True)
 
     def mutate(self, info, recipe):
-        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-        print(recipe)
         user = info.context.user
-        from IPython import embed; embed()
 
         if user.is_anonymous:
             raise GraphQLError('Log in to add a recipe')
@@ -97,11 +110,22 @@ class CreateRecipe(graphene.Mutation):
 
         new_recipe.save()
 
+        
+
+        new_ingredients = []
+
+        for ingredient in recipe['ingredients']:
+            new_ingredients.append(Ingredient(quantity=ingredient['quantity'], preparation=ingredient['preparation'], name=ingredient['name'], recipe=new_recipe))
+
+        Ingredient.objects.bulk_create(new_ingredients)
+
         new_instructions = []
+
         for instruction in recipe['instructions']:
             new_instructions.append(Instruction(description=instruction['description'], order=instruction['order'], recipe=new_recipe))
-        
+
         Instruction.objects.bulk_create(new_instructions)
+        # from IPython import embed; embed()
 
         return CreateRecipe(recipe=new_recipe)
 

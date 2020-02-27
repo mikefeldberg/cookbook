@@ -20,7 +20,7 @@ class Ingredient(models.Model):
     quantity = models.TextField(blank=False)
     preparation = models.TextField(blank=False)
     name = models.TextField(blank=False)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='ingredients')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
