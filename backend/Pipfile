@@ -14,6 +14,7 @@ django-cors-headers = "*"
 python-dotenv = "*"
 psycopg2-binary = "*"
 uuid = "*"
+ipython = "*"
 
 [requires]
 python_version = "3.7"

@@ -80,8 +80,8 @@ export const LOGIN_MUTATION = gql`
 `
 
 export const CREATE_RECIPE_MUTATION = gql`
-    mutation ($title: String!, $description: String, $skillLevel: String!, $prepTime: Int!, $waitTime: Int, $cookTime: Int!, $totalTime: Int!, $servings: Int!) {
-        createRecipe(title: $title, description: $description, skillLevel: $skillLevel, prepTime: $prepTime, waitTime: $waitTime, cookTime: $cookTime, totalTime: $totalTime, servings: $servings,) {
+    mutation ($recipe: RecipeInput!) {
+        createRecipe(recipe: $recipe) {
             recipe {
                 id
                 title

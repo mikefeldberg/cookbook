@@ -3,18 +3,59 @@ from graphene_django import DjangoObjectType
 from graphql import GraphQLError
 from django.db.models import Q
 
-from .models import Recipe
+from .models import Recipe, Ingredient, Instruction
 from users.schema import UserType
 
 
+# class IngredientType(DjangoObjectType):
+#     class Meta:
+#         model = Ingredient
+
+class InstructionType(DjangoObjectType):
+    description = graphene.String()
+    order = graphene.Int()
+
+    class Meta:
+        model = Instruction
+
+class InstructionInput(graphene.InputObjectType):
+    description = graphene.String()
+    order = graphene.Int()
+
 class RecipeType(DjangoObjectType):
+    title = graphene.String()
+    description = graphene.String()
+    skill_level = graphene.String()
+    prep_time = graphene.Int(required=True)
+    wait_time = graphene.Int(required=False)
+    cook_time = graphene.Int(required=True)
+    total_time = graphene.Int(required=True)
+    servings = graphene.Int(required=True)
+    # ingredients = graphene.List(IngredientType)
+    # instructions = graphene.List(InstructionType)
+
     class Meta:
         model = Recipe
 
+class RecipeInput(graphene.InputObjectType):
+    title = graphene.String()
+    description = graphene.String()
+    skill_level = graphene.String()
+    prep_time = graphene.Int(required=True)
+    wait_time = graphene.Int(required=False)
+    cook_time = graphene.Int(required=True)
+    total_time = graphene.Int(required=True)
+    servings = graphene.Int(required=True)
+    # ingredients = graphene.List(IngredientType)
+    # instructions = graphene.List(InstructionInput)
 
 class Query(graphene.ObjectType):
     recipes = graphene.List(RecipeType, search=graphene.String())
     recipe = graphene.Field(RecipeType, id=graphene.String(required=True))
+    # recipe = graphene.Field(RecipeType, id=graphene.String(required=True))
+    
+    def resolve_recipe(self, info, id):
+        return Recipe.objects.get(id=id)
 
     def resolve_recipes(self, info, search=None):
         if search:
@@ -28,35 +69,36 @@ class Query(graphene.ObjectType):
 
         return Recipe.objects.all()
 
-    def resolve_recipe(self, info, id):
-        return Recipe.objects.get(id=id)
-
-
 class CreateRecipe(graphene.Mutation):
     recipe = graphene.Field(RecipeType)
 
     class Arguments:
-        title = graphene.String()
-        description = graphene.String()
-        skill_level = graphene.String()
-        prep_time = graphene.Int(required=True)
-        wait_time = graphene.Int(required=False)
-        cook_time = graphene.Int(required=True)
-        total_time = graphene.Int(required=True)
-        servings = graphene.Int(required=True)
+        recipe = RecipeInput(required=True)
 
-    def mutate(self, info, title, description, skill_level, prep_time, wait_time, cook_time, total_time, servings):
+    def mutate(self, info, recipe):
+        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+        print(recipe)
+        # from IPython import embed; embed()
         user = info.context.user
 
         if user.is_anonymous:
             raise GraphQLError('Log in to add a recipe')
 
-        recipe = Recipe(title=title, description=description, skill_level=skill_level, prep_time=prep_time,
-                        wait_time=wait_time, cook_time=cook_time, total_time=total_time, servings=servings, user=user,)
+        new_recipe = Recipe(
+            title=recipe['title'],
+            description=recipe['description'],
+            skill_level=recipe['skill_level'],
+            prep_time=recipe['prep_time'],
+            wait_time=recipe['wait_time'],
+            cook_time=recipe['cook_time'],
+            total_time=recipe['total_time'],
+            servings=recipe['servings'],
+            user=user
+        )
 
-        recipe.save()
+        new_recipe.save()
 
-        return CreateRecipe(recipe=recipe)
+        return CreateRecipe(recipe=new_recipe)
 
 
 class UpdateRecipe(graphene.Mutation):

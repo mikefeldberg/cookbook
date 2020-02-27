@@ -27,6 +27,7 @@ class Ingredient(models.Model):
 
 class Instruction(models.Model):
     description = models.TextField(blank=False)
+    order = models.IntegerField(blank=False)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
