@@ -59,6 +59,7 @@ class RecipeType(DjangoObjectType):
 
 
 class RecipeInput(graphene.InputObjectType):
+    id = graphene.String(required=False)
     title = graphene.String()
     description = graphene.String()
     skill_level = graphene.String()
@@ -147,47 +148,57 @@ class UpdateRecipe(graphene.Mutation):
     recipe = graphene.Field(RecipeType)
 
     class Arguments:
-        recipe_id = graphene.String(required=True)
-        title = graphene.String()
-        description = graphene.String()
-        skill_level = graphene.String()
-        prep_time = graphene.Int(required=True)
-        wait_time = graphene.Int(required=False)
-        cook_time = graphene.Int(required=True)
-        total_time = graphene.Int(required=True)
-        servings = graphene.Int(required=True)
+        recipe = RecipeInput(required=True)
 
-    def mutate(
-        self,
-        info,
-        recipe_id,
-        title,
-        description,
-        skill_level,
-        prep_time,
-        wait_time,
-        cook_time,
-        total_time,
-        servings
-    ):
+    def mutate(self, info, recipe):
         user = info.context.user
-        recipe = Recipe.objects.get(id=recipe_id)
 
-        if recipe.user != user:
-            raise GraphQLError('You are not permitted to update this recipe.')
+        if user.is_anonymous:
+            raise GraphQLError('Log in to add a recipe')
+        recipe_id = recipe['id']
 
-        recipe.title = title
-        recipe.description = description
-        recipe.skill_level = skill_level
-        recipe.prep_time = prep_time
-        recipe.wait_time = wait_time
-        recipe.cook_time = cook_time
-        recipe.total_time = total_time
-        recipe.servings = servings
+        existing_recipe = Recipe.objects.filter(id=recipe_id, deleted_at=None).first()
+         
+        if not existing_recipe or existing_recipe.user != user:
+            raise GraphQLError('Update not permitted.')
+        
+        existing_recipe.title = recipe.get('title')
+        existing_recipe.description = recipe.get('description')
+        existing_recipe.skill_level = recipe.get('skill_level')
+        existing_recipe.prep_time = recipe.get('prep_time')
+        existing_recipe.wait_time = recipe.get('wait_time')
+        existing_recipe.cook_time = recipe.get('cook_time')
+        existing_recipe.total_time = recipe.get('total_time')
+        existing_recipe.servings = recipe.get('servings')
+        existing_recipe.save()
 
-        recipe.save()
+        Ingredient.objects.filter(recipe_id=recipe_id, deleted_at=None).update(deleted_at=timezone.now())
+        Instruction.objects.filter(recipe_id=recipe_id, deleted_at=None).update(deleted_at=timezone.now())
 
-        return UpdateRecipe(recipe=recipe)
+        new_ingredients = []
+
+        for ingredient in recipe.get('ingredients'):
+            new_ingredients.append(Ingredient(
+                quantity=ingredient['quantity'],
+                preparation=ingredient['preparation'],
+                name=ingredient['name'],
+                recipe=existing_recipe,
+            ))
+
+        Ingredient.objects.bulk_create(new_ingredients)
+
+        new_instructions = []
+
+        for instruction in recipe.get('instructions'):
+            new_instructions.append(Instruction(
+                description=instruction['description'],
+                order=instruction['order'],
+                recipe=existing_recipe,
+            ))
+
+        Instruction.objects.bulk_create(new_instructions)
+
+        return UpdateRecipe(recipe=existing_recipe)
 
 
 class DeleteRecipe(graphene.Mutation):
@@ -199,12 +210,9 @@ class DeleteRecipe(graphene.Mutation):
     def mutate(self, info, recipe_id):
         user = info.context.user
         recipe = Recipe.objects.filter(id=recipe_id, deleted_at=None).first()
-        
-        if not recipe:
-            raise GraphQLError('No record found.')
 
-        if recipe.user != user:
-            raise GraphQLError('Not permitted to delete this recipe.')
+        if not recipe or recipe.user != user:
+            raise GraphQLError('Delete not permitted.')
 
         recipe.deleted_at = timezone.now()
         recipe.save()
