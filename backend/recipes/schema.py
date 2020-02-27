@@ -2,10 +2,10 @@ import graphene
 from graphene_django import DjangoObjectType
 from graphql import GraphQLError
 from django.db.models import Q
+from datetime import datetime
 
 from .models import Recipe, Ingredient, Instruction
 from users.schema import UserType
-
 
 
 class IngredientType(DjangoObjectType):
@@ -16,10 +16,12 @@ class IngredientType(DjangoObjectType):
     class Meta:
         model = Ingredient
 
+
 class IngredientInput(graphene.InputObjectType):
     quantity = graphene.String()
     name = graphene.String()
     preparation = graphene.String()
+
 
 class InstructionType(DjangoObjectType):
     description = graphene.String()
@@ -28,9 +30,11 @@ class InstructionType(DjangoObjectType):
     class Meta:
         model = Instruction
 
+
 class InstructionInput(graphene.InputObjectType):
     description = graphene.String()
     order = graphene.Int()
+
 
 class RecipeType(DjangoObjectType):
     title = graphene.String()
@@ -48,10 +52,11 @@ class RecipeType(DjangoObjectType):
         model = Recipe
 
     def resolve_ingredients(self, info):
-        return Ingredient.objects.filter(recipe_id=self.id)
-    
+        return Ingredient.objects.filter(recipe_id=self.id, deleted_at=None)
+
     def resolve_instructions(self, info):
-        return Instruction.objects.filter(recipe_id=self.id)
+        return Instruction.objects.filter(recipe_id=self.id, deleted_at=None)
+
 
 class RecipeInput(graphene.InputObjectType):
     title = graphene.String()
@@ -65,10 +70,11 @@ class RecipeInput(graphene.InputObjectType):
     ingredients = graphene.List(IngredientInput)
     instructions = graphene.List(InstructionInput)
 
+
 class Query(graphene.ObjectType):
     recipes = graphene.List(RecipeType, search=graphene.String())
     recipe = graphene.Field(RecipeType, id=graphene.String(required=True))
-    
+
     def resolve_recipe(self, info, id):
         return Recipe.objects.get(id=id)
 
@@ -80,9 +86,10 @@ class Query(graphene.ObjectType):
                 Q(user__username__icontains=search)
             )
 
-            return Recipe.objects.filter(filter)
+            return Recipe.objects.filter(filter, deleted_at=None)
 
-        return Recipe.objects.all()
+        return Recipe.objects.filter(deleted_at=None)
+
 
 class CreateRecipe(graphene.Mutation):
     recipe = graphene.Field(RecipeType)
@@ -110,22 +117,28 @@ class CreateRecipe(graphene.Mutation):
 
         new_recipe.save()
 
-        
-
         new_ingredients = []
 
         for ingredient in recipe['ingredients']:
-            new_ingredients.append(Ingredient(quantity=ingredient['quantity'], preparation=ingredient['preparation'], name=ingredient['name'], recipe=new_recipe))
+            new_ingredients.append(Ingredient(
+                quantity=ingredient['quantity'],
+                preparation=ingredient['preparation'],
+                name=ingredient['name'],
+                recipe=new_recipe,
+            ))
 
         Ingredient.objects.bulk_create(new_ingredients)
 
         new_instructions = []
 
         for instruction in recipe['instructions']:
-            new_instructions.append(Instruction(description=instruction['description'], order=instruction['order'], recipe=new_recipe))
+            new_instructions.append(Instruction(
+                description=instruction['description'],
+                order=instruction['order'],
+                recipe=new_recipe
+            ))
 
         Instruction.objects.bulk_create(new_instructions)
-        # from IPython import embed; embed()
 
         return CreateRecipe(recipe=new_recipe)
 
@@ -163,18 +176,19 @@ class UpdateRecipe(graphene.Mutation):
         if recipe.user != user:
             raise GraphQLError('You are not permitted to update this recipe.')
 
-        recipe.title=title
-        recipe.description=description
-        recipe.skill_level=skill_level
-        recipe.prep_time=prep_time
-        recipe.wait_time=wait_time
-        recipe.cook_time=cook_time
-        recipe.total_time=total_time
-        recipe.servings=servings
+        recipe.title = title
+        recipe.description = description
+        recipe.skill_level = skill_level
+        recipe.prep_time = prep_time
+        recipe.wait_time = wait_time
+        recipe.cook_time = cook_time
+        recipe.total_time = total_time
+        recipe.servings = servings
 
         recipe.save()
 
         return UpdateRecipe(recipe=recipe)
+
 
 class DeleteRecipe(graphene.Mutation):
     recipe_id = graphene.String()
@@ -189,7 +203,8 @@ class DeleteRecipe(graphene.Mutation):
         if recipe.user != user:
             raise GraphQLError('Not permitted to delete this recipe.')
 
-        recipe.delete()
+        recipe.deleted_at = datetime.now()
+        recipe.save()
 
         return DeleteRecipe(recipe_id=recipe_id)
 

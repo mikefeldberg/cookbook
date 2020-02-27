@@ -1,8 +1,17 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+import uuid
 
+class StandardModel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(null=True)
 
-class Recipe(models.Model):
+    class Meta:
+        abstract = True
+
+class Recipe(StandardModel):
     title = models.CharField(blank=False, max_length=50)
     description = models.TextField(blank=True)
     skill_level = models.TextField(blank=False)
@@ -12,22 +21,16 @@ class Recipe(models.Model):
     total_time = models.IntegerField()
     servings = models.IntegerField()
     user = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
 
-class Ingredient(models.Model):
+class Ingredient(StandardModel):
     quantity = models.TextField(blank=False)
     preparation = models.TextField(blank=False)
     name = models.TextField(blank=False)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='ingredients')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
 
-class Instruction(models.Model):
+class Instruction(StandardModel):
     description = models.TextField(blank=False)
     order = models.IntegerField(blank=False, default=1)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='instructions')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
