@@ -7,6 +7,7 @@ from django.utils import timezone
 from .models import Recipe, Ingredient, Instruction, Comment, Favorite
 from users.schema import UserType
 
+# from IPython import embed; embed()
 
 class IngredientType(DjangoObjectType):
     quantity = graphene.String()
@@ -89,9 +90,7 @@ class RecipeInput(graphene.InputObjectType):
 class Query(graphene.ObjectType):
     recipes = graphene.List(RecipeType, search=graphene.String())
     recipe = graphene.Field(RecipeType, id=graphene.String(required=True))
-    comments = graphene.List(CommentType, search=graphene.String())
     comment = graphene.Field(CommentType, id=graphene.String(required=True))
-
 
     def resolve_recipe(self, info, id):
         return Recipe.objects.get(id=id)
@@ -109,19 +108,7 @@ class Query(graphene.ObjectType):
         return Recipe.objects.filter(deleted_at=None)
 
     def resolve_comment(self, info, id):
-        return Comment.objects.get(id=id)
-
-    def resolve_comments(self, info, search=None):
-        # if search:
-        #     filter = (
-        #         Q(content__icontains=search) |
-        #         Q(description__icontains=search) |
-        #         Q(user__username__icontains=search)
-        #     )
-
-        #     return Comment.objects.filter(filter, deleted_at=None)
-
-        return Comment.objects.filter(deleted_at=None)
+        return Comment.objects.filter(id=id)
 
 
 class CreateRecipe(graphene.Mutation):
@@ -252,7 +239,6 @@ class DeleteRecipe(graphene.Mutation):
         return DeleteRecipe(recipe_id=recipe_id)
 
 
-
 class CreateComment(graphene.Mutation):
     comment = graphene.Field(CommentType)
 
@@ -262,7 +248,6 @@ class CreateComment(graphene.Mutation):
     def mutate(self, info, comment):
         user = info.context.user
         recipe = Recipe.objects.filter(id=comment.recipe_id, deleted_at=None).first()
-
 
         if user.is_anonymous:
             raise GraphQLError('Log in to rate or comment')
@@ -281,9 +266,39 @@ class CreateComment(graphene.Mutation):
         return CreateComment(comment=new_comment)
 
 
+class UpdateComment(graphene.Mutation):
+    comment = graphene.Field(CommentType)
+
+    class Arguments:
+        comment = CommentInput(required=True)
+
+    def mutate(self, info, comment):
+        user = info.context.user
+        recipe = Recipe.objects.filter(id=comment.recipe_id, deleted_at=None).first()
+
+        if user.is_anonymous:
+            raise GraphQLError('Log in to update ratings or comments')
+        comment_id = comment['id']
+
+        existing_comment = Comment.objects.filter(id=comment_id, deleted_at=None).first()
+
+        if not existing_comment or existing_comment.user != user:
+            raise GraphQLError('Update not permitted.')
+
+        existing_comment = Comment(
+            content=comment['content'],
+            rating=comment['rating'],
+        )
+
+        existing_comment.save()
+
+        return UpdateComment(comment=existing_comment)
+
 
 class Mutation(graphene.ObjectType):
     create_recipe = CreateRecipe.Field()
     update_recipe = UpdateRecipe.Field()
     delete_recipe = DeleteRecipe.Field()
     create_comment = CreateComment.Field()
+    update_comment = UpdateComment.Field()
+    # delete_comment = DeleteComment.Field()

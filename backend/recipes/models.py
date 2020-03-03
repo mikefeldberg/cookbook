@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 import uuid
 
+
 class StandardModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -10,6 +11,7 @@ class StandardModel(models.Model):
 
     class Meta:
         abstract = True
+
 
 class Recipe(StandardModel):
     title = models.CharField(blank=False, max_length=50)
@@ -39,9 +41,10 @@ class Instruction(StandardModel):
 class Comment(StandardModel):
     content = models.TextField(blank=True)
     rating = models.IntegerField()
-    user = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE) 
+    user = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='comments')
 
+
 class Favorite(StandardModel):
-    user = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE) 
+    user = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='favorites')

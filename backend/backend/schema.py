@@ -15,4 +15,3 @@ class Mutation(users.schema.Mutation, recipes.schema.Mutation, graphene.ObjectTy
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
-

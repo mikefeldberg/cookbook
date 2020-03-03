@@ -15,6 +15,7 @@ python-dotenv = "*"
 psycopg2-binary = "*"
 uuid = "*"
 ipython = "*"
+colour-runner = "*"
 
 [requires]
 python_version = "3.7"
