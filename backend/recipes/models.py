@@ -34,3 +34,14 @@ class Instruction(StandardModel):
     description = models.TextField(blank=False)
     order = models.IntegerField(blank=False, default=1)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='instructions')
+
+
+class Comment(StandardModel):
+    content = models.TextField(blank=True)
+    rating = models.IntegerField()
+    user = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE) 
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='comments')
+
+class Favorite(StandardModel):
+    user = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE) 
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='favorites')

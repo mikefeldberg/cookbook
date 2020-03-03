@@ -60,6 +60,8 @@ export const GET_RECIPE_QUERY = gql`
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~ MUTATIONS
 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~ AUTH
+
 export const REGISTER_MUTATION = gql`
     mutation ($username:String!, $email:String!, $password:String!) {
         createUser(username:$username, email:$email, password:$password) {
@@ -79,9 +81,32 @@ export const LOGIN_MUTATION = gql`
     }
 `
 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~ RECIPE
+
 export const CREATE_RECIPE_MUTATION = gql`
     mutation ($recipe: RecipeInput!) {
         createRecipe(recipe: $recipe) {
+            recipe {
+                id
+                title
+                description
+                ingredients {
+                    quantity
+                    preparation
+                    name
+                }
+                instructions {
+                    description
+                    order
+                }
+            }
+        }
+    }
+`
+
+export const UPDATE_RECIPE_MUTATION = gql`
+    mutation ($recipe: RecipeInput!) {
+        updateRecipe(recipe: $recipe) {
             recipe {
                 id
                 title
@@ -107,3 +132,6 @@ export const DELETE_RECIPE_MUTATION = gql`
         }
     }
 `
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~ COMMENTS
+
