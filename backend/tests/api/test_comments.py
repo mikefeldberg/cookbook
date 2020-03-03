@@ -4,6 +4,7 @@ from tests.api.base import GraphQLTestCaseBase
 
 
 class CommentTestCase(GraphQLTestCaseBase):
+
     def test_comment_create(self):
         query = '''
             mutation ($recipe: RecipeInput!) {
@@ -45,6 +46,6 @@ class CommentTestCase(GraphQLTestCaseBase):
                 'totalTime': 1,
             }
         }
-
+        
         resp, data = self.send_query(query, recipe_arg)
         from IPython import embed; embed()
