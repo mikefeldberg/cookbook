@@ -18,21 +18,6 @@ export const ME_QUERY = gql`
     }
 `
 
-export const PROFILE_QUERY = gql`
-    query ($id: Int!) {
-        user(id: $id) {
-            id
-            username
-            dateJoined
-            documentSet {
-                id
-                title
-                url
-            }
-        }
-    }
-`
-
 export const GET_USERS_QUERY = gql`
     {
         users {
@@ -43,7 +28,39 @@ export const GET_USERS_QUERY = gql`
     }
 `
 
+export const GET_RECIPES_QUERY = gql`
+    query getRecipesQuery {
+        recipes {
+            id
+            title
+            description
+            skillLevel
+            prepTime
+            cookTime
+            waitTime
+            totalTime
+            servings
+            user {
+                id
+                username
+            }
+        }
+    }
+`
+
+export const GET_RECIPE_QUERY = gql`
+    query getRecipeQuery($id: String!) {
+        recipe (id: $id) {
+            id
+            title
+            description
+        }
+    }
+`
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~ MUTATIONS
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~ AUTH
 
 export const REGISTER_MUTATION = gql`
     mutation ($username:String!, $email:String!, $password:String!) {
@@ -63,3 +80,58 @@ export const LOGIN_MUTATION = gql`
         }
     }
 `
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~ RECIPE
+
+export const CREATE_RECIPE_MUTATION = gql`
+    mutation ($recipe: RecipeInput!) {
+        createRecipe(recipe: $recipe) {
+            recipe {
+                id
+                title
+                description
+                ingredients {
+                    quantity
+                    preparation
+                    name
+                }
+                instructions {
+                    description
+                    order
+                }
+            }
+        }
+    }
+`
+
+export const UPDATE_RECIPE_MUTATION = gql`
+    mutation ($recipe: RecipeInput!) {
+        updateRecipe(recipe: $recipe) {
+            recipe {
+                id
+                title
+                description
+                ingredients {
+                    quantity
+                    preparation
+                    name
+                }
+                instructions {
+                    description
+                    order
+                }
+            }
+        }
+    }
+`
+
+export const DELETE_RECIPE_MUTATION = gql`
+    mutation($recipeId: String!) {
+        deleteRecipe(recipeId: $recipeId) {
+            recipeId
+        }
+    }
+`
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~ COMMENTS
+

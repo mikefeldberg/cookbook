@@ -11,9 +11,9 @@ class UserType(DjangoObjectType):
 
 
 class Query(graphene.ObjectType):
+    users = graphene.List(UserType)
     user = graphene.Field(UserType, id=graphene.Int(required=True))
     me = graphene.Field(UserType)
-    users = graphene.List(UserType)
 
     def resolve_users(self, info):
         return get_user_model().objects.all()

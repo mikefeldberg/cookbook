@@ -1,17 +1,31 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useQuery } from '@apollo/react-hooks';
 
-import { AuthContext } from '../../App';
-
+import { GET_RECIPES_QUERY } from '../../queries/queries';
+// import { AuthContext } from '../../App';
 
 const RecipesList = () => {
-    const currentUser = useContext(AuthContext)
+    // const currentUser = useContext(AuthContext);
+    const { loading, error, data } = useQuery(GET_RECIPES_QUERY);
 
-    if (currentUser.data) {
-        const userName = currentUser.data.me.username
-        return <div>I'm a recipe list, {userName}</div>;
+    if (loading) return <div>Loading recipe...</div>;
+    if (error) return `Error! ${error}`;
+
+    if (data) {
+        return data.recipes.map(({ id, title, description }) => {
+            return (
+                <div key={id}>
+                    <div>
+                        <Link to={`/recipes/${id}`}>{title}</Link>
+                    </div>
+                    <span>{description}</span>
+                </div>
+            );
+        });
     }
 
-    return <div>I'm a recipe list</div>;
+    return <div>Loading recipes...</div>;
 };
 
 export default RecipesList;
