@@ -51,6 +51,16 @@ class CommentInput(graphene.InputObjectType):
     recipe_id = graphene.String()
 
 
+class FavoriteType(DjangoObjectType):
+
+    class Meta:
+        model = Favorite
+
+
+class FavoriteInput(graphene.InputObjectType):
+    recipe_id = graphene.String()
+
+
 class RecipeType(DjangoObjectType):
     title = graphene.String()
     description = graphene.String()
@@ -81,7 +91,6 @@ class RecipeInput(graphene.InputObjectType):
     prep_time = graphene.Int(required=True)
     wait_time = graphene.Int(required=False)
     cook_time = graphene.Int(required=True)
-    total_time = graphene.Int(required=True)
     servings = graphene.Int(required=True)
     ingredients = graphene.List(IngredientInput)
     instructions = graphene.List(InstructionInput)
@@ -91,6 +100,7 @@ class Query(graphene.ObjectType):
     recipes = graphene.List(RecipeType, search=graphene.String())
     recipe = graphene.Field(RecipeType, id=graphene.String(required=True))
     comment = graphene.Field(CommentType, id=graphene.String(required=True))
+    favorite = graphene.Field(FavoriteType)
 
     def resolve_recipe(self, info, id):
         return Recipe.objects.get(id=id)
@@ -130,7 +140,7 @@ class CreateRecipe(graphene.Mutation):
             prep_time=recipe['prep_time'],
             wait_time=recipe['wait_time'],
             cook_time=recipe['cook_time'],
-            total_time=recipe['total_time'],
+            total_time=recipe['prep_time'] + recipe['wait_time'] + recipe['cook_time'],
             servings=recipe['servings'],
             user=user
         )
@@ -187,7 +197,7 @@ class UpdateRecipe(graphene.Mutation):
         existing_recipe.prep_time = recipe.get('prep_time')
         existing_recipe.wait_time = recipe.get('wait_time')
         existing_recipe.cook_time = recipe.get('cook_time')
-        existing_recipe.total_time = recipe.get('total_time')
+        existing_recipe.total_time = recipe.get('prep_time') + recipe.get('wait_time') + recipe.get('cook_time')
         existing_recipe.servings = recipe.get('servings')
         existing_recipe.save()
 
@@ -259,8 +269,6 @@ class CreateComment(graphene.Mutation):
             recipe=recipe
         )
 
-        from IPython import embed; embed()
-
         new_comment.save()
 
         return CreateComment(comment=new_comment)
@@ -295,10 +303,74 @@ class UpdateComment(graphene.Mutation):
         return UpdateComment(comment=existing_comment)
 
 
+class DeleteComment(graphene.Mutation):
+    comment_id = graphene.String()
+
+    class Arguments:
+        comment_id = graphene.String(required=True)
+
+    def mutate(self, info, comment_id):
+        user = info.context.user
+        comment = Comment.objects.filter(id=comment_id, deleted_at=None).first()
+
+        if not comment or comment.user != user:
+            raise GraphQLError('Delete not permitted.')
+
+        comment.deleted_at = timezone.now()
+        comment.save()
+
+        return DeleteComment(comment_id=comment_id)
+
+
+class CreateFavorite(graphene.Mutation):
+    favorite = graphene.Field(FavoriteType)
+
+    class Arguments:
+        favorite = FavoriteInput(required=True)
+
+    def mutate(self, info, favorite):
+        user = info.context.user
+        recipe = Recipe.objects.filter(id=favorite.recipe_id, deleted_at=None).first()
+
+        if user.is_anonymous:
+            raise GraphQLError('Log in to rate or favorite')
+
+        new_favorite = Favorite(
+            user=user,
+            recipe=recipe
+        )
+
+        new_favorite.save()
+
+        return CreateFavorite(favorite=new_favorite)
+
+
+class DeleteFavorite(graphene.Mutation):
+    favorite_id = graphene.String()
+
+    class Arguments:
+        favorite_id = graphene.String(required=True)
+
+    def mutate(self, info, favorite_id):
+        user = info.context.user
+        favorite = Favorite.objects.filter(id=favorite_id, deleted_at=None).first()
+
+        if not favorite or favorite.user != user:
+            raise GraphQLError('Action not permitted.')
+
+
+        favorite.deleted_at = timezone.now()
+        favorite.save()
+
+        return DeleteFavorite(favorite_id=favorite_id)
+
+
 class Mutation(graphene.ObjectType):
     create_recipe = CreateRecipe.Field()
     update_recipe = UpdateRecipe.Field()
     delete_recipe = DeleteRecipe.Field()
     create_comment = CreateComment.Field()
     update_comment = UpdateComment.Field()
-    # delete_comment = DeleteComment.Field()
+    delete_comment = DeleteComment.Field()
+    create_favorite = CreateFavorite.Field()
+    delete_favorite = DeleteFavorite.Field()
