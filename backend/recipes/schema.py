@@ -72,6 +72,10 @@ class RecipeType(DjangoObjectType):
     servings = graphene.Int(required=True)
     ingredients = graphene.List(IngredientType)
     instructions = graphene.List(InstructionType)
+    rating = graphene.Float()
+    rating_count = graphene.Int(required=False)
+    favorite_count = graphene.Int(required=False)
+    comment_count = graphene.Int(required=False)
 
     class Meta:
         model = Recipe
@@ -100,7 +104,6 @@ class Query(graphene.ObjectType):
     recipes = graphene.List(RecipeType, search=graphene.String())
     recipe = graphene.Field(RecipeType, id=graphene.String(required=True))
     comment = graphene.Field(CommentType, id=graphene.String(required=True))
-    favorite = graphene.Field(FavoriteType)
 
     def resolve_recipe(self, info, id):
         return Recipe.objects.get(id=id)
@@ -271,6 +274,11 @@ class CreateComment(graphene.Mutation):
 
         new_comment.save()
 
+        if comment['rating'] > 0:
+            recipe.rating = (recipe.rating * recipe.rating_count + comment['rating']) / (recipe.rating_count + 1)
+            recipe.rating_count += 1
+            recipe.save()
+
         return CreateComment(comment=new_comment)
 
 
@@ -292,6 +300,16 @@ class UpdateComment(graphene.Mutation):
 
         if not existing_comment or existing_comment.user != user:
             raise GraphQLError('Update not permitted.')
+
+        if existing_comment.rating != comment['rating']:
+            if comment['rating'] > 0:
+                recipe.rating = (recipe.rating * recipe.rating_count - recipe.rating + comment['rating']) / (recipe.rating_count)
+
+            if comment['rating'] == 0:
+                recipe.rating = (recipe.rating * recipe.rating_count - comment.rating) / (recipe.rating_count - 1)
+                recipe.rating_count -= 1
+
+            recipe.save()
 
         existing_comment = Comment(
             content=comment['content'],
@@ -319,6 +337,12 @@ class DeleteComment(graphene.Mutation):
         comment.deleted_at = timezone.now()
         comment.save()
 
+        if comment.rating > 0:
+            recipe = Recipe.objects.filter(id=comment.recipe_id, deleted_at=None).first()
+            recipe.rating = (recipe.rating * recipe.rating_count - comment.rating) / (recipe.rating_count - 1)
+            recipe.rating_count -= 1
+            recipe.save()
+
         return DeleteComment(comment_id=comment_id)
 
 
@@ -342,6 +366,9 @@ class CreateFavorite(graphene.Mutation):
 
         new_favorite.save()
 
+        recipe.favorite_count += 1
+        recipe.save()
+
         return CreateFavorite(favorite=new_favorite)
 
 
@@ -358,9 +385,11 @@ class DeleteFavorite(graphene.Mutation):
         if not favorite or favorite.user != user:
             raise GraphQLError('Action not permitted.')
 
-
         favorite.deleted_at = timezone.now()
         favorite.save()
+
+        recipe.favorite_count -= 1
+        recipe.save()
 
         return DeleteFavorite(favorite_id=favorite_id)
 

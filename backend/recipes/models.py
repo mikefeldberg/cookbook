@@ -18,10 +18,14 @@ class Recipe(StandardModel):
     description = models.TextField(blank=True)
     skill_level = models.TextField(blank=False)
     prep_time = models.IntegerField()
-    cook_time = models.IntegerField()
     wait_time = models.IntegerField()
+    cook_time = models.IntegerField()
     total_time = models.IntegerField()
     servings = models.IntegerField()
+    rating = models.FloatField(default=0)
+    rating_count = models.IntegerField(default=0)
+    favorite_count = models.IntegerField(default=0)
+    comment_count = models.IntegerField(default=0)
     user = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE)
 
 
