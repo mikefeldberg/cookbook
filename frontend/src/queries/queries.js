@@ -81,7 +81,7 @@ export const LOGIN_MUTATION = gql`
     }
 `
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~ RECIPE
+// ~~~~~~~~~~~~~~~~~~~~~~~~~ RECIPES
 
 export const CREATE_RECIPE_MUTATION = gql`
     mutation ($recipe: RecipeInput!) {
@@ -135,3 +135,61 @@ export const DELETE_RECIPE_MUTATION = gql`
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~ COMMENTS
 
+export const CREATE_COMMENT_MUTATION = gql`
+    mutation ($comment: CommentInput!) {
+        createComment(comment: $comment) {
+                comment {
+                    id
+                    content
+                    rating
+                }
+        }
+    }
+`
+
+export const UPDATE_COMMENT_MUTATION = gql`
+    mutation ($comment: CommentInput!) {
+        createComment(comment: $comment) {
+                comment {
+                    id
+                    content
+                    rating
+                }
+        }
+    }
+`
+
+export const DELETE_COMMENT_MUTATION = gql`
+    mutation($commentId: String!) {
+        deleteRecipe(commentId: $commentId) {
+            commentId
+        }
+    }
+`
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~ FAVORITES
+
+export const CREATE_FAVORITE_MUTATION = gql`
+    mutation ($favorite: FavoriteInput!) {
+        createFavorite(favorite: $favorite) {
+                favorite {
+                    user {
+                        id
+                        username
+                    }
+                    recipe {
+                        id
+                        title
+                    }
+                }
+        }
+    }
+`
+
+export const DELETE_FAVORITE_MUTATION = gql`
+    mutation($favoriteId: String!) {
+        deleteRecipe(favoriteId: $favoriteId) {
+            favoriteId
+        }
+    }
+`
