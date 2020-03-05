@@ -43,7 +43,7 @@ class CommentTestCase(GraphQLTestCaseBase):
                 'servings': 1,
                 'prepTime': 1,
                 'cookTime': 1,
-                # 'totalTime': 1,
+                'totalTime': 1,
             }
         }
         
