@@ -9,7 +9,7 @@ export const IS_LOGGED_IN_QUERY = gql`
 `
 
 export const ME_QUERY = gql`
-    {
+    query meQuery {
         me {
             id
             username
@@ -18,12 +18,41 @@ export const ME_QUERY = gql`
     }
 `
 
+export const PROFILE_QUERY = gql`
+    query profileQuery ($id: Int!) {
+        user(id: $id) {
+            id
+            username
+            email
+            recipeSet {
+                id
+                title
+            }
+            commentSet {
+                id
+                content
+                rating
+            }
+            favoriteSet {
+                id
+                recipes {
+                    id
+                }
+            }
+        }
+    }
+`
+
 export const GET_USERS_QUERY = gql`
-    {
+    query getUsersQuery {
         users {
             id
             username
             email
+            dateJoined
+        }
+        recipeSet {
+            id
         }
     }
 `
@@ -36,10 +65,16 @@ export const GET_RECIPES_QUERY = gql`
             description
             skillLevel
             prepTime
-            cookTime
             waitTime
+            cookTime
             totalTime
             servings
+            rating
+            ratingCount
+            favoriteCount
+            comments {
+                id
+            }
             user {
                 id
                 username
@@ -54,6 +89,24 @@ export const GET_RECIPE_QUERY = gql`
             id
             title
             description
+            skillLevel
+            prepTime
+            waitTime
+            cookTime
+            totalTime
+            servings
+            rating
+            ratingCount
+            favoriteCount
+            comments {
+                id
+                content
+                rating
+            }
+            user {
+                id
+                username
+            }
         }
     }
 `
@@ -149,7 +202,7 @@ export const CREATE_COMMENT_MUTATION = gql`
 
 export const UPDATE_COMMENT_MUTATION = gql`
     mutation ($comment: CommentInput!) {
-        createComment(comment: $comment) {
+        updateComment(comment: $comment) {
                 comment {
                     id
                     content
