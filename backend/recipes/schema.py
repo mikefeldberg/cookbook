@@ -7,7 +7,7 @@ from django.utils import timezone
 from .models import Recipe, Ingredient, Instruction, Comment, Favorite
 from users.schema import UserType
 
-# from IPython import embed; embed()
+from IPython import embed
 
 class IngredientType(DjangoObjectType):
     quantity = graphene.String()
@@ -40,15 +40,17 @@ class InstructionInput(graphene.InputObjectType):
 class CommentType(DjangoObjectType):
     content = graphene.String()
     rating = graphene.Int()
+    recipe_id = graphene.String()
 
     class Meta:
         model = Comment
 
 
 class CommentInput(graphene.InputObjectType):
+    id = graphene.String(required=False)
     content = graphene.String()
     rating = graphene.Int()
-    recipe_id = graphene.String()
+    recipe_id = graphene.String(required=False)
 
 
 class FavoriteType(DjangoObjectType):
@@ -194,14 +196,14 @@ class UpdateRecipe(graphene.Mutation):
         if not existing_recipe or existing_recipe.user != user:
             raise GraphQLError('Update not permitted.')
         
-        existing_recipe.title = recipe.get('title')
-        existing_recipe.description = recipe.get('description')
-        existing_recipe.skill_level = recipe.get('skill_level')
-        existing_recipe.prep_time = recipe.get('prep_time')
-        existing_recipe.wait_time = recipe.get('wait_time')
-        existing_recipe.cook_time = recipe.get('cook_time')
-        existing_recipe.total_time = recipe.get('prep_time') + recipe.get('wait_time') + recipe.get('cook_time')
-        existing_recipe.servings = recipe.get('servings')
+        existing_recipe.title = recipe['title']
+        existing_recipe.description = recipe['description']
+        existing_recipe.skill_level = recipe['skill_level']
+        existing_recipe.prep_time = recipe['prep_time']
+        existing_recipe.wait_time = recipe['wait_time']
+        existing_recipe.cook_time = recipe['cook_time']
+        existing_recipe.total_time = recipe['prep_time'] + recipe['wait_time'] + recipe['cook_time']
+        existing_recipe.servings = recipe['servings']
         existing_recipe.save()
 
         Ingredient.objects.filter(recipe_id=recipe_id, deleted_at=None).update(deleted_at=timezone.now())
@@ -209,7 +211,7 @@ class UpdateRecipe(graphene.Mutation):
 
         new_ingredients = []
 
-        for ingredient in recipe.get('ingredients'):
+        for ingredient in recipe['ingredients']:
             new_ingredients.append(Ingredient(
                 quantity=ingredient['quantity'],
                 preparation=ingredient['preparation'],
@@ -221,7 +223,7 @@ class UpdateRecipe(graphene.Mutation):
 
         new_instructions = []
 
-        for instruction in recipe.get('instructions'):
+        for instruction in recipe['instructions']:
             new_instructions.append(Instruction(
                 description=instruction['description'],
                 order=instruction['order'],
@@ -260,7 +262,8 @@ class CreateComment(graphene.Mutation):
 
     def mutate(self, info, comment):
         user = info.context.user
-        recipe = Recipe.objects.filter(id=comment.recipe_id, deleted_at=None).first()
+        embed()
+        recipe = Recipe.objects.filter(id=comment['recipe_id'], deleted_at=None).first()
 
         if user.is_anonymous:
             raise GraphQLError('Log in to rate or comment')
@@ -290,16 +293,16 @@ class UpdateComment(graphene.Mutation):
 
     def mutate(self, info, comment):
         user = info.context.user
-        recipe = Recipe.objects.filter(id=comment.recipe_id, deleted_at=None).first()
+        recipe = Recipe.objects.filter(id=comment['recipe_id'], deleted_at=None).first()
 
         if user.is_anonymous:
             raise GraphQLError('Log in to update ratings or comments')
-        comment_id = comment['id']
 
-        existing_comment = Comment.objects.filter(id=comment_id, deleted_at=None).first()
+        existing_comment = Comment.objects.filter(id=comment['id'], deleted_at=None).first()
 
         if not existing_comment or existing_comment.user != user:
             raise GraphQLError('Update not permitted.')
+
 
         if existing_comment.rating != comment['rating']:
             if comment['rating'] > 0:
@@ -311,10 +314,8 @@ class UpdateComment(graphene.Mutation):
 
             recipe.save()
 
-        existing_comment = Comment(
-            content=comment['content'],
-            rating=comment['rating'],
-        )
+        existing_comment.content = comment['content']
+        existing_comment.rating = comment['rating']
 
         existing_comment.save()
 

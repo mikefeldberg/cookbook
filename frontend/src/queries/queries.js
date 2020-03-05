@@ -19,7 +19,7 @@ export const ME_QUERY = gql`
 `
 
 export const PROFILE_QUERY = gql`
-    query profileQuery ($id: String!) {
+    query profileQuery ($id: Int!) {
         user(id: $id) {
             id
             username
@@ -49,7 +49,7 @@ export const GET_USERS_QUERY = gql`
             id
             username
             email
-            created_at
+            dateJoined
         }
         recipeSet {
             id
@@ -202,7 +202,7 @@ export const CREATE_COMMENT_MUTATION = gql`
 
 export const UPDATE_COMMENT_MUTATION = gql`
     mutation ($comment: CommentInput!) {
-        createComment(comment: $comment) {
+        updateComment(comment: $comment) {
                 comment {
                     id
                     content
