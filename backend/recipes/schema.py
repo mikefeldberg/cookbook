@@ -25,8 +25,8 @@ class IngredientInput(graphene.InputObjectType):
 
 
 class InstructionType(DjangoObjectType):
-    description = graphene.String()
     order = graphene.Int()
+    description = graphene.String()
 
     class Meta:
         model = Instruction

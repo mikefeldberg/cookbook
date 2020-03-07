@@ -13,7 +13,6 @@ const RecipesList = () => {
 
     if (loading) return <div>Loading recipes...</div>;
     if (error) return `Error! ${error}`;
-    console.log(data.recipes)
 
     if (data) {
         const recipes = data.recipes
