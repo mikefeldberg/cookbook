@@ -12,10 +12,10 @@ graphene-django = "*"
 django-graphql-jwt = "*"
 django-cors-headers = "*"
 python-dotenv = "*"
-psycopg2-binary = "*"
 uuid = "*"
 ipython = "*"
 colour-runner = "*"
+psycopg2-binary = "*"
 
 [requires]
 python_version = "3.7"

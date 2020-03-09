@@ -5,7 +5,7 @@ import { AuthContext } from '../../App';
 import { DELETE_RECIPE_MUTATION, GET_RECIPES_QUERY } from '../../queries/queries';
 import Button from 'react-bootstrap/Button';
 
-const DeleteRecipe = ({ recipe }) => {
+const DeleteRecipe = ({ recipe, history }) => {
     const currentUser = useContext(AuthContext);
     const isCurrentUser = currentUser.id === recipe.user.id;
 
@@ -23,7 +23,8 @@ const DeleteRecipe = ({ recipe }) => {
 
     const handleDelete = async (e, deleteRecipe) => {
         e.preventDefault();
-        deleteRecipe({ variables: { recipeId: recipe.id } });
+        await deleteRecipe({ variables: { recipeId: recipe.id } });
+        history.push('/')
     };
 
     return (

@@ -15,7 +15,7 @@ import DeleteRecipe from './DeleteRecipe';
 
 // const uuid = require('uuid/v1');
 
-const RecipeDetails = ({ match }) => {
+const RecipeDetails = ({ match, history }) => {
     const currentUser = useContext(AuthContext);
     const [feedbackEnabled, setFeedbackEnabled] = useState(false);
     // const [rating, setRating] = useState(0);
@@ -58,7 +58,7 @@ const RecipeDetails = ({ match }) => {
                             </Dropdown.Item>
                             <Dropdown.Divider />
                             <Dropdown.Item eventKey="1">
-                                <DeleteRecipe recipe={recipe}/>
+                                <DeleteRecipe history={history} recipe={recipe}/>
                             </Dropdown.Item>
                             <Dropdown.Item eventKey="2">Cancel</Dropdown.Item>
                         </DropdownButton>
