@@ -6,9 +6,10 @@ import { ME_QUERY } from './queries/queries';
 
 import Register from './components/Auth/Register';
 import Login from './components/Auth/Login';
+import Logout from './components/Auth/Logout';
 import RecipesList from './components/Recipes/RecipesList';
 import RecipeDetails from './components/Recipes/RecipeDetails';
-import Logout from './components/Auth/Logout';
+import UploadPhoto from './components/Recipes/UploadPhoto';
 
 
 export const AuthContext = React.createContext();
@@ -26,6 +27,7 @@ const App = () => {
                         <Route exact path="/register" component={Register} />
                         <Route exact path="/login" component={Login} />
                         <Route exact path="/logout" component={Logout} />
+                        <Route exact path="/recipes/new" component={UploadPhoto} />
                         <Route exact path="/recipes/:id" component={RecipeDetails} />
                     </Switch>
                 </AuthContext.Provider>
