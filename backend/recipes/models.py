@@ -54,5 +54,6 @@ class Favorite(StandardModel):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='favorites')
 
 class Photo(StandardModel):
-    title = models.CharField(max_length=100)
-    photo = models.FileField()
+    user = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='photos')
+    url = models.CharField(blank=False, max_length=300)

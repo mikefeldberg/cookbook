@@ -3,12 +3,6 @@ import React, { useState } from 'react';
 const UploadPhoto = () => {
     const [file, setFile] = useState(null);
 
-    const getPresignedPostData = async () => {
-        const response = await fetch('http://localhost:8000/upload/');
-        const json = await response.json();
-        return json;
-    };
-
     const uploadFileToS3 = (presignedPostData, file) => {
         return new Promise((resolve, reject) => {
             const formData = new FormData();
@@ -16,7 +10,6 @@ const UploadPhoto = () => {
                 formData.append(key, presignedPostData.fields[key]);
             });
 
-            // Actual file has to be appended last.
             formData.append('file', file);
 
             const xhr = new XMLHttpRequest();
@@ -26,6 +19,12 @@ const UploadPhoto = () => {
                 this.status === 204 ? resolve() : reject(this.responseText);
             };
         });
+    };
+
+    const getPresignedPostData = async () => {
+        const response = await fetch('http://localhost:8000/upload/');
+        const json = await response.json();
+        return json;
     };
 
     const getFile = e => {

@@ -17,7 +17,6 @@ uuid = "*"
 ipython = "*"
 colour-runner = "*"
 boto3 = "*"
-django-storages = "*"
 requests = "*"
 
 [requires]
