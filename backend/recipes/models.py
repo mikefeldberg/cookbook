@@ -7,7 +7,7 @@ class StandardModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    deleted_at = models.DateTimeField(null=True)
+    deleted_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -52,3 +52,8 @@ class Comment(StandardModel):
 class Favorite(StandardModel):
     user = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='favorites')
+
+class Photo(StandardModel):
+    user = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='photos')
+    url = models.CharField(blank=False, max_length=300)
