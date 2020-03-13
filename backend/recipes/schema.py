@@ -7,8 +7,6 @@ from django.utils import timezone
 from .models import Recipe, Ingredient, Instruction, Comment, Favorite
 from users.schema import UserType
 
-from IPython import embed
-
 class IngredientType(DjangoObjectType):
     quantity = graphene.String()
     preparation = graphene.String()
@@ -262,7 +260,6 @@ class CreateComment(graphene.Mutation):
 
     def mutate(self, info, comment):
         user = info.context.user
-        embed()
         recipe = Recipe.objects.filter(id=comment['recipe_id'], deleted_at=None).first()
 
         if user.is_anonymous:
@@ -303,14 +300,18 @@ class UpdateComment(graphene.Mutation):
         if not existing_comment or existing_comment.user != user:
             raise GraphQLError('Update not permitted.')
 
-
         if existing_comment.rating != comment['rating']:
-            if comment['rating'] > 0:
-                recipe.rating = (recipe.rating * recipe.rating_count - recipe.rating + comment['rating']) / (recipe.rating_count)
+            if existing_comment.rating > 0:
+                if comment['rating'] > 0:
+                    recipe.rating = (recipe.rating * recipe.rating_count - existing_comment.rating + comment['rating']) / (recipe.rating_count)
 
-            if comment['rating'] == 0:
-                recipe.rating = (recipe.rating * recipe.rating_count - comment.rating) / (recipe.rating_count - 1)
-                recipe.rating_count -= 1
+                if comment['rating'] == 0:
+                    recipe.rating = (recipe.rating * recipe.rating_count - existing_comment.rating) / (recipe.rating_count - 1)
+                    recipe.rating_count -= 1
+            
+            else:
+                recipe.rating = (recipe.rating * recipe.rating_count + comment['rating']) / (recipe.rating_count + 1)
+                recipe.rating_count += 1
 
             recipe.save()
 

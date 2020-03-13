@@ -69,6 +69,9 @@ export const GET_RECIPES_QUERY = gql`
             cookTime
             totalTime
             servings
+            ingredients {
+                name
+            }
             rating
             ratingCount
             favoriteCount
@@ -95,6 +98,17 @@ export const GET_RECIPE_QUERY = gql`
             cookTime
             totalTime
             servings
+            ingredients {
+                id
+                quantity
+                name
+                preparation
+            }
+            instructions {
+                id
+                order
+                description
+            }
             rating
             ratingCount
             favoriteCount
