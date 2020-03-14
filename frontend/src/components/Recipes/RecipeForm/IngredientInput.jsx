@@ -15,11 +15,9 @@ const IngredientInput = ({ idx, ingredients, handleIngredientChange, deleteIngre
             <td>
                 <Form.Control
                     type="text"
-                    // name={quantityId}
                     name="quantity"
                     data-idx={idx}
                     id={quantityId}
-                    // className="quantity"
                     value={ingredients[idx].quantity}
                     onChange={handleIngredientChange}
                 />
@@ -27,11 +25,9 @@ const IngredientInput = ({ idx, ingredients, handleIngredientChange, deleteIngre
             <td>
                 <Form.Control
                     type="text"
-                    // name={nameId}
                     name="name"
                     data-idx={idx}
                     id={nameId}
-                    // className="name"
                     value={ingredients[idx].name}
                     onChange={handleIngredientChange}
                 />
@@ -39,11 +35,9 @@ const IngredientInput = ({ idx, ingredients, handleIngredientChange, deleteIngre
             <td>
                 <Form.Control
                     type="text"
-                    // name={preparationId}
                     name="preparation"
                     data-idx={idx}
                     id={preparationId}
-                    // className="preparation"
                     value={ingredients[idx].preparation}
                     onChange={handleIngredientChange}
                 />
