@@ -13,7 +13,7 @@ import Logout from './components/Auth/Logout';
 // import CreateRecipe from './components/Recipes/CreateRecipe/CreateRecipe';
 import RecipesList from './components/Recipes/RecipesList';
 import RecipeDetails from './components/Recipes/RecipeDetails';
-import UploadPhoto from './components/Recipes/UploadPhoto';
+import UploadPhoto from './components/Recipes/RecipeForm/UploadPhoto';
 import RecipeForm from './components/Recipes/RecipeForm/RecipeForm';
 
 

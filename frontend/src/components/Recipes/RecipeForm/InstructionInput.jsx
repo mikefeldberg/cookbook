@@ -13,18 +13,16 @@ const InstructionInput = ({ idx, instructions, handleInstructionChange, deleteIn
             <td>
                 <Form.Control
                     type="text"
-                    name={contentId}
+                    name="content"
                     data-idx={idx}
-                    id={contentId}
-                    className="content"
                     value={instructions[idx].content}
                     onChange={handleInstructionChange}
                 />
             </td>
             <td>
                 {idx > 0 &&
-                    <Button onClick={deleteInstruction}>
-                        -
+                    <Button onClick={() => deleteInstruction(idx)}>
+                    -
                     </Button>
                 }
             </td>
