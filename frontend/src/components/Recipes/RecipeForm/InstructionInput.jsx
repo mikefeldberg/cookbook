@@ -15,17 +15,13 @@ const InstructionInput = ({ idx, instructions, handleInstructionChange, deleteIn
                     type="text"
                     name="content"
                     data-idx={idx}
-                    id={contentId}
+                    // id={contentId}
                     value={instructions[idx].content}
                     onChange={handleInstructionChange}
                 />
             </td>
             <td>
-                {idx > 0 &&
-                    <Button onClick={() => deleteInstruction(idx)}>
-                    -
-                    </Button>
-                }
+                <Button onClick={() => deleteInstruction(idx)}>-</Button>
             </td>
         </tr>
     );

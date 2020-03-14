@@ -26,7 +26,6 @@ const RecipeForm = () => {
     const [instructions, setInstructions] = useState([{ ...blankInstruction }]);
 
     const handleSkillLevelChange = e => {
-        console.log('handle skill');
         setSkillLevel(e.target.value);
     };
 
@@ -41,11 +40,13 @@ const RecipeForm = () => {
     };
 
     const deleteIngredient = idx => {
-        console.log('deleting ingredient')
-        console.log('idx', idx)
-        const updatedIngredients = [...ingredients];
-        updatedIngredients.splice(idx, 1);
-        setIngredients(updatedIngredients);
+        if (ingredients.length === 1) {
+            setIngredients([{ ...blankIngredient }]);
+        } else {
+            const updatedIngredients = [...ingredients];
+            updatedIngredients.splice(idx, 1);
+            setIngredients(updatedIngredients);
+        }
     };
 
     const handleInstructionChange = e => {
@@ -59,9 +60,13 @@ const RecipeForm = () => {
     };
 
     const deleteInstruction = idx => {
-        const updatedInstructions = [...instructions];
-        updatedInstructions.splice(idx, 1);
-        setInstructions(updatedInstructions);
+        if (instructions.length === 1) {
+            setInstructions([{ ...blankInstruction }]);
+        } else {
+            const updatedInstructions = [...instructions];
+            updatedInstructions.splice(idx, 1);
+            setInstructions(updatedInstructions);
+        }
     };
 
     const handleSubmit = e => {
@@ -100,9 +105,9 @@ const RecipeForm = () => {
                 <Form.Label>Skill Level</Form.Label>
                 <Form.Control onChange={() => handleSkillLevelChange} as="select">
                     <option>Choose...</option>
-                    <option value='easy'>Easy</option>
-                    <option value='intermediate'>Intermediate</option>
-                    <option value='difficult'>Difficult</option>
+                    <option value="easy">Easy</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="difficult">Difficult</option>
                 </Form.Control>
                 {/* <Dropdown>
                     <Dropdown.Toggle variant="success" id="dropdown-basic">
@@ -132,7 +137,7 @@ const RecipeForm = () => {
                 <Form.Label>Wait Time</Form.Label>
                 <Form.Control type="number" name="timeWait" onChange={e => setCookTime(e.target.value)} pattern="\d+" />
             </Form.Group>
-            <Form.Group >
+            <Form.Group>
                 <div className="row clearfix">
                     <div name="ingredients" className="col-12 column">
                         <Table striped bordered hover>
