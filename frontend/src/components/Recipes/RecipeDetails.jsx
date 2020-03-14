@@ -57,7 +57,7 @@ const RecipeDetails = ({ match, history }) => {
                             </Dropdown.Item>
                             <Dropdown.Divider />
                             <Dropdown.Item eventKey="1">
-                                <DeleteRecipe history={history} recipe={recipe}/>
+                                <DeleteRecipe history={history} recipe={recipe} />
                             </Dropdown.Item>
                             <Dropdown.Item eventKey="2">Cancel</Dropdown.Item>
                         </DropdownButton>
@@ -79,7 +79,9 @@ const RecipeDetails = ({ match, history }) => {
                 <div>
                     Ingredients:
                     {recipe.ingredients.map(ingredient => (
-                        <div key={ingredient.id}>{ingredient.quantity} {ingredient.name} {ingredient.preparation}</div>
+                        <div key={ingredient.id}>
+                            {ingredient.quantity} {ingredient.name} {ingredient.preparation}
+                        </div>
                     ))}
                 </div>
                 <div>
