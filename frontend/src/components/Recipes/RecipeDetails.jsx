@@ -87,7 +87,7 @@ const RecipeDetails = ({ match, history }) => {
                 <div>
                     Instructions:
                     {recipe.instructions.map(instruction => (
-                        <div key={instruction.id}>{instruction.description}</div>
+                        <div key={instruction.id}>{instruction.content}</div>
                     ))}
                 </div>
             </>

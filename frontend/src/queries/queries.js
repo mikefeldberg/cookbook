@@ -107,7 +107,7 @@ export const GET_RECIPE_QUERY = gql`
             instructions {
                 id
                 order
-                description
+                content
             }
             rating
             ratingCount
@@ -163,7 +163,7 @@ export const CREATE_RECIPE_MUTATION = gql`
                     name
                 }
                 instructions {
-                    description
+                    content
                     order
                 }
             }
@@ -184,7 +184,7 @@ export const UPDATE_RECIPE_MUTATION = gql`
                     name
                 }
                 instructions {
-                    description
+                    content
                     order
                 }
             }

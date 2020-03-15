@@ -37,7 +37,7 @@ class Ingredient(StandardModel):
 
 
 class Instruction(StandardModel):
-    description = models.TextField(blank=False)
+    content = models.TextField(blank=False)
     order = models.IntegerField(blank=False, default=1)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='instructions')
 

@@ -23,7 +23,7 @@ class IngredientInput(graphene.InputObjectType):
 
 
 class InstructionType(DjangoObjectType):
-    description = graphene.String()
+    content = graphene.String()
     order = graphene.Int()
 
     class Meta:
@@ -31,7 +31,7 @@ class InstructionType(DjangoObjectType):
 
 
 class InstructionInput(graphene.InputObjectType):
-    description = graphene.String()
+    content = graphene.String()
     order = graphene.Int()
 
 
@@ -166,7 +166,7 @@ class CreateRecipe(graphene.Mutation):
 
         for instruction in recipe['instructions']:
             new_instructions.append(Instruction(
-                description=instruction['description'],
+                content=instruction['content'],
                 order=instruction['order'],
                 recipe=new_recipe
             ))
@@ -223,7 +223,7 @@ class UpdateRecipe(graphene.Mutation):
 
         for instruction in recipe['instructions']:
             new_instructions.append(Instruction(
-                description=instruction['description'],
+                content=instruction['content'],
                 order=instruction['order'],
                 recipe=existing_recipe,
             ))

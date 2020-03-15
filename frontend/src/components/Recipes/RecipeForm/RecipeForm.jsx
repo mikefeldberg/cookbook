@@ -7,10 +7,12 @@ import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 
+import { CREATE_RECIPE_MUTATION } from '../../../queries/queries';
 import IngredientInput from './IngredientInput';
 import InstructionInput from './InstructionInput';
 
 const RecipeForm = () => {
+    const [createRecipe] = useMutation(CREATE_RECIPE_MUTATION);
     const blankIngredient = { quantity: '', name: '', preparation: '' };
     const blankInstruction = { order: 0, content: '' };
 
@@ -24,10 +26,6 @@ const RecipeForm = () => {
     const [prepTime, setPrepTime] = useState(0);
     const [waitTime, setWaitTime] = useState(0);
     const [cookTime, setCookTime] = useState(0);
-
-    const handleSkillLevelChange = e => {
-        setSkillLevel(e.target.value);
-    };
 
     const handleIngredientChange = e => {
         const updatedIngredients = [...ingredients];
@@ -70,8 +68,9 @@ const RecipeForm = () => {
         }
     };
 
-    const handleSubmit = e => {
+    const handleSubmit = async (e, createRecipe) => {
         e.preventDefault();
+
         const recipe = {
             title,
             description,
@@ -83,7 +82,8 @@ const RecipeForm = () => {
             ingredients,
             instructions,
         };
-        console.log(recipe);
+
+        await createRecipe({ variables: { recipe } });
     };
 
     return (
@@ -213,7 +213,7 @@ const RecipeForm = () => {
                 <Form.Control type="number" name="timeWait" onChange={e => setCookTime(parseInt(e.target.value))} pattern="\d+" />
             </Form.Group>
 
-            <Button type="button" variant="primary" onClick={handleSubmit}>
+            <Button type="button" variant="primary" onClick={e => handleSubmit(e, createRecipe)}>
                 Save Recipe
             </Button>
         </Form>

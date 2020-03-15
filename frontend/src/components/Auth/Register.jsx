@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useApolloClient, useMutation } from '@apollo/react-hooks';
 
-import { REGISTER_MUTATION,  } from '../../queries/queries';
+import { REGISTER_MUTATION } from '../../queries/queries';
 
 
 const Register = () => {
