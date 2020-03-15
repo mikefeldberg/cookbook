@@ -10,6 +10,8 @@ import Button from 'react-bootstrap/Button';
 import { CREATE_RECIPE_MUTATION } from '../../../queries/queries';
 import IngredientInput from './IngredientInput';
 import InstructionInput from './InstructionInput';
+import UploadPhoto from './UploadPhoto';
+
 
 const RecipeForm = () => {
     const [createRecipe] = useMutation(CREATE_RECIPE_MUTATION);
@@ -83,7 +85,12 @@ const RecipeForm = () => {
             instructions,
         };
 
-        await createRecipe({ variables: { recipe } });
+        const res = await createRecipe({ variables: { recipe } });
+        console.log(res)
+        const recipeId = res.data.createRecipe.recipe.id
+        
+
+        debugger
     };
 
     return (
