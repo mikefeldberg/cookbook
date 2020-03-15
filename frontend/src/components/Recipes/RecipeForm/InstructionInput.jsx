@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 const InstructionInput = ({ idx, instructions, handleInstructionChange, deleteInstruction }) => {
-    const contentId = `content-${idx}`;
+    // const contentId = `content-${idx}`;
 
     return (
         <tr key={`cat-${idx}`}>

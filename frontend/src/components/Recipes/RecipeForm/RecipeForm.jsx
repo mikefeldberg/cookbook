@@ -5,6 +5,7 @@ import { useMutation } from '@apollo/react-hooks';
 import Form from 'react-bootstrap/Form';
 import Table from 'react-bootstrap/Table';
 import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 // import Dropdown from 'react-bootstrap/Dropdown';
 
@@ -17,13 +18,13 @@ const RecipeForm = () => {
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [ingredients, setIngredients] = useState([{ ...blankIngredient }]);
+    const [instructions, setInstructions] = useState([{ ...blankInstruction }]);
     const [skillLevel, setSkillLevel] = useState('');
+    const [servings, setServings] = useState(0);
     const [prepTime, setPrepTime] = useState(0);
     const [waitTime, setWaitTime] = useState(0);
     const [cookTime, setCookTime] = useState(0);
-    const [servings, setServings] = useState(0);
-    const [ingredients, setIngredients] = useState([{ ...blankIngredient }]);
-    const [instructions, setInstructions] = useState([{ ...blankInstruction }]);
 
     const handleSkillLevelChange = e => {
         setSkillLevel(e.target.value);
@@ -101,42 +102,6 @@ const RecipeForm = () => {
                     rows="3"
                 />
             </Form.Group>
-            <Form.Group as={Col} controlId="formGridState">
-                <Form.Label>Skill Level</Form.Label>
-                <Form.Control onChange={() => handleSkillLevelChange} as="select">
-                    <option>Choose...</option>
-                    <option value="easy">Easy</option>
-                    <option value="intermediate">Intermediate</option>
-                    <option value="difficult">Difficult</option>
-                </Form.Control>
-                {/* <Dropdown>
-                    <Dropdown.Toggle variant="success" id="dropdown-basic">
-                        Difficulty
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                        <Dropdown.Item>Action</Dropdown.Item>
-                        <Dropdown.Item>Another action</Dropdown.Item>
-                        <Dropdown.Item>Something else</Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown> */}
-            </Form.Group>
-            <Form.Group controlId="formServings">
-                <Form.Label>Servings</Form.Label>
-                <Form.Control type="number" name="servings" onChange={e => setServings(e.target.value)} pattern="\d+" />
-            </Form.Group>
-            <Form.Group controlId="formPrepTime">
-                <Form.Label>Prep Time</Form.Label>
-                <Form.Control type="number" name="timePrep" onChange={e => setPrepTime(e.target.value)} pattern="\d+" />
-            </Form.Group>
-            <Form.Group controlId="formCookTime">
-                <Form.Label>Cook Time</Form.Label>
-                <Form.Control type="number" name="timeCook" onChange={e => setWaitTime(e.target.value)} pattern="\d+" />
-            </Form.Group>
-            <Form.Group controlId="formWaitTime">
-                <Form.Label>Wait Time</Form.Label>
-                <Form.Control type="number" name="timeWait" onChange={e => setCookTime(e.target.value)} pattern="\d+" />
-            </Form.Group>
             <Form.Group>
                 <div className="row clearfix">
                     <div name="ingredients" className="col-12 column">
@@ -200,6 +165,52 @@ const RecipeForm = () => {
                         </button>
                     </div>
                 </div>
+            </Form.Group>
+            <fieldset>
+                <Form.Group as={Row}>
+                    <Form.Label as="legend" column sm={2}>
+                        Difficulty
+                    </Form.Label>
+                    <Row sm={10}>
+                        <Form.Check
+                            type="radio"
+                            label="Easy"
+                            name="formHorizontalRadios"
+                            id="easy"
+                            onClick={() => setSkillLevel('easy')}
+                        />
+                        <Form.Check
+                            type="radio"
+                            label="Intermediate"
+                            name="formHorizontalRadios"
+                            id="intermediate"
+                            onClick={() => setSkillLevel('intermediate')}
+                        />
+                        <Form.Check
+                            type="radio"
+                            label="Difficult"
+                            name="formHorizontalRadios"
+                            id="difficult"
+                            onClick={() => setSkillLevel('difficult')}
+                        />
+                    </Row>
+                </Form.Group>
+            </fieldset>
+            <Form.Group controlId="formServings">
+                <Form.Label>Servings</Form.Label>
+                <Form.Control type="number" name="servings" onChange={e => setServings(e.target.value)} pattern="\d+" />
+            </Form.Group>
+            <Form.Group controlId="formPrepTime">
+                <Form.Label>Prep Time</Form.Label>
+                <Form.Control type="number" name="timePrep" onChange={e => setPrepTime(e.target.value)} pattern="\d+" />
+            </Form.Group>
+            <Form.Group controlId="formCookTime">
+                <Form.Label>Cook Time</Form.Label>
+                <Form.Control type="number" name="timeCook" onChange={e => setWaitTime(e.target.value)} pattern="\d+" />
+            </Form.Group>
+            <Form.Group controlId="formWaitTime">
+                <Form.Label>Wait Time</Form.Label>
+                <Form.Control type="number" name="timeWait" onChange={e => setCookTime(e.target.value)} pattern="\d+" />
             </Form.Group>
 
             <Button type="button" variant="primary" onClick={handleSubmit}>
