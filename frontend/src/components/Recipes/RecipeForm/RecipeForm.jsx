@@ -4,22 +4,21 @@ import { useMutation } from '@apollo/react-hooks';
 
 import Form from 'react-bootstrap/Form';
 import Table from 'react-bootstrap/Table';
-import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
-// import Dropdown from 'react-bootstrap/Dropdown';
 
 import IngredientInput from './IngredientInput';
 import InstructionInput from './InstructionInput';
 
 const RecipeForm = () => {
     const blankIngredient = { quantity: '', name: '', preparation: '' };
-    const blankInstruction = { order: 1, content: '' };
+    const blankInstruction = { order: 0, content: '' };
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [ingredients, setIngredients] = useState([{ ...blankIngredient }]);
     const [instructions, setInstructions] = useState([{ ...blankInstruction }]);
+    const [instructionCounter, setInstructionCounter] = useState(1);
     const [skillLevel, setSkillLevel] = useState('');
     const [servings, setServings] = useState(0);
     const [prepTime, setPrepTime] = useState(0);
@@ -57,7 +56,8 @@ const RecipeForm = () => {
     };
 
     const addInstruction = () => {
-        setInstructions([...instructions, { ...blankInstruction }]);
+        setInstructions([...instructions, { ...{ content: '', order: instructionCounter } }]);
+        setInstructionCounter(instructionCounter + 1);
     };
 
     const deleteInstruction = idx => {
@@ -198,19 +198,19 @@ const RecipeForm = () => {
             </fieldset>
             <Form.Group controlId="formServings">
                 <Form.Label>Servings</Form.Label>
-                <Form.Control type="number" name="servings" onChange={e => setServings(e.target.value)} pattern="\d+" />
+                <Form.Control type="number" name="servings" onChange={e => setServings(parseInt(e.target.value))} pattern="\d+" />
             </Form.Group>
             <Form.Group controlId="formPrepTime">
                 <Form.Label>Prep Time</Form.Label>
-                <Form.Control type="number" name="timePrep" onChange={e => setPrepTime(e.target.value)} pattern="\d+" />
+                <Form.Control type="number" name="timePrep" onChange={e => setPrepTime(parseInt(e.target.value))} pattern="\d+" />
             </Form.Group>
             <Form.Group controlId="formCookTime">
                 <Form.Label>Cook Time</Form.Label>
-                <Form.Control type="number" name="timeCook" onChange={e => setWaitTime(e.target.value)} pattern="\d+" />
+                <Form.Control type="number" name="timeCook" onChange={e => setWaitTime(parseInt(e.target.value))} pattern="\d+" />
             </Form.Group>
             <Form.Group controlId="formWaitTime">
                 <Form.Label>Wait Time</Form.Label>
-                <Form.Control type="number" name="timeWait" onChange={e => setCookTime(e.target.value)} pattern="\d+" />
+                <Form.Control type="number" name="timeWait" onChange={e => setCookTime(parseInt(e.target.value))} pattern="\d+" />
             </Form.Group>
 
             <Button type="button" variant="primary" onClick={handleSubmit}>
