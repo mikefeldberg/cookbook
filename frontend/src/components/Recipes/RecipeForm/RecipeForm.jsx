@@ -10,13 +10,15 @@ import Button from 'react-bootstrap/Button';
 import { CREATE_RECIPE_MUTATION, CREATE_PHOTO_MUTATION } from '../../../queries/queries';
 import IngredientInput from './IngredientInput';
 import InstructionInput from './InstructionInput';
-// import UploadPhoto from './UploadPhoto';
+
 
 const RecipeForm = () => {
     const [createRecipe] = useMutation(CREATE_RECIPE_MUTATION);
+    const [createPhoto] = useMutation(CREATE_PHOTO_MUTATION);
+
     const blankIngredient = { quantity: '', name: '', preparation: '' };
     const blankInstruction = { order: 0, content: '' };
-
+    const [file, setFile] = useState(null);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [ingredients, setIngredients] = useState([{ ...blankIngredient }]);
@@ -69,8 +71,41 @@ const RecipeForm = () => {
         }
     };
 
+    const uploadFileToS3 = (presignedPostData, file) => {
+        return new Promise((resolve, reject) => {
+            const formData = new FormData();
+            Object.keys(presignedPostData.fields).forEach(key => {
+                formData.append(key, presignedPostData.fields[key]);
+            });
+
+            formData.append('file', file);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', presignedPostData.url, true);
+            xhr.send(formData);
+            xhr.onload = function() {
+                this.status === 204 ? resolve() : reject(this.responseText);
+            };
+        });
+    };
+
+    const getPresignedPostData = async () => {
+        const response = await fetch('http://localhost:8000/upload/');
+        const json = await response.json();
+        return json;
+    };
+
+    const getFile = e => {
+        const files = e.target.files;
+        if (files && files.length > 0) {
+            const newFile = files[0];
+            setFile({ newFile });
+        }
+    };
+
     const handleSubmit = async (e, createRecipe) => {
         e.preventDefault();
+        console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~submitttttttttt')
 
         const recipe = {
             title,
@@ -85,21 +120,27 @@ const RecipeForm = () => {
         };
 
         const res = await createRecipe({ variables: { recipe } });
-
-        // if (file) {
-        //     // getpresignedurl() -> presignedpostdata & photo_uri
-        //     // uploadtos3(presignedpostdata, file)
-        //     // createPhoto()
-        // }
-
-        console.log(res);
         const recipeId = res.data.createRecipe.recipe.id;
 
-        debugger;
+        if (file) {
+            handleUpload(recipeId, createPhoto);
+        }
+    };
+
+    const handleUpload = async (recipeId, createPhoto) => {
+        const presignedPostData = await getPresignedPostData();
+        uploadFileToS3(presignedPostData, file.newFile);
+        const url = presignedPostData.url + presignedPostData.fields.key;
+        const photo = {
+            recipeId,
+            url
+        }
+        const res = await createPhoto({ variables: { photo } });
+        console.log(res)
     };
 
     return (
-        <Form>
+        <Form onSubmit={e => handleSubmit(e, createRecipe)}>
             <Form.Group controlId="formName">
                 <Form.Label>Recipe Title</Form.Label>
                 <Form.Control type="text" name="title" onChange={e => setTitle(e.target.value)} />
@@ -244,8 +285,9 @@ const RecipeForm = () => {
                     pattern="\d+"
                 />
             </Form.Group>
-
-            <Button type="button" variant="primary" onClick={e => handleSubmit(e, createRecipe)}>
+            <label>Choose file</label>
+            <input onChange={getFile} type="file" />
+            <Button type="submit" variant="primary">
                 Save Recipe
             </Button>
         </Form>

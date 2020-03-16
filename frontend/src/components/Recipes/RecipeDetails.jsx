@@ -7,6 +7,7 @@ import { GET_RECIPE_QUERY } from '../../queries/queries';
 import { AuthContext } from '../../App';
 
 import Row from 'react-bootstrap/Row';
+import Image from 'react-bootstrap/Image';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Button from 'react-bootstrap/Button';
 import DropdownButton from 'react-bootstrap/DropdownButton';
@@ -37,6 +38,7 @@ const RecipeDetails = ({ match, history }) => {
 
     if (data) {
         const recipe = data.recipe;
+        console.log(recipe)
         return (
             <>
                 <Row>
@@ -63,6 +65,7 @@ const RecipeDetails = ({ match, history }) => {
                         </DropdownButton>
                     </ButtonToolbar>
                 </Row>
+                <Image src={recipe.photos.length > 0 ? recipe.photos[0].url : `holder.js/100px180?text=Image cap`} fluid />
                 <div>Title: {recipe.title}</div>
                 <div>
                     Rating: (

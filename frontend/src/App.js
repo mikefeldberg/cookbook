@@ -10,10 +10,8 @@ import NavBar from './components/Nav/NavBar';
 import Register from './components/Auth/Register';
 import Login from './components/Auth/Login';
 import Logout from './components/Auth/Logout';
-// import CreateRecipe from './components/Recipes/CreateRecipe/CreateRecipe';
 import RecipesList from './components/Recipes/RecipesList';
 import RecipeDetails from './components/Recipes/RecipeDetails';
-import UploadPhoto from './components/Recipes/RecipeForm/UploadPhoto';
 import RecipeForm from './components/Recipes/RecipeForm/RecipeForm';
 
 
@@ -36,7 +34,6 @@ const App = () => {
                             <Route exact path="/login" component={Login} />
                             <Route exact path="/logout" component={Logout} />
                             <Route exact path="/recipes/new" component={RecipeForm} />
-                            <Route exact path="/recipes/upload" component={UploadPhoto} />
                             <Route exact path="/recipes/:id" component={RecipeDetails} />
                         </Switch>
                     </Container>

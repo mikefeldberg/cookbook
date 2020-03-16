@@ -5,9 +5,14 @@ import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 
 const RecipeCard = ({ recipe }) => {
+    // console.log(recipe.title)
+    // console.log(recipe.photos.length)
+    // if (recipe.photos.length > 0) {
+    //     console.log(recipe.photos[0].url)
+    // }
     return (
         <Card border="primary" style={{ width: '18rem' }}>
-            <Card.Img variant="top" src="holder.js/100px180?text=Image cap" />
+            <Card.Img variant="top" src={recipe.photos.length > 0 ? recipe.photos[0].url : `holder.js/100px180?text=Image cap`}/>
             <Card.Body>
                 <Card.Title>
                     <Link to={`/recipes/${recipe.id}`}>{recipe.title}</Link>

@@ -75,6 +75,9 @@ export const GET_RECIPES_QUERY = gql`
             rating
             ratingCount
             favoriteCount
+            photos {
+                url
+            }
             comments {
                 id
             }
@@ -112,6 +115,9 @@ export const GET_RECIPE_QUERY = gql`
             rating
             ratingCount
             favoriteCount
+            photos {
+                url
+            }
             comments {
                 id
                 content
