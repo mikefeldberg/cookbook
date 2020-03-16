@@ -39,6 +39,7 @@ const UploadPhoto = () => {
         e.preventDefault();
         const presignedPostData = await getPresignedPostData();
         uploadFileToS3(presignedPostData, file.newFile);
+        const photoUri = presignedPostData.url + presignedPostData.fields.key;
     };
 
     return (

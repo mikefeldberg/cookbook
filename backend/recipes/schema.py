@@ -37,16 +37,17 @@ class InstructionInput(graphene.InputObjectType):
 
 
 class PhotoType(DjangoObjectType):
-    content = graphene.String()
-    order = graphene.Int()
+    url = graphene.String()
+    recipe_id = graphene.String()
 
     class Meta:
         model = Photo
 
 
 class PhotoInput(graphene.InputObjectType):
-    content = graphene.String()
-    order = graphene.Int()
+    id = graphene.String(required=False)
+    url = graphene.String()
+    recipe_id = graphene.String()
 
 
 class CommentType(DjangoObjectType):
@@ -375,14 +376,46 @@ class DeleteComment(graphene.Mutation):
         comment.save()
 
         if comment.rating > 0:
-            recipe = Recipe.objects.filter(
-                id=comment.recipe_id, deleted_at=None).first()
-            recipe.rating = (recipe.rating * recipe.rating_count -
-                             comment.rating) / (recipe.rating_count - 1)
+            recipe = Recipe.objects.get(id=comment.recipe_id, deleted_at=None)
+            recipe.rating = (recipe.rating * recipe.rating_count - comment.rating) / (recipe.rating_count - 1)
             recipe.rating_count -= 1
             recipe.save()
 
         return DeleteComment(comment_id=comment_id)
+
+
+class CreatePhoto(graphene.Mutation):
+    photo = graphene.Field(PhotoType)
+
+    class Arguments:
+        photo = PhotoInput(required=True)
+
+    def mutate(self, info, photo):
+        recipe = Recipe.objects.get(id=photo.recipe_id, deleted_at=None)
+
+        new_photo = Photo(
+            url=photo.url,
+            recipe=recipe
+        )
+
+        new_photo.save()
+
+        return CreatePhoto(photo=new_photo)
+
+
+class DeletePhoto(graphene.Mutation):
+    photo_id = graphene.String()
+
+    class Arguments:
+        photo_id = graphene.String(required=True)
+
+    def mutate(self, info, photo_id):
+        photo = Photo.objects.get(id=photo_id, deleted_at=None)
+
+        photo.deleted_at = timezone.now()
+        photo.save()
+
+        return DeletePhoto(photo_id=photo_id)
 
 
 class CreateFavorite(graphene.Mutation):
@@ -393,8 +426,7 @@ class CreateFavorite(graphene.Mutation):
 
     def mutate(self, info, favorite):
         user = info.context.user
-        recipe = Recipe.objects.filter(
-            id=favorite.recipe_id, deleted_at=None).first()
+        recipe = Recipe.objects.get(id=favorite.recipe_id, deleted_at=None)
 
         if user.is_anonymous:
             raise GraphQLError('Log in to rate or favorite')
@@ -439,6 +471,9 @@ class Mutation(graphene.ObjectType):
     create_recipe = CreateRecipe.Field()
     update_recipe = UpdateRecipe.Field()
     delete_recipe = DeleteRecipe.Field()
+    create_photo = CreatePhoto.Field()
+    # update_photo = UpdatePhoto.Field()
+    delete_photo = DeletePhoto.Field()
     create_comment = CreateComment.Field()
     update_comment = UpdateComment.Field()
     delete_comment = DeleteComment.Field()

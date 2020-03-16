@@ -56,5 +56,4 @@ class Favorite(StandardModel):
 
 class Photo(StandardModel):
     url = models.CharField(blank=False, max_length=300)
-    user = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='photos')

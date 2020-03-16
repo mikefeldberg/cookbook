@@ -200,6 +200,28 @@ export const DELETE_RECIPE_MUTATION = gql`
     }
 `
 
+export const CREATE_PHOTO_MUTATION = gql`
+    mutation ($photo: PhotoInput!) {
+        createPhoto(photo: $photo) {
+            photo {
+                id
+                url
+                recipe {
+                    id
+                }
+            }
+        }
+    }
+`
+
+export const DELETE_PHOTO_MUTATION = gql`
+    mutation($photoId: String!) {
+        deletePhoto(photoId: $photoId) {
+            photoId
+        }
+    }
+`
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~ COMMENTS
 
 export const CREATE_COMMENT_MUTATION = gql`

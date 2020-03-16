@@ -7,11 +7,10 @@ import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 
-import { CREATE_RECIPE_MUTATION } from '../../../queries/queries';
+import { CREATE_RECIPE_MUTATION, CREATE_PHOTO_MUTATION } from '../../../queries/queries';
 import IngredientInput from './IngredientInput';
 import InstructionInput from './InstructionInput';
-import UploadPhoto from './UploadPhoto';
-
+// import UploadPhoto from './UploadPhoto';
 
 const RecipeForm = () => {
     const [createRecipe] = useMutation(CREATE_RECIPE_MUTATION);
@@ -86,11 +85,17 @@ const RecipeForm = () => {
         };
 
         const res = await createRecipe({ variables: { recipe } });
-        console.log(res)
-        const recipeId = res.data.createRecipe.recipe.id
-        
 
-        debugger
+        // if (file) {
+        //     // getpresignedurl() -> presignedpostdata & photo_uri
+        //     // uploadtos3(presignedpostdata, file)
+        //     // createPhoto()
+        // }
+
+        console.log(res);
+        const recipeId = res.data.createRecipe.recipe.id;
+
+        debugger;
     };
 
     return (
@@ -205,19 +210,39 @@ const RecipeForm = () => {
             </fieldset>
             <Form.Group controlId="formServings">
                 <Form.Label>Servings</Form.Label>
-                <Form.Control type="number" name="servings" onChange={e => setServings(parseInt(e.target.value))} pattern="\d+" />
+                <Form.Control
+                    type="number"
+                    name="servings"
+                    onChange={e => setServings(parseInt(e.target.value))}
+                    pattern="\d+"
+                />
             </Form.Group>
             <Form.Group controlId="formPrepTime">
                 <Form.Label>Prep Time</Form.Label>
-                <Form.Control type="number" name="timePrep" onChange={e => setPrepTime(parseInt(e.target.value))} pattern="\d+" />
+                <Form.Control
+                    type="number"
+                    name="timePrep"
+                    onChange={e => setPrepTime(parseInt(e.target.value))}
+                    pattern="\d+"
+                />
             </Form.Group>
             <Form.Group controlId="formCookTime">
                 <Form.Label>Cook Time</Form.Label>
-                <Form.Control type="number" name="timeCook" onChange={e => setWaitTime(parseInt(e.target.value))} pattern="\d+" />
+                <Form.Control
+                    type="number"
+                    name="timeCook"
+                    onChange={e => setWaitTime(parseInt(e.target.value))}
+                    pattern="\d+"
+                />
             </Form.Group>
             <Form.Group controlId="formWaitTime">
                 <Form.Label>Wait Time</Form.Label>
-                <Form.Control type="number" name="timeWait" onChange={e => setCookTime(parseInt(e.target.value))} pattern="\d+" />
+                <Form.Control
+                    type="number"
+                    name="timeWait"
+                    onChange={e => setCookTime(parseInt(e.target.value))}
+                    pattern="\d+"
+                />
             </Form.Group>
 
             <Button type="button" variant="primary" onClick={e => handleSubmit(e, createRecipe)}>
