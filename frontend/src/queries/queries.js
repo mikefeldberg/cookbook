@@ -65,8 +65,8 @@ export const GET_RECIPES_QUERY = gql`
             description
             skillLevel
             prepTime
-            waitTime
             cookTime
+            waitTime
             totalTime
             servings
             ingredients {
@@ -98,8 +98,8 @@ export const GET_RECIPE_QUERY = gql`
             description
             skillLevel
             prepTime
-            waitTime
             cookTime
+            waitTime
             totalTime
             servings
             ingredients {
@@ -128,6 +128,7 @@ export const GET_RECIPE_QUERY = gql`
             user {
                 id
                 username
+                email
             }
         }
     }

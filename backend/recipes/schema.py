@@ -81,8 +81,8 @@ class RecipeType(DjangoObjectType):
     description = graphene.String()
     skill_level = graphene.String()
     prep_time = graphene.Int(required=True)
-    wait_time = graphene.Int(required=False)
     cook_time = graphene.Int(required=True)
+    wait_time = graphene.Int(required=False)
     total_time = graphene.Int(required=True)
     servings = graphene.Int(required=True)
     ingredients = graphene.List(IngredientType)
@@ -101,6 +101,9 @@ class RecipeType(DjangoObjectType):
     def resolve_instructions(self, info):
         return Instruction.objects.filter(recipe_id=self.id, deleted_at=None)
 
+    def resolve_photos(self, info):
+        return Photo.objects.filter(recipe_id=self.id, deleted_at=None)
+
 
 class RecipeInput(graphene.InputObjectType):
     id = graphene.String(required=False)
@@ -108,8 +111,8 @@ class RecipeInput(graphene.InputObjectType):
     description = graphene.String()
     skill_level = graphene.String()
     prep_time = graphene.Int(required=True)
-    wait_time = graphene.Int(required=False)
     cook_time = graphene.Int(required=True)
+    wait_time = graphene.Int(required=False)
     servings = graphene.Int(required=True)
     ingredients = graphene.List(IngredientInput)
     instructions = graphene.List(InstructionInput)
@@ -156,9 +159,9 @@ class CreateRecipe(graphene.Mutation):
             description=recipe['description'],
             skill_level=recipe['skill_level'],
             prep_time=recipe['prep_time'],
-            wait_time=recipe['wait_time'],
             cook_time=recipe['cook_time'],
-            total_time=recipe['prep_time'] + recipe['wait_time'] + recipe['cook_time'],
+            wait_time=recipe['wait_time'],
+            total_time=recipe['prep_time'] + recipe['cook_time'] + recipe['wait_time'],
             servings=recipe['servings'],
             user=user
         )
@@ -216,7 +219,7 @@ class UpdateRecipe(graphene.Mutation):
         existing_recipe.prep_time = recipe['prep_time']
         existing_recipe.wait_time = recipe['wait_time']
         existing_recipe.cook_time = recipe['cook_time']
-        existing_recipe.total_time = recipe['prep_time'] + recipe['wait_time'] + recipe['cook_time']
+        existing_recipe.total_time = recipe['prep_time'] + recipe['cook_time'] + recipe['wait_time']
         existing_recipe.servings = recipe['servings']
         existing_recipe.save()
 

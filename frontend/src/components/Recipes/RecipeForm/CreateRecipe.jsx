@@ -10,25 +10,42 @@ import Button from 'react-bootstrap/Button';
 import { CREATE_RECIPE_MUTATION, CREATE_PHOTO_MUTATION } from '../../../queries/queries';
 import IngredientInput from './IngredientInput';
 import InstructionInput from './InstructionInput';
+// import { Redirect } from 'react-router-dom';
 
 
-const RecipeForm = () => {
+const CreateRecipe = ({history}) => {
     const [createRecipe] = useMutation(CREATE_RECIPE_MUTATION);
     const [createPhoto] = useMutation(CREATE_PHOTO_MUTATION);
 
-    const blankIngredient = { quantity: '', name: '', preparation: '' };
-    const blankInstruction = { order: 0, content: '' };
+    // const blankIngredient = { quantity: '', name: '', preparation: '' };
+    // const blankInstruction = { order: 0, content: '' };
+    // const [file, setFile] = useState(null);
+    // const [title, setTitle] = useState('');
+    // const [description, setDescription] = useState('');
+    // const [ingredients, setIngredients] = useState([{ ...blankIngredient }]);
+    // const [instructions, setInstructions] = useState([{ ...blankInstruction }]);
+    // const [instructionCounter, setInstructionCounter] = useState(1);
+    // const [skillLevel, setSkillLevel] = useState('');
+    // const [servings, setServings] = useState('');
+    // const [prepTime, setPrepTime] = useState('');
+    // const [cookTime, setCookTime] = useState('');
+    // const [waitTime, setWaitTime] = useState('');
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ RESTORE ABOVE HOOKS BLOCK WHEN DONE TESTING
+
+    const blankIngredient = { quantity: '1', name: '1', preparation: '1' };
+    const blankInstruction = { order: 0, content: '1' };
     const [file, setFile] = useState(null);
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
+    const [title, setTitle] = useState('1');
+    const [description, setDescription] = useState('1');
     const [ingredients, setIngredients] = useState([{ ...blankIngredient }]);
     const [instructions, setInstructions] = useState([{ ...blankInstruction }]);
     const [instructionCounter, setInstructionCounter] = useState(1);
-    const [skillLevel, setSkillLevel] = useState('');
-    const [servings, setServings] = useState(0);
-    const [prepTime, setPrepTime] = useState(0);
-    const [waitTime, setWaitTime] = useState(0);
-    const [cookTime, setCookTime] = useState(0);
+    const [skillLevel, setSkillLevel] = useState('1');
+    const [servings, setServings] = useState('1');
+    const [prepTime, setPrepTime] = useState('1');
+    const [cookTime, setCookTime] = useState('1');
+    const [waitTime, setWaitTime] = useState('1');
 
     const handleIngredientChange = e => {
         const updatedIngredients = [...ingredients];
@@ -111,8 +128,8 @@ const RecipeForm = () => {
             description,
             skillLevel,
             prepTime,
-            waitTime,
             cookTime,
+            waitTime,
             servings,
             ingredients,
             instructions,
@@ -120,12 +137,14 @@ const RecipeForm = () => {
 
         const res = await createRecipe({ variables: { recipe } });
         const recipeId = res.data.createRecipe.recipe.id;
-
+        
         if (file) {
             handleUpload(recipeId, createPhoto);
+        } else {
+            history.push(`/recipes/${recipeId}`);
         }
     };
-
+    
     const handleUpload = async (recipeId, createPhoto) => {
         const presignedPostData = await getPresignedPostData();
         uploadFileToS3(presignedPostData, file.newFile);
@@ -134,18 +153,20 @@ const RecipeForm = () => {
             recipeId,
             url
         }
-        const res = await createPhoto({ variables: { photo } });
+        await createPhoto({ variables: { photo } });
+        history.push(`/recipes/${recipeId}`);
     };
 
     return (
         <Form onSubmit={e => handleSubmit(e, createRecipe)}>
             <Form.Group controlId="formName">
                 <Form.Label>Recipe Title</Form.Label>
-                <Form.Control type="text" name="title" onChange={e => setTitle(e.target.value)} />
+                <Form.Control value={title} type="text" name="title" onChange={e => setTitle(e.target.value)} />
             </Form.Group>
             <Form.Group controlId="formDescription">
                 <Form.Label>Recipe Description</Form.Label>
                 <Form.Control
+                    value={description}
                     type="text"
                     name="description"
                     onChange={e => setDescription(e.target.value)}
@@ -250,6 +271,7 @@ const RecipeForm = () => {
             <Form.Group controlId="formServings">
                 <Form.Label>Servings</Form.Label>
                 <Form.Control
+                    value={servings}
                     type="number"
                     name="servings"
                     onChange={e => setServings(parseInt(e.target.value))}
@@ -259,8 +281,9 @@ const RecipeForm = () => {
             <Form.Group controlId="formPrepTime">
                 <Form.Label>Prep Time</Form.Label>
                 <Form.Control
+                    value={prepTime}
                     type="number"
-                    name="timePrep"
+                    name="prepTime"
                     onChange={e => setPrepTime(parseInt(e.target.value))}
                     pattern="\d+"
                 />
@@ -268,18 +291,20 @@ const RecipeForm = () => {
             <Form.Group controlId="formCookTime">
                 <Form.Label>Cook Time</Form.Label>
                 <Form.Control
+                    value={cookTime}
                     type="number"
-                    name="timeCook"
-                    onChange={e => setWaitTime(parseInt(e.target.value))}
+                    name="cookTime"
+                    onChange={e => setCookTime(parseInt(e.target.value))}
                     pattern="\d+"
                 />
             </Form.Group>
             <Form.Group controlId="formWaitTime">
                 <Form.Label>Wait Time</Form.Label>
                 <Form.Control
+                    value={waitTime}
                     type="number"
-                    name="timeWait"
-                    onChange={e => setCookTime(parseInt(e.target.value))}
+                    name="waitTime"
+                    onChange={e => setWaitTime(parseInt(e.target.value))}
                     pattern="\d+"
                 />
             </Form.Group>
@@ -292,4 +317,4 @@ const RecipeForm = () => {
     );
 };
 
-export default RecipeForm;
+export default CreateRecipe;

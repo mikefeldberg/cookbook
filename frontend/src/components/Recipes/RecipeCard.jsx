@@ -7,7 +7,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 const RecipeCard = ({ recipe }) => {
     return (
         <Card border="primary" style={{ width: '18rem' }}>
-            <Card.Img variant="top" src={recipe.photos.length > 0 ? recipe.photos[0].url : `holder.js/100px180?text=Image cap`}/>
+            <Card.Img variant="top" src={recipe.photos.length > 0 ? recipe.photos[0].url : `https://cookbook-test-bucket.s3-us-west-1.amazonaws.com/_food_placeholder.jpg`}/>
             <Card.Body>
                 <Card.Title>
                     <Link to={`/recipes/${recipe.id}`}>{recipe.title}</Link>
