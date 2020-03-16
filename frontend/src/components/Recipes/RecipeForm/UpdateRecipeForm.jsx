@@ -26,7 +26,7 @@ const UpdateRecipeForm = ({recipe, history}) => {
     const [description, setDescription] = useState(recipe.description)
     const [ingredients, setIngredients] = useState(recipe.ingredients)
     const [instructions, setInstructions] = useState(recipe.instructions)
-    const [instructionCounter, setInstructionCounter] = useState(recipe.instructions.count)
+    const [instructionCounter, setInstructionCounter] = useState(recipe.instructions.length)
     const [skillLevel, setSkillLevel] = useState(recipe.skillLevel)
     const [servings, setServings] = useState(recipe.servings)
     const [prepTime, setPrepTime] = useState(recipe.prepTime)
@@ -34,6 +34,12 @@ const UpdateRecipeForm = ({recipe, history}) => {
     const [waitTime, setWaitTime] = useState(recipe.waitTime)
     const [photoId] = useState(recipe.photos[0].id)
     const [photoUrl, setPhotoUrl] = useState(recipe.photos[0].url)
+    const [recipeId] = useState(recipe.id)
+
+    const removeListIds = () => {
+        ingredients.forEach(ingredient => {delete ingredient.id})
+        instructions.forEach(instruction => {delete instruction.id})
+    }
 
     const handleIngredientChange = e => {
         const updatedIngredients = [...ingredients];
@@ -116,8 +122,10 @@ const UpdateRecipeForm = ({recipe, history}) => {
 
     const handleSubmit = async (e, updateRecipe) => {
         e.preventDefault();
-
+        removeListIds();
+        
         const recipe = {
+            id: recipeId,
             title,
             description,
             skillLevel,
@@ -129,8 +137,7 @@ const UpdateRecipeForm = ({recipe, history}) => {
             instructions,
         };
 
-        const res = await updateRecipe({ variables: { recipe } });
-        const recipeId = res.data.updateRecipe.recipe.id;
+        await updateRecipe({ variables: { recipe } });
 
         if (file) {
             handleUpload(recipeId, createPhoto);
@@ -239,7 +246,7 @@ const UpdateRecipeForm = ({recipe, history}) => {
                     </Form.Label>
                     <Row sm={10}>
                         <Form.Check
-                            checked={skillLevel === 'easy'}
+                            defaultChecked={skillLevel === 'easy'}
                             type="radio"
                             label="Easy"
                             name="formHorizontalRadios"
@@ -247,7 +254,7 @@ const UpdateRecipeForm = ({recipe, history}) => {
                             onClick={() => setSkillLevel('easy')}
                         />
                         <Form.Check
-                            checked={skillLevel === 'intermediate'}
+                            defaultChecked={skillLevel === 'intermediate'}
                             type="radio"
                             label="Intermediate"
                             name="formHorizontalRadios"
@@ -255,7 +262,7 @@ const UpdateRecipeForm = ({recipe, history}) => {
                             onClick={() => setSkillLevel('intermediate')}
                         />
                         <Form.Check
-                            checked={skillLevel === 'difficult'}
+                            defaultChecked={skillLevel === 'difficult'}
                             type="radio"
                             label="Difficult"
                             name="formHorizontalRadios"
