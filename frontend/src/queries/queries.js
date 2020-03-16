@@ -69,9 +69,16 @@ export const GET_RECIPES_QUERY = gql`
             cookTime
             totalTime
             servings
+            ingredients {
+                name
+            }
             rating
             ratingCount
             favoriteCount
+            photos {
+                id
+                url
+            }
             comments {
                 id
             }
@@ -95,9 +102,24 @@ export const GET_RECIPE_QUERY = gql`
             cookTime
             totalTime
             servings
+            ingredients {
+                id
+                quantity
+                name
+                preparation
+            }
+            instructions {
+                id
+                order
+                content
+            }
             rating
             ratingCount
             favoriteCount
+            photos {
+                id
+                url
+            }
             comments {
                 id
                 content
@@ -149,7 +171,7 @@ export const CREATE_RECIPE_MUTATION = gql`
                     name
                 }
                 instructions {
-                    description
+                    content
                     order
                 }
             }
@@ -170,7 +192,7 @@ export const UPDATE_RECIPE_MUTATION = gql`
                     name
                 }
                 instructions {
-                    description
+                    content
                     order
                 }
             }
@@ -182,6 +204,30 @@ export const DELETE_RECIPE_MUTATION = gql`
     mutation($recipeId: String!) {
         deleteRecipe(recipeId: $recipeId) {
             recipeId
+        }
+    }
+`
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~ PHOTOS
+
+export const CREATE_PHOTO_MUTATION = gql`
+    mutation ($photo: PhotoInput!) {
+        createPhoto(photo: $photo) {
+            photo {
+                id
+                url
+                recipe {
+                    id
+                }
+            }
+        }
+    }
+`
+
+export const DELETE_PHOTO_MUTATION = gql`
+    mutation($photoId: String!) {
+        deletePhoto(photoId: $photoId) {
+            photoId
         }
     }
 `

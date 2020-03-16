@@ -1,31 +1,28 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
 
+import CardColumns from 'react-bootstrap/CardColumns';
+
 import { GET_RECIPES_QUERY } from '../../queries/queries';
-// import { AuthContext } from '../../App';
+import RecipeCard from './RecipeCard';
+
 
 const RecipesList = () => {
-    // const currentUser = useContext(AuthContext);
-    const { loading, error, data } = useQuery(GET_RECIPES_QUERY);
+    const { data, loading, error } = useQuery(GET_RECIPES_QUERY);
 
-    if (loading) return <div>Loading recipe...</div>;
+    if (loading) return <div>Loading recipes...</div>;
     if (error) return `Error! ${error}`;
 
     if (data) {
-        return data.recipes.map(({ id, title, description }) => {
-            return (
-                <div key={id}>
-                    <div>
-                        <Link to={`/recipes/${id}`}>{title}</Link>
-                    </div>
-                    <span>{description}</span>
-                </div>
-            );
-        });
+        const recipes = data.recipes
+        return (
+            <CardColumns>
+                {recipes.map(recipe => (
+                    <RecipeCard key={recipe.id} recipe={recipe} />
+                ))}
+            </CardColumns>
+        );
     }
-
-    return <div>Loading recipes...</div>;
 };
 
 export default RecipesList;

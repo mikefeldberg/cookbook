@@ -4,10 +4,9 @@ from graphql import GraphQLError
 from django.db.models import Q
 from django.utils import timezone
 
-from .models import Recipe, Ingredient, Instruction, Comment, Favorite
+from .models import Recipe, Ingredient, Instruction, Comment, Favorite, Photo
 from users.schema import UserType
 
-from IPython import embed
 
 class IngredientType(DjangoObjectType):
     quantity = graphene.String()
@@ -25,7 +24,7 @@ class IngredientInput(graphene.InputObjectType):
 
 
 class InstructionType(DjangoObjectType):
-    description = graphene.String()
+    content = graphene.String()
     order = graphene.Int()
 
     class Meta:
@@ -33,8 +32,22 @@ class InstructionType(DjangoObjectType):
 
 
 class InstructionInput(graphene.InputObjectType):
-    description = graphene.String()
+    content = graphene.String()
     order = graphene.Int()
+
+
+class PhotoType(DjangoObjectType):
+    url = graphene.String()
+    recipe_id = graphene.String()
+
+    class Meta:
+        model = Photo
+
+
+class PhotoInput(graphene.InputObjectType):
+    id = graphene.String(required=False)
+    url = graphene.String()
+    recipe_id = graphene.String()
 
 
 class CommentType(DjangoObjectType):
@@ -168,7 +181,7 @@ class CreateRecipe(graphene.Mutation):
 
         for instruction in recipe['instructions']:
             new_instructions.append(Instruction(
-                description=instruction['description'],
+                content=instruction['content'],
                 order=instruction['order'],
                 recipe=new_recipe
             ))
@@ -191,11 +204,12 @@ class UpdateRecipe(graphene.Mutation):
             raise GraphQLError('Log in to add a recipe')
         recipe_id = recipe['id']
 
-        existing_recipe = Recipe.objects.filter(id=recipe_id, deleted_at=None).first()
-         
+        existing_recipe = Recipe.objects.filter(
+            id=recipe_id, deleted_at=None).first()
+
         if not existing_recipe or existing_recipe.user != user:
             raise GraphQLError('Update not permitted.')
-        
+
         existing_recipe.title = recipe['title']
         existing_recipe.description = recipe['description']
         existing_recipe.skill_level = recipe['skill_level']
@@ -206,8 +220,10 @@ class UpdateRecipe(graphene.Mutation):
         existing_recipe.servings = recipe['servings']
         existing_recipe.save()
 
-        Ingredient.objects.filter(recipe_id=recipe_id, deleted_at=None).update(deleted_at=timezone.now())
-        Instruction.objects.filter(recipe_id=recipe_id, deleted_at=None).update(deleted_at=timezone.now())
+        Ingredient.objects.filter(recipe_id=recipe_id, deleted_at=None).update(
+            deleted_at=timezone.now())
+        Instruction.objects.filter(recipe_id=recipe_id, deleted_at=None).update(
+            deleted_at=timezone.now())
 
         new_ingredients = []
 
@@ -225,7 +241,7 @@ class UpdateRecipe(graphene.Mutation):
 
         for instruction in recipe['instructions']:
             new_instructions.append(Instruction(
-                description=instruction['description'],
+                content=instruction['content'],
                 order=instruction['order'],
                 recipe=existing_recipe,
             ))
@@ -262,8 +278,8 @@ class CreateComment(graphene.Mutation):
 
     def mutate(self, info, comment):
         user = info.context.user
-        embed()
-        recipe = Recipe.objects.filter(id=comment['recipe_id'], deleted_at=None).first()
+        recipe = Recipe.objects.filter(
+            id=comment['recipe_id'], deleted_at=None).first()
 
         if user.is_anonymous:
             raise GraphQLError('Log in to rate or comment')
@@ -293,24 +309,30 @@ class UpdateComment(graphene.Mutation):
 
     def mutate(self, info, comment):
         user = info.context.user
-        recipe = Recipe.objects.filter(id=comment['recipe_id'], deleted_at=None).first()
+        recipe = Recipe.objects.filter(
+            id=comment['recipe_id'], deleted_at=None).first()
 
         if user.is_anonymous:
             raise GraphQLError('Log in to update ratings or comments')
 
-        existing_comment = Comment.objects.filter(id=comment['id'], deleted_at=None).first()
+        existing_comment = Comment.objects.filter(
+            id=comment['id'], deleted_at=None).first()
 
         if not existing_comment or existing_comment.user != user:
             raise GraphQLError('Update not permitted.')
 
-
         if existing_comment.rating != comment['rating']:
-            if comment['rating'] > 0:
-                recipe.rating = (recipe.rating * recipe.rating_count - recipe.rating + comment['rating']) / (recipe.rating_count)
+            if existing_comment.rating > 0:
+                if comment['rating'] > 0:
+                    recipe.rating = (recipe.rating * recipe.rating_count - existing_comment.rating + comment['rating']) / (recipe.rating_count)
 
-            if comment['rating'] == 0:
-                recipe.rating = (recipe.rating * recipe.rating_count - comment.rating) / (recipe.rating_count - 1)
-                recipe.rating_count -= 1
+                if comment['rating'] == 0:
+                    recipe.rating = (recipe.rating * recipe.rating_count - existing_comment.rating) / (recipe.rating_count - 1)
+                    recipe.rating_count -= 1
+
+            else:
+                recipe.rating = (recipe.rating * recipe.rating_count + comment['rating']) / (recipe.rating_count + 1)
+                recipe.rating_count += 1
 
             recipe.save()
 
@@ -330,7 +352,8 @@ class DeleteComment(graphene.Mutation):
 
     def mutate(self, info, comment_id):
         user = info.context.user
-        comment = Comment.objects.filter(id=comment_id, deleted_at=None).first()
+        comment = Comment.objects.filter(
+            id=comment_id, deleted_at=None).first()
 
         if not comment or comment.user != user:
             raise GraphQLError('Delete not permitted.')
@@ -339,12 +362,46 @@ class DeleteComment(graphene.Mutation):
         comment.save()
 
         if comment.rating > 0:
-            recipe = Recipe.objects.filter(id=comment.recipe_id, deleted_at=None).first()
+            recipe = Recipe.objects.get(id=comment.recipe_id, deleted_at=None)
             recipe.rating = (recipe.rating * recipe.rating_count - comment.rating) / (recipe.rating_count - 1)
             recipe.rating_count -= 1
             recipe.save()
 
         return DeleteComment(comment_id=comment_id)
+
+
+class CreatePhoto(graphene.Mutation):
+    photo = graphene.Field(PhotoType)
+
+    class Arguments:
+        photo = PhotoInput(required=True)
+
+    def mutate(self, info, photo):
+        recipe = Recipe.objects.get(id=photo.recipe_id, deleted_at=None)
+
+        new_photo = Photo(
+            url=photo.url,
+            recipe=recipe
+        )
+
+        new_photo.save()
+
+        return CreatePhoto(photo=new_photo)
+
+
+class DeletePhoto(graphene.Mutation):
+    photo_id = graphene.String()
+
+    class Arguments:
+        photo_id = graphene.String(required=True)
+
+    def mutate(self, info, photo_id):
+        photo = Photo.objects.get(id=photo_id, deleted_at=None)
+
+        photo.deleted_at = timezone.now()
+        photo.save()
+
+        return DeletePhoto(photo_id=photo_id)
 
 
 class CreateFavorite(graphene.Mutation):
@@ -355,7 +412,7 @@ class CreateFavorite(graphene.Mutation):
 
     def mutate(self, info, favorite):
         user = info.context.user
-        recipe = Recipe.objects.filter(id=favorite.recipe_id, deleted_at=None).first()
+        recipe = Recipe.objects.get(id=favorite.recipe_id, deleted_at=None)
 
         if user.is_anonymous:
             raise GraphQLError('Log in to rate or favorite')
@@ -381,7 +438,8 @@ class DeleteFavorite(graphene.Mutation):
 
     def mutate(self, info, favorite_id):
         user = info.context.user
-        favorite = Favorite.objects.filter(id=favorite_id, deleted_at=None).first()
+        favorite = Favorite.objects.filter(
+            id=favorite_id, deleted_at=None).first()
 
         if not favorite or favorite.user != user:
             raise GraphQLError('Action not permitted.')
@@ -399,6 +457,9 @@ class Mutation(graphene.ObjectType):
     create_recipe = CreateRecipe.Field()
     update_recipe = UpdateRecipe.Field()
     delete_recipe = DeleteRecipe.Field()
+    create_photo = CreatePhoto.Field()
+    # update_photo = UpdatePhoto.Field()
+    delete_photo = DeletePhoto.Field()
     create_comment = CreateComment.Field()
     update_comment = UpdateComment.Field()
     delete_comment = DeleteComment.Field()

@@ -3,11 +3,12 @@ import boto3
 from django.http import JsonResponse, HttpResponseServerError
 from botocore.exceptions import ClientError
 from datetime import datetime
+import uuid
 
 
 def create_presigned_post(request):
     bucket_name = 'cookbook-test-bucket'
-    object_name = 'file_{}.jpg'.format(datetime.now().isoformat())
+    object_name = 'photo_{}.jpg'.format(uuid.uuid4())
     expiration = 3600
 
     s3_client = boto3.client('s3')

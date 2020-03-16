@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
-import { useApolloClient, useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 
-import { REGISTER_MUTATION,  } from '../../queries/queries';
+import { REGISTER_MUTATION } from '../../queries/queries';
 
 
 const Register = () => {
-    const client = useApolloClient();
     const [createUser] = useMutation(REGISTER_MUTATION);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSubmit = async (e, createUser, client) => {
+    const handleSubmit = async (e, createUser) => {
         e.preventDefault();
         await createUser({ variables: { username, email, password } });
     };
 
     return (
-        <form onSubmit={e => handleSubmit(e, createUser, client)}>
+        <form onSubmit={e => handleSubmit(e, createUser)}>
             <label>Username</label>
             <input onChange={e => setUsername(e.target.value)}></input>
             <label>Email</label>
@@ -30,4 +29,3 @@ const Register = () => {
 };
 
 export default Register;
-

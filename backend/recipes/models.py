@@ -37,7 +37,7 @@ class Ingredient(StandardModel):
 
 
 class Instruction(StandardModel):
-    description = models.TextField(blank=False)
+    content = models.TextField(blank=False)
     order = models.IntegerField(blank=False, default=1)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='instructions')
 
@@ -53,7 +53,7 @@ class Favorite(StandardModel):
     user = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='favorites')
 
+
 class Photo(StandardModel):
-    user = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='photos')
     url = models.CharField(blank=False, max_length=300)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='photos')
