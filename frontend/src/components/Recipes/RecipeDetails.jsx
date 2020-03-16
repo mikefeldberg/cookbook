@@ -75,8 +75,8 @@ const RecipeDetails = ({ match, history }) => {
                 <div>Description: {recipe.description}</div>
                 <div>Skill Level: {recipe.skillLevel}</div>
                 <div>Prep Time: {recipe.prepTime}</div>
-                <div>Wait Time: {recipe.waitTime}</div>
                 <div>Cook Time: {recipe.cookTime}</div>
+                <div>Wait Time: {recipe.waitTime}</div>
                 <div>Total Time: {recipe.totalTime}</div>
                 <div>Servings: {recipe.servings}</div>
                 <div>
