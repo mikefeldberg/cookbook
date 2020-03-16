@@ -186,15 +186,6 @@ class CreateRecipe(graphene.Mutation):
                 recipe=new_recipe
             ))
 
-        # new_photos = []
-
-        # for photo in recipe['photos']:
-        #     new_photos.append(Photo(
-        #         url=photo['url'],
-        #         user=user,
-        #         recipe=new_recipe
-        #     ))
-
         Instruction.objects.bulk_create(new_instructions)
 
         return CreateRecipe(recipe=new_recipe)
@@ -225,8 +216,7 @@ class UpdateRecipe(graphene.Mutation):
         existing_recipe.prep_time = recipe['prep_time']
         existing_recipe.wait_time = recipe['wait_time']
         existing_recipe.cook_time = recipe['cook_time']
-        existing_recipe.total_time = recipe['prep_time'] + \
-            recipe['wait_time'] + recipe['cook_time']
+        existing_recipe.total_time = recipe['prep_time'] + recipe['wait_time'] + recipe['cook_time']
         existing_recipe.servings = recipe['servings']
         existing_recipe.save()
 
@@ -304,8 +294,7 @@ class CreateComment(graphene.Mutation):
         new_comment.save()
 
         if comment['rating'] > 0:
-            recipe.rating = (recipe.rating * recipe.rating_count +
-         comment['rating']) / (recipe.rating_count + 1)
+            recipe.rating = (recipe.rating * recipe.rating_count + comment['rating']) / (recipe.rating_count + 1)
             recipe.rating_count += 1
             recipe.save()
 
@@ -335,17 +324,14 @@ class UpdateComment(graphene.Mutation):
         if existing_comment.rating != comment['rating']:
             if existing_comment.rating > 0:
                 if comment['rating'] > 0:
-                    recipe.rating = (recipe.rating * recipe.rating_count -
-                                     existing_comment.rating + comment['rating']) / (recipe.rating_count)
+                    recipe.rating = (recipe.rating * recipe.rating_count - existing_comment.rating + comment['rating']) / (recipe.rating_count)
 
                 if comment['rating'] == 0:
-                    recipe.rating = (recipe.rating * recipe.rating_count -
-                                     existing_comment.rating) / (recipe.rating_count - 1)
+                    recipe.rating = (recipe.rating * recipe.rating_count - existing_comment.rating) / (recipe.rating_count - 1)
                     recipe.rating_count -= 1
 
             else:
-                recipe.rating = (recipe.rating * recipe.rating_count +
-         comment['rating']) / (recipe.rating_count + 1)
+                recipe.rating = (recipe.rating * recipe.rating_count + comment['rating']) / (recipe.rating_count + 1)
                 recipe.rating_count += 1
 
             recipe.save()

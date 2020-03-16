@@ -105,7 +105,6 @@ const RecipeForm = () => {
 
     const handleSubmit = async (e, createRecipe) => {
         e.preventDefault();
-        console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~submitttttttttt')
 
         const recipe = {
             title,
@@ -136,7 +135,6 @@ const RecipeForm = () => {
             url
         }
         const res = await createPhoto({ variables: { photo } });
-        console.log(res)
     };
 
     return (

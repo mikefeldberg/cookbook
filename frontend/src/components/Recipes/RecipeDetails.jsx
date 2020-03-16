@@ -38,7 +38,7 @@ const RecipeDetails = ({ match, history }) => {
 
     if (data) {
         const recipe = data.recipe;
-        console.log(recipe)
+
         return (
             <>
                 <Row>

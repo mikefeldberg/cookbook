@@ -76,6 +76,7 @@ export const GET_RECIPES_QUERY = gql`
             ratingCount
             favoriteCount
             photos {
+                id
                 url
             }
             comments {
@@ -116,6 +117,7 @@ export const GET_RECIPE_QUERY = gql`
             ratingCount
             favoriteCount
             photos {
+                id
                 url
             }
             comments {
@@ -205,6 +207,8 @@ export const DELETE_RECIPE_MUTATION = gql`
         }
     }
 `
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~ PHOTOS
 
 export const CREATE_PHOTO_MUTATION = gql`
     mutation ($photo: PhotoInput!) {
