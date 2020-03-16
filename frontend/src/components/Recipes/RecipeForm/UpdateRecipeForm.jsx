@@ -33,7 +33,8 @@ const UpdateRecipeForm = ({recipe, history}) => {
     const [cookTime, setCookTime] = useState(recipe.cookTime)
     const [waitTime, setWaitTime] = useState(recipe.waitTime)
     const [photoId] = useState(recipe.photos[0].id)
-    const [photoUrl, setPhotoUrl] = useState(recipe.photos[0].url)
+    const [deleteExistingPhoto, setDeleteExistingPhoto] = useState(false)
+    const [photoUrl] = useState(recipe.photos.length > 0 ? recipe.photos[0].url : null)
     const [recipeId] = useState(recipe.id)
 
     const removeListIds = () => {
@@ -61,10 +62,8 @@ const UpdateRecipeForm = ({recipe, history}) => {
         }
     };
 
-    const handleDelete = async (e, deletePhoto) => {
-        e.preventDefault();
-        await deletePhoto({variables: {photoId}})
-        setPhotoUrl(null);
+    const handleDeletePhoto = async deletePhoto => {
+        const res = await deletePhoto({variables: {photoId}})
     }
 
     const handleInstructionChange = e => {
@@ -123,7 +122,11 @@ const UpdateRecipeForm = ({recipe, history}) => {
     const handleSubmit = async (e, updateRecipe) => {
         e.preventDefault();
         removeListIds();
-        
+
+        if (deleteExistingPhoto) {
+            handleDeletePhoto()
+        }
+
         const recipe = {
             id: recipeId,
             title,
@@ -317,8 +320,16 @@ const UpdateRecipeForm = ({recipe, history}) => {
                     Current Photo:
                     <Container>
                     <Row>
-                        <Image src={photoUrl ? photoUrl : `holder.js/171x180`} rounded thumbnail style={{maxWidth: `100px`}}/>
-                        <Button type="button" onClick={e => handleDelete(e, deletePhoto)}>x</Button>
+                        <Image src={photoUrl} rounded thumbnail style={{maxWidth: `100px`}}/>
+                        {deleteExistingPhoto && 
+                            <Row>
+                                'This image will be deleted after you save changes.'
+                                <Button variant="success" type="button" onClick={() => setDeleteExistingPhoto(false)}>Cancel Delete</Button>
+                            </Row>
+                        }
+                        {!deleteExistingPhoto && 
+                            <Button variant="danger" type="button" onClick={() => setDeleteExistingPhoto(true)}>x</Button>
+                        }
                     </Row>
                     </Container>
                 </div>
