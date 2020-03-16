@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button';
 import { CREATE_RECIPE_MUTATION, CREATE_PHOTO_MUTATION } from '../../../queries/queries';
 import IngredientInput from './IngredientInput';
 import InstructionInput from './InstructionInput';
-import { Redirect } from 'react-router-dom';
+// import { Redirect } from 'react-router-dom';
 
 
 const CreateRecipe = ({history}) => {
@@ -30,6 +30,8 @@ const CreateRecipe = ({history}) => {
     // const [prepTime, setPrepTime] = useState('');
     // const [cookTime, setCookTime] = useState('');
     // const [waitTime, setWaitTime] = useState('');
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ RESTORE ABOVE HOOKS BLOCK WHEN DONE TESTING
 
     const blankIngredient = { quantity: '1', name: '1', preparation: '1' };
     const blankInstruction = { order: 0, content: '1' };
@@ -139,8 +141,6 @@ const CreateRecipe = ({history}) => {
         if (file) {
             handleUpload(recipeId, createPhoto);
         } else {
-            // console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ here i am in non file upload')
-            // return <Redirect to={`/recipes/${recipeId}`} />
             history.push(`/recipes/${recipeId}`);
         }
     };
@@ -154,8 +154,6 @@ const CreateRecipe = ({history}) => {
             url
         }
         await createPhoto({ variables: { photo } });
-        // console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ here i am in file upload')
-        // return <Redirect to={`/recipes/${recipeId}`} />
         history.push(`/recipes/${recipeId}`);
     };
 
