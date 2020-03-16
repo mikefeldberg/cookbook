@@ -128,6 +128,7 @@ export const GET_RECIPE_QUERY = gql`
             user {
                 id
                 username
+                email
             }
         }
     }

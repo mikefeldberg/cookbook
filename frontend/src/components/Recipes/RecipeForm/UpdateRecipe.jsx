@@ -22,7 +22,8 @@ const UpdateRecipe = ({ match, history }) => {
 
     if (data) {
         const recipe = omitDeep(data, '__typename')
-        if (recipe.user === currentUser) {
+        debugger
+        if (recipe.recipe.user.id === currentUser.id) {
             return <UpdateRecipeForm recipe={recipe.recipe} history={history}/>;
         } else {
             return <Redirect to='/' />

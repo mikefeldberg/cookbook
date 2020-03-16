@@ -38,11 +38,10 @@ const RecipeDetails = ({ match, history }) => {
 
     if (data) {
         const recipe = data.recipe;
-        
-        // debugger
+
         return (
             <>
-                {recipe.user === currentUser &&
+                {recipe.user.id === currentUser.id &&
                     <Row>
                         <ButtonToolbar className="mb-2">
                             <Link to={`/recipes/${recipe.id}/edit`} className="mr-2">
