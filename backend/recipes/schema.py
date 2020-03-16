@@ -101,6 +101,9 @@ class RecipeType(DjangoObjectType):
     def resolve_instructions(self, info):
         return Instruction.objects.filter(recipe_id=self.id, deleted_at=None)
 
+    def resolve_photos(self, info):
+        return Photo.objects.filter(recipe_id=self.id, deleted_at=None)
+
 
 class RecipeInput(graphene.InputObjectType):
     id = graphene.String(required=False)

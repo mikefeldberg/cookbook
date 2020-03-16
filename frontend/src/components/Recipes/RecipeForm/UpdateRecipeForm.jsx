@@ -63,7 +63,8 @@ const UpdateRecipeForm = ({recipe, history}) => {
     };
 
     const handleDeletePhoto = async deletePhoto => {
-        const res = await deletePhoto({variables: {photoId}})
+        // const res = await deletePhoto({variables: {photoId}})
+        await deletePhoto({variables: {photoId}})
     }
 
     const handleInstructionChange = e => {
@@ -124,7 +125,7 @@ const UpdateRecipeForm = ({recipe, history}) => {
         removeListIds();
 
         if (deleteExistingPhoto) {
-            handleDeletePhoto()
+            await handleDeletePhoto(deletePhoto)
         }
 
         const recipe = {
