@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button';
 import { CREATE_RECIPE_MUTATION, CREATE_PHOTO_MUTATION } from '../../../queries/queries';
 import IngredientInput from './IngredientInput';
 import InstructionInput from './InstructionInput';
+import { Redirect } from 'react-router-dom';
 
 
 const CreateRecipe = ({history}) => {
@@ -138,10 +139,12 @@ const CreateRecipe = ({history}) => {
         if (file) {
             handleUpload(recipeId, createPhoto);
         } else {
-            history.push(`/recipes/${recipe.id}`);
+            // console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ here i am in non file upload')
+            // return <Redirect to={`/recipes/${recipeId}`} />
+            history.push(`/recipes/${recipeId}`);
         }
     };
-
+    
     const handleUpload = async (recipeId, createPhoto) => {
         const presignedPostData = await getPresignedPostData();
         uploadFileToS3(presignedPostData, file.newFile);
@@ -151,6 +154,8 @@ const CreateRecipe = ({history}) => {
             url
         }
         await createPhoto({ variables: { photo } });
+        // console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ here i am in file upload')
+        // return <Redirect to={`/recipes/${recipeId}`} />
         history.push(`/recipes/${recipeId}`);
     };
 

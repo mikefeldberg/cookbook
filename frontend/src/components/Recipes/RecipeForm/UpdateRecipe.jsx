@@ -1,11 +1,11 @@
 import React, {useContext} from 'react';
+import { Redirect } from 'react-router-dom';
 
 import { useQuery } from '@apollo/react-hooks';
 import {AuthContext} from '../../../App'
 
 import { GET_RECIPE_QUERY } from '../../../queries/queries';
 import UpdateRecipeForm from './UpdateRecipeForm';
-import { Redirect } from 'react-router-dom';
 
 const omitDeep = require('omit-deep');
 
@@ -22,7 +22,7 @@ const UpdateRecipe = ({ match, history }) => {
 
     if (data) {
         const recipe = omitDeep(data, '__typename')
-        debugger
+
         if (recipe.recipe.user.id === currentUser.id) {
             return <UpdateRecipeForm recipe={recipe.recipe} history={history}/>;
         } else {
