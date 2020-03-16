@@ -32,7 +32,7 @@ const UpdateRecipeForm = ({recipe, history}) => {
     const [prepTime, setPrepTime] = useState(recipe.prepTime)
     const [cookTime, setCookTime] = useState(recipe.cookTime)
     const [waitTime, setWaitTime] = useState(recipe.waitTime)
-    const [photoId] = useState(recipe.photos[0].id)
+    const [photoId] = useState(recipe.photos.length > 0 ? recipe.photos[0].id : null)
     const [deleteExistingPhoto, setDeleteExistingPhoto] = useState(false)
     const [photoUrl] = useState(recipe.photos.length > 0 ? recipe.photos[0].url : null)
     const [recipeId] = useState(recipe.id)

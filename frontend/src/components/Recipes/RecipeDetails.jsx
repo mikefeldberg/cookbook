@@ -38,6 +38,7 @@ const RecipeDetails = ({ match, history }) => {
 
     if (data) {
         const recipe = data.recipe;
+        
         // debugger
         return (
             <>
@@ -65,7 +66,7 @@ const RecipeDetails = ({ match, history }) => {
                         </DropdownButton>
                     </ButtonToolbar>
                 </Row>
-                <Image src={recipe.photos.length > 0 ? recipe.photos[0].url : `holder.js/100px180?text=Image cap`} fluid />
+                <Image src={recipe.photos.length > 0 ? recipe.photos[0].url : `https://cookbook-test-bucket.s3-us-west-1.amazonaws.com/_food_placeholder.jpg`} fluid />
                 <div>Title: {recipe.title}</div>
                 <div>
                     Rating: (
