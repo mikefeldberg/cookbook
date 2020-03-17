@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-
 import { useMutation } from '@apollo/react-hooks';
 
+import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
@@ -11,7 +11,6 @@ import Image from 'react-bootstrap/Image';
 import { UPDATE_RECIPE_MUTATION, CREATE_PHOTO_MUTATION, DELETE_PHOTO_MUTATION } from '../../../queries/queries';
 import IngredientInput from './IngredientInput';
 import InstructionInput from './InstructionInput';
-import Container from 'react-bootstrap/Container';
 
 
 const UpdateRecipeForm = ({recipe, history}) => {

@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React from 'react';
+
 import "./styles.css";
 
 const Star = ({ selected = false, onClick = f => f }) => (

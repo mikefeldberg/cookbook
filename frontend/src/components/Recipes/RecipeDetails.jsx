@@ -1,10 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-
 import { useQuery } from '@apollo/react-hooks';
-
-import { GET_RECIPE_QUERY } from '../../queries/queries';
-import { AuthContext } from '../../App';
 
 import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
@@ -15,7 +11,9 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DeleteRecipe from './DeleteRecipe';
 import CommentSection from '../Comments/CommentSection';
 
-// const uuid = require('uuid/v1');
+import { GET_RECIPE_QUERY } from '../../queries/queries';
+import { AuthContext } from '../../App';
+
 
 const RecipeDetails = ({ match, history }) => {
     const currentUser = useContext(AuthContext);
@@ -96,7 +94,7 @@ const RecipeDetails = ({ match, history }) => {
                         <div key={instruction.id}>{instruction.content}</div>
                     ))}
                 </div>
-                <CommentSection comments={recipe.comments}/>
+                <CommentSection recipeId={recipe.id} comments={recipe.comments}/>
             </>
         );
     }

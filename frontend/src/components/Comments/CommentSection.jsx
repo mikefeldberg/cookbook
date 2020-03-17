@@ -4,12 +4,12 @@ import Comments from './Comments';
 import CreateComment from './CreateComment';
 
 
-const CommentSection = ({comments}) => {
+const CommentSection = ({recipeId, comments}) => {
     return (
         <div>
             Here there be comments
-            <CreateComment />
-            <Comments comments={comments}/>
+            <CreateComment recipeId={recipeId} />
+            <Comments comments={comments} />
         </div>
     );
 }

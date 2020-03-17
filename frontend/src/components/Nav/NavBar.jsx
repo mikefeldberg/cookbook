@@ -10,9 +10,9 @@ import FormControl from 'react-bootstrap/FormControl';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button';
 
+import { AuthContext } from '../../App';
 import UserNav from './UserNav';
 import AnonNav from './AnonNav';
-import { AuthContext } from '../../App';
 
 
 const NavBar = () => {
