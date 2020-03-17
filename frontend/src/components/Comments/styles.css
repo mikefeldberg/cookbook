@@ -29,6 +29,27 @@ p {
   text-align: center;
 }
 
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+}
+
+.grow {
+  flex-grow: 100
+}
+/* 
+.shrink {
+  flex-shrink: 0
+} */
+
+.mb-0 {
+  margin-bottom: 0;
+}
+
 /* .star {
   cursor: pointer;
   width: 2em;
@@ -59,3 +80,4 @@ p {
     37% 38%
   );
 } */
+

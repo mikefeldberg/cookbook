@@ -13,13 +13,12 @@ const CreateComment = ({ recipeId }) => {
     const [rating, setRating] = useState(0);
     const [content, setContent] = useState('');
     const [commentsDisabled, setCommentsDisabled] = useState(currentUser ? false : true)
-    // const [editedRating, setEditedRating] = useState(0);
-    // const [editedComment, setEditedComment] = useState('');
 
     const [createComment] = useMutation(CREATE_COMMENT_MUTATION);
 
     const handleSubmit = async e => {
         e.preventDefault();
+        console.log('submitting comment')
 
         const comment = {
             content,

@@ -11,3 +11,7 @@ on photo upload, client-side error:
 ### Comment "updated at"
 
 created_at and updated_at are off by microseconds. Need to lower threshold to at least one second
+
+### StarRating
+
+add persistent "hover" state so that stars with (i) < currently hovered-over (i) will appear hovered-over
