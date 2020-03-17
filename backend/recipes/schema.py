@@ -103,6 +103,9 @@ class RecipeType(DjangoObjectType):
     def resolve_instructions(self, info):
         return Instruction.objects.filter(recipe_id=self.id, deleted_at=None)
 
+    def resolve_comments(self, info):
+        return Comment.objects.filter(recipe_id=self.id, deleted_at=None)
+
     def resolve_photos(self, info):
         return Photo.objects.filter(recipe_id=self.id, deleted_at=None)
 
@@ -358,6 +361,8 @@ class DeleteComment(graphene.Mutation):
         user = info.context.user
         comment = Comment.objects.filter(
             id=comment_id, deleted_at=None).first()
+
+        from IPython import embed; embed()
 
         if not comment or comment.user != user:
             raise GraphQLError('Delete not permitted.')

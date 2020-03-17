@@ -10,8 +10,8 @@ const DeleteComment = ({ comment, history }) => {
 
     const handleDelete = async (e, deleteComment) => {
         e.preventDefault();
+        debugger;
         await deleteComment({ variables: { commentId: comment.id } });
-        history.push('/');
     };
 
     return (

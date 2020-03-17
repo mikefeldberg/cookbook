@@ -127,7 +127,7 @@ const UpdateRecipeForm = ({recipe, history}) => {
             await handleDeletePhoto(deletePhoto)
         }
 
-        const recipe = {
+        const updatedRecipe = {
             id: recipeId,
             title,
             description,
@@ -140,7 +140,7 @@ const UpdateRecipeForm = ({recipe, history}) => {
             instructions,
         };
 
-        await updateRecipe({ variables: { recipe } });
+        await updateRecipe({ variables: { updatedRecipe } });
 
         if (file) {
             handleUpload(recipeId, createPhoto);
