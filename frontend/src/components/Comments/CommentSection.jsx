@@ -1,13 +1,15 @@
 import React from 'react';
 
+import Comments from './Comments';
+import CreateComment from './CreateComment';
 
 
 const CommentSection = ({comments}) => {
     return (
         <div>
             Here there be comments
-            {/* <NewComment> */}
-            {/* <Comments> */}
+            <CreateComment />
+            <Comments comments={comments}/>
         </div>
     );
 }

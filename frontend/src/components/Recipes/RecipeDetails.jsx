@@ -13,6 +13,7 @@ import Button from 'react-bootstrap/Button';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DeleteRecipe from './DeleteRecipe';
+import CommentSection from '../Comments/CommentSection';
 
 // const uuid = require('uuid/v1');
 
@@ -95,6 +96,7 @@ const RecipeDetails = ({ match, history }) => {
                         <div key={instruction.id}>{instruction.content}</div>
                     ))}
                 </div>
+                <CommentSection comments={recipe.comments}/>
             </>
         );
     }
