@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Comments = ({comments}) => {
+const CommentList = ({comments}) => {
     if (comments.length > 0) {
         return (
             <>
@@ -19,4 +19,4 @@ const Comments = ({comments}) => {
     }
 }
  
-export default Comments;
+export default CommentList;

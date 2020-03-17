@@ -281,8 +281,9 @@ class CreateComment(graphene.Mutation):
 
     def mutate(self, info, comment):
         user = info.context.user
-        recipe = Recipe.objects.filter(
-            id=comment['recipe_id'], deleted_at=None).first()
+        recipe = Recipe.objects.filter(id=comment['recipe_id'], deleted_at=None).first()
+
+        from IPython import embed; embed()
 
         if user.is_anonymous:
             raise GraphQLError('Log in to rate or comment')

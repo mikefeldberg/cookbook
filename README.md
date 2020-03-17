@@ -1,4 +1,4 @@
-## Bugs
+## Backlog
 
 ### CreateRecipe/UpdateRecipe
 

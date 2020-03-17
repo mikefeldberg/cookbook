@@ -1,25 +1,34 @@
-/* html,
-body,
-#root {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-} */
-
-/* body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} */
-
 .star-rating {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  max-width: 20vw;
+  max-width: 10vw;
+}
+
+.not-selected {
+  color: gray;
+}
+
+.selected {
+  color: gold;
 }
 
 .star {
+  font-size: 1.6em;
+  margin: 0;
+}
+
+.star:hover {
+  cursor:pointer;
+}
+
+
+p {
+  flex-basis: 100%;
+  text-align: center;
+}
+
+/* .star {
   cursor: pointer;
   width: 2em;
   height: 2em;
@@ -48,13 +57,4 @@ body,
     0% 38%,
     37% 38%
   );
-}
-
-.star.selected {
-  background-color: red;
-}
-
-p {
-  flex-basis: 100%;
-  text-align: center;
-}
+} */
