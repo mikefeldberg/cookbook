@@ -11,7 +11,6 @@ import DeleteRecipe from './DeleteRecipe';
 
 const RecipeToolbar = ({ recipe, history }) => {
     return (
-        <Row>
             <ButtonToolbar className="mb-2">
                 <Link to={`/recipes/${recipe.id}/edit`} className="mr-2">
                     <Button size="sm" variant="secondary-inverse">
@@ -34,7 +33,6 @@ const RecipeToolbar = ({ recipe, history }) => {
                     <Dropdown.Item eventKey="2">Cancel</Dropdown.Item>
                 </DropdownButton>
             </ButtonToolbar>
-        </Row>
     );
 };
 

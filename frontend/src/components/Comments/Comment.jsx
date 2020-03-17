@@ -7,6 +7,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
+import CommentToolbar from './CommentToolbar';
 
 const Comment = ({ comment }) => {
     // debugger
@@ -35,6 +36,9 @@ const Comment = ({ comment }) => {
                         }
                     </Row>
                     <Row className="selected">{'★'.repeat(comment.rating)}</Row>
+                </Col>
+                <Col md={2}>
+                    <CommentToolbar comment={comment} />
                 </Col>
             </Row>
             <Row noGutters className="pl-2 pb-1">
