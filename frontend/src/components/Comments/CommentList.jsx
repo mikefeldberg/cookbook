@@ -1,22 +1,18 @@
 import React from 'react';
+import Comment from './Comment';
 
-const CommentList = ({comments}) => {
+const CommentList = ({ comments }) => {
     if (comments.length > 0) {
         return (
             <>
-                {comments.length > 0 && 
-                    comments.map(comment => (
-                        <div key={comment.id}>
-                            <div>{comment.rating}</div>
-                            <div>{comment.content}</div>
-                        </div>
-                    ))
-                }
+                {comments.map(comment => (
+                    <Comment comment={comment} />
+                ))}
             </>
         );
     } else {
-        return 'Nothing here yet'
+        return 'Nothing here yet';
     }
-}
- 
+};
+
 export default CommentList;

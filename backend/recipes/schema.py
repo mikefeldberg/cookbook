@@ -54,6 +54,8 @@ class CommentType(DjangoObjectType):
     content = graphene.String()
     rating = graphene.Int()
     recipe_id = graphene.String()
+    created_at = graphene.types.datetime.DateTime()
+    updated_at = graphene.types.datetime.DateTime()
 
     class Meta:
         model = Comment

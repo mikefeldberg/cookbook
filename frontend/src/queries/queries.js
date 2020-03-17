@@ -124,6 +124,12 @@ export const GET_RECIPE_QUERY = gql`
                 id
                 content
                 rating
+                createdAt
+                updatedAt
+                user {
+                    id
+                    username
+                }
             }
             user {
                 id

@@ -8,7 +8,9 @@ const CommentSection = ({ recipeId, comments }) => {
         <div>
             Here there be comments
             <CreateComment recipeId={recipeId} />
-            <CommentList comments={comments} />
+            {comments.length > 0 &&
+                <CommentList comments={comments} />
+            }
         </div>
     );
 };

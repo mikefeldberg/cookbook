@@ -8,4 +8,6 @@ on photo upload, client-side error:
 
 ```VM14:1 POST https://cookbook-test-bucket.s3.amazonaws.com/ net::ERR_FAILED```
 
-### 
+### Comment "updated at"
+
+created_at and updated_at are off by microseconds. Need to lower threshold to at least one second

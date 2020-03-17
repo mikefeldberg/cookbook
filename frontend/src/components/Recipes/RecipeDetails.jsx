@@ -3,23 +3,14 @@ import { useQuery } from '@apollo/react-hooks';
 
 import Image from 'react-bootstrap/Image';
 
-import { GET_RECIPE_QUERY } from '../../queries/queries';
 import { AuthContext } from '../../App';
+import { GET_RECIPE_QUERY } from '../../queries/queries';
 import CommentSection from '../Comments/CommentSection';
 import RecipeToolbar from './RecipeToolbar';
 
 
 const RecipeDetails = ({ match, history }) => {
     const currentUser = useContext(AuthContext);
-    const [feedbackEnabled, setFeedbackEnabled] = useState(false);
-    // const [rating, setRating] = useState(0);
-    // const [comment, setComment] = useState('');
-    // const [editedRating, setEditedRating] = useState(0);
-    // const [editedComment, setEditedComment] = useState('');
-
-    if (!!currentUser && !feedbackEnabled) {
-        setFeedbackEnabled(true);
-    }
 
     const id = match.params.id;
     const { data, loading, error } = useQuery(GET_RECIPE_QUERY, {
@@ -31,10 +22,9 @@ const RecipeDetails = ({ match, history }) => {
 
     if (data) {
         const recipe = data.recipe;
-
         return (
             <>
-                {recipe.user.id === currentUser.id &&
+                {currentUser && recipe.user.id === currentUser.id &&
                     <RecipeToolbar history={history} recipe={recipe}/>
                 }
                 <Image src={recipe.photos.length > 0 ? recipe.photos[0].url : `https://cookbook-test-bucket.s3-us-west-1.amazonaws.com/_food_placeholder.jpg`} fluid />
