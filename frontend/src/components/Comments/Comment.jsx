@@ -4,10 +4,10 @@ import { useMutation } from '@apollo/react-hooks';
 import Moment from 'react-moment';
 import moment from 'moment';
 
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Image from 'react-bootstrap/Image';
 import Form from 'react-bootstrap/Form';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import Image from 'react-bootstrap/Image';
 
 import { UPDATE_COMMENT_MUTATION } from '../../queries/queries';
 import { AuthContext } from '../../App';
@@ -50,7 +50,7 @@ const Comment = ({ comment }) => {
                         <Image
                             width={64}
                             height={64}
-                            className="rounded mr-3 greyBorder"
+                            className="rounded mr-3"
                             src="https://cookbook-test-bucket.s3-us-west-1.amazonaws.com/_avatarplaceholder.png"
                             alt={comment.user.username}
                         />

@@ -5,8 +5,8 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
-import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
+import Button from 'react-bootstrap/Button';
 
 import { UPDATE_RECIPE_MUTATION, CREATE_PHOTO_MUTATION, DELETE_PHOTO_MUTATION } from '../../../queries/queries';
 import IngredientInput from './IngredientInput';
