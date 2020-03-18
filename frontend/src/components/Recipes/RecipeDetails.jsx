@@ -36,7 +36,7 @@ const RecipeDetails = ({ match, history }) => {
                         </div>
                     }
                 </Row>
-                <Row noGutters>
+                <Row noGutters className="mb-11">
                     Added by {recipe.user.username} on&nbsp;
                     <Moment from={new Date()}>{recipe.createdAt}</Moment>&nbsp;
                     {moment(recipe.updatedAt).diff(moment(recipe.createdAt), 'minutes') > 1 && (
@@ -45,7 +45,7 @@ const RecipeDetails = ({ match, history }) => {
                         </span>
                     )}
                 </Row>
-                <Row noGutters className="align-items-center">
+                <Row noGutters className="align-items-center mb-2">
                     {recipe.ratingCount > 0 ? (
                         <>
                             <span style={{ color: 'gold' }}>{'★'.repeat(recipe.rating)}</span>&nbsp;
@@ -62,6 +62,7 @@ const RecipeDetails = ({ match, history }) => {
                 <Row className="align-items-center">
                     <Col>
                         <Image
+                            rounded
                             src={
                                 recipe.photos.length > 0
                                     ? recipe.photos[0].url

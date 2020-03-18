@@ -14,11 +14,7 @@ const DeleteComment = ({ commentId }) => {
         await deleteComment({ variables: { commentId } });
     };
 
-    return (
-        <Button onClick={e => handleDelete(e, deleteComment)}>
-            <i className="fas fa-trash text-danger"></i>
-        </Button>
-    );
+    return <span onClick={e => handleDelete(e, deleteComment)}>Confirm Delete</span>;
 };
 
 export default DeleteComment;

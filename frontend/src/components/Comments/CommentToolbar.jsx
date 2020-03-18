@@ -1,62 +1,139 @@
-import React from 'react';
+import React, { useState } from 'react';
 
+import Dropdown from 'react-bootstrap/Dropdown';
+import Row from 'react-bootstrap/Row';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Button from 'react-bootstrap/Button';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import Dropdown from 'react-bootstrap/Dropdown';
 
 import DeleteComment from './DeleteComment';
 
+const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+    <span
+        ref={ref}
+        onClick={e => {
+            e.preventDefault();
+            onClick(e);
+        }}
+    >
+        {children}
+        {/* &#x25bc; */}
+    </span>
+));
+
+const CustomMenu = React.forwardRef(({ children, style, className, 'aria-labelledby': labeledBy }, ref) => {
+    const [value] = useState('');
+
+    return (
+        <div ref={ref} style={style} className={className} aria-labelledby={labeledBy}>
+            <ul className="list-unstyled">
+                {React.Children.toArray(children).filter(
+                    child => !value || child.props.children.toLowerCase().startsWith(value)
+                )}
+            </ul>
+        </div>
+    );
+});
+
 const CommentToolbar = ({ commentId, editing, setEditing, handleCancel, handleSubmit, updateComment }) => {
-    const EditingToolbar = ({handleCancel, handleSubmit, updateComment}) => {
+    const EditingToolbar = ({ handleCancel, handleSubmit, updateComment }) => {
         return (
-            <ButtonToolbar className="float-right mb-2">
-                <Button onClick={handleCancel} size="sm" variant="secondary-inverse">
-                    {<i className="fas fa-times-circle text-danger"></i>}
-                </Button>
-                <Button onClick={e => handleSubmit(e, updateComment)} size="sm" variant="secondary-inverse">
-                    {<i className="fas fa-check-circle text-success"></i>}
-                </Button>
-            </ButtonToolbar>
+            <Row noGutters className="float-right mb-2">
+                {<i onClick={handleCancel} className="fas fa-times-circle text-danger mr-1"></i>}
+                {<i onClick={e => handleSubmit(e, updateComment)} className="fas fa-check-circle text-success"></i>}
+            </Row>
         );
     };
 
     const DefaultToolbar = ({ commentId, setEditing }) => {
         return (
-            <ButtonToolbar className="float-right mb-2">
-                <Button onClick={() => setEditing(true)} size="sm" variant="secondary-inverse">
-                    {<i className="fas fa-edit text-secondary"></i>}
-                </Button>
-                <DropdownButton
-                    size="sm"
-                    drop="right"
-                    title={<i className="fas fa-trash text-danger"></i>}
-                    variant="danger-inverse"
-                >
+            <Row noGutters className="align-items-center float-right">
+                {<i onClick={() => setEditing(true)} className="fas fa-edit text-secondary mr-1"></i>}
+                <Dropdown>
+                    <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
+                        <i className="far fa-trash-alt"></i>
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu as={CustomMenu}>
                     <Dropdown.Item disabled eventKey="0">
                         Are you sure?
                     </Dropdown.Item>
                     <Dropdown.Divider />
-                    <Dropdown.Item eventKey="1">
+                    <Dropdown.Item eventKey="2">
                         <DeleteComment commentId={commentId} />
                     </Dropdown.Item>
                     <Dropdown.Item eventKey="2">Cancel</Dropdown.Item>
-                </DropdownButton>
-            </ButtonToolbar>
+                </Dropdown.Menu>
+                </Dropdown>
+            </Row>
         );
     };
 
     if (editing) {
-        return <EditingToolbar
-            handleCancel={handleCancel}
-            handleSubmit={handleSubmit}
-            updateComment={updateComment}
-        />
+        return <EditingToolbar handleCancel={handleCancel} handleSubmit={handleSubmit} updateComment={updateComment} />;
     } else {
-        return <DefaultToolbar commentId={commentId} setEditing={setEditing} />
+        return <DefaultToolbar commentId={commentId} setEditing={setEditing} />;
     }
-
-
 };
 
 export default CommentToolbar;
+// import React from 'react';
+
+// import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
+// import Button from 'react-bootstrap/Button';
+// import DropdownButton from 'react-bootstrap/DropdownButton';
+// import Dropdown from 'react-bootstrap/Dropdown';
+
+// import DeleteComment from './DeleteComment';
+
+// const CommentToolbar = ({ commentId, editing, setEditing, handleCancel, handleSubmit, updateComment }) => {
+//     const EditingToolbar = ({handleCancel, handleSubmit, updateComment}) => {
+//         return (
+//             <ButtonToolbar className="float-right mb-2">
+//                 <Button onClick={handleCancel} size="sm" variant="secondary-inverse">
+//                     {<i className="fas fa-times-circle text-danger"></i>}
+//                 </Button>
+//                 <Button onClick={e => handleSubmit(e, updateComment)} size="sm" variant="secondary-inverse">
+//                     {<i className="fas fa-check-circle text-success"></i>}
+//                 </Button>
+//             </ButtonToolbar>
+//         );
+//     };
+
+//     const DefaultToolbar = ({ commentId, setEditing }) => {
+//         return (
+//             <ButtonToolbar className="float-right mb-2">
+//                 <Button onClick={() => setEditing(true)} size="sm" variant="secondary-inverse">
+//                     {<i className="fas fa-edit text-secondary"></i>}
+//                 </Button>
+//                 <DropdownButton
+//                     size="sm"
+//                     drop="right"
+//                     title={<i className="fas fa-trash text-danger"></i>}
+//                     variant="danger-inverse"
+//                 >
+//                     <Dropdown.Item disabled eventKey="0">
+//                         Are you sure?
+//                     </Dropdown.Item>
+//                     <Dropdown.Divider />
+//                     <Dropdown.Item eventKey="1">
+//                         <DeleteComment commentId={commentId} />
+//                     </Dropdown.Item>
+//                     <Dropdown.Item eventKey="2">Cancel</Dropdown.Item>
+//                 </DropdownButton>
+//             </ButtonToolbar>
+//         );
+//     };
+
+//     if (editing) {
+//         return <EditingToolbar
+//             handleCancel={handleCancel}
+//             handleSubmit={handleSubmit}
+//             updateComment={updateComment}
+//         />
+//     } else {
+//         return <DefaultToolbar commentId={commentId} setEditing={setEditing} />
+//     }
+
+// };
+
+// export default CommentToolbar;

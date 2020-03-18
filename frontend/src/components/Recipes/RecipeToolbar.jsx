@@ -8,7 +8,6 @@ import DeleteRecipe from './DeleteRecipe';
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     <span
-        href=""
         ref={ref}
         onClick={e => {
             e.preventDefault();
@@ -16,7 +15,7 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
         }}
     >
         {children}
-        &#x25bc;
+        {/* &#x25bc; */}
     </span>
 ));
 
@@ -37,9 +36,7 @@ const CustomMenu = React.forwardRef(({ children, style, className, 'aria-labelle
 const RecipeToolbar = ({ recipe, history }) => {
     return (
         <Row noGutters>
-            <Link to={`/recipes/${recipe.id}/edit`} className="mr-2">
-                {<i className="fas fa-edit text-secondary"></i>}
-            </Link>
+            <Link to={`/recipes/${recipe.id}/edit`} className="mr-2">{<i className="fas fa-edit text-secondary"></i>}</Link>
             <Dropdown>
                 <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
                     <i className="far fa-trash-alt"></i>
