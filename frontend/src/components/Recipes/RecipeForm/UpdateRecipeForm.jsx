@@ -139,7 +139,7 @@ const UpdateRecipeForm = ({recipe, history}) => {
             ingredients,
             instructions,
         };
-
+        
         await updateRecipe({ variables: { recipe: updatedRecipe } });
 
         if (file) {
