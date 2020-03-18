@@ -7,9 +7,11 @@ import moment from 'moment';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
-import CommentToolbar from './CommentToolbar';
+import Form from 'react-bootstrap/Form';
 
 import { UPDATE_COMMENT_MUTATION } from '../../queries/queries';
+import CommentToolbar from './CommentToolbar';
+import UpdateComment from './UpdateComment';
 
 const Comment = ({ comment }) => {
     const [updateComment] = useMutation(UPDATE_COMMENT_MUTATION);
@@ -17,19 +19,27 @@ const Comment = ({ comment }) => {
     const [newRating, setNewRating] = useState(comment.rating);
     const [newContent, setNewContent] = useState(comment.content);
 
+    const handleCancel = () => {
+        console.log('@@@@@@@@@@@@@@@@@@@@@@handlecancel')
+        setEditing(false);
+        setNewRating(comment.rating);
+        setNewContent(comment.content);
+    };
+
     const handleSubmit = async (e, updateComment) => {
         e.preventDefault();
 
         const updatedComment = {
             id: comment.id,
-            rating: newRating,
             content: newContent,
-            recipeId: comment.recipeId,
+            rating: newRating,
+            recipeId: comment.recipe.id,
         };
 
-        console.log(updatedComment);
+        // console.log(updatedComment);
+        await updateComment({ variables: { comment: updatedComment } });
 
-        await updateComment({ variables: { updatedComment } });
+        setEditing(false);
     };
 
     return (
@@ -46,7 +56,6 @@ const Comment = ({ comment }) => {
                         />
                     </Link>
                 </Col>
-
                 <Col>
                     <Row>
                         <Link to={`/profile/${comment.user.username}`}>{comment.user.username}</Link>&nbsp;posted&nbsp;
@@ -60,12 +69,34 @@ const Comment = ({ comment }) => {
                     <Row className="selected">{'★'.repeat(comment.rating)}</Row>
                 </Col>
                 <Col md={2}>
-                    <CommentToolbar comment={comment} />
+                    <CommentToolbar
+                        commentId={comment.id}
+                        editing={editing}
+                        setEditing={setEditing}
+                        handleCancel={handleCancel}
+                        handleSubmit={handleSubmit}
+                        updateComment={updateComment}
+                    />
                 </Col>
             </Row>
-            <Row noGutters className="pl-2 pb-1">
-                {comment.content}
-            </Row>
+            {editing && (
+                <div className="p-2">
+                    <Form.Control
+                        className="p-1"
+                        value={newContent}
+                        type="text"
+                        as="textarea"
+                        rows="3"
+                        name="content"
+                        onChange={e => setNewContent(e.target.value)}
+                    />
+                </div>
+            )}
+            {!editing && (
+                <Row noGutters className="pl-2 pb-1">
+                    {comment.content}
+                </Row>
+            )}
         </div>
     );
 };

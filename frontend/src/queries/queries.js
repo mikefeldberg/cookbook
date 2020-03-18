@@ -130,6 +130,9 @@ export const GET_RECIPE_QUERY = gql`
                     id
                     username
                 }
+                recipe {
+                    id
+                }
             }
             user {
                 id

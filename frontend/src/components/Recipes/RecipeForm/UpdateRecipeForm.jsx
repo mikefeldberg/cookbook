@@ -140,7 +140,7 @@ const UpdateRecipeForm = ({recipe, history}) => {
             instructions,
         };
 
-        await updateRecipe({ variables: { updatedRecipe } });
+        await updateRecipe({ variables: { recipe: updatedRecipe } });
 
         if (file) {
             handleUpload(recipeId, createPhoto);
