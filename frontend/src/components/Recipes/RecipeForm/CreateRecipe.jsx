@@ -248,21 +248,21 @@ const CreateRecipe = ({history}) => {
                             label="Easy"
                             name="formHorizontalRadios"
                             id="easy"
-                            onClick={() => setSkillLevel('easy')}
+                            onClick={() => setSkillLevel('Easy')}
                         />
                         <Form.Check
                             type="radio"
                             label="Intermediate"
                             name="formHorizontalRadios"
                             id="intermediate"
-                            onClick={() => setSkillLevel('intermediate')}
+                            onClick={() => setSkillLevel('Intermediate')}
                         />
                         <Form.Check
                             type="radio"
                             label="Difficult"
                             name="formHorizontalRadios"
                             id="difficult"
-                            onClick={() => setSkillLevel('difficult')}
+                            onClick={() => setSkillLevel('Advanced')}
                         />
                     </Row>
                 </Form.Group>
