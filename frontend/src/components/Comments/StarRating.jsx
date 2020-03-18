@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import './styles.css';
-import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
-import Container from 'react-bootstrap/Container';
 
 const Star = ({ selected = false, onClick = f => f }) => (
     <span className={selected ? 'selected' : 'not-selected'} onClick={onClick}>
@@ -12,23 +10,16 @@ const Star = ({ selected = false, onClick = f => f }) => (
 );
 
 const StarRating = ({ rating, setRating }) => {
-    const [unrated, setUnrated] = useState(rating === 0 ? true : false);
-
-    const handleRate = (rating, setRating) => {
-        setRating(rating)
-        setUnrated(false)
-    }
-
     return (
-        <div className="star-rating justify-content-start align-items-start">
-            <Row noGutters>
+        <span>
+            <Row className="align-items-center" noGutters>
                 {[...Array(5)].map((n, i) => (
-                    <Star key={i} selected={i < rating} onClick={() => handleRate(i + 1, setRating)} />
-                ))} 
-                {unrated  && `(Leave no rating)`}
-                {!unrated && rating !== 0 && <span onClick={() => {setRating(0)}}>(Clear rating)</span>}
+                    <Star key={i} selected={i < rating} onClick={() => setRating(i + 1)} />
+                ))}&nbsp;
+                {rating === 0  && `(Leave no rating)`}
+                {rating !== 0 && <span onClick={() => {setRating(0)}}>(Clear rating)</span>}
             </Row>
-        </div>
+        </span>
     );
 };
 

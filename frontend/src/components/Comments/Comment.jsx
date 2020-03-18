@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
 import Moment from 'react-moment';
@@ -10,10 +10,12 @@ import Image from 'react-bootstrap/Image';
 import Form from 'react-bootstrap/Form';
 
 import { UPDATE_COMMENT_MUTATION } from '../../queries/queries';
+import { AuthContext } from '../../App';
 import CommentToolbar from './CommentToolbar';
 import StarRating from './StarRating';
 
 const Comment = ({ comment }) => {
+    const currentUser = useContext(AuthContext);
     const [updateComment] = useMutation(UPDATE_COMMENT_MUTATION);
     const [editing, setEditing] = useState(false);
     const [newRating, setNewRating] = useState(comment.rating);
@@ -64,24 +66,24 @@ const Comment = ({ comment }) => {
                             </span>
                         )}
                     </Row>
-                    { !editing &&
-                        <Row className="selected">{'★'.repeat(comment.rating)}</Row>
-                    }
-                    { editing &&
+                    {!editing && <Row className="selected">{'★'.repeat(comment.rating)}</Row>}
+                    {editing && (
                         <Row>
                             <StarRating rating={newRating} setRating={setNewRating} />
                         </Row>
-                    }
+                    )}
                 </Col>
                 <Col md={2}>
-                    <CommentToolbar
-                        commentId={comment.id}
-                        editing={editing}
-                        setEditing={setEditing}
-                        handleCancel={handleCancel}
-                        handleSubmit={handleSubmit}
-                        updateComment={updateComment}
-                    />
+                    {currentUser && currentUser.id === comment.user.id &&
+                        <CommentToolbar
+                            commentId={comment.id}
+                            editing={editing}
+                            setEditing={setEditing}
+                            handleCancel={handleCancel}
+                            handleSubmit={handleSubmit}
+                            updateComment={updateComment}
+                        />
+                    }
                 </Col>
             </Row>
             {editing && (

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 
 import Image from 'react-bootstrap/Image';
@@ -27,10 +27,10 @@ const RecipeDetails = ({ match, history }) => {
                 {currentUser && recipe.user.id === currentUser.id &&
                     <RecipeToolbar history={history} recipe={recipe}/>
                 }
-                {/* <Image src={recipe.photos.length > 0 ? recipe.photos[0].url : `https://cookbook-test-bucket.s3-us-west-1.amazonaws.com/_food_placeholder.jpg`} fluid /> */}
+                <Image src={recipe.photos.length > 0 ? recipe.photos[0].url : `https://cookbook-test-bucket.s3-us-west-1.amazonaws.com/_food_placeholder.jpg`} fluid />
                 <div>Title: {recipe.title}</div>
-                {/* <div>
-                    Rating: {recipe.ratingCount > 0 ? <div>{recipe.rating} ({recipe.ratingCount})</div> : 'No ratings yet'}
+                <div>
+                    Rating: {recipe.ratingCount > 0 ? <><span style={{color:'gold'}}>{'★'.repeat(recipe.rating)}</span> <span>({recipe.ratingCount})</span></> : 'No ratings yet'}
                 </div>
                 <div>Favorited: {recipe.favoriteCount}</div>
                 <div>Description: {recipe.description}</div>
@@ -53,7 +53,7 @@ const RecipeDetails = ({ match, history }) => {
                     {recipe.instructions.map(instruction => (
                         <div key={instruction.id}>{instruction.content}</div>
                     ))}
-                </div> */}
+                </div>
                 <CommentSection recipeId={recipe.id} comments={recipe.comments} />
             </>
         );
