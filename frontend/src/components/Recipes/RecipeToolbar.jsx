@@ -1,34 +1,62 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
-import Button from 'react-bootstrap/Button';
-import Overlay from 'react-bootstrap/Overlay';
-import Tooltip from 'react-bootstrap/Tooltip';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
+import Row from 'react-bootstrap/Row';
 
 import DeleteRecipe from './DeleteRecipe';
 
-const RecipeToolbar = ({ recipe, history }) => {
-    const [show, setShow] = useState(false);
-    const target = useRef(null);
+const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+    <span
+        href=""
+        ref={ref}
+        onClick={e => {
+            e.preventDefault();
+            onClick(e);
+        }}
+    >
+        {children}
+        &#x25bc;
+    </span>
+));
+
+const CustomMenu = React.forwardRef(({ children, style, className, 'aria-labelledby': labeledBy }, ref) => {
+    const [value] = useState('');
 
     return (
-        <>
+        <div ref={ref} style={style} className={className} aria-labelledby={labeledBy}>
+            <ul className="list-unstyled">
+                {React.Children.toArray(children).filter(
+                    child => !value || child.props.children.toLowerCase().startsWith(value)
+                )}
+            </ul>
+        </div>
+    );
+});
+
+const RecipeToolbar = ({ recipe, history }) => {
+    return (
+        <Row noGutters>
             <Link to={`/recipes/${recipe.id}/edit`} className="mr-2">
                 {<i className="fas fa-edit text-secondary"></i>}
             </Link>
-            {/* <i ref={target} onClick={() => setShow(!show)} className="fas fa-trash text-danger"></i> */}
-            <i ref={target} onClick={() => setShow(!show)} className="far fa-trash-alt"></i>
-            <Overlay target={target.current} show={show} placement="right">
-                {props => (
-                    <Tooltip onClick={() => console.log('clicked')} id="overlay-example" {...props}>
-                        Confirm delete
-                    </Tooltip>
-                )}
-            </Overlay>
-        </>
+            <Dropdown>
+                <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
+                    <i className="far fa-trash-alt"></i>
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu as={CustomMenu}>
+                    <Dropdown.Item disabled eventKey="0">
+                        Are you sure?
+                    </Dropdown.Item>
+                    <Dropdown.Divider />
+                    <Dropdown.Item eventKey="2">
+                        <DeleteRecipe recipe={recipe} history={history} />
+                    </Dropdown.Item>
+                    <Dropdown.Item eventKey="2">Cancel</Dropdown.Item>
+                </Dropdown.Menu>
+            </Dropdown>
+        </Row>
     );
 };
 
