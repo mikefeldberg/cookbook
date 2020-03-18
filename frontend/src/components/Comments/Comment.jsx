@@ -11,7 +11,7 @@ import Form from 'react-bootstrap/Form';
 
 import { UPDATE_COMMENT_MUTATION } from '../../queries/queries';
 import CommentToolbar from './CommentToolbar';
-import UpdateComment from './UpdateComment';
+import StarRating from './StarRating';
 
 const Comment = ({ comment }) => {
     const [updateComment] = useMutation(UPDATE_COMMENT_MUTATION);
@@ -20,7 +20,6 @@ const Comment = ({ comment }) => {
     const [newContent, setNewContent] = useState(comment.content);
 
     const handleCancel = () => {
-        console.log('@@@@@@@@@@@@@@@@@@@@@@handlecancel')
         setEditing(false);
         setNewRating(comment.rating);
         setNewContent(comment.content);
@@ -36,7 +35,6 @@ const Comment = ({ comment }) => {
             recipeId: comment.recipe.id,
         };
 
-        // console.log(updatedComment);
         await updateComment({ variables: { comment: updatedComment } });
 
         setEditing(false);
@@ -66,7 +64,14 @@ const Comment = ({ comment }) => {
                             </span>
                         )}
                     </Row>
-                    <Row className="selected">{'★'.repeat(comment.rating)}</Row>
+                    { !editing &&
+                        <Row className="selected">{'★'.repeat(comment.rating)}</Row>
+                    }
+                    { editing &&
+                        <Row>
+                            <StarRating rating={newRating} setRating={setNewRating} />
+                        </Row>
+                    }
                 </Col>
                 <Col md={2}>
                     <CommentToolbar

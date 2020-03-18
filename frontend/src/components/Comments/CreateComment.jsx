@@ -32,7 +32,7 @@ const CreateComment = ({ recipeId }) => {
     return (
         <Form className="text-right" onSubmit={e => handleSubmit(e)}>
             <fieldset disabled={commentsDisabled} >
-            <StarRating disabled={commentsDisabled} rating={rating} setRating={setRating} />
+            <StarRating rating={rating} setRating={setRating} />
             <Form.Control className="mb-3" value={content} type="text" as="textarea" rows="3" name="content" onChange={e => setContent(e.target.value)} />
             <Button className="mb-3" type="submit">Add Comment</Button>
             </fieldset>
