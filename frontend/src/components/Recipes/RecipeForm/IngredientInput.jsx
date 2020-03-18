@@ -5,10 +5,6 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 const IngredientInput = ({ idx, ingredients, handleIngredientChange, deleteIngredient }) => {
-    // const quantityId = `quantity-${idx}`;
-    // const nameId = `name-${idx}`;
-    // const preparationId = `preparation-${idx}`;
-
     return (
         <tr key={`cat-${idx}`}>
             <td className="align-middle">{`${idx + 1}`}</td>
@@ -17,7 +13,6 @@ const IngredientInput = ({ idx, ingredients, handleIngredientChange, deleteIngre
                     type="text"
                     name="quantity"
                     data-idx={idx}
-                    // id={quantityId}
                     value={ingredients[idx].quantity}
                     onChange={handleIngredientChange}
                 />
@@ -27,7 +22,6 @@ const IngredientInput = ({ idx, ingredients, handleIngredientChange, deleteIngre
                     type="text"
                     name="name"
                     data-idx={idx}
-                    // id={nameId}
                     value={ingredients[idx].name}
                     onChange={handleIngredientChange}
                 />
@@ -37,7 +31,6 @@ const IngredientInput = ({ idx, ingredients, handleIngredientChange, deleteIngre
                     type="text"
                     name="preparation"
                     data-idx={idx}
-                    // id={preparationId}
                     value={ingredients[idx].preparation}
                     onChange={handleIngredientChange}
                 />

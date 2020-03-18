@@ -8,7 +8,7 @@ const UserNav = props => {
         localStorage.removeItem('authToken');
     };
     return (
-        <React.Fragment>
+        <>
             <Nav.Item>
                 <Link className="navLink nav-link" to="/profile">
                     Hey, {props.currentUser.username}
@@ -24,7 +24,7 @@ const UserNav = props => {
                     Logout
                 </Nav.Link>
             </Nav.Item>
-        </React.Fragment>
+        </>
     );
 };
 

@@ -1,13 +1,13 @@
 import React, {useContext} from 'react';
 import { Redirect } from 'react-router-dom';
-
 import { useQuery } from '@apollo/react-hooks';
-import {AuthContext} from '../../../App'
 
+import omitDeep from 'omit-deep';
+
+import {AuthContext} from '../../../App'
 import { GET_RECIPE_QUERY } from '../../../queries/queries';
 import UpdateRecipeForm from './UpdateRecipeForm';
 
-const omitDeep = require('omit-deep');
 
 const UpdateRecipe = ({ match, history }) => {
     const currentUser = useContext(AuthContext);

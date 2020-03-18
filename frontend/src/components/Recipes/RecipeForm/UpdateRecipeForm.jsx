@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
-
 import { useMutation } from '@apollo/react-hooks';
 
+import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
-import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
+import Button from 'react-bootstrap/Button';
 
 import { UPDATE_RECIPE_MUTATION, CREATE_PHOTO_MUTATION, DELETE_PHOTO_MUTATION } from '../../../queries/queries';
 import IngredientInput from './IngredientInput';
 import InstructionInput from './InstructionInput';
-import Container from 'react-bootstrap/Container';
 
 
 const UpdateRecipeForm = ({recipe, history}) => {
@@ -128,7 +127,7 @@ const UpdateRecipeForm = ({recipe, history}) => {
             await handleDeletePhoto(deletePhoto)
         }
 
-        const recipe = {
+        const updatedRecipe = {
             id: recipeId,
             title,
             description,
@@ -140,8 +139,8 @@ const UpdateRecipeForm = ({recipe, history}) => {
             ingredients,
             instructions,
         };
-
-        await updateRecipe({ variables: { recipe } });
+        
+        await updateRecipe({ variables: { recipe: updatedRecipe } });
 
         if (file) {
             handleUpload(recipeId, createPhoto);

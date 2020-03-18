@@ -1,0 +1,21 @@
+.not-selected {
+  color: gray;
+}
+
+.selected {
+  color: gold;
+}
+
+.star {
+  font-size: 1.6em;
+  margin: 0;
+}
+
+.star:hover {
+  cursor:pointer;
+  color: gold;
+}
+
+.star:disabled {
+  pointer-events:none;
+}

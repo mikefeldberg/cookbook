@@ -124,6 +124,15 @@ export const GET_RECIPE_QUERY = gql`
                 id
                 content
                 rating
+                createdAt
+                updatedAt
+                user {
+                    id
+                    username
+                }
+                recipe {
+                    id
+                }
             }
             user {
                 id
@@ -242,6 +251,9 @@ export const CREATE_COMMENT_MUTATION = gql`
                     id
                     content
                     rating
+                    recipe {
+                        id
+                    }
                 }
         }
     }
@@ -261,7 +273,7 @@ export const UPDATE_COMMENT_MUTATION = gql`
 
 export const DELETE_COMMENT_MUTATION = gql`
     mutation($commentId: String!) {
-        deleteRecipe(commentId: $commentId) {
+        deleteComment(commentId: $commentId) {
             commentId
         }
     }

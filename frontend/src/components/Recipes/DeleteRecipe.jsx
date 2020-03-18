@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 
+import Button from 'react-bootstrap/Button';
+
 import { AuthContext } from '../../App';
 import { DELETE_RECIPE_MUTATION, GET_RECIPES_QUERY } from '../../queries/queries';
-import Button from 'react-bootstrap/Button';
 
 const DeleteRecipe = ({ recipe, history }) => {
     const currentUser = useContext(AuthContext);
@@ -14,6 +15,7 @@ const DeleteRecipe = ({ recipe, history }) => {
             const data = cache.readQuery({ query: GET_RECIPES_QUERY });
             const index = data.recipes.findIndex(recipe => recipe.id === deleteRecipe.recipeId);
             const recipes = [...data.recipes.slice(0, index), ...data.recipes.slice(index + 1)];
+            debugger
             cache.writeQuery({
                 query: GET_RECIPES_QUERY,
                 data: { recipes },
