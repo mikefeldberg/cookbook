@@ -249,28 +249,28 @@ const UpdateRecipeForm = ({recipe, history}) => {
                     </Form.Label>
                     <Row sm={10}>
                         <Form.Check
-                            defaultChecked={skillLevel === 'easy'}
+                            defaultChecked={skillLevel === 'Easy'}
                             type="radio"
                             label="Easy"
                             name="formHorizontalRadios"
-                            id="easy"
-                            onClick={() => setSkillLevel('easy')}
+                            id="Easy"
+                            onClick={() => setSkillLevel('Easy')}
                         />
                         <Form.Check
-                            defaultChecked={skillLevel === 'intermediate'}
+                            defaultChecked={skillLevel === 'Intermediate'}
                             type="radio"
                             label="Intermediate"
                             name="formHorizontalRadios"
-                            id="intermediate"
-                            onClick={() => setSkillLevel('intermediate')}
+                            id="Intermediate"
+                            onClick={() => setSkillLevel('Intermediate')}
                         />
                         <Form.Check
-                            defaultChecked={skillLevel === 'difficult'}
+                            defaultChecked={skillLevel === 'Advanced'}
                             type="radio"
-                            label="Difficult"
+                            label="Advanced"
                             name="formHorizontalRadios"
-                            id="difficult"
-                            onClick={() => setSkillLevel('difficult')}
+                            id="Advanced"
+                            onClick={() => setSkillLevel('Advanced')}
                         />
                     </Row>
                 </Form.Group>

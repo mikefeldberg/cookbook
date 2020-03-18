@@ -32,7 +32,7 @@ const RecipeDetails = ({ match, history }) => {
                     <h1>{recipe.title}&nbsp;</h1>
                     {currentUser && recipe.user.id === currentUser.id && 
                         <div>
-                            <RecipeToolbar history={history} recipe={recipe} />
+                            <RecipeToolbar recipe={recipe} history={history} />
                         </div>
                     }
                 </Row>

@@ -1,8 +1,6 @@
 import React from 'react';
 import { useMutation } from '@apollo/react-hooks';
 
-import Button from 'react-bootstrap/Button';
-
 import { DELETE_COMMENT_MUTATION } from '../../queries/queries';
 
 const DeleteComment = ({ commentId }) => {

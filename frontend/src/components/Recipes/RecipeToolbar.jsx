@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import Dropdown from 'react-bootstrap/Dropdown';
 import Row from 'react-bootstrap/Row';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 import DeleteRecipe from './DeleteRecipe';
 
@@ -15,7 +15,6 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
         }}
     >
         {children}
-        {/* &#x25bc; */}
     </span>
 ));
 
@@ -47,7 +46,7 @@ const RecipeToolbar = ({ recipe, history }) => {
                         Are you sure?
                     </Dropdown.Item>
                     <Dropdown.Divider />
-                    <Dropdown.Item eventKey="2">
+                    <Dropdown.Item eventKey="1">
                         <DeleteRecipe recipe={recipe} history={history} />
                     </Dropdown.Item>
                     <Dropdown.Item eventKey="2">Cancel</Dropdown.Item>
