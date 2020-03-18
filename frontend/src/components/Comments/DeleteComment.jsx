@@ -1,8 +1,6 @@
 import React from 'react';
 import { useMutation } from '@apollo/react-hooks';
 
-import Button from 'react-bootstrap/Button';
-
 import { DELETE_COMMENT_MUTATION } from '../../queries/queries';
 
 const DeleteComment = ({ commentId }) => {
@@ -14,11 +12,7 @@ const DeleteComment = ({ commentId }) => {
         await deleteComment({ variables: { commentId } });
     };
 
-    return (
-        <Button onClick={e => handleDelete(e, deleteComment)}>
-            <i className="fas fa-trash text-danger"></i>
-        </Button>
-    );
+    return <span onClick={e => handleDelete(e, deleteComment)}>Confirm Delete</span>;
 };
 
 export default DeleteComment;

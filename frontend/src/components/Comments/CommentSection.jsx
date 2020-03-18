@@ -6,7 +6,7 @@ import CreateComment from './CreateComment';
 const CommentSection = ({ recipeId, comments }) => {
     return (
         <>
-            Here, there be comments
+            <h1>Comments</h1>
             <CreateComment recipeId={recipeId} />
             {comments.length > 0 &&
                 comments.map(comment => (

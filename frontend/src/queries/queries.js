@@ -139,6 +139,8 @@ export const GET_RECIPE_QUERY = gql`
                 username
                 email
             }
+            createdAt
+            updatedAt
         }
     }
 `

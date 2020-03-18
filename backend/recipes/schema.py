@@ -362,8 +362,6 @@ class DeleteComment(graphene.Mutation):
         comment = Comment.objects.filter(
             id=comment_id, deleted_at=None).first()
 
-        from IPython import embed; embed()
-
         if not comment or comment.user != user:
             raise GraphQLError('Delete not permitted.')
 
