@@ -104,7 +104,7 @@ class RecipeType(DjangoObjectType):
         return Instruction.objects.filter(recipe_id=self.id, deleted_at=None)
 
     def resolve_comments(self, info):
-        return Comment.objects.filter(recipe_id=self.id, deleted_at=None)
+        return Comment.objects.filter(recipe_id=self.id, deleted_at=None).order_by('-created_at')
 
     def resolve_photos(self, info):
         return Photo.objects.filter(recipe_id=self.id, deleted_at=None)

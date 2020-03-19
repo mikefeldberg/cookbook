@@ -21,7 +21,7 @@ const CreateComment = ({ recipeId }) => {
             const recipeId = createComment.comment.recipe.id
             const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables:{ id: recipeId } });
             const recipe = data.recipe
-            recipe.comments = [...recipe.comments.slice(0), createComment.comment]
+            recipe.comments = [createComment.comment, ...recipe.comments.slice(0)]
 
             cache.writeQuery({
                 query: GET_RECIPE_QUERY,
