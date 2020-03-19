@@ -445,7 +445,7 @@ class CreateFavorite(graphene.Mutation):
 
 
 class DeleteFavorite(graphene.Mutation):
-    favorite_id = graphene.String()
+    recipe_id = graphene.String()
 
     class Arguments:
         recipe_id = graphene.String(required=True)
@@ -464,7 +464,7 @@ class DeleteFavorite(graphene.Mutation):
         recipe.favorite_count -= 1
         recipe.save()
 
-        return DeleteFavorite(favorite_id=favorite.id)
+        return DeleteFavorite(recipe_id=recipe.id)
 
 
 class Mutation(graphene.ObjectType):

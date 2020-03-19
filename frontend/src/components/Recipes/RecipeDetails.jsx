@@ -22,7 +22,7 @@ const RecipeDetails = ({ match, history }) => {
         const favorited = favoritedUserIds.includes(currentUser.id)
 
         return (
-            <Recipe recipe={recipe} favorited={favorited} />
+            <Recipe recipe={recipe} favorited={favorited} match={match}/>
         );
     }
 };

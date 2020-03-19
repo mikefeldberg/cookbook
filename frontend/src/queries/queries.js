@@ -313,7 +313,7 @@ export const CREATE_FAVORITE_MUTATION = gql`
 export const DELETE_FAVORITE_MUTATION = gql`
     mutation($recipeId: String!) {
         deleteFavorite(recipeId: $recipeId) {
-            favoriteId
+            recipeId
         }
     }
 `

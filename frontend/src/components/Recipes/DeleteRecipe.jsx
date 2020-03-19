@@ -7,13 +7,13 @@ const DeleteRecipe = ({ recipe, history }) => {
     const [deleteRecipe] = useMutation(DELETE_RECIPE_MUTATION, {
         update(cache, { data: { deleteRecipe } }) {
             const data = cache.readQuery({ query: GET_RECIPES_QUERY });
+            debugger
             const index = data.recipes.findIndex(recipe => recipe.id === deleteRecipe.recipeId);
             const recipes = [...data.recipes.slice(0, index), ...data.recipes.slice(index + 1)];
-            debugger
-            // cache.writeQuery({
-            //     query: GET_RECIPES_QUERY,
-            //     data: { recipes },
-            // });
+            cache.writeQuery({
+                query: GET_RECIPES_QUERY,
+                data: { recipes },
+            });
         },
     });
 
