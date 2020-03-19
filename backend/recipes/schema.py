@@ -331,14 +331,20 @@ class UpdateComment(graphene.Mutation):
         if not existing_comment or existing_comment.user != user:
             raise GraphQLError('Update not permitted.')
 
+        from IPython import embed; embed()
+
         if existing_comment.rating != comment['rating']:
             if existing_comment.rating > 0:
                 if comment['rating'] > 0:
                     recipe.rating = (recipe.rating * recipe.rating_count - existing_comment.rating + comment['rating']) / (recipe.rating_count)
 
-                if comment['rating'] == 0:
+                if comment['rating'] == 0 and recipe.rating_count > 1:
                     recipe.rating = (recipe.rating * recipe.rating_count - existing_comment.rating) / (recipe.rating_count - 1)
                     recipe.rating_count -= 1
+
+                if comment['rating'] == 0 and recipe.rating_count == 1:
+                    recipe.rating = 0
+                    recipe.rating_count = 0
 
             else:
                 recipe.rating = (recipe.rating * recipe.rating_count + comment['rating']) / (recipe.rating_count + 1)

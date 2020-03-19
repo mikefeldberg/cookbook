@@ -16,3 +16,7 @@ created_at and updated_at are off by microseconds. Need to lower threshold to at
 
 add persistent "hover" state so that stars with (i) < currently hovered-over (i) will appear hovered-over
 disable rating when comments are disabled
+
+### Cache
+
+live refresh on all mutation

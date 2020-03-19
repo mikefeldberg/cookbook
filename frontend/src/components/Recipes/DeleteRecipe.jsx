@@ -9,20 +9,21 @@ const DeleteRecipe = ({ recipe, history }) => {
             const data = cache.readQuery({ query: GET_RECIPES_QUERY });
             const index = data.recipes.findIndex(recipe => recipe.id === deleteRecipe.recipeId);
             const recipes = [...data.recipes.slice(0, index), ...data.recipes.slice(index + 1)];
-            cache.writeQuery({
-                query: GET_RECIPES_QUERY,
-                data: { recipes },
-            });
+            debugger
+            // cache.writeQuery({
+            //     query: GET_RECIPES_QUERY,
+            //     data: { recipes },
+            // });
         },
     });
 
-    const handleDelete = async (e, deleteRecipe) => {
-        e.preventDefault();
+    const handleDelete = async (deleteRecipe) => {
+        console.log('delete recipe')
         await deleteRecipe({ variables: { recipeId: recipe.id } });
         history.push('/');
     };
 
-    return <span onClick={e => handleDelete(e, deleteRecipe)}>Confirm Delete</span>;
+    return <span onClick={() => handleDelete(deleteRecipe)}>Confirm Delete</span>;
 };
 
 export default DeleteRecipe;

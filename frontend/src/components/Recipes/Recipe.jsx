@@ -9,15 +9,40 @@ import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 
 import { AuthContext } from '../../App';
-import { CREATE_FAVORITE_MUTATION, DELETE_FAVORITE_MUTATION } from '../../queries/queries';
+import { GET_RECIPE_QUERY, GET_RECIPES_QUERY, CREATE_FAVORITE_MUTATION, DELETE_FAVORITE_MUTATION } from '../../queries/queries';
 import CommentSection from '../Comments/CommentSection';
 import RecipeToolbar from './RecipeToolbar';
 
 const Recipe = ({ recipe, favorited, match, history }) => {
     const currentUser = useContext(AuthContext);
-    const [createFavorite] = useMutation(CREATE_FAVORITE_MUTATION);
-    const [deleteFavorite] = useMutation(DELETE_FAVORITE_MUTATION);
     const [inFavorites, setInFavorites] = useState(favorited)
+
+    const [createFavorite] = useMutation(CREATE_FAVORITE_MUTATION, {
+        update(cache, { data: { createFavorite } }) {
+            const data = cache.readQuery({ query: GET_RECIPE_QUERY });
+            debugger
+        //     const index = data.recipes.findIndex(recipe => recipe.id === deleteRecipe.recipeId);
+        //     const recipes = [...data.recipes.slice(0, index), ...data.recipes.slice(index + 1)];
+        //     cache.writeQuery({
+        //         query: GET_RECIPE_QUERY,
+        //         data: { recipes },
+        //     });
+        },
+    });
+
+    const [deleteFavorite] = useMutation(DELETE_FAVORITE_MUTATION, {
+        update(cache, { data: { deleteFavorite } }) {
+            const data = cache.readQuery({ query: GET_RECIPES_QUERY });
+            debugger
+            // const index = data.recipes.findIndex(recipe => recipe.id === deleteRecipe.recipeId);
+            // const recipes = [...data.recipes.slice(0, index), ...data.recipes.slice(index + 1)];
+            // cache.writeQuery({
+            //     query: GET_RECIPE_QUERY,
+            //     data: { recipes },
+            // });
+        },
+    });
+    
 
     const addToFavorites = async (recipeId, createFavorite) => {
         console.log('in add to favorites')
