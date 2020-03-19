@@ -140,9 +140,9 @@ export const GET_RECIPE_QUERY = gql`
                     id
                     username
                 }
-                recipe {
-                    id
-                }
+                # recipe {
+                #     id
+                # }
             }
             user {
                 id
@@ -259,14 +259,20 @@ export const DELETE_PHOTO_MUTATION = gql`
 export const CREATE_COMMENT_MUTATION = gql`
     mutation ($comment: CommentInput!) {
         createComment(comment: $comment) {
-                comment {
+            comment {
+                id
+                content
+                rating
+                createdAt
+                updatedAt
+                recipe {
                     id
-                    content
-                    rating
-                    recipe {
-                        id
-                    }
                 }
+                user {
+                    id
+                    username
+                }
+            }
         }
     }
 `
@@ -282,6 +288,33 @@ export const UPDATE_COMMENT_MUTATION = gql`
         }
     }
 `
+
+// export const CREATE_COMMENT_MUTATION = gql`
+//     mutation ($comment: CommentInput!) {
+//         createComment(comment: $comment) {
+//                 comment {
+//                     id
+//                     content
+//                     rating
+//                     recipe {
+//                         id
+//                     }
+//                 }
+//         }
+//     }
+// `
+
+// export const UPDATE_COMMENT_MUTATION = gql`
+//     mutation ($comment: CommentInput!) {
+//         updateComment(comment: $comment) {
+//                 comment {
+//                     id
+//                     content
+//                     rating
+//                 }
+//         }
+//     }
+// `
 
 export const DELETE_COMMENT_MUTATION = gql`
     mutation($commentId: String!) {

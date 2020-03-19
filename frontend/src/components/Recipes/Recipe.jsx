@@ -18,8 +18,8 @@ const Recipe = ({ recipe, favorited, match, history }) => {
 
     const [createFavorite] = useMutation(CREATE_FAVORITE_MUTATION, {
         update(cache, { data: { createFavorite } }) {
-            const recipe_id = createFavorite.favorite.recipe.id
-            const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables:{ id: recipe_id } });
+            const recipeId = createFavorite.favorite.recipe.id
+            const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables:{ id: recipeId } });
 
             const recipe = data.recipe;
 
@@ -34,8 +34,8 @@ const Recipe = ({ recipe, favorited, match, history }) => {
 
     const [deleteFavorite] = useMutation(DELETE_FAVORITE_MUTATION, {
         update(cache, { data: { deleteFavorite } }) {
-            const recipe_id = deleteFavorite.recipeId
-            const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables:{ id: recipe_id } });
+            const recipeId = deleteFavorite.recipeId
+            const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables:{ id: recipeId } });
 
             const recipe = data.recipe;
             recipe.favorites.pop();

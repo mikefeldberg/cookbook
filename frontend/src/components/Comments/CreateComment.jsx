@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 import { AuthContext } from '../../App';
-import { CREATE_COMMENT_MUTATION } from '../../queries/queries';
+import { CREATE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries';
 import StarRating from './StarRating';
 
 const CreateComment = ({ recipeId }) => {
@@ -14,7 +14,21 @@ const CreateComment = ({ recipeId }) => {
     const [content, setContent] = useState(currentUser ? '' : `Log in to leave a comment`);
     const [commentsDisabled] = useState(currentUser ? false : 'disabled')
 
-    const [createComment] = useMutation(CREATE_COMMENT_MUTATION);
+    // const [createComment] = useMutation(CREATE_COMMENT_MUTATION);
+    
+    const [createComment] = useMutation(CREATE_COMMENT_MUTATION, {
+        update(cache, { data: { createComment } }) {
+            const recipeId = createComment.comment.recipe.id
+            const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables:{ id: recipeId } });
+            const recipe = data.recipe
+            recipe.comments = [...recipe.comments.slice(0), createComment.comment]
+
+            cache.writeQuery({
+                query: GET_RECIPE_QUERY,
+                data: { recipe },
+            });
+        },
+    });
 
     const handleSubmit = async e => {
         e.preventDefault();
