@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import Moment from 'react-moment';
-import moment from 'moment';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -9,16 +8,13 @@ import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 
 import { AuthContext } from '../../App';
-import { GET_RECIPE_QUERY, GET_RECIPES_QUERY, CREATE_FAVORITE_MUTATION, DELETE_FAVORITE_MUTATION } from '../../queries/queries';
+import { GET_RECIPE_QUERY, CREATE_FAVORITE_MUTATION, DELETE_FAVORITE_MUTATION } from '../../queries/queries';
 import CommentSection from '../Comments/CommentSection';
 import RecipeToolbar from './RecipeToolbar';
 
 const Recipe = ({ recipe, favorited, match, history }) => {
     const currentUser = useContext(AuthContext);
     const [inFavorites, setInFavorites] = useState(favorited)
-
-    // const [createFavorite] = useMutation(CREATE_FAVORITE_MUTATION)
-    // const [deleteFavorite] = useMutation(DELETE_FAVORITE_MUTATION)
 
     const [createFavorite] = useMutation(CREATE_FAVORITE_MUTATION, {
         update(cache, { data: { createFavorite } }) {
@@ -53,21 +49,17 @@ const Recipe = ({ recipe, favorited, match, history }) => {
     
 
     const addToFavorites = async (recipeId, createFavorite) => {
-        console.log('in add to favorites')
         const favorite = {
             recipeId
         };
         
         if (!inFavorites) {
-            console.log('in add to favorites but for real')
             setInFavorites(true)
             await createFavorite({ variables: { favorite } });
         }
     };
     
     const removeFromFavorites = async (recipeId, deleteFavorite) => {
-        console.log('in remove from favorites')
-        console.log('in remove from favorites but for real')
         if (inFavorites) {
             setInFavorites(false)
             await deleteFavorite({ variables: { recipeId } });
@@ -85,13 +77,7 @@ const Recipe = ({ recipe, favorited, match, history }) => {
                 )}
             </Row>
             <Row noGutters className="mb-11">
-                Added by {recipe.user.username} on&nbsp;
-                <Moment from={new Date()}>{recipe.createdAt}</Moment>&nbsp;
-                {moment(recipe.updatedAt).diff(moment(recipe.createdAt), 'minutes') > 1 && (
-                    <span>
-                        (Updated <Moment from={new Date()}>{recipe.updatedAt}</Moment>)
-                    </span>
-                )}
+                Added by {recipe.user.username} on&nbsp;<Moment from={new Date()}>{recipe.createdAt}</Moment>
             </Row>
             <Row noGutters className="align-items-center mb-2">
                 {recipe.ratingCount > 0 ? (
