@@ -17,18 +17,20 @@ const Recipe = ({ recipe, favorited, match, history }) => {
     const currentUser = useContext(AuthContext);
     const [inFavorites, setInFavorites] = useState(favorited)
 
-    const [createFavorite] = useMutation(CREATE_FAVORITE_MUTATION, {
-        update(cache, { data: { createFavorite } }) {
-            const data = cache.readQuery({ query: GET_RECIPE_QUERY });
-            debugger
-        //     const index = data.recipes.findIndex(recipe => recipe.id === deleteRecipe.recipeId);
-        //     const recipes = [...data.recipes.slice(0, index), ...data.recipes.slice(index + 1)];
-        //     cache.writeQuery({
-        //         query: GET_RECIPE_QUERY,
-        //         data: { recipes },
-        //     });
-        },
-    });
+    const [createFavorite] = useMutation(CREATE_FAVORITE_MUTATION)
+
+    // const [createFavorite] = useMutation(CREATE_FAVORITE_MUTATION, {
+    //     update(cache, { data: { createFavorite } }) {
+    //         const data = cache.readQuery({ query: GET_RECIPE_QUERY });
+    //         debugger
+    //         const index = data.recipes.findIndex(recipe => recipe.id === deleteRecipe.recipeId);
+    //         const recipes = [...data.recipes.slice(0, index), ...data.recipes.slice(index + 1)];
+    //         cache.writeQuery({
+    //             query: GET_RECIPE_QUERY,
+    //             data: { recipes },
+    //         });
+    //     },
+    // });
 
     const [deleteFavorite] = useMutation(DELETE_FAVORITE_MUTATION, {
         update(cache, { data: { deleteFavorite } }) {
@@ -52,8 +54,8 @@ const Recipe = ({ recipe, favorited, match, history }) => {
         
         if (!inFavorites) {
             console.log('in add to favorites but for real')
-            await createFavorite({ variables: { favorite } });
             setInFavorites(true)
+            await createFavorite({ variables: { favorite } });
         }
     };
     
@@ -61,8 +63,8 @@ const Recipe = ({ recipe, favorited, match, history }) => {
         console.log('in remove from favorites')
         console.log('in remove from favorites but for real')
         if (inFavorites) {
-            await deleteFavorite({ variables: { recipeId } });
             setInFavorites(false)
+            await deleteFavorite({ variables: { recipeId } });
         }
     };
 
@@ -98,10 +100,10 @@ const Recipe = ({ recipe, favorited, match, history }) => {
                     </span>
                 )}
                 { inFavorites && 
-                    <i onClick={() => removeFromFavorites(recipe.id, deleteFavorite)} className="text-danger far fa-heart"></i>
+                    <i style={{ cursor: 'pointer' }} onClick={() => removeFromFavorites(recipe.id, deleteFavorite)} className="text-danger fas fa-heart"></i>
                 }
                 { !inFavorites &&
-                    <i onClick={() => addToFavorites(recipe.id, createFavorite)} className="text-danger far fa-heart"></i>
+                    <i style={{ cursor: 'pointer' }} onClick={() => addToFavorites(recipe.id, createFavorite)} className="text-danger far fa-heart"></i>
                 }
                 &nbsp;
                 {recipe.favorites.length > 0 && <span>({recipe.favorites.length})</span>}

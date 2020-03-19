@@ -331,8 +331,6 @@ class UpdateComment(graphene.Mutation):
         if not existing_comment or existing_comment.user != user:
             raise GraphQLError('Update not permitted.')
 
-        from IPython import embed; embed()
-
         if existing_comment.rating != comment['rating']:
             if existing_comment.rating > 0:
                 if comment['rating'] > 0:
