@@ -8,7 +8,6 @@ const DeleteComment = ({ commentId }) => {
 
     const handleDelete = async (e, deleteComment) => {
         e.preventDefault();
-        debugger;
         await deleteComment({ variables: { commentId } });
     };
 

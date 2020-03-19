@@ -35,7 +35,7 @@ export const PROFILE_QUERY = gql`
             }
             favoriteSet {
                 id
-                recipes {
+                recipe {
                     id
                 }
             }
@@ -86,6 +86,12 @@ export const GET_RECIPES_QUERY = gql`
                 id
                 username
             }
+            favorites {
+                id
+                user {
+                    id
+                }
+            }
         }
     }
 `
@@ -113,13 +119,17 @@ export const GET_RECIPE_QUERY = gql`
                 order
                 content
             }
-            rating
-            ratingCount
-            favoriteCount
             photos {
                 id
                 url
             }
+            favorites {
+                user {
+                    id
+                }
+            }
+            rating
+            ratingCount
             comments {
                 id
                 content
@@ -301,8 +311,8 @@ export const CREATE_FAVORITE_MUTATION = gql`
 `
 
 export const DELETE_FAVORITE_MUTATION = gql`
-    mutation($favoriteId: String!) {
-        deleteRecipe(favoriteId: $favoriteId) {
+    mutation($recipeId: String!) {
+        deleteFavorite(recipeId: $recipeId) {
             favoriteId
         }
     }
