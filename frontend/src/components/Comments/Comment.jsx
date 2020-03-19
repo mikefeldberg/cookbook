@@ -57,7 +57,7 @@ const Comment = ({ comment }) => {
                     </Link>
                 </Col>
                 <Col>
-                    <Row>
+                    <Row noGutters>
                         <Link to={`/profile/${comment.user.username}`}>{comment.user.username}</Link>&nbsp;posted&nbsp;
                         <Moment from={new Date()}>{comment.createdAt}</Moment>&nbsp;
                         {moment(comment.updatedAt).diff(moment(comment.createdAt), 'minutes') > 1 && (
@@ -66,9 +66,9 @@ const Comment = ({ comment }) => {
                             </span>
                         )}
                     </Row>
-                    {!editing && <Row className="selected">{'★'.repeat(comment.rating)}</Row>}
+                    {!editing && <Row noGutters className="selected">{'★'.repeat(comment.rating)}</Row>}
                     {editing && (
-                        <Row>
+                        <Row noGutters>
                             <StarRating rating={newRating} setRating={setNewRating} />
                         </Row>
                     )}

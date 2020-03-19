@@ -109,6 +109,9 @@ class RecipeType(DjangoObjectType):
     def resolve_photos(self, info):
         return Photo.objects.filter(recipe_id=self.id, deleted_at=None)
 
+    def resolve_favorites(self, info):
+        return Favorite.objects.filter(recipe_id=self.id, deleted_at=None)
+
 
 class RecipeInput(graphene.InputObjectType):
     id = graphene.String(required=False)
@@ -333,9 +336,13 @@ class UpdateComment(graphene.Mutation):
                 if comment['rating'] > 0:
                     recipe.rating = (recipe.rating * recipe.rating_count - existing_comment.rating + comment['rating']) / (recipe.rating_count)
 
-                if comment['rating'] == 0:
+                if comment['rating'] == 0 and recipe.rating_count > 1:
                     recipe.rating = (recipe.rating * recipe.rating_count - existing_comment.rating) / (recipe.rating_count - 1)
                     recipe.rating_count -= 1
+
+                if comment['rating'] == 0 and recipe.rating_count == 1:
+                    recipe.rating = 0
+                    recipe.rating_count = 0
 
             else:
                 recipe.rating = (recipe.rating * recipe.rating_count + comment['rating']) / (recipe.rating_count + 1)
@@ -438,15 +445,15 @@ class CreateFavorite(graphene.Mutation):
 
 
 class DeleteFavorite(graphene.Mutation):
-    favorite_id = graphene.String()
+    recipe_id = graphene.String()
 
     class Arguments:
-        favorite_id = graphene.String(required=True)
+        recipe_id = graphene.String(required=True)
 
-    def mutate(self, info, favorite_id):
+    def mutate(self, info, recipe_id):
         user = info.context.user
-        favorite = Favorite.objects.filter(
-            id=favorite_id, deleted_at=None).first()
+        recipe = Recipe.objects.filter(id=recipe_id, deleted_at=None).first()
+        favorite = Favorite.objects.filter(recipe_id=recipe_id, user_id=user.id, deleted_at=None).first()
 
         if not favorite or favorite.user != user:
             raise GraphQLError('Action not permitted.')
@@ -457,7 +464,7 @@ class DeleteFavorite(graphene.Mutation):
         recipe.favorite_count -= 1
         recipe.save()
 
-        return DeleteFavorite(favorite_id=favorite_id)
+        return DeleteFavorite(recipe_id=recipe.id)
 
 
 class Mutation(graphene.ObjectType):

@@ -30,13 +30,8 @@ const RecipeCard = ({ recipe }) => {
                             <span style={{ color: 'gold' }}>{'★'.repeat(recipe.rating)}</span>&nbsp;
                             <span>({recipe.ratingCount})&nbsp;|&nbsp;</span>
                         </>
-                    ) : (
-                        <span style={{ color: 'grey' }}>
-                            {'☆'.repeat(5)}
-                            &nbsp;|&nbsp;
-                        </span>
-                    )}
-                    <i className="text-danger fas fa-heart"></i>&nbsp;({recipe.favoriteCount})
+                    ) : (<span style={{ color: 'grey' }}>{'☆'.repeat(5)}&nbsp;|&nbsp;</span>)}
+                    <i className="text-danger fas fa-heart"></i>&nbsp;({recipe.favorites.length})
                 </ListGroup.Item>
             </ListGroup>
             <Card.Body>

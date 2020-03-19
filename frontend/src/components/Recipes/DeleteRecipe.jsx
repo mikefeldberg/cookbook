@@ -16,13 +16,12 @@ const DeleteRecipe = ({ recipe, history }) => {
         },
     });
 
-    const handleDelete = async (e, deleteRecipe) => {
-        e.preventDefault();
+    const handleDelete = async (deleteRecipe) => {
         await deleteRecipe({ variables: { recipeId: recipe.id } });
         history.push('/');
     };
 
-    return <span onClick={e => handleDelete(e, deleteRecipe)}>Confirm Delete</span>;
+    return <span onClick={() => handleDelete(deleteRecipe)}>Confirm Delete</span>;
 };
 
 export default DeleteRecipe;
