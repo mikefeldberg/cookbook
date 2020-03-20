@@ -56,7 +56,7 @@ const Comment = ({ comment }) => {
         setEditing(false);
     };
 
-    const isCommentSavable = () => {
+    const isSaveEnabled = () => {
         return newContent || newRating;
     };
 
@@ -97,7 +97,7 @@ const Comment = ({ comment }) => {
                             commentId={comment.id}
                             editing={editing}
                             setEditing={setEditing}
-                            isCommentSavable={isCommentSavable}
+                            isSaveEnabled={isSaveEnabled}
                             handleCancel={handleCancel}
                             handleSubmit={handleSubmit}
                             updateComment={updateComment}

@@ -81,7 +81,7 @@ const Recipe = ({ recipe, favorited, history }) => {
                     </div>
                 )}
             </Row>
-            {/* <Row noGutters className="mb-11">
+            <Row noGutters className="mb-11">
                 Added by {recipe.user.username} on&nbsp;<Moment from={new Date()}>{recipe.createdAt}</Moment>
             </Row>
             <Row noGutters className="align-items-center mb-2">
@@ -151,7 +151,7 @@ const Recipe = ({ recipe, favorited, history }) => {
                         <li key={instruction.id}>{instruction.content}</li>
                     ))}
                 </ol>
-            </> */}
+            </>
             <CommentSection recipeId={recipe.id} comments={recipe.comments} />
         </Container>
     );
