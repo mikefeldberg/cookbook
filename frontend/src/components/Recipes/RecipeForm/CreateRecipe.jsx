@@ -13,21 +13,18 @@ import InstructionInput from './InstructionInput';
 
 
 const CreateRecipe = ({history}) => {
-    const [createRecipe] = useMutation(CREATE_RECIPE_MUTATION);
     const [createPhoto] = useMutation(CREATE_PHOTO_MUTATION);
+    const [createRecipe] = useMutation(CREATE_RECIPE_MUTATION, {
+        update(cache, { data: { createRecipe } }) {
+            const data = cache.readQuery({ query: GET_RECIPES_QUERY});
+            const recipes = [createRecipe.recipe, ...data.recipes.slice(0)];
 
-    // const [createRecipe] = useMutation(CREATE_RECIPE_MUTATION, {
-    //     update(cache, { data: { createRecipe } }) {
-    //         const data = cache.readQuery({ query: GET_RECIPES_QUERY});
-    //         const recipe = createRecipe.recipe;
-    //          = [createRecipe.comment, ...recipe.comments.slice(0)];
-
-    //         cache.writeQuery({
-    //             query: GET_RECIPES_QUERY,
-    //             data: { recipes },
-    //         });
-    //     },
-    // });
+            cache.writeQuery({
+                query: GET_RECIPES_QUERY,
+                data: { recipes },
+            });
+        },
+    });
 
     // const blankIngredient = { quantity: '', name: '', preparation: '' };
     // const blankInstruction = { order: 0, content: '' };

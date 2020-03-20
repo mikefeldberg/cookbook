@@ -22,7 +22,7 @@ disable rating when comments are disabled
 live refresh on all mutation
 - login
 - logout
-- create recipe
+x create recipe
 x update recipe
 x delete recipe
 x create comment
