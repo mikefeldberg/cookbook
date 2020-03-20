@@ -31,15 +31,19 @@ const CreateComment = ({ recipeId }) => {
     const handleSubmit = async e => {
         e.preventDefault();
 
-        const comment = {
-            content,
-            rating,
-            recipeId,
-        };
+        if (rating || content) {
+            const comment = {
+                content,
+                rating,
+                recipeId,
+            };
+    
+            setRating(0)
+            setContent('')
+    
+            await createComment({ variables: { comment } });
+        }
 
-        
-
-        await createComment({ variables: { comment } });
     };
 
     return (
