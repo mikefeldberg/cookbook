@@ -140,9 +140,9 @@ export const GET_RECIPE_QUERY = gql`
                     id
                     username
                 }
-                # recipe {
-                #     id
-                # }
+                recipe {
+                    id
+                }
             }
             user {
                 id
@@ -187,14 +187,34 @@ export const CREATE_RECIPE_MUTATION = gql`
                 id
                 title
                 description
+                skillLevel
+                prepTime
+                cookTime
+                waitTime
+                totalTime
+                servings
                 ingredients {
-                    quantity
-                    preparation
                     name
                 }
-                instructions {
-                    content
-                    order
+                rating
+                ratingCount
+                favoriteCount
+                photos {
+                    id
+                    url
+                }
+                comments {
+                    id
+                }
+                user {
+                    id
+                    username
+                }
+                favorites {
+                    id
+                    user {
+                        id
+                    }
                 }
             }
         }

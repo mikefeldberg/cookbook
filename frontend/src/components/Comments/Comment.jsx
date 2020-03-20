@@ -30,6 +30,8 @@ const Comment = ({ comment }) => {
     const handleSubmit = async (e, updateComment) => {
         e.preventDefault();
 
+        console.log(comment)
+
         const updatedComment = {
             id: comment.id,
             content: newContent,
@@ -40,6 +42,10 @@ const Comment = ({ comment }) => {
         await updateComment({ variables: { comment: updatedComment } });
 
         setEditing(false);
+    };
+
+    const isCommentSavable = () => {
+        return newContent || newRating;
     };
 
     return (
@@ -79,6 +85,7 @@ const Comment = ({ comment }) => {
                             commentId={comment.id}
                             editing={editing}
                             setEditing={setEditing}
+                            isCommentSavable={isCommentSavable}
                             handleCancel={handleCancel}
                             handleSubmit={handleSubmit}
                             updateComment={updateComment}

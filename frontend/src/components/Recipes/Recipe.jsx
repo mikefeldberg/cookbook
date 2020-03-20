@@ -73,7 +73,7 @@ const Recipe = ({ recipe, favorited, history }) => {
 
     return (
         <Container>
-            <Row noGutters className="align-items-center">
+            {/* <Row noGutters className="align-items-center">
                 <h1>{recipe.title}&nbsp;</h1>
                 {currentUser && recipe.user.id === currentUser.id && (
                     <div>
@@ -151,7 +151,7 @@ const Recipe = ({ recipe, favorited, history }) => {
                         <li key={instruction.id}>{instruction.content}</li>
                     ))}
                 </ol>
-            </>
+            </> */}
             <CommentSection recipeId={recipe.id} comments={recipe.comments} />
         </Container>
     );

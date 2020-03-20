@@ -20,3 +20,17 @@ disable rating when comments are disabled
 ### Cache
 
 live refresh on all mutation
+- login
+- logout
+- create recipe
+x update recipe
+x delete recipe
+x create comment
+- update comment
+x delete comment
+x create favorite
+x delete favorite
+
+### Comment Edit
+
+From UpdateComment, wen both rating and content are null, need to either (1) disable save; or (2) use save button to trigger delete

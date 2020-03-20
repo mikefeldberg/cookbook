@@ -31,12 +31,13 @@ const CustomMenu = React.forwardRef(({ children, style, className, 'aria-labelle
     );
 });
 
-const CommentToolbar = ({ commentId, editing, setEditing, handleCancel, handleSubmit, updateComment }) => {
+const CommentToolbar = ({ commentId, editing, setEditing, isCommentSavable, handleCancel, handleSubmit, updateComment }) => {
     const EditingToolbar = ({ handleCancel, handleSubmit, updateComment }) => {
         return (
             <Row noGutters className="float-right mb-2">
                 {<i onClick={handleCancel} className="fas fa-times-circle text-danger mr-1"></i>}
-                {<i onClick={e => handleSubmit(e, updateComment)} className="fas fa-check-circle text-success"></i>}
+                {<i onClick={e => handleSubmit(e, updateComment)}
+                    className={[isCommentSavable() ? '' : 'disabled-icon', 'fas fa-check-circle text-success'].join(' ')}></i>}
             </Row>
         );
     };
