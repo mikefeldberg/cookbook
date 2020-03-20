@@ -375,10 +375,16 @@ class DeleteComment(graphene.Mutation):
         comment.deleted_at = timezone.now()
         comment.save()
 
-        if comment.rating > 0:
+        if comment.rating > 0 and recipe.rating_count > 1:
             recipe.rating = (recipe.rating * recipe.rating_count - comment.rating) / (recipe.rating_count - 1)
             recipe.rating_count -= 1
             recipe.save()
+
+        if comment.rating > 0 and recipe.rating_count == 1:
+            recipe.rating = 0
+            recipe.rating_count = 0
+            recipe.save()
+
 
         return DeleteComment(recipe_id=recipe.id)
 

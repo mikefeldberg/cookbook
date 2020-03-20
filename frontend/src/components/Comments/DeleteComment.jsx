@@ -9,14 +9,8 @@ const DeleteComment = ({ commentId }) => {
             const recipeId = deleteComment.recipeId;
             const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables: { id: recipeId } });
             const recipe = {...data.recipe}
-            // console.log(recipe)
             const index = recipe.comments.findIndex(comment => comment.id === commentId);
-            console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~debug1');
-            // debugger
             recipe.comments = [...recipe.comments.slice(0, index), ...recipe.comments.slice(index + 1)];
-            // console.log(recipe)
-            console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!debug2');
-            // debugger
 
             cache.writeQuery({
                 query: GET_RECIPE_QUERY,
