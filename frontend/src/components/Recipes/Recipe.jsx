@@ -73,7 +73,7 @@ const Recipe = ({ recipe, favorited, history }) => {
 
     return (
         <Container>
-            {/* <Row noGutters className="align-items-center">
+            <Row noGutters className="align-items-center">
                 <h1>{recipe.title}&nbsp;</h1>
                 {currentUser && recipe.user.id === currentUser.id && (
                     <div>
@@ -81,7 +81,7 @@ const Recipe = ({ recipe, favorited, history }) => {
                     </div>
                 )}
             </Row>
-            <Row noGutters className="mb-11">
+            {/* <Row noGutters className="mb-11">
                 Added by {recipe.user.username} on&nbsp;<Moment from={new Date()}>{recipe.createdAt}</Moment>
             </Row>
             <Row noGutters className="align-items-center mb-2">

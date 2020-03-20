@@ -300,11 +300,20 @@ export const CREATE_COMMENT_MUTATION = gql`
 export const UPDATE_COMMENT_MUTATION = gql`
     mutation ($comment: CommentInput!) {
         updateComment(comment: $comment) {
-                comment {
+            comment {
+                id
+                content
+                rating
+                createdAt
+                updatedAt
+                recipe {
                     id
-                    content
-                    rating
                 }
+                user {
+                    id
+                    username
+                }
+            }
         }
     }
 `

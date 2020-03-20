@@ -352,7 +352,6 @@ class UpdateComment(graphene.Mutation):
 
         existing_comment.content = comment['content']
         existing_comment.rating = comment['rating']
-
         existing_comment.save()
 
         return UpdateComment(comment=existing_comment)
