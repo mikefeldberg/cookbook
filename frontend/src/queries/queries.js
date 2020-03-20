@@ -319,7 +319,7 @@ export const UPDATE_COMMENT_MUTATION = gql`
 export const DELETE_COMMENT_MUTATION = gql`
     mutation($commentId: String!) {
         deleteComment(commentId: $commentId) {
-            commentId
+            recipeId
         }
     }
 `

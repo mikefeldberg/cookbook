@@ -359,15 +359,15 @@ class UpdateComment(graphene.Mutation):
 
 
 class DeleteComment(graphene.Mutation):
-    comment_id = graphene.String()
+    recipe_id = graphene.String()
 
     class Arguments:
         comment_id = graphene.String(required=True)
 
     def mutate(self, info, comment_id):
         user = info.context.user
-        comment = Comment.objects.filter(
-            id=comment_id, deleted_at=None).first()
+        comment = Comment.objects.filter(id=comment_id, deleted_at=None).first()
+        recipe = Recipe.objects.get(id=comment.recipe_id, deleted_at=None)
 
         if not comment or comment.user != user:
             raise GraphQLError('Delete not permitted.')
@@ -376,12 +376,11 @@ class DeleteComment(graphene.Mutation):
         comment.save()
 
         if comment.rating > 0:
-            recipe = Recipe.objects.get(id=comment.recipe_id, deleted_at=None)
             recipe.rating = (recipe.rating * recipe.rating_count - comment.rating) / (recipe.rating_count - 1)
             recipe.rating_count -= 1
             recipe.save()
 
-        return DeleteComment(comment_id=comment_id)
+        return DeleteComment(recipe_id=recipe.id)
 
 
 class CreatePhoto(graphene.Mutation):
