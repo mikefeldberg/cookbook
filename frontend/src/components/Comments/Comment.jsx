@@ -9,17 +9,31 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
 
-import { UPDATE_COMMENT_MUTATION } from '../../queries/queries';
+import { UPDATE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries';
 import { AuthContext } from '../../App';
 import CommentToolbar from './CommentToolbar';
 import StarRating from './StarRating';
 
 const Comment = ({ comment }) => {
     const currentUser = useContext(AuthContext);
-    const [updateComment] = useMutation(UPDATE_COMMENT_MUTATION);
     const [editing, setEditing] = useState(false);
     const [newRating, setNewRating] = useState(comment.rating);
     const [newContent, setNewContent] = useState(comment.content);
+
+    const [updateComment] = useMutation(UPDATE_COMMENT_MUTATION, {
+        update(cache, { data: { updateComment } }) {
+            const recipeId = updateComment.comment.recipe.id;
+            const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables: { id: recipeId } });
+            const recipe = {...data.recipe}
+            const index = recipe.comments.findIndex(comment => comment.id === updateComment.comment.id);
+            recipe.comments = [...recipe.comments.slice(0, index), updateComment.comment, ...recipe.comments.slice(index + 1)]
+
+            cache.writeQuery({
+                query: GET_RECIPE_QUERY,
+                data: { recipe },
+            });
+        },
+    });
 
     const handleCancel = () => {
         setEditing(false);
@@ -40,6 +54,10 @@ const Comment = ({ comment }) => {
         await updateComment({ variables: { comment: updatedComment } });
 
         setEditing(false);
+    };
+
+    const isSaveEnabled = () => {
+        return newContent || newRating;
     };
 
     return (
@@ -79,6 +97,7 @@ const Comment = ({ comment }) => {
                             commentId={comment.id}
                             editing={editing}
                             setEditing={setEditing}
+                            isSaveEnabled={isSaveEnabled}
                             handleCancel={handleCancel}
                             handleSubmit={handleSubmit}
                             updateComment={updateComment}

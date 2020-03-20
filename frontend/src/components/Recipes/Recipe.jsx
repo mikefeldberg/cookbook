@@ -12,14 +12,15 @@ import { GET_RECIPE_QUERY, CREATE_FAVORITE_MUTATION, DELETE_FAVORITE_MUTATION } 
 import CommentSection from '../Comments/CommentSection';
 import RecipeToolbar from './RecipeToolbar';
 
-const Recipe = ({ recipe, favorited, match, history }) => {
+const Recipe = ({ recipe, favorited, history }) => {
     const currentUser = useContext(AuthContext);
     const [inFavorites, setInFavorites] = useState(favorited)
+    const [pointer] = useState(currentUser ? 'pointer' : '')
 
     const [createFavorite] = useMutation(CREATE_FAVORITE_MUTATION, {
         update(cache, { data: { createFavorite } }) {
-            const recipe_id = createFavorite.favorite.recipe.id
-            const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables:{ id: recipe_id } });
+            const recipeId = createFavorite.favorite.recipe.id
+            const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables:{ id: recipeId } });
 
             const recipe = data.recipe;
 
@@ -34,8 +35,8 @@ const Recipe = ({ recipe, favorited, match, history }) => {
 
     const [deleteFavorite] = useMutation(DELETE_FAVORITE_MUTATION, {
         update(cache, { data: { deleteFavorite } }) {
-            const recipe_id = deleteFavorite.recipeId
-            const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables:{ id: recipe_id } });
+            const recipeId = deleteFavorite.recipeId
+            const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables:{ id: recipeId } });
 
             const recipe = data.recipe;
             recipe.favorites.pop();
@@ -49,20 +50,24 @@ const Recipe = ({ recipe, favorited, match, history }) => {
     
 
     const addToFavorites = async (recipeId, createFavorite) => {
-        const favorite = {
-            recipeId
-        };
-        
-        if (!inFavorites) {
-            setInFavorites(true)
-            await createFavorite({ variables: { favorite } });
+        if (currentUser) {
+            const favorite = {
+                recipeId
+            };
+            
+            if (!inFavorites) {
+                setInFavorites(true)
+                await createFavorite({ variables: { favorite } });
+            }
         }
     };
     
     const removeFromFavorites = async (recipeId, deleteFavorite) => {
-        if (inFavorites) {
-            setInFavorites(false)
-            await deleteFavorite({ variables: { recipeId } });
+        if (currentUser) {
+            if (inFavorites) {
+                setInFavorites(false)
+                await deleteFavorite({ variables: { recipeId } });
+            }
         }
     };
 
@@ -92,10 +97,10 @@ const Recipe = ({ recipe, favorited, match, history }) => {
                     </span>
                 )}
                 { inFavorites && 
-                    <i style={{ cursor: 'pointer' }} onClick={() => removeFromFavorites(recipe.id, deleteFavorite)} className="text-danger fas fa-heart"></i>
+                    <i style={{ cursor: pointer }} onClick={() => removeFromFavorites(recipe.id, deleteFavorite)} className="text-danger fas fa-heart"></i>
                 }
                 { !inFavorites &&
-                    <i style={{ cursor: 'pointer' }} onClick={() => addToFavorites(recipe.id, createFavorite)} className="text-danger far fa-heart"></i>
+                    <i style={{ cursor: pointer }} onClick={() => addToFavorites(recipe.id, createFavorite)} className="text-danger far fa-heart"></i>
                 }
                 &nbsp;
                 {recipe.favorites.length > 0 && <span>({recipe.favorites.length})</span>}

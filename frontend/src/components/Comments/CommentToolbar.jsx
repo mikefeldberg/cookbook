@@ -31,12 +31,13 @@ const CustomMenu = React.forwardRef(({ children, style, className, 'aria-labelle
     );
 });
 
-const CommentToolbar = ({ commentId, editing, setEditing, handleCancel, handleSubmit, updateComment }) => {
+const CommentToolbar = ({ commentId, editing, setEditing, isSaveEnabled, handleCancel, handleSubmit, updateComment }) => {
     const EditingToolbar = ({ handleCancel, handleSubmit, updateComment }) => {
         return (
             <Row noGutters className="float-right mb-2">
-                {<i onClick={handleCancel} className="fas fa-times-circle text-danger mr-1"></i>}
-                {<i onClick={e => handleSubmit(e, updateComment)} className="fas fa-check-circle text-success"></i>}
+                {<i onClick={handleCancel} className="clickable fas fa-times-circle text-danger mr-1"></i>}
+                {<i onClick={e => handleSubmit(e, updateComment)}
+                    className={[isSaveEnabled() ? 'clickable' : 'disabled-icon', 'fas fa-check-circle text-success'].join(' ')}></i>}
             </Row>
         );
     };
@@ -44,10 +45,10 @@ const CommentToolbar = ({ commentId, editing, setEditing, handleCancel, handleSu
     const DefaultToolbar = ({ commentId, setEditing }) => {
         return (
             <Row noGutters className="align-items-center float-right">
-                {<i onClick={() => setEditing(true)} className="fas fa-edit text-secondary mr-1"></i>}
+                {<i onClick={() => setEditing(true)} className="clickable fas fa-edit text-secondary mr-1"></i>}
                 <Dropdown>
                     <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-                        <i className="far fa-trash-alt"></i>
+                        <i className="clickable far fa-trash-alt"></i>
                     </Dropdown.Toggle>
                     <Dropdown.Menu as={CustomMenu}>
                     <Dropdown.Item disabled eventKey="0">

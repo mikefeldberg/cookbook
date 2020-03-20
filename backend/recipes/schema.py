@@ -104,7 +104,7 @@ class RecipeType(DjangoObjectType):
         return Instruction.objects.filter(recipe_id=self.id, deleted_at=None)
 
     def resolve_comments(self, info):
-        return Comment.objects.filter(recipe_id=self.id, deleted_at=None)
+        return Comment.objects.filter(recipe_id=self.id, deleted_at=None).order_by('-created_at')
 
     def resolve_photos(self, info):
         return Photo.objects.filter(recipe_id=self.id, deleted_at=None)
@@ -352,22 +352,21 @@ class UpdateComment(graphene.Mutation):
 
         existing_comment.content = comment['content']
         existing_comment.rating = comment['rating']
-
         existing_comment.save()
 
         return UpdateComment(comment=existing_comment)
 
 
 class DeleteComment(graphene.Mutation):
-    comment_id = graphene.String()
+    recipe_id = graphene.String()
 
     class Arguments:
         comment_id = graphene.String(required=True)
 
     def mutate(self, info, comment_id):
         user = info.context.user
-        comment = Comment.objects.filter(
-            id=comment_id, deleted_at=None).first()
+        comment = Comment.objects.filter(id=comment_id, deleted_at=None).first()
+        recipe = Recipe.objects.get(id=comment.recipe_id, deleted_at=None)
 
         if not comment or comment.user != user:
             raise GraphQLError('Delete not permitted.')
@@ -375,13 +374,18 @@ class DeleteComment(graphene.Mutation):
         comment.deleted_at = timezone.now()
         comment.save()
 
-        if comment.rating > 0:
-            recipe = Recipe.objects.get(id=comment.recipe_id, deleted_at=None)
+        if comment.rating > 0 and recipe.rating_count > 1:
             recipe.rating = (recipe.rating * recipe.rating_count - comment.rating) / (recipe.rating_count - 1)
             recipe.rating_count -= 1
             recipe.save()
 
-        return DeleteComment(comment_id=comment_id)
+        if comment.rating > 0 and recipe.rating_count == 1:
+            recipe.rating = 0
+            recipe.rating_count = 0
+            recipe.save()
+
+
+        return DeleteComment(recipe_id=recipe.id)
 
 
 class CreatePhoto(graphene.Mutation):

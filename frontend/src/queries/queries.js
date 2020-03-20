@@ -187,14 +187,34 @@ export const CREATE_RECIPE_MUTATION = gql`
                 id
                 title
                 description
+                skillLevel
+                prepTime
+                cookTime
+                waitTime
+                totalTime
+                servings
                 ingredients {
-                    quantity
-                    preparation
                     name
                 }
-                instructions {
-                    content
-                    order
+                rating
+                ratingCount
+                favoriteCount
+                photos {
+                    id
+                    url
+                }
+                comments {
+                    id
+                }
+                user {
+                    id
+                    username
+                }
+                favorites {
+                    id
+                    user {
+                        id
+                    }
                 }
             }
         }
@@ -259,14 +279,20 @@ export const DELETE_PHOTO_MUTATION = gql`
 export const CREATE_COMMENT_MUTATION = gql`
     mutation ($comment: CommentInput!) {
         createComment(comment: $comment) {
-                comment {
+            comment {
+                id
+                content
+                rating
+                createdAt
+                updatedAt
+                recipe {
                     id
-                    content
-                    rating
-                    recipe {
-                        id
-                    }
                 }
+                user {
+                    id
+                    username
+                }
+            }
         }
     }
 `
@@ -274,19 +300,55 @@ export const CREATE_COMMENT_MUTATION = gql`
 export const UPDATE_COMMENT_MUTATION = gql`
     mutation ($comment: CommentInput!) {
         updateComment(comment: $comment) {
-                comment {
+            comment {
+                id
+                content
+                rating
+                createdAt
+                updatedAt
+                recipe {
                     id
-                    content
-                    rating
                 }
+                user {
+                    id
+                    username
+                }
+            }
         }
     }
 `
 
+// export const CREATE_COMMENT_MUTATION = gql`
+//     mutation ($comment: CommentInput!) {
+//         createComment(comment: $comment) {
+//                 comment {
+//                     id
+//                     content
+//                     rating
+//                     recipe {
+//                         id
+//                     }
+//                 }
+//         }
+//     }
+// `
+
+// export const UPDATE_COMMENT_MUTATION = gql`
+//     mutation ($comment: CommentInput!) {
+//         updateComment(comment: $comment) {
+//                 comment {
+//                     id
+//                     content
+//                     rating
+//                 }
+//         }
+//     }
+// `
+
 export const DELETE_COMMENT_MUTATION = gql`
     mutation($commentId: String!) {
         deleteComment(commentId: $commentId) {
-            commentId
+            recipeId
         }
     }
 `

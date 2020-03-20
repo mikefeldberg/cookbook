@@ -6,15 +6,25 @@ import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 
-import { CREATE_RECIPE_MUTATION, CREATE_PHOTO_MUTATION } from '../../../queries/queries';
+import { CREATE_RECIPE_MUTATION, CREATE_PHOTO_MUTATION, GET_RECIPES_QUERY } from '../../../queries/queries';
 import IngredientInput from './IngredientInput';
 import InstructionInput from './InstructionInput';
 // import { Redirect } from 'react-router-dom';
 
 
 const CreateRecipe = ({history}) => {
-    const [createRecipe] = useMutation(CREATE_RECIPE_MUTATION);
     const [createPhoto] = useMutation(CREATE_PHOTO_MUTATION);
+    const [createRecipe] = useMutation(CREATE_RECIPE_MUTATION, {
+        update(cache, { data: { createRecipe } }) {
+            const data = cache.readQuery({ query: GET_RECIPES_QUERY});
+            const recipes = [createRecipe.recipe, ...data.recipes.slice(0)];
+
+            cache.writeQuery({
+                query: GET_RECIPES_QUERY,
+                data: { recipes },
+            });
+        },
+    });
 
     // const blankIngredient = { quantity: '', name: '', preparation: '' };
     // const blankInstruction = { order: 0, content: '' };

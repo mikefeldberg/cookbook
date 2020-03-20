@@ -18,11 +18,14 @@ const RecipeDetails = ({ match, history }) => {
 
     if (data) {
         const recipe = data.recipe;
-        const favoritedUserIds = recipe.favorites.map(f => f.user.id)
-        const favorited = favoritedUserIds.includes(currentUser.id)
+        let favorited = false
+        if (currentUser) {
+            const favoritedUserIds = recipe.favorites.map(f => f.user.id)
+            favorited = favoritedUserIds.includes(currentUser.id)
+        }
 
         return (
-            <Recipe recipe={recipe} favorited={favorited} match={match}/>
+            <Recipe recipe={recipe} favorited={favorited} />
         );
     }
 };

@@ -4,17 +4,18 @@ import { useApolloClient, useMutation } from '@apollo/react-hooks';
 import { LOGIN_MUTATION } from '../../queries/queries';
 
 
-const Login = () => {
+const Login = ({history}) => {
     const client = useApolloClient();
     const [tokenAuth] = useMutation(LOGIN_MUTATION);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    
+
     const handleSubmit = async (e, tokenAuth, client) => {
         e.preventDefault();
         const res = await tokenAuth({ variables: { username, password } });
         localStorage.setItem('authToken', res.data.tokenAuth.token);
         client.writeData({ data: { isLoggedIn: true } });
+        history.push('/')
     };
 
     return (

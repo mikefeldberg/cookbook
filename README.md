@@ -8,15 +8,16 @@ on photo upload, client-side error:
 
 ```VM14:1 POST https://cookbook-test-bucket.s3.amazonaws.com/ net::ERR_FAILED```
 
-### Comment "updated at"
-
-created_at and updated_at are off by microseconds. Need to lower threshold to at least one second
-
 ### StarRating
 
-add persistent "hover" state so that stars with (i) < currently hovered-over (i) will appear hovered-over
-disable rating when comments are disabled
+- add persistent "hover" state so that stars with (i) < currently hovered-over (i) will appear hovered-over
+- disable rating when comments are disabled
 
-### Cache
+### Responsiveness
 
-live refresh on all mutation
+### Nav styling
+
+### Misc
+
+- live refresh for login/logout mutations
+- delete recipe/comment confirmation clickable area (currently must click directly on text; no handler on containing element)
