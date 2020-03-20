@@ -10,13 +10,14 @@ on photo upload, client-side error:
 
 ### StarRating
 
-add persistent "hover" state so that stars with (i) < currently hovered-over (i) will appear hovered-over
-disable rating when comments are disabled
-
-### Cache
-
-live refresh for login/logout mutations
+- add persistent "hover" state so that stars with (i) < currently hovered-over (i) will appear hovered-over
+- disable rating when comments are disabled
 
 ### Responsiveness
 
 ### Nav styling
+
+### Misc
+
+- live refresh for login/logout mutations
+- delete recipe/comment confirmation clickable area (currently must click directly on text; no handler on containing element)

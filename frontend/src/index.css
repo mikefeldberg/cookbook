@@ -12,6 +12,10 @@ code {
     monospace;
 }
 
+.clickable {
+  cursor:pointer;
+}
+
 .disabled-icon {
   pointer-events: none;
   opacity: 0.3;

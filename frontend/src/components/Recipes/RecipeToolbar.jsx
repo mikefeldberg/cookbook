@@ -38,7 +38,7 @@ const RecipeToolbar = ({ recipe, history }) => {
             <Link to={`/recipes/${recipe.id}/edit`} className="mr-2">{<i className="fas fa-edit text-secondary"></i>}</Link>
             <Dropdown>
                 <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-                    <i className="far fa-trash-alt"></i>
+                    <i className="clickable far fa-trash-alt"></i>
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu as={CustomMenu}>
