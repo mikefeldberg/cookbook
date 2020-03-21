@@ -14,6 +14,7 @@ import RecipesList from './components/Recipes/RecipesList';
 import RecipeDetails from './components/Recipes/RecipeDetails';
 import CreateRecipe from './components/Recipes/RecipeForm/CreateRecipe';
 import UpdateRecipe from './components/Recipes/RecipeForm/UpdateRecipe';
+import Profile from './components/Profile/Profile';
 
 
 export const AuthContext = React.createContext();
@@ -37,6 +38,7 @@ const App = () => {
                             <Route exact path="/recipes/new" component={CreateRecipe} />
                             <Route exact path="/recipes/:id" component={RecipeDetails} />
                             <Route exact path="/recipes/:id/edit" component={UpdateRecipe} />
+                            <Route exact path="/profile/:id" component={Profile} />
                         </Switch>
                     </Container>
                 </AuthContext.Provider>

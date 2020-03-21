@@ -37,13 +37,12 @@ const CreateComment = ({ recipeId }) => {
                 rating,
                 recipeId,
             };
-    
+
             setRating(0)
             setContent('')
-    
+
             await createComment({ variables: { comment } });
         }
-
     };
 
     return (

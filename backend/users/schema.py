@@ -13,7 +13,11 @@ class UserType(DjangoObjectType):
 class Query(graphene.ObjectType):
     users = graphene.List(UserType)
     user = graphene.Field(UserType, id=graphene.Int(required=True))
+    profile = graphene.Field(UserType, username=graphene.String(required=True))
     me = graphene.Field(UserType)
+
+    def resolve_profile(self, info, username):
+        return get_user_model().objects.get(username=username)
 
     def resolve_users(self, info):
         return get_user_model().objects.all()
