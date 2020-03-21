@@ -8,11 +8,6 @@ on photo upload, client-side error:
 
 ```VM14:1 POST https://cookbook-test-bucket.s3.amazonaws.com/ net::ERR_FAILED```
 
-### StarRating
-
-- add persistent "hover" state so that stars with (i) < currently hovered-over (i) will appear hovered-over
-- disable rating when comments are disabled
-
 ### Responsiveness
 
 ### Nav styling
