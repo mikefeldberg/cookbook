@@ -11,7 +11,7 @@
   margin: 0;
 }
 
-.star:hover {
+.star:hover, .glow > .star {
   cursor:pointer;
   color: gold;
 }
