@@ -18,45 +18,51 @@ export const ME_QUERY = gql`
     }
 `
 
-// export const PROFILE_QUERY = gql`
-//     query profileQuery ($id: Int!) {
-//         user(id: $id) {
-//             id
-//             username
-//             email
-//             recipeSet {
-//                 id
-//                 title
-//                 rating
-//                 ratingCount
-//                 favoriteCount
-//                 photos {
-//                     id
-//                     url
-//                 }
-//             }
-//             commentSet {
-//                 id
-//                 content
-//                 rating
-//             }
-//             favoriteSet {
-//                 id
-//                 recipe {
-//                     id
-//                 }
-//             }
-//         }
-//     }
-// `
-
 export const PROFILE_QUERY = gql`
     query profileQuery ($username: String!) {
         profile(username: $username) {
             id
+            username
+            email
+            recipeSet {
+                id
+                title
+                rating
+                ratingCount
+                favoriteCount
+                deletedAt
+                photos {
+                    id
+                    url
+                }
+            }
+            commentSet {
+                id
+                content
+                rating
+            }
+            favoriteSet {
+                id
+                recipe {
+                    id
+                }
+            }
         }
     }
 `
+
+// export const USERID_QUERY = gql`
+//     query userIdQuery ($username: String!) {
+//         userId(username: $username) {
+//             id
+//             username
+//             email
+//             recipes {
+//                 id
+//             }
+//         }
+//     }
+// `
 
 export const GET_USERS_QUERY = gql`
     query getUsersQuery {

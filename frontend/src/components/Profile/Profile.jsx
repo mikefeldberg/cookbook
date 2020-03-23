@@ -5,23 +5,35 @@ import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 // import Sonne t from 'react-bootstrap/Sonnet';
 
-import { PROFILE_QUERY, GET_RECIPES_QUERY,  } from '../../queries/queries';
+import { PROFILE_QUERY } from '../../queries/queries';
 import ProfileRecipes from './ProfileRecipes';
 
 
 const Profile = ({match}) => {
     const username = match.params.id
-    const { data: user, loading, error } = useQuery(PROFILE_QUERY, {
+
+    const { data, loading, error } = useQuery(PROFILE_QUERY, {
         variables: { username },
     });
+    
 
-    if (loading) return `Loading`
-    if (data) {
-        const recipes = data.profile.recipeSet
-        const favorites = data.profile.favoriteSet
-        const comments = data.profile.commentSet
+    const { data, error, loading } = useQuery(GET_DOGS);
+    const result2 = useQuery(GET_BREEDS, {
+      skip: !data,
+      variables: { dogId: data && data.dogs[0].id },
+    });
 
-        debugger
+    debugger
+    if (data){
+    }
+
+
+    // if (loading) return `Loading`
+    // if (data) {
+    //     const recipes = data.profile.recipeSet
+    //     const favorites = data.profile.favoriteSet
+    //     const comments = data.profile.commentSet
+
 
         return (
             <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
@@ -29,14 +41,14 @@ const Profile = ({match}) => {
                     <Sonnet />
                 </Tab> */}
                 <Tab eventKey="recipes" title="Recipes">
-                    <ProfileRecipes recipes={recipes}/>
+                    {/* <ProfileRecipes recipes={recipes}/> */}
                 </Tab>
                 {/* <Tab eventKey="contact" title="Contact" disabled>
                     <Sonnet />
                 </Tab> */}
             </Tabs>
         );
-    }
+    // }
 };
 
 export default Profile;
