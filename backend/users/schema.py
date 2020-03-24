@@ -12,28 +12,27 @@ class UserType(DjangoObjectType):
 
 class Query(graphene.ObjectType):
     users = graphene.List(UserType)
-    user = graphene.Field(UserType, id=graphene.Int(required=True))
-    profile = graphene.Field(UserType, username=graphene.String(required=True))
+    user = graphene.Field(UserType, id=graphene.String(required=True))
+    profile = graphene.Field(UserType, id=graphene.String(required=True))
     me = graphene.Field(UserType)
 
-    def resolve_profile(self, info, username):
-        user = get_user_model()
-        user_recipes = user.recipe_set
-        user_comments = user.comment_set
-        user_favorites = user.favorite_set
+    def resolve_profile(self, info, id):
+        # user = get_user_model()
+    #     user_recipes = user.recipe_set
+    #     user_comments = user.comment_set
+    #     user_favorites = user.favorite_set
 
-        user_profile = (
-            user_recipes
-            user_comments
-            user_favorites
-        )
+    #     user_profile = (
+    #         user_recipes,
+    #         user_comments,
+    #         user_favorites
+    #     )
 
-        from IPython import embed; embed()
-        
+    #     from IPython import embed; embed()
 
 
+        return get_user_model().objects.get(id=id)
         # return get_user_model().objects.get(username=username)
-        return get_user_model().objects.get(username=username)
 
     def resolve_users(self, info):
         return get_user_model().objects.all()

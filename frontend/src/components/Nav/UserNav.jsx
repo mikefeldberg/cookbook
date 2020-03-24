@@ -3,15 +3,16 @@ import { Link } from 'react-router-dom';
 
 import Nav from 'react-bootstrap/Nav';
 
-const UserNav = props => {
+const UserNav = ({currentUser}) => {
     const handleLogout = () => {
         localStorage.removeItem('authToken');
     };
+
     return (
         <>
             <Nav.Item>
-                <Link className="navLink nav-link" to="/profile">
-                    Hey, {props.currentUser.username}
+                <Link className="navLink nav-link" to={`/profile/${currentUser.id}`}>
+                    Hey, {currentUser.username}
                 </Link>
             </Nav.Item>
             <Nav.Item>
