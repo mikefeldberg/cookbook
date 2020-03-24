@@ -86,6 +86,8 @@ DATABASES = {
     }
 }
 
+# Custom user model with extra fields
+AUTH_USER_MODEL = 'recipes.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -120,3 +122,4 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+
