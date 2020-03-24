@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 import uuid
-
+from django.contrib.auth.models import AbstractUser
 
 class StandardModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -11,6 +11,13 @@ class StandardModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+class User(AbstractUser):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(null=True, blank=True)
 
 
 class Recipe(StandardModel):
