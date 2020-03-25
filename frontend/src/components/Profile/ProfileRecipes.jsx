@@ -14,4 +14,5 @@ const ProfileRecipes = ({recipes}) => {
     );
 };
 
+
 export default ProfileRecipes;

@@ -31,6 +31,7 @@ export const PROFILE_QUERY = gql`
                     id
                     url
                 }
+                rating
                 ratingCount
                 favorites {
                     id
@@ -40,11 +41,35 @@ export const PROFILE_QUERY = gql`
                 id
                 content
                 rating
+                recipe {
+                    id
+                    title
+                    photos {
+                        id
+                        url
+                    }
+                }
+                createdAt
+                updatedAt
             }
             favoriteSet {
                 id
                 recipe {
                     id
+                    title
+                    photos {
+                        id
+                        url
+                    }
+                    rating
+                    ratingCount
+                    favorites {
+                        id
+                    }
+                    user {
+                        id
+                        username
+                    }
                 }
             }
         }

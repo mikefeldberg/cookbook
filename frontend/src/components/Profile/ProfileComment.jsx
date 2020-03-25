@@ -10,12 +10,11 @@ import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
 
 import { UPDATE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries';
+import CommentToolbar from '../Comments/CommentToolbar';
 import { AuthContext } from '../../App';
-import CommentToolbar from './CommentToolbar';
-import StarRating from './StarRating';
+import StarRating from '../Comments/StarRating';
 
 const Comment = ({ comment }) => {
-    const currentUser = useContext(AuthContext);
     const [editing, setEditing] = useState(false);
     const [newRating, setNewRating] = useState(comment.rating);
     const [newContent, setNewContent] = useState(comment.content);
@@ -64,19 +63,23 @@ const Comment = ({ comment }) => {
         <div className="border mb-2 rounded">
             <Row className="p-2">
                 <Col md={1}>
-                    <Link to={`/profile/${comment.user.username}`}>
+                    <Link to={`/recipes/${comment.recipe.id}`}>
                         <Image
                             width={64}
                             height={64}
                             className="rounded mr-3"
-                            src="https://cookbook-test-bucket.s3-us-west-1.amazonaws.com/_avatarplaceholder.png"
-                            alt={comment.user.username}
+                            src={
+                                comment.recipe.photos.length > 0
+                                    ? comment.recipe.photos[0].url
+                                    : `https://cookbook-test-bucket.s3-us-west-1.amazonaws.com/_food_placeholder.jpg`
+                            }
+                            alt={comment.recipe.title}
                         />
                     </Link>
                 </Col>
                 <Col>
                     <Row noGutters>
-                        <Link to={`/profile/${comment.user.id}`}>{comment.user.username}</Link>&nbsp;posted&nbsp;
+                        <Link to={`/recipes/${comment.recipe.id}`}>{comment.recipe.title}</Link>&nbsp;posted&nbsp;
                         <Moment from={new Date()}>{comment.createdAt}</Moment>&nbsp;
                         {moment(comment.updatedAt).diff(moment(comment.createdAt), 'minutes') > 1 && (
                             <span>
@@ -84,45 +87,9 @@ const Comment = ({ comment }) => {
                             </span>
                         )}
                     </Row>
-                    {!editing && <Row noGutters className="selected">{'★'.repeat(comment.rating)}</Row>}
-                    {editing && (
-                        <Row noGutters>
-                            <StarRating rating={newRating} setRating={setNewRating} />
-                        </Row>
-                    )}
-                </Col>
-                <Col md={2}>
-                    {currentUser && currentUser.id === comment.user.id &&
-                        <CommentToolbar
-                            commentId={comment.id}
-                            editing={editing}
-                            setEditing={setEditing}
-                            isSaveEnabled={isSaveEnabled}
-                            handleCancel={handleCancel}
-                            handleSubmit={handleSubmit}
-                            updateComment={updateComment}
-                        />
-                    }
+                    <Row noGutters className="selected">{'★'.repeat(comment.rating)}</Row>
                 </Col>
             </Row>
-            {editing && (
-                <div className="p-2">
-                    <Form.Control
-                        className="p-1"
-                        value={newContent}
-                        type="text"
-                        as="textarea"
-                        rows="3"
-                        name="content"
-                        onChange={e => setNewContent(e.target.value)}
-                    />
-                </div>
-            )}
-            {!editing && (
-                <Row noGutters className="pl-2 pb-1">
-                    {comment.content}
-                </Row>
-            )}
         </div>
     );
 };

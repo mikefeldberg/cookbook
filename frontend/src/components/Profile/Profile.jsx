@@ -6,6 +6,8 @@ import Tab from 'react-bootstrap/Tab';
 
 import { PROFILE_QUERY } from '../../queries/queries';
 import ProfileRecipes from './ProfileRecipes';
+import ProfileFavorites from './ProfileFavorites';
+import ProfileComment from './ProfileComment';
 
 const Profile = ({ match }) => {
     const id = match.params.id;
@@ -19,10 +21,19 @@ const Profile = ({ match }) => {
 
     if (data) {
         const recipes = data.profile.recipeSet;
+        const comments = data.profile.commentSet;
+        const favorites = data.profile.favoriteSet;
+        
         return (
             <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
                 <Tab eventKey="recipes" title="Recipes">
                     <ProfileRecipes recipes={recipes} />
+                </Tab>
+                <Tab eventKey="favorites" title="Favorites">
+                    <ProfileFavorites favorites={favorites} />
+                </Tab>
+                <Tab eventKey="comments" title="Comments">
+                    {comments.length > 0 && comments.map(comment => <ProfileComment key={comment.id} comment={comment} />)}
                 </Tab>
             </Tabs>
         );

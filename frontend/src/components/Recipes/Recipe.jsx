@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
 import Moment from 'react-moment';
 
@@ -14,17 +15,17 @@ import RecipeToolbar from './RecipeToolbar';
 
 const Recipe = ({ recipe, favorited, history }) => {
     const currentUser = useContext(AuthContext);
-    const [inFavorites, setInFavorites] = useState(favorited)
-    const [pointer] = useState(currentUser ? 'pointer' : '')
+    const [inFavorites, setInFavorites] = useState(favorited);
+    const [pointer] = useState(currentUser ? 'pointer' : '');
 
     const [createFavorite] = useMutation(CREATE_FAVORITE_MUTATION, {
         update(cache, { data: { createFavorite } }) {
-            const recipeId = createFavorite.favorite.recipe.id
-            const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables:{ id: recipeId } });
+            const recipeId = createFavorite.favorite.recipe.id;
+            const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables: { id: recipeId } });
 
             const recipe = data.recipe;
 
-            recipe.favorites.push({user: {id: currentUser.id, __typename: "UserType"}, __typename: "FavoriteType"});
+            recipe.favorites.push({ user: { id: currentUser.id, __typename: 'UserType' }, __typename: 'FavoriteType' });
 
             cache.writeQuery({
                 query: GET_RECIPE_QUERY,
@@ -35,8 +36,8 @@ const Recipe = ({ recipe, favorited, history }) => {
 
     const [deleteFavorite] = useMutation(DELETE_FAVORITE_MUTATION, {
         update(cache, { data: { deleteFavorite } }) {
-            const recipeId = deleteFavorite.recipeId
-            const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables:{ id: recipeId } });
+            const recipeId = deleteFavorite.recipeId;
+            const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables: { id: recipeId } });
 
             const recipe = data.recipe;
             recipe.favorites.pop();
@@ -47,25 +48,24 @@ const Recipe = ({ recipe, favorited, history }) => {
             });
         },
     });
-    
 
     const addToFavorites = async (recipeId, createFavorite) => {
         if (currentUser) {
             const favorite = {
-                recipeId
+                recipeId,
             };
-            
+
             if (!inFavorites) {
-                setInFavorites(true)
+                setInFavorites(true);
                 await createFavorite({ variables: { favorite } });
             }
         }
     };
-    
+
     const removeFromFavorites = async (recipeId, deleteFavorite) => {
         if (currentUser) {
             if (inFavorites) {
-                setInFavorites(false)
+                setInFavorites(false);
                 await deleteFavorite({ variables: { recipeId } });
             }
         }
@@ -82,7 +82,8 @@ const Recipe = ({ recipe, favorited, history }) => {
                 )}
             </Row>
             <Row noGutters className="mb-11">
-                Added by {recipe.user.username} on&nbsp;<Moment from={new Date()}>{recipe.createdAt}</Moment>
+                Added by&nbsp;<Link to={`/profile/${recipe.user.id}`}>{recipe.user.username}</Link>&nbsp;on&nbsp;
+                <Moment from={new Date()}>{recipe.createdAt}</Moment>
             </Row>
             <Row noGutters className="align-items-center mb-2">
                 {recipe.ratingCount > 0 ? (
@@ -96,12 +97,20 @@ const Recipe = ({ recipe, favorited, history }) => {
                         &nbsp;|&nbsp;
                     </span>
                 )}
-                { inFavorites && 
-                    <i style={{ cursor: pointer }} onClick={() => removeFromFavorites(recipe.id, deleteFavorite)} className="text-danger fas fa-heart"></i>
-                }
-                { !inFavorites &&
-                    <i style={{ cursor: pointer }} onClick={() => addToFavorites(recipe.id, createFavorite)} className="text-danger far fa-heart"></i>
-                }
+                {inFavorites && (
+                    <i
+                        style={{ cursor: pointer }}
+                        onClick={() => removeFromFavorites(recipe.id, deleteFavorite)}
+                        className="text-danger fas fa-heart"
+                    ></i>
+                )}
+                {!inFavorites && (
+                    <i
+                        style={{ cursor: pointer }}
+                        onClick={() => addToFavorites(recipe.id, createFavorite)}
+                        className="text-danger far fa-heart"
+                    ></i>
+                )}
                 &nbsp;
                 {recipe.favorites.length > 0 && <span>({recipe.favorites.length})</span>}
             </Row>
