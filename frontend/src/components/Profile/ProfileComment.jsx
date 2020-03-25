@@ -15,6 +15,7 @@ import { AuthContext } from '../../App';
 import StarRating from '../Comments/StarRating';
 
 const Comment = ({ comment }) => {
+    const currentUser = useContext(AuthContext);
     const [editing, setEditing] = useState(false);
     const [newRating, setNewRating] = useState(comment.rating);
     const [newContent, setNewContent] = useState(comment.content);
@@ -87,9 +88,45 @@ const Comment = ({ comment }) => {
                             </span>
                         )}
                     </Row>
-                    <Row noGutters className="selected">{'★'.repeat(comment.rating)}</Row>
+                    {!editing && <Row noGutters className="selected">{'★'.repeat(comment.rating)}</Row>}
+                    {editing && (
+                        <Row noGutters>
+                            <StarRating rating={newRating} setRating={setNewRating} />
+                        </Row>
+                    )}
+                </Col>
+                <Col md={2}>
+                    {currentUser && currentUser.id === comment.user.id &&
+                        <CommentToolbar
+                            commentId={comment.id}
+                            editing={editing}
+                            setEditing={setEditing}
+                            isSaveEnabled={isSaveEnabled}
+                            handleCancel={handleCancel}
+                            handleSubmit={handleSubmit}
+                            updateComment={updateComment}
+                        />
+                    }
                 </Col>
             </Row>
+            {editing && (
+                <div className="p-2">
+                    <Form.Control
+                        className="p-1"
+                        value={newContent}
+                        type="text"
+                        as="textarea"
+                        rows="3"
+                        name="content"
+                        onChange={e => setNewContent(e.target.value)}
+                    />
+                </div>
+            )}
+            {!editing && (
+                <Row noGutters className="pl-2 pb-1">
+                    {comment.content}
+                </Row>
+            )}
         </div>
     );
 };

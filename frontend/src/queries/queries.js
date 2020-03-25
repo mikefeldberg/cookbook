@@ -49,6 +49,9 @@ export const PROFILE_QUERY = gql`
                         url
                     }
                 }
+                user {
+                    id
+                }
                 createdAt
                 updatedAt
             }

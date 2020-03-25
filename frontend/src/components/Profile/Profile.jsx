@@ -8,12 +8,14 @@ import { PROFILE_QUERY } from '../../queries/queries';
 import ProfileRecipes from './ProfileRecipes';
 import ProfileFavorites from './ProfileFavorites';
 import ProfileComment from './ProfileComment';
+import Container from 'react-bootstrap/Container';
 
 const Profile = ({ match }) => {
     const id = match.params.id;
 
     const { data, loading, error } = useQuery(PROFILE_QUERY, {
         variables: { id },
+        fetchPolicy: 'network-only'
     });
 
     if (loading) return `Loading recipe...`;
