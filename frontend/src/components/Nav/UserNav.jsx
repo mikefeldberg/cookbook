@@ -2,12 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import Nav from 'react-bootstrap/Nav';
+import Logout from '../Auth/Logout';
 
-const UserNav = ({currentUser}) => {
-    const handleLogout = () => {
-        localStorage.removeItem('authToken');
-    };
-
+const UserNav = ({currentUser, handleLogout}) => {
     return (
         <>
             <Nav.Item>
@@ -21,8 +18,8 @@ const UserNav = ({currentUser}) => {
                 </Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link className="navLink nav-link" onClick={() => handleLogout()}>
-                    Logout
+                <Nav.Link className="navLink nav-link">
+                    <Logout />
                 </Nav.Link>
             </Nav.Item>
         </>

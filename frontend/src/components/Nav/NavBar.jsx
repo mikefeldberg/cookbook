@@ -27,7 +27,11 @@ const NavBar = () => {
                                     Home
                                 </Link>
                             </Nav.Item>
-                            {currentUser ? <UserNav currentUser={currentUser} /> : <AnonNav />}
+                            {currentUser ? (
+                                <UserNav currentUser={currentUser} />
+                            ) : (
+                                <AnonNav />
+                            )}
                         </Nav>
                         <Form inline>
                             <Form.Control type="text" placeholder="Search" className="mr-sm-2" />

@@ -2,10 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
 
-import { ME_QUERY } from './queries/queries';
-
 import Container from 'react-bootstrap/Container';
 
+import { ME_QUERY } from './queries/queries';
 import NavBar from './components/Nav/NavBar';
 import Register from './components/Auth/Register';
 import Login from './components/Auth/Login';
@@ -21,6 +20,9 @@ export const AuthContext = React.createContext();
 
 const App = () => {
     const { data, loading } = useQuery(ME_QUERY);
+    // const { data, loading } = useQuery(ME_QUERY, {
+    //     fetchPolicy: 'network-only'
+    // });
     if (loading) return `Loading`
     const currentUser = null || data.me
 
