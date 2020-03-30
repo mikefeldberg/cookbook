@@ -9,7 +9,7 @@ import { GET_RECIPE_QUERY } from '../../../queries/queries';
 import UpdateRecipeForm from './UpdateRecipeForm';
 
 
-const UpdateRecipe = ({ match, history }) => {
+const UpdateRecipe = ({ match }) => {
     const currentUser = useContext(AuthContext);
     const id = match.params.id;
 
@@ -24,7 +24,7 @@ const UpdateRecipe = ({ match, history }) => {
         const recipe = omitDeep(data, '__typename')
 
         if (recipe.recipe.user.id === currentUser.id) {
-            return <UpdateRecipeForm recipe={recipe.recipe} history={history}/>;
+            return <UpdateRecipeForm recipe={recipe.recipe} />;
         } else {
             return <Redirect to='/' />
         }

@@ -2,16 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import Nav from 'react-bootstrap/Nav';
+import Logout from '../Auth/Logout';
 
-const UserNav = props => {
-    const handleLogout = () => {
-        localStorage.removeItem('authToken');
-    };
+const UserNav = ({currentUser}) => {
     return (
         <>
             <Nav.Item>
-                <Link className="navLink nav-link" to="/profile">
-                    Hey, {props.currentUser.username}
+                <Link className="navLink nav-link" to={`/profile/${currentUser.id}`}>
+                    Hey, {currentUser.username}
                 </Link>
             </Nav.Item>
             <Nav.Item>
@@ -20,8 +18,8 @@ const UserNav = props => {
                 </Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link className="navLink nav-link" onClick={() => handleLogout()}>
-                    Logout
+                <Nav.Link className="navLink nav-link">
+                    <Logout />
                 </Nav.Link>
             </Nav.Item>
         </>

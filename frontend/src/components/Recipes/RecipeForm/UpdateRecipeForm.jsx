@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
+import { useHistory } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -13,7 +14,8 @@ import IngredientInput from './IngredientInput';
 import InstructionInput from './InstructionInput';
 
 
-const UpdateRecipeForm = ({recipe, history}) => {
+const UpdateRecipeForm = ({ recipe }) => {
+    const history = useHistory();
     const [updateRecipe] = useMutation(UPDATE_RECIPE_MUTATION);
     const [createPhoto] = useMutation(CREATE_PHOTO_MUTATION);
     const [deletePhoto] = useMutation(DELETE_PHOTO_MUTATION);

@@ -10,9 +10,9 @@ import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
 
 import { UPDATE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries';
+import CommentToolbar from '../Comments/CommentToolbar';
 import { AuthContext } from '../../App';
-import CommentToolbar from './CommentToolbar';
-import StarRating from './StarRating';
+import StarRating from '../Comments/StarRating';
 
 const Comment = ({ comment }) => {
     const currentUser = useContext(AuthContext);
@@ -64,19 +64,23 @@ const Comment = ({ comment }) => {
         <div className="border mb-2 rounded">
             <Row className="p-2">
                 <Col md={1}>
-                    <Link to={`/profile/${comment.user.username}`}>
+                    <Link to={`/recipes/${comment.recipe.id}`}>
                         <Image
                             width={64}
                             height={64}
                             className="rounded mr-3"
-                            src="https://cookbook-test-bucket.s3-us-west-1.amazonaws.com/_avatarplaceholder.png"
-                            alt={comment.user.username}
+                            src={
+                                comment.recipe.photos.length > 0
+                                    ? comment.recipe.photos[0].url
+                                    : `https://cookbook-test-bucket.s3-us-west-1.amazonaws.com/_food_placeholder.jpg`
+                            }
+                            alt={comment.recipe.title}
                         />
                     </Link>
                 </Col>
                 <Col>
                     <Row noGutters>
-                        <Link to={`/profile/${comment.user.id}`}>{comment.user.username}</Link>&nbsp;posted&nbsp;
+                        <Link to={`/recipes/${comment.recipe.id}`}>{comment.recipe.title}</Link>&nbsp;posted&nbsp;
                         <Moment from={new Date()}>{comment.createdAt}</Moment>&nbsp;
                         {moment(comment.updatedAt).diff(moment(comment.createdAt), 'minutes') > 1 && (
                             <span>

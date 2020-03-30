@@ -32,7 +32,7 @@ const CustomMenu = React.forwardRef(({ children, style, className, 'aria-labelle
     );
 });
 
-const RecipeToolbar = ({ recipe, history }) => {
+const RecipeToolbar = ({ recipe }) => {
     return (
         <Row noGutters>
             <Link to={`/recipes/${recipe.id}/edit`} className="mr-2">{<i className="fas fa-edit text-secondary"></i>}</Link>
@@ -47,7 +47,7 @@ const RecipeToolbar = ({ recipe, history }) => {
                     </Dropdown.Item>
                     <Dropdown.Divider />
                     <Dropdown.Item eventKey="1">
-                        <DeleteRecipe recipe={recipe} history={history} />
+                        <DeleteRecipe recipe={recipe} />
                     </Dropdown.Item>
                     <Dropdown.Item eventKey="2">Cancel</Dropdown.Item>
                 </Dropdown.Menu>

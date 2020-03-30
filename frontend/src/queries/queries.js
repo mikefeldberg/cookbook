@@ -19,24 +19,60 @@ export const ME_QUERY = gql`
 `
 
 export const PROFILE_QUERY = gql`
-    query profileQuery ($id: Int!) {
-        user(id: $id) {
+    query profileQuery ($id: String!) {
+        profile(id: $id) {
             id
             username
             email
             recipeSet {
                 id
                 title
+                photos {
+                    id
+                    url
+                }
+                rating
+                ratingCount
+                favorites {
+                    id
+                }
             }
             commentSet {
                 id
                 content
                 rating
+                recipe {
+                    id
+                    title
+                    photos {
+                        id
+                        url
+                    }
+                }
+                user {
+                    id
+                }
+                createdAt
+                updatedAt
             }
             favoriteSet {
                 id
                 recipe {
                     id
+                    title
+                    photos {
+                        id
+                        url
+                    }
+                    rating
+                    ratingCount
+                    favorites {
+                        id
+                    }
+                    user {
+                        id
+                        username
+                    }
                 }
             }
         }

@@ -1,9 +1,11 @@
 import React from 'react';
 import { useMutation } from '@apollo/react-hooks';
+import { useHistory } from 'react-router-dom';
 
 import { DELETE_RECIPE_MUTATION, GET_RECIPES_QUERY } from '../../queries/queries';
 
-const DeleteRecipe = ({ recipe, history }) => {
+const DeleteRecipe = ({ recipe }) => {
+    const history = useHistory();
     const [deleteRecipe] = useMutation(DELETE_RECIPE_MUTATION, {
         update(cache, { data: { deleteRecipe } }) {
             const data = cache.readQuery({ query: GET_RECIPES_QUERY });
