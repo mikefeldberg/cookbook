@@ -24,7 +24,8 @@ const App = () => {
     //     fetchPolicy: 'network-only'
     // });
     if (loading) return `Loading`
-    const currentUser = null || data.me
+    let currentUser = data.me || null
+    // debugger
 
     return (
         <div className="App">

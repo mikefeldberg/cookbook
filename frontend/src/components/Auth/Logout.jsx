@@ -6,18 +6,20 @@ import { AuthContext } from "../../App";
 
 const Logout = () => {
     const client = useApolloClient();
-    let currentUser = useContext(AuthContext)
+    // let currentUser = useContext(AuthContext)
 
     const handleLogout = (currentUser) => {
+        // debugger
         localStorage.removeItem('authToken')
         client.writeData({ data: {isLoggedIn: false} })
         currentUser = null
         console.log('signed out user', client)
+        client.resetStore()
     }
 
     return (
         <AuthContext.Consumer>
-            {currentuser => (
+            {currentUser => (
                 <span onClick={() => handleLogout(currentUser)}>
                     Logout
                 </span>

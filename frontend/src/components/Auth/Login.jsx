@@ -16,6 +16,7 @@ const Login = ({history}) => {
         localStorage.setItem('authToken', res.data.tokenAuth.token);
         client.writeData({ data: { isLoggedIn: true } });
         history.push('/')
+        client.resetStore()
     };
 
     return (
