@@ -6,9 +6,10 @@ import RecipeCard from '../Recipes/RecipeCard';
 const ProfileFavorites = ({favorites}) => {
     return (
         <CardColumns>
-            {favorites.map(favorite => (
-                <RecipeCard key={favorite.id} recipe={favorite.recipe} />
-            ))}
+            {favorites.length > 0 ?
+                favorites.map(favorite => (<RecipeCard key={favorite.id} recipe={favorite.recipe} /> )) :
+                `You haven't saved any favorites`
+            }
         </CardColumns>
     );
 };

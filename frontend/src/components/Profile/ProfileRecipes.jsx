@@ -7,9 +7,10 @@ import ProfileRecipeCard from './ProfileRecipeCard';
 const ProfileRecipes = ({recipes}) => {
     return (
         <CardColumns>
-            {recipes.map(recipe => (
-                <ProfileRecipeCard key={recipe.id} recipe={recipe} />
-            ))}
+            {recipes.length > 0 ?
+                recipes.map(recipe => (<ProfileRecipeCard key={recipe.id} recipe={recipe} />)) :
+                `You haven't added any recipes`
+            }
         </CardColumns>
     );
 };

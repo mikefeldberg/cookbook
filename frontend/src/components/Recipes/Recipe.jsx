@@ -13,7 +13,7 @@ import { GET_RECIPE_QUERY, CREATE_FAVORITE_MUTATION, DELETE_FAVORITE_MUTATION } 
 import CommentSection from '../Comments/CommentSection';
 import RecipeToolbar from './RecipeToolbar';
 
-const Recipe = ({ recipe, favorited, history }) => {
+const Recipe = ({ recipe, favorited }) => {
     const currentUser = useContext(AuthContext);
     const [inFavorites, setInFavorites] = useState(favorited);
     const [pointer] = useState(currentUser ? 'pointer' : '');
@@ -77,7 +77,7 @@ const Recipe = ({ recipe, favorited, history }) => {
                 <h1>{recipe.title}&nbsp;</h1>
                 {currentUser && recipe.user.id === currentUser.id && (
                     <div>
-                        <RecipeToolbar recipe={recipe} history={history} />
+                        <RecipeToolbar recipe={recipe} />
                     </div>
                 )}
             </Row>

@@ -20,12 +20,9 @@ export const AuthContext = React.createContext();
 
 const App = () => {
     const { data, loading } = useQuery(ME_QUERY);
-    // const { data, loading } = useQuery(ME_QUERY, {
-    //     fetchPolicy: 'network-only'
-    // });
+
     if (loading) return `Loading`
-    let currentUser = data.me || null
-    // debugger
+    let currentUser = data ? data.me : null;
 
     return (
         <div className="App">

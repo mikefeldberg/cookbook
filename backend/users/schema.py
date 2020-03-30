@@ -17,22 +17,7 @@ class Query(graphene.ObjectType):
     me = graphene.Field(UserType)
 
     def resolve_profile(self, info, id):
-        # user = get_user_model()
-    #     user_recipes = user.recipe_set
-    #     user_comments = user.comment_set
-    #     user_favorites = user.favorite_set
-
-    #     user_profile = (
-    #         user_recipes,
-    #         user_comments,
-    #         user_favorites
-    #     )
-
-    #     from IPython import embed; embed()
-
-
         return get_user_model().objects.get(id=id)
-        # return get_user_model().objects.get(username=username)
 
     def resolve_users(self, info):
         return get_user_model().objects.all()

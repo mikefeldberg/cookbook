@@ -34,7 +34,10 @@ const Profile = ({ match }) => {
                     <ProfileFavorites favorites={favorites} />
                 </Tab>
                 <Tab eventKey="comments" title="Comments">
-                    {comments.length > 0 && comments.map(comment => <ProfileComment key={comment.id} comment={comment} />)}
+                    {comments.length > 0 ?
+                        comments.map(comment => <ProfileComment key={comment.id} comment={comment} />) : 
+                        `You haven't saved left any comments`
+                    }
                 </Tab>
             </Tabs>
         );
