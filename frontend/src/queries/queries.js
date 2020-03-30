@@ -132,6 +132,45 @@ export const GET_RECIPES_QUERY = gql`
     }
 `
 
+export const SEARCH_RECIPES_QUERY = gql`
+    query searchRecipesQuery($search: String) {
+        recipes(search: $search) {
+            id
+            title
+            description
+            skillLevel
+            prepTime
+            cookTime
+            waitTime
+            totalTime
+            servings
+            ingredients {
+                name
+            }
+            rating
+            ratingCount
+            favoriteCount
+            photos {
+                id
+                url
+            }
+            comments {
+                id
+            }
+            user {
+                id
+                username
+            }
+            favorites {
+                id
+                user {
+                    id
+                }
+            }
+        }
+    }
+`
+
 export const GET_RECIPE_QUERY = gql`
     query getRecipeQuery($id: String!) {
         recipe (id: $id) {
@@ -190,6 +229,8 @@ export const GET_RECIPE_QUERY = gql`
         }
     }
 `
+
+
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~ MUTATIONS
 

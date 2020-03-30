@@ -33,10 +33,6 @@ const NavBar = () => {
                                 <AnonNav />
                             )}
                         </Nav>
-                        <Form inline>
-                            <Form.Control type="text" placeholder="Search" className="mr-sm-2" />
-                            <Button variant="info">Search</Button>
-                        </Form>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
