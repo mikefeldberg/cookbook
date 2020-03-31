@@ -6,7 +6,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 
 const RecipeCard = ({ recipe }) => {
     return (
-        <Card border="primary" style={{ width: '18rem' }}>
+        <Card border="secondary">
             <Card.Img
                 variant="top"
                 src={

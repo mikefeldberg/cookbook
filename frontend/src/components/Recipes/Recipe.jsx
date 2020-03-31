@@ -82,7 +82,7 @@ const Recipe = ({ recipe, favorited }) => {
                 )}
             </Row>
             <Row noGutters className="mb-11">
-                Added by&nbsp;<Link to={`/profile/${recipe.user.id}`}>{recipe.user.username}</Link>&nbsp;on&nbsp;
+                Added by&nbsp;<Link to={`/profile/${recipe.user.id}`}>{recipe.user.username}</Link>&nbsp;
                 <Moment from={new Date()}>{recipe.createdAt}</Moment>
             </Row>
             <Row noGutters className="align-items-center mb-2">
@@ -130,7 +130,7 @@ const Recipe = ({ recipe, favorited }) => {
                     <Row className="mb-2">{recipe.description}</Row>
                     <Row className="mb-2">Difficulty: {recipe.skillLevel}</Row>
                     <Row className="mb-2">
-                        Prep: {recipe.prepTime} min &nbsp;|&nbsp; Cook: {recipe.cookTime} min &nbsp;|&nbsp; Wait:{' '}
+                        Prep: {recipe.prepTime} min &nbsp;|&nbsp; Cook: {recipe.cookTime} min &nbsp;|&nbsp; Wait:&nbsp;
                         {recipe.waitTime} min &nbsp;|&nbsp; Total: {recipe.totalTime} min
                     </Row>
                     <Row>Servings: {recipe.servings}</Row>

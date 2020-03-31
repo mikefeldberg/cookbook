@@ -5,8 +5,6 @@ import Container from 'react-bootstrap/Container';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 
 import { AuthContext } from '../../App';
 import UserNav from './UserNav';
@@ -16,12 +14,12 @@ const NavBar = () => {
     const currentUser = useContext(AuthContext);
 
     return (
-        <Jumbotron>
-            <Navbar expand="md" className="fixed-top navBack">
+        <Jumbotron className="mb-4">
+            <Navbar expand="md" variant="dark" className="p-0 bg-dark fixed-top navBack">
                 <Container>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="mr-auto">
+                        <Nav className="align-items-center mr-auto">
                             <Nav.Item>
                                 <Link className="nav-link navLink lead" to="/">
                                     Home
@@ -33,10 +31,6 @@ const NavBar = () => {
                                 <AnonNav />
                             )}
                         </Nav>
-                        <Form inline>
-                            <Form.Control type="text" placeholder="Search" className="mr-sm-2" />
-                            <Button variant="info">Search</Button>
-                        </Form>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>

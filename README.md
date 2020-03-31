@@ -14,5 +14,5 @@ on photo upload, client-side error:
 
 ### Misc
 
-- live refresh for login/logout mutations
-- delete recipe/comment confirmation clickable area (currently must click directly on text; no handler on containing element)
+- fix clickable area for delete recipe/comment confirmation (currently must click directly on text; no handler on containing element)
+- fix recipedetails rating update; does not live-update when comment is added/modified

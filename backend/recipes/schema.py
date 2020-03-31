@@ -127,24 +127,31 @@ class RecipeInput(graphene.InputObjectType):
 
 
 class Query(graphene.ObjectType):
-    recipes = graphene.List(RecipeType, search=graphene.String())
+    recipes = graphene.List(RecipeType, search_terms=graphene.String())
     recipe = graphene.Field(RecipeType, id=graphene.String(required=True))
     comment = graphene.Field(CommentType, id=graphene.String(required=True))
 
     def resolve_recipe(self, info, id):
         return Recipe.objects.get(id=id)
 
-    def resolve_recipes(self, info, search=None):
-        if search:
-            filter = (
-                Q(title__icontains=search) |
-                Q(description__icontains=search) |
-                Q(user__username__icontains=search)
+    def resolve_recipes(self, info, search_terms=None):
+        if not search_terms:
+            return Recipe.objects.filter(deleted_at=None)
+
+        terms = search_terms.split(' ')
+
+        query = Q()
+
+        for term in terms:
+            query |= (
+                Q(title__icontains=term) |
+                Q(description__icontains=term) |
+                Q(ingredients__name__icontains=term) |
+                Q(instructions__content__icontains=term) |
+                Q(user__username__icontains=term)
             )
 
-            return Recipe.objects.filter(filter, deleted_at=None)
-
-        return Recipe.objects.filter(deleted_at=None)
+        return Recipe.objects.filter(query, deleted_at=None).distinct('id')
 
     def resolve_comment(self, info, id):
         return Comment.objects.filter(id=id)
