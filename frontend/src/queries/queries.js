@@ -133,8 +133,8 @@ export const GET_RECIPES_QUERY = gql`
 `
 
 export const SEARCH_RECIPES_QUERY = gql`
-    query searchRecipesQuery($search: String) {
-        recipes(search: $search) {
+    query searchRecipesQuery($searchTerms: String) {
+        recipes(searchTerms: $searchTerms) {
             id
             title
             description

@@ -13,19 +13,20 @@ import { SEARCH_RECIPES_QUERY } from '../../queries/queries';
 
 const RecipeNav = ({ setSearchResults }) => {
     const client = useApolloClient();
-    const [search, setSearch] = useState('');
+    const [searchTerms, setSearchTerms] = useState('');
+    const [placeholder, setPlaceholder] = useState('');
 
     const handleSubmit = async e => {
         e.preventDefault();
-        console.log(search)
+        console.log(searchTerms)
         const res = await client.query({
             query: SEARCH_RECIPES_QUERY,
-            variables: { search },
+            variables: { searchTerms },
             fetchPolicy: 'network-only',
         });
         setSearchResults(res.data.recipes);
-        console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ recipe nav search results')
-        console.log(res)
+        setPlaceholder(searchTerms)
+        setSearchTerms('')
     };
 
     return (
@@ -54,11 +55,11 @@ const RecipeNav = ({ setSearchResults }) => {
                 {/* </InputGroup.Prepend> */}
                 <FormControl
                     type="text"
-                    placeholder="Input group example"
+                    placeholder={placeholder}
                     aria-label="Input group example"
                     aria-describedby="btnGroupAddon"
-                    value={search}
-                    onChange={e => setSearch(e.target.value)}
+                    value={searchTerms}
+                    onChange={e => setSearchTerms(e.target.value)}
                 />
                 <InputGroup.Append>
                     <Button onClick={e => handleSubmit(e)} variant="info">Search</Button>
