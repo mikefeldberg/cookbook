@@ -1,8 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 
-import Card from 'react-bootstrap/Card';
-import Nav from 'react-bootstrap/Nav';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 
@@ -10,8 +8,10 @@ import { PROFILE_QUERY } from '../../queries/queries';
 import ProfileRecipes from './ProfileRecipes';
 import ProfileFavorites from './ProfileFavorites';
 import ProfileComment from './ProfileComment';
+import RecipeNav from '../Recipes/RecipeNav';
 
 const Profile = ({ match }) => {
+    const [searchResults, setSearchResults] = useState([]);
     const id = match.params.id;
 
     const { data, loading, error } = useQuery(PROFILE_QUERY, {
@@ -31,16 +31,18 @@ const Profile = ({ match }) => {
             <>
                 <Tabs defaultActiveKey="recipes" id="uncontrolled-tab-example">
                     <Tab eventKey="recipes" title="Recipes">
-                        <ProfileRecipes recipes={recipes} />
+                        <>
+                            <RecipeNav setSearchResults={setSearchResults} />
+                            <ProfileRecipes recipes={recipes} />
+                        </>
                     </Tab>
                     <Tab eventKey="favorites" title="Favorites">
                         <ProfileFavorites favorites={favorites} />
                     </Tab>
                     <Tab eventKey="comments" title="Comments">
-                        {comments.length > 0 ?
-                            comments.map(comment => <ProfileComment key={comment.id} comment={comment} />) :
-                            `You haven't saved left any comments`
-                        }
+                        {comments.length > 0
+                            ? comments.map(comment => <ProfileComment key={comment.id} comment={comment} />)
+                            : `You haven't saved left any comments`}
                     </Tab>
                 </Tabs>
             </>
