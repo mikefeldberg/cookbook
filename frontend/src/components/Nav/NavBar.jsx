@@ -14,7 +14,7 @@ const NavBar = () => {
     const currentUser = useContext(AuthContext);
 
     return (
-        <Jumbotron>
+        <Jumbotron className="mb-4">
             <Navbar expand="md" variant="dark" className="p-0 bg-dark fixed-top navBack">
                 <Container>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 
 import Tabs from 'react-bootstrap/Tabs';
@@ -8,10 +8,8 @@ import { PROFILE_QUERY } from '../../queries/queries';
 import ProfileRecipes from './ProfileRecipes';
 import ProfileFavorites from './ProfileFavorites';
 import ProfileComment from './ProfileComment';
-import RecipeNav from '../Recipes/RecipeNav';
 
 const Profile = ({ match }) => {
-    const [searchResults, setSearchResults] = useState([]);
     const id = match.params.id;
 
     const { data, loading, error } = useQuery(PROFILE_QUERY, {
@@ -29,12 +27,12 @@ const Profile = ({ match }) => {
 
         return (
             <>
-                <Tabs defaultActiveKey="recipes" id="uncontrolled-tab-example">
+                <Tabs defaultActiveKey="info">
+                    <Tab eventKey="info" title="Info">
+                        User Info Here
+                    </Tab>
                     <Tab eventKey="recipes" title="Recipes">
-                        <>
-                            <RecipeNav setSearchResults={setSearchResults} />
-                            <ProfileRecipes recipes={recipes} />
-                        </>
+                        <ProfileRecipes recipes={recipes} />
                     </Tab>
                     <Tab eventKey="favorites" title="Favorites">
                         <ProfileFavorites favorites={favorites} />

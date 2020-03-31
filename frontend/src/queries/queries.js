@@ -230,8 +230,6 @@ export const GET_RECIPE_QUERY = gql`
     }
 `
 
-
-
 // ~~~~~~~~~~~~~~~~~~~~~~~~~ MUTATIONS
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~ AUTH
