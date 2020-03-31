@@ -146,10 +146,12 @@ class Query(graphene.ObjectType):
             query |= (
                 Q(title__icontains=term) |
                 Q(description__icontains=term) |
+                Q(ingredients__name__icontains=term) |
+                Q(instructions__content__icontains=term) |
                 Q(user__username__icontains=term)
             )
-        # from IPython import embed; embed()
-        return Recipe.objects.filter(query, deleted_at=None)
+
+        return Recipe.objects.filter(query, deleted_at=None).distinct('id')
 
     def resolve_comment(self, info, id):
         return Comment.objects.filter(id=id)

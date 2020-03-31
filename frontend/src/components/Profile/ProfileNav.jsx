@@ -11,25 +11,23 @@ import FormControl from 'react-bootstrap/FormControl';
 
 import { SEARCH_RECIPES_QUERY } from '../../queries/queries';
 
-const RecipeNav = ({ setSearchResults }) => {
+const ProfileNav = ({ setSearchResults }) => {
     const client = useApolloClient();
     const [searchTerms, setSearchTerms] = useState('');
+    const [placeholder, setPlaceholder] = useState('');
 
     const handleSubmit = async e => {
         e.preventDefault();
+        console.log(searchTerms)
         const res = await client.query({
             query: SEARCH_RECIPES_QUERY,
             variables: { searchTerms },
             fetchPolicy: 'network-only',
         });
         setSearchResults(res.data.recipes);
+        setPlaceholder(searchTerms)
+        setSearchTerms('')
     };
-
-    const handleClear = e => {
-        e.preventDefault();
-        setSearchTerms('');
-        setSearchResults([]);
-    }
 
     return (
         <ButtonToolbar className="justify-content-between mb-4 mx-auto" aria-label="Toolbar with Button groups">
@@ -38,6 +36,7 @@ const RecipeNav = ({ setSearchResults }) => {
             <InputGroup>
                 <FormControl
                     type="text"
+                    placeholder={placeholder}
                     aria-label="Input group example"
                     aria-describedby="btnGroupAddon"
                     value={searchTerms}
@@ -45,11 +44,10 @@ const RecipeNav = ({ setSearchResults }) => {
                 />
                 <InputGroup.Append>
                     <Button onClick={e => handleSubmit(e)} variant="info">Search</Button>
-                    <Button onClick={e => handleClear(e)} variant="danger">Clear</Button>
                 </InputGroup.Append>
             </InputGroup>
         </ButtonToolbar>
     );
 };
 
-export default RecipeNav;
+export default ProfileNav;

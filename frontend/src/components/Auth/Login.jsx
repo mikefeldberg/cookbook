@@ -35,9 +35,6 @@ const Login = () => {
                 <Form.Label>Password</Form.Label>
                 <Form.Control onChange={e => setPassword(e.target.value)} type="password" />
             </Form.Group>
-            {/* <Form.Group controlId="formBasicCheckbox">
-                <Form.Check type="checkbox" label="Remember me" />
-            </Form.Group> */}
             <ButtonGroup className="w-100" aria-label="Basic example">
                 <Button onClick={() => {history.push('/register')}} className="w-50 p-1" variant="outline-primary" type="button">
                     Not a user? Register here!

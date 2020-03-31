@@ -19,7 +19,7 @@ const RecipesList = () => {
         return (
             <>
                 <RecipeNav setSearchResults={setSearchResults} />
-                <CardColumns className="justify-content-between">
+                <CardColumns>
                     { searchResults.length > 0 ?
                         searchResults.map(recipe => (<RecipeCard key={recipe.id} recipe={recipe} />)) :
                         recipes.map(recipe => (<RecipeCard key={recipe.id} recipe={recipe} />))
