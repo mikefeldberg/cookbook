@@ -19,10 +19,10 @@ const RecipeCard = ({ recipe }) => {
             />
             <Card.Body>
                 <Card.Title>
-                    <Link to={`/recipes/${recipe.id}`}>{recipe.title}</Link>
+                    <Link style={{ textDecoration: 'none' }} to={`/recipes/${recipe.id}`}><span style={{ color: 'gray' }}>{recipe.title}</span></Link>
                 </Card.Title>
                 <Card.Text>
-                    Added by <Link to={`/profile/${recipe.user.id}`}>{recipe.user.username}</Link>
+                    Added by <Link style={{ 'text-decoration': 'none' }} to={`/profile/${recipe.user.id}`}><span style={{ color: 'gray' }}>{recipe.user.username}</span></Link>
                 </Card.Text>
             </Card.Body>
             { recipe.description &&
@@ -38,7 +38,7 @@ const RecipeCard = ({ recipe }) => {
                         ) : (
                             <Col className="p-0 text-right" style={{ color: 'grey' }}>{'☆'.repeat(5)}&nbsp;|</Col>
                         )}
-                            <Col className="p-0 text-left">&nbsp;<i className="text-danger fas fa-heart"></i>&nbsp;({recipe.favorites.length})</Col>
+                        <Col className="p-0 text-left">&nbsp;<i className="text-danger fas fa-heart"></i>&nbsp;({recipe.favorites.length})</Col>
                     </Row>
                 </ListGroup.Item>
             </ListGroup>
