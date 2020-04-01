@@ -50,7 +50,7 @@ const CreateComment = ({ recipeId }) => {
             <fieldset disabled={commentsDisabled}>
                 <StarRating rating={rating} setRating={setRating} disabled={commentsDisabled} />
                 <Form.Control
-                    className="mb-3"
+                    className="mb-3 shadow-sm "
                     value={content}
                     type="text"
                     as="textarea"

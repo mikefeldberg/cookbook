@@ -61,7 +61,7 @@ const Comment = ({ comment }) => {
     };
 
     return (
-        <div className="border mb-2 rounded">
+        <div className="shadow-sm border mb-2 rounded">
             <Row className="p-2">
                 <Col md={1}>
                     <Link to={`/profile/${comment.user.username}`}>
