@@ -9,7 +9,7 @@ import Row from 'react-bootstrap/Row';
 const RecipeCard = ({ recipe }) => {
     const match = useRouteMatch();
     const url = match.url
-    console.log(url)
+    console.log(url.includes('profile'))
     return (
         <Card className="shadow">
             <Card.Img
@@ -24,9 +24,11 @@ const RecipeCard = ({ recipe }) => {
                 <Card.Title>
                     <Link style={{ textDecoration: 'none' }} to={`/recipes/${recipe.id}`}><span className="link">{recipe.title}</span></Link>
                 </Card.Title>
-                <Card.Text>
-                    Added by <Link style={{ textDecoration: 'none' }} to={`/profile/${recipe.user.id}`}><span className="link">{recipe.user.username}</span></Link>
-                </Card.Text>
+                { !url.includes('profile') &&
+                    <Card.Text>
+                        Added by <Link style={{ textDecoration: 'none' }} to={`/profile/${recipe.user.id}`}><span className="link">{recipe.user.username}</span></Link>
+                    </Card.Text>
+                }
             </Card.Body>
             { recipe.description &&
                 <ListGroup variant="flush">
