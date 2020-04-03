@@ -40,7 +40,7 @@ const Profile = ({ match }) => {
                     <Tab eventKey="comments" title="Comments">
                         {comments.length > 0
                             ? comments.map(comment => <ProfileComment key={comment.id} comment={comment} />)
-                            : `You haven't saved left any comments`}
+                            : `You haven't left any comments`}
                     </Tab>
                 </Tabs>
             </>

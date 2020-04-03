@@ -64,7 +64,7 @@ const Comment = ({ comment }) => {
         <div className="shadow-sm border mb-2 rounded">
             <Row className="p-2">
                 <Col md={1}>
-                    <Link style={{ 'text-decoration': 'none' }} to={`/profile/${comment.user.username}`}>
+                    <Link style={{ textDecoration: 'none' }} to={`/profile/${comment.user.username}`}>
                         <Image
                             width={64}
                             height={64}
@@ -76,7 +76,7 @@ const Comment = ({ comment }) => {
                 </Col>
                 <Col>
                     <Row noGutters>
-                        <Link style={{ 'text-decoration': 'none' }} to={`/profile/${comment.user.id}`}>{comment.user.username}</Link>&nbsp;posted&nbsp;
+                        <Link style={{ textDecoration: 'none' }} to={`/profile/${comment.user.id}`}>{comment.user.username}</Link>&nbsp;posted&nbsp;
                         <Moment from={new Date()}>{comment.createdAt}</Moment>&nbsp;
                         {moment(comment.updatedAt).diff(moment(comment.createdAt), 'minutes') > 1 && (
                             <span>

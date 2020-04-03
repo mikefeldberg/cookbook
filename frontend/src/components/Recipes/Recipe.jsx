@@ -82,7 +82,7 @@ const Recipe = ({ recipe, favorited }) => {
                 )}
             </Row>
             <Row noGutters className="mb-11">
-                Added by&nbsp;<Link style={{ 'text-decoration': 'none' }} to={`/profile/${recipe.user.id}`}><span className="link">{recipe.user.username}</span></Link>&nbsp;
+                Added by&nbsp;<Link style={{ textDecoration: 'none' }} to={`/profile/${recipe.user.id}`}><span className="link">{recipe.user.username}</span></Link>&nbsp;
                 <Moment from={new Date()}>{recipe.createdAt}</Moment>
             </Row>
             <Row noGutters className="align-items-center mb-2">

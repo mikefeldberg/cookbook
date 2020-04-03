@@ -1,10 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useRouteMatch } from 'react-router-dom';
 
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 
 const ProfileRecipeCard = ({ recipe }) => {
+    const match = useRouteMatch();
+    const url = match.url
+    console.log(url)
     return (
         <Card className="shadow">
             <Card.Img
@@ -17,7 +20,7 @@ const ProfileRecipeCard = ({ recipe }) => {
             />
             <Card.Body>
                 <Card.Title>
-                    <Link style={{ 'text-decoration': 'none' }} to={`/recipes/${recipe.id}`}>{recipe.title}</Link>
+                    <Link style={{ textDecoration: 'none' }} to={`/recipes/${recipe.id}`}>{recipe.title}</Link>
                 </Card.Title>
             </Card.Body>
             <ListGroup variant="flush">
