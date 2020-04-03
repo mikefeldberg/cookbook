@@ -6,7 +6,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 
 const ProfileRecipeCard = ({ recipe }) => {
     return (
-        <Card border="secondary">
+        <Card className="shadow">
             <Card.Img
                 variant="top"
                 src={
