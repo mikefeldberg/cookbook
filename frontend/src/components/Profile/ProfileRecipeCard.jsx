@@ -17,7 +17,7 @@ const ProfileRecipeCard = ({ recipe }) => {
             />
             <Card.Body>
                 <Card.Title>
-                    <Link to={`/recipes/${recipe.id}`}>{recipe.title}</Link>
+                    <Link style={{ 'text-decoration': 'none' }} to={`/recipes/${recipe.id}`}>{recipe.title}</Link>
                 </Card.Title>
             </Card.Body>
             <ListGroup variant="flush">

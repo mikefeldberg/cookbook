@@ -19,10 +19,10 @@ const RecipeCard = ({ recipe }) => {
             />
             <Card.Body>
                 <Card.Title>
-                    <Link style={{ textDecoration: 'none' }} to={`/recipes/${recipe.id}`}><span style={{ color: 'gray' }}>{recipe.title}</span></Link>
+                    <Link style={{ textDecoration: 'none' }} to={`/recipes/${recipe.id}`}><span className="link">{recipe.title}</span></Link>
                 </Card.Title>
                 <Card.Text>
-                    Added by <Link style={{ 'text-decoration': 'none' }} to={`/profile/${recipe.user.id}`}><span style={{ color: 'gray' }}>{recipe.user.username}</span></Link>
+                    Added by <Link style={{ 'text-decoration': 'none' }} to={`/profile/${recipe.user.id}`}><span className="link">{recipe.user.username}</span></Link>
                 </Card.Text>
             </Card.Body>
             { recipe.description &&

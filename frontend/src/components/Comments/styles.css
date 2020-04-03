@@ -35,6 +35,12 @@ h1, h2, h3, h4 {
   font-family: 'Fugaz One', cursive;
 }
 
-a {
+.link {
   text-decoration: none;
+  color: rgb(127, 127, 127)
+}
+
+.link:hover {
+  text-decoration: none;
+  color: rgb(30, 30, 30)
 }

@@ -36,7 +36,7 @@ const StarRating = ({ rating, setRating }) => {
                           onMouseEnter={e => onMouseEnter(e, setHoveredStar)}
                           onMouseLeave={() => onMouseLeave(setHoveredStar)}/>
                 ))}&nbsp;
-                {rating === 0  && `(Leave no rating)`}
+                {rating === 0  && `(No rating)`}
                 {rating !== 0 && <span onClick={() => {setRating(0)}}>(Clear rating)</span>}
             </Row>
         </span>

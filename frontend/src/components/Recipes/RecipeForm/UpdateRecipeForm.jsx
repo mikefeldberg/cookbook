@@ -317,7 +317,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                 />
             </Form.Group>
             { photoUrl &&
-                <div>
+                <div className="mb-2">
                     Current Photo:
                     <Container>
                     <Row>
@@ -335,11 +335,25 @@ const UpdateRecipeForm = ({ recipe }) => {
                     </Container>
                 </div>
             }
-            <label>Choose file</label>
-            <input onChange={getFile} type="file" />
-            <Button type="submit" variant="primary">
-                Save Recipe
-            </Button>
+            <div className="mb-2">
+                <label>Choose file</label>
+                <input onChange={getFile} type="file" accept=",jpg, .jpeg"/>
+            </div>
+            <Form.File 
+                id="custom-file"
+                label="Choose file"
+                custom
+                accept=",jpg, .jpeg"
+                onChange={getFile}
+            />
+            <div className="align-items-center">
+                <Button className="mr-2" type="submit" variant="primary">
+                    Save Recipe
+                </Button>
+                <Button onClick={() => {history.push(`/recipes/${recipeId}`)}} type="button" variant="danger">
+                    Cancel
+                </Button>
+            </div>
         </Form>
     );
 };
