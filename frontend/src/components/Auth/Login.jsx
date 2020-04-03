@@ -36,7 +36,7 @@ const Login = () => {
                 <Form.Control onChange={e => setPassword(e.target.value)} type="password" />
             </Form.Group>
             <ButtonGroup className="w-100" aria-label="Basic example">
-                <Button onClick={() => {history.push('/register')}} className="w-50 p-1" variant="outline-primary" type="button">
+                <Button onClick={() => {history.push('/register')}} className="w-50 p-1" variant="outline-primary">
                     Not a user? Register here!
                 </Button>
                 <Button className="w-50 p-1" variant="primary" type="submit">

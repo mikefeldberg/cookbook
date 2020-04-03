@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
+import FormFile from 'react-bootstrap/FormFile';
 import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
@@ -206,9 +207,11 @@ const UpdateRecipeForm = ({ recipe }) => {
                                 })}
                             </tbody>
                         </Table>
-                        <button type="button" onClick={addIngredient} className="btn btn-primary">
-                            Add Ingredient
-                        </button>
+                        <div className="d-flex justify-content-end">
+                            <Button onClick={addIngredient} className="btn btn-primary">
+                                Add Ingredient
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </Form.Group>
@@ -237,9 +240,11 @@ const UpdateRecipeForm = ({ recipe }) => {
                                 })}
                             </tbody>
                         </Table>
-                        <button type="button" onClick={addInstruction} className="btn btn-primary">
-                            Add Instruction
-                        </button>
+                        <div className="d-flex justify-content-end">
+                            <Button onClick={addInstruction} className="btn btn-primary">
+                                Add Instruction
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </Form.Group>
@@ -316,41 +321,42 @@ const UpdateRecipeForm = ({ recipe }) => {
                     pattern="\d+"
                 />
             </Form.Group>
-            { photoUrl &&
-                <div className="mb-2">
-                    Current Photo:
-                    <Container>
-                    <Row>
-                        <Image src={photoUrl} rounded thumbnail style={{maxWidth: `100px`}}/>
-                        {deleteExistingPhoto && 
-                            <Row>
-                                'This image will be deleted after you save changes.'
-                                <Button variant="success" type="button" onClick={() => setDeleteExistingPhoto(false)}>Cancel Delete</Button>
-                            </Row>
-                        }
-                        {!deleteExistingPhoto && 
-                            <Button variant="danger" type="button" onClick={() => setDeleteExistingPhoto(true)}>x</Button>
-                        }
-                    </Row>
-                    </Container>
-                </div>
-            }
-            <div className="mb-2">
-                <label>Choose file</label>
-                <input onChange={getFile} type="file" accept=",jpg, .jpeg"/>
-            </div>
-            <Form.File 
-                id="custom-file"
-                label="Choose file"
-                custom
-                accept=",jpg, .jpeg"
-                onChange={getFile}
-            />
-            <div className="align-items-center">
+            <Form.Group>
+                { photoUrl &&
+                    <div className="mb-2">
+                        Current Photo:
+                        <Container>
+                        <Row>
+                            <Image src={photoUrl} rounded thumbnail style={{maxWidth: `100px`}}/>
+                            {deleteExistingPhoto && 
+                                <Row>
+                                    'This image will be deleted after you save changes.'
+                                    <Button variant="success" onClick={() => setDeleteExistingPhoto(false)}>Cancel Delete</Button>
+                                </Row>
+                            }
+                            {!deleteExistingPhoto && 
+                                <Button variant="danger" onClick={() => setDeleteExistingPhoto(true)}>x</Button>
+                            }
+                        </Row>
+                        </Container>
+                    </div>
+                }
+            </Form.Group>
+            <Form.Group>
+                <Form.Label>Image</Form.Label>
+                <FormFile 
+                    id="custom-file"
+                    label="Choose file"
+                    custom
+                    accept=",jpg, .jpeg"
+                    onChange={getFile}
+                    />
+            </Form.Group>
+            <div className="d-flex justify-content-center">
                 <Button className="mr-2" type="submit" variant="primary">
                     Save Recipe
                 </Button>
-                <Button onClick={() => {history.push(`/recipes/${recipeId}`)}} type="button" variant="danger">
+                <Button onClick={() => {history.push(`/recipes/${recipeId}`)}} variant="danger">
                     Cancel
                 </Button>
             </div>

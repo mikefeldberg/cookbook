@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
 import Moment from 'react-moment';
-import moment from 'moment';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';

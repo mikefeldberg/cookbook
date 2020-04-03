@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 
 import Form from 'react-bootstrap/Form';
+import FormFile from 'react-bootstrap/FormFile';
 import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
@@ -210,9 +211,11 @@ const CreateRecipe = ({history}) => {
                                 })}
                             </tbody>
                         </Table>
-                        <button type="button" onClick={addIngredient} className="btn btn-primary">
-                            Add Ingredient
-                        </button>
+                        <div className="d-flex justify-content-end">
+                            <Button onClick={addIngredient} className="btn btn-primary">
+                                Add Ingredient
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </Form.Group>
@@ -241,9 +244,11 @@ const CreateRecipe = ({history}) => {
                                 })}
                             </tbody>
                         </Table>
-                        <button type="button" onClick={addInstruction} className="btn btn-primary">
-                            Add Instruction
-                        </button>
+                        <div className="d-flex justify-content-end">
+                            <Button onClick={addInstruction} className="btn btn-primary">
+                                Add Instruction
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </Form.Group>
@@ -317,11 +322,24 @@ const CreateRecipe = ({history}) => {
                     pattern="\d+"
                 />
             </Form.Group>
-            <label>Choose file</label>
-            <input onChange={getFile} type="file" />
-            <Button type="submit" variant="primary">
-                Save Recipe
-            </Button>
+            <Form.Group>
+                <Form.Label>Image</Form.Label>
+                <FormFile
+                    id="custom-file"
+                    label="Choose file"
+                    custom
+                    accept=",jpg, .jpeg"
+                    onChange={getFile}
+                />
+            </Form.Group>
+            <div className="d-flex justify-content-center">
+                <Button className={"mr-2"} type="submit" variant="primary">
+                    Save Recipe
+                </Button>
+                <Button onClick={() => {history.push(`/`)}} variant="danger">
+                    Cancel
+                </Button>
+            </div>
         </Form>
     );
 };
