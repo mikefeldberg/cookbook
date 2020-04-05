@@ -14,5 +14,8 @@ on photo upload, client-side error:
 
 ### Misc
 
-- fix clickable area for delete recipe/comment confirmation (currently must click directly on text; no handler on containing element)
+- fix clickable area for delete recipe/comment confirmation (currently must click directly on text; no handler on containing 
+element)
 - fix recipedetails rating update; does not live-update when comment is added/modified
+- nav & hero image indent when viewing profile, login, register pages
+- apollo error handling

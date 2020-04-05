@@ -24,9 +24,13 @@ const Comment = ({ comment }) => {
         update(cache, { data: { updateComment } }) {
             const recipeId = updateComment.comment.recipe.id;
             const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables: { id: recipeId } });
-            const recipe = {...data.recipe}
+            const recipe = { ...data.recipe };
             const index = recipe.comments.findIndex(comment => comment.id === updateComment.comment.id);
-            recipe.comments = [...recipe.comments.slice(0, index), updateComment.comment, ...recipe.comments.slice(index + 1)]
+            recipe.comments = [
+                ...recipe.comments.slice(0, index),
+                updateComment.comment,
+                ...recipe.comments.slice(index + 1),
+            ];
 
             cache.writeQuery({
                 query: GET_RECIPE_QUERY,
@@ -80,7 +84,10 @@ const Comment = ({ comment }) => {
                 </Col>
                 <Col>
                     <Row noGutters>
-                        <Link style={{ textDecoration: 'none' }} to={`/recipes/${comment.recipe.id}`}>{comment.recipe.title}</Link>&nbsp;posted&nbsp;
+                        <Link style={{ textDecoration: 'none' }} to={`/recipes/${comment.recipe.id}`}>
+                            {comment.recipe.title}
+                        </Link>
+                        &nbsp;posted&nbsp;
                         <Moment from={new Date()}>{comment.createdAt}</Moment>&nbsp;
                         {moment(comment.updatedAt).diff(moment(comment.createdAt), 'minutes') > 1 && (
                             <span>
@@ -88,7 +95,11 @@ const Comment = ({ comment }) => {
                             </span>
                         )}
                     </Row>
-                    {!editing && <Row noGutters className="selected">{'★'.repeat(comment.rating)}</Row>}
+                    {!editing && (
+                        <Row noGutters className="selected" style={{ cursor: 'default' }}>
+                            {'★'.repeat(comment.rating)}
+                        </Row>
+                    )}
                     {editing && (
                         <Row noGutters>
                             <StarRating rating={newRating} setRating={setNewRating} />
@@ -96,7 +107,7 @@ const Comment = ({ comment }) => {
                     )}
                 </Col>
                 <Col md={2}>
-                    {currentUser && currentUser.id === comment.user.id &&
+                    {currentUser && currentUser.id === comment.user.id && (
                         <CommentToolbar
                             commentId={comment.id}
                             editing={editing}
@@ -106,7 +117,7 @@ const Comment = ({ comment }) => {
                             handleSubmit={handleSubmit}
                             updateComment={updateComment}
                         />
-                    }
+                    )}
                 </Col>
             </Row>
             {editing && (

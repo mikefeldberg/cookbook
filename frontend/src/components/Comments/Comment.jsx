@@ -76,7 +76,7 @@ const Comment = ({ comment }) => {
                 </Col>
                 <Col>
                     <Row noGutters>
-                        <Link style={{ textDecoration: 'none' }} to={`/profile/${comment.user.id}`}>{comment.user.username}</Link>&nbsp;posted&nbsp;
+                        <Link style={{ textDecoration: 'none' }} to={`/profile/${comment.user.id}`}><span className="link">{comment.user.username}</span></Link>&nbsp;posted&nbsp;
                         <Moment from={new Date()}>{comment.createdAt}</Moment>&nbsp;
                         {moment(comment.updatedAt).diff(moment(comment.createdAt), 'minutes') > 1 && (
                             <span>

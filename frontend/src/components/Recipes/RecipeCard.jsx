@@ -41,7 +41,7 @@ const RecipeCard = ({ recipe }) => {
                         {recipe.ratingCount > 0 ? (
                             <Col className="p-0 text-right" ><span style={{ color: 'gold' }}>{'★'.repeat(recipe.rating)}</span>&nbsp;({recipe.ratingCount})&nbsp;|</Col>
                         ) : (
-                            <Col className="p-0 text-right" style={{ color: 'grey' }}>{'☆'.repeat(5)}&nbsp;|</Col>
+                            <Col className="p-0 text-right" style={{ color: 'grey', cursor: 'default' }}>{'☆'.repeat(5)}&nbsp;|</Col>
                         )}
                         <Col className="p-0 text-left">&nbsp;<i className="text-danger fas fa-heart"></i>&nbsp;({recipe.favorites.length})</Col>
                     </Row>

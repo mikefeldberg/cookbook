@@ -33,13 +33,15 @@ const Profile = ({ match }) => {
                     </Tab>
                     <Tab eventKey="recipes" title="Recipes">
                         <CardColumns>
-                            {recipes.length > 0
-                                ? recipes.map(recipe => <RecipeCard key={recipe.id} recipe={recipe} />)
-                                : `You haven't added any recipes`}
+                            {recipes.length > 0 ? (
+                                recipes.map(recipe => <RecipeCard key={recipe.id} recipe={recipe} />)
+                                ) : (
+                                    `You haven't added any recipes`
+                                )
+                            }
                         </CardColumns>
                     </Tab>
                     <Tab eventKey="favorites" title="Favorites">
-                        {/* <ProfileFavorites favorites={favorites} /> */}
                         <CardColumns>
                             {favorites.length > 0
                                 ? favorites.map(favorite => <RecipeCard key={favorite.id} recipe={favorite.recipe} />)

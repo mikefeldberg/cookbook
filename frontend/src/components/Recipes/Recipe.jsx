@@ -88,11 +88,11 @@ const Recipe = ({ recipe, favorited }) => {
             <Row noGutters className="align-items-center mb-2">
                 {recipe.ratingCount > 0 ? (
                     <>
-                        <span style={{ color: 'gold' }}>{'★'.repeat(recipe.rating)}</span>&nbsp;
+                        <span style={{ color: 'gold', cursor: 'default' }}>{'★'.repeat(recipe.rating)}</span>&nbsp;
                         <span>({recipe.ratingCount})&nbsp;|&nbsp;</span>
                     </>
                 ) : (
-                    <span style={{ color: 'grey' }}>
+                    <span style={{ color: 'grey', cursor: 'default' }}>
                         {'☆'.repeat(5)}
                         &nbsp;|&nbsp;
                     </span>
@@ -116,7 +116,6 @@ const Recipe = ({ recipe, favorited }) => {
             </Row>
             <Row className="mb-5 align-items-center">
                 <Col>
-                    <div className="shadow">
                         <Image
                             rounded
                             src={
@@ -125,22 +124,45 @@ const Recipe = ({ recipe, favorited }) => {
                                     : `https://cookbook-test-bucket.s3-us-west-1.amazonaws.com/_food_placeholder.jpg`
                             }
                             fluid
-                            className="shadow"
+                            className="shadow-lg"
                         />
-                    </div>
                 </Col>
                 <Col className="align-content-around">
                     <Row className="mb-2">{recipe.description}</Row>
                     <Row className="mb-2">Difficulty: {recipe.skillLevel}</Row>
-                    {/* <Row className="mb-2">
-                        Prep: {recipe.prepTime} min &nbsp;|&nbsp;Cook: {recipe.cookTime} min &nbsp;|&nbsp;Wait:&nbsp;
-                        {recipe.waitTime} min &nbsp;|&nbsp;Total: {recipe.totalTime} min
-                    </Row> */}
                     <Row className="mb-2">
-                        { recipe.prepTime > 0 ? (<span>Prep: {(recipe.prepTime - recipe.prepTime % 60) / 60 > 0 ? (recipe.prepTime - recipe.prepTime % 60) / 60 + 'h' : ''} {recipe.prepTime % 60 > 0 ? recipe.prepTime % 60 + 'm' : ''} &nbsp;|&nbsp;</span>) : ('') }
-                        { recipe.cookTime > 0 ? (<span>Cook: {(recipe.cookTime - recipe.cookTime % 60) / 60 > 0 ? (recipe.cookTime - recipe.cookTime % 60) / 60 + 'h' : ''} {recipe.cookTime % 60 > 0 ? recipe.cookTime % 60 + 'm' : ''} &nbsp;|&nbsp;</span>) : ('') }
-                        { recipe.waitTime > 0 ? (<span>Wait: {(recipe.waitTime - recipe.waitTime % 60) / 60 > 0 ? (recipe.waitTime - recipe.waitTime % 60) / 60 + 'h' : ''} {recipe.waitTime % 60 > 0 ? recipe.waitTime % 60 + 'm' : ''} &nbsp;|&nbsp;</span>) : ('') }
-                        { recipe.totalTime > 0 ? (<span>Total: {(recipe.totalTime - recipe.totalTime % 60) / 60 > 0 ? (recipe.totalTime - recipe.totalTime % 60) / 60 + 'h' : ''} {recipe.totalTime % 60 > 0 ? recipe.totalTime % 60 + 'm' : ''}</span>) : ('') }
+                        { recipe.prepTime > 0 ? (
+                            <span>
+                                Prep: {(recipe.prepTime - recipe.prepTime % 60) / 60 > 0 ? (
+                                    recipe.prepTime - recipe.prepTime % 60) / 60 + 'h' : ''} {recipe.prepTime % 60 > 0 ? recipe.prepTime % 60 + 'm' : ''} &nbsp;|&nbsp;
+                            </span>
+                        ) : (
+                            ''
+                        )}
+                        { recipe.cookTime > 0 ? (
+                            <span>
+                                Cook: {(recipe.cookTime - recipe.cookTime % 60) / 60 > 0 ? (
+                                    recipe.cookTime - recipe.cookTime % 60) / 60 + 'h' : ''} {recipe.cookTime % 60 > 0 ? recipe.cookTime % 60 + 'm' : ''} &nbsp;|&nbsp;
+                            </span>
+                        ) : (
+                            ''
+                        )}
+                        { recipe.waitTime > 0 ? (
+                            <span>
+                                Wait: {(recipe.waitTime - recipe.waitTime % 60) / 60 > 0 ? (
+                                    recipe.waitTime - recipe.waitTime % 60) / 60 + 'h' : ''} {recipe.waitTime % 60 > 0 ? recipe.waitTime % 60 + 'm' : ''} &nbsp;|&nbsp;
+                            </span>
+                        ) : (
+                            ''
+                        )}
+                        { recipe.totalTime > 0 ? (
+                            <span>
+                                Total: {(recipe.totalTime - recipe.totalTime % 60) / 60 > 0 ? (
+                                    recipe.totalTime - recipe.totalTime % 60) / 60 + 'h' : ''} {recipe.totalTime % 60 > 0 ? recipe.totalTime % 60 + 'm' : ''}
+                            </span>
+                        ) : (
+                            ''
+                        )}
                     </Row>
                     <Row>Servings: {recipe.servings}</Row>
                 </Col>
