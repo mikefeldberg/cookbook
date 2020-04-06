@@ -8,6 +8,7 @@ import Button from 'react-bootstrap/Button';
 
 import { LOGIN_MUTATION } from '../../queries/queries';
 import { AuthContext } from '../../App';
+import Error from '../Shared/Error';
 
 const Login = () => {
     const currentUser = useContext(AuthContext);
@@ -16,14 +17,28 @@ const Login = () => {
     const [tokenAuth] = useMutation(LOGIN_MUTATION);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [formIsDisabled, setFormIsDisabled] = useState(false);
+    const [error, setError] = useState(null)
 
     const handleSubmit = async (e, tokenAuth, client) => {
         e.preventDefault();
-        const res = await tokenAuth({ variables: { username, password } });
-        localStorage.setItem('authToken', res.data.tokenAuth.token);
-        client.writeData({ data: { isLoggedIn: true } });
-        client.resetStore();
-        history.push('/');
+        try {
+            const {data, loading, error} = await tokenAuth({ variables: { username, password } });
+            if (error) {setError(error)}
+            localStorage.setItem('authToken', data.tokenAuth.token);
+            client.writeData({ data: { isLoggedIn: true } });
+            client.resetStore();
+            history.push('/');
+        } catch (e) {
+            console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!gotta catch em all')
+            let errorMessage = e.graphQLErrors[0]['message'];
+            if (e.graphQLErrors && errorMessage.includes('enter valid credentials')) {
+                setError('Incorrect username or password');
+            }
+            if (e.graphQLErrors && errorMessage.includes('Invalid payload')) {
+                setError('Heyooooooo');
+            }
+        }
     };
 
     if (!currentUser) {
@@ -46,6 +61,7 @@ const Login = () => {
                         Login
                     </Button>
                 </ButtonGroup>
+                {error && <Error error={error} setError={setError} />}
             </Form>
         );
     } else {
