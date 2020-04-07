@@ -35,7 +35,7 @@ const CustomMenu = React.forwardRef(({ children, style, className, 'aria-labelle
 const RecipeToolbar = ({ recipe }) => {
     return (
         <Row noGutters>
-            <Link to={`/recipes/${recipe.id}/edit`} className="mr-2">{<i className="far fa-edit text-secondary"></i>}</Link>
+            <Link style={{ textDecoration: 'none' }} to={`/recipes/${recipe.id}/edit`} className="mr-2">{<i className="far fa-edit text-secondary"></i>}</Link>
             <Dropdown>
                 <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
                     <i className="clickable far fa-trash-alt"></i>

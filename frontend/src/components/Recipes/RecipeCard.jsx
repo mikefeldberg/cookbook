@@ -1,12 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useRouteMatch } from 'react-router-dom';
 
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 
 const RecipeCard = ({ recipe }) => {
+    const match = useRouteMatch();
+    const url = match.url
+
     return (
-        <Card border="secondary">
+        <Card className="shadow">
             <Card.Img
                 variant="top"
                 src={
@@ -17,26 +22,31 @@ const RecipeCard = ({ recipe }) => {
             />
             <Card.Body>
                 <Card.Title>
-                    <Link to={`/recipes/${recipe.id}`}>{recipe.title}</Link>
+                    <Link style={{ textDecoration: 'none' }} to={`/recipes/${recipe.id}`}><span className="link">{recipe.title}</span></Link>
                 </Card.Title>
-                <Card.Text>
-                    Added by <Link to={`/profile/${recipe.user.id}`}>{recipe.user.username}</Link>
-                </Card.Text>
+                { !url.includes('profile') &&
+                    <Card.Text>
+                        Added by <Link style={{ textDecoration: 'none' }} to={`/profile/${recipe.user.id}`}><span className="link">{recipe.user.username}</span></Link>
+                    </Card.Text>
+                }
             </Card.Body>
+            { recipe.description &&
+                <ListGroup variant="flush">
+                    <ListGroup.Item>{recipe.description}</ListGroup.Item>
+                </ListGroup>
+            }
             <ListGroup variant="flush">
                 <ListGroup.Item className="text-center">
-                    {recipe.ratingCount > 0 ? (
-                        <>
-                            <span style={{ color: 'gold' }}>{'★'.repeat(recipe.rating)}</span>&nbsp;
-                            <span>({recipe.ratingCount})&nbsp;|&nbsp;</span>
-                        </>
-                    ) : (<span style={{ color: 'grey' }}>{'☆'.repeat(5)}&nbsp;|&nbsp;</span>)}
-                    <i className="text-danger fas fa-heart"></i>&nbsp;({recipe.favorites.length})
+                    <Row>
+                        {recipe.ratingCount > 0 ? (
+                            <Col className="p-0 text-right" ><span style={{ color: 'gold' }}>{'★'.repeat(recipe.rating)}</span>&nbsp;({recipe.ratingCount})&nbsp;|</Col>
+                        ) : (
+                            <Col className="p-0 text-right" style={{ color: 'grey', cursor: 'default' }}>{'☆'.repeat(5)}&nbsp;|</Col>
+                        )}
+                        <Col className="p-0 text-left">&nbsp;<i className="text-danger fas fa-heart"></i>&nbsp;({recipe.favorites.length})</Col>
+                    </Row>
                 </ListGroup.Item>
             </ListGroup>
-            <Card.Body>
-                <Card.Text>{recipe.description}</Card.Text>
-            </Card.Body>
         </Card>
     );
 };

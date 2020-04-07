@@ -3,11 +3,11 @@ import { useQuery } from '@apollo/react-hooks';
 
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
+import CardColumns from 'react-bootstrap/CardColumns';
 
 import { PROFILE_QUERY } from '../../queries/queries';
-import ProfileRecipes from './ProfileRecipes';
-import ProfileFavorites from './ProfileFavorites';
 import ProfileComment from './ProfileComment';
+import RecipeCard from '../Recipes/RecipeCard';
 
 const Profile = ({ match }) => {
     const id = match.params.id;
@@ -32,15 +32,26 @@ const Profile = ({ match }) => {
                         User Info Here
                     </Tab>
                     <Tab eventKey="recipes" title="Recipes">
-                        <ProfileRecipes recipes={recipes} />
+                        <CardColumns>
+                            {recipes.length > 0 ? (
+                                recipes.map(recipe => <RecipeCard key={recipe.id} recipe={recipe} />)
+                                ) : (
+                                    `You haven't added any recipes`
+                                )
+                            }
+                        </CardColumns>
                     </Tab>
                     <Tab eventKey="favorites" title="Favorites">
-                        <ProfileFavorites favorites={favorites} />
+                        <CardColumns>
+                            {favorites.length > 0
+                                ? favorites.map(favorite => <RecipeCard key={favorite.id} recipe={favorite.recipe} />)
+                                : `You haven't saved any favorites`}
+                        </CardColumns>
                     </Tab>
                     <Tab eventKey="comments" title="Comments">
                         {comments.length > 0
                             ? comments.map(comment => <ProfileComment key={comment.id} comment={comment} />)
-                            : `You haven't saved left any comments`}
+                            : `You haven't left any comments`}
                     </Tab>
                 </Tabs>
             </>

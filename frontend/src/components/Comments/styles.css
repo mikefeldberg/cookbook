@@ -16,9 +16,12 @@
   color: gold;
 }
 
-.star:disabled {
-  pointer-events:none;
+.disabled-star {
+  font-size: 1.6em;
+  margin: 0;
+  cursor: default;
 }
+
 
 .jumbotron {
   background-image: url("https://i.imgur.com/6qqdwwH.png");
@@ -32,5 +35,15 @@
 }
 
 h1, h2, h3, h4 {
-  font-family: 'Fugaz One', cursive;
+  font-family: 'Fugaz One', sans-serif;
+}
+
+.link {
+  text-decoration: none;
+  color: rgb(127, 127, 127)
+}
+
+.link:hover {
+  text-decoration: none;
+  color: rgb(30, 30, 30)
 }

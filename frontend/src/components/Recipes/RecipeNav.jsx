@@ -43,7 +43,7 @@ const RecipeNav = ({ setSearchResults }) => {
                 />
                 <InputGroup.Append>
                     <Button onClick={e => handleSubmit(e)} variant="info">Search</Button>
-                    <Button onClick={e => handleClear(e)} variant="danger">Clear</Button>
+                    <Button onClick={e => handleClear(e)} variant="light">Clear</Button>
                 </InputGroup.Append>
             </InputGroup>
         </ButtonToolbar>
