@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { AuthContext } from '../../App';
 import { GET_RECIPE_QUERY } from '../../queries/queries';
 import Recipe from './Recipe';
+import { Redirect } from 'react-router-dom';
 
 const RecipeDetails = ({ match, history }) => {
     const currentUser = useContext(AuthContext);
@@ -14,7 +15,7 @@ const RecipeDetails = ({ match, history }) => {
     });
 
     if (loading) return `Loading recipe...`;
-    if (error) return `Error! ${error}`;
+    if (error) return <Redirect />;
 
     if (data) {
         const recipe = data.recipe;
