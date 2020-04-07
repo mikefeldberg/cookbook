@@ -17,7 +17,7 @@ class Query(graphene.ObjectType):
     me = graphene.Field(UserType)
 
     def resolve_profile(self, info, id):
-        return get_user_model().objects.get(id=id)
+        return get_user_model().objects.get(id=id, deleted_at=None)
 
     def resolve_users(self, info):
         return get_user_model().objects.all()

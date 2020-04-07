@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { useQuery } from '@apollo/react-hooks';
+import { Redirect } from 'react-router-dom';
 
 import { AuthContext } from '../../App';
 import { GET_RECIPE_QUERY } from '../../queries/queries';
 import Recipe from './Recipe';
-import { Redirect } from 'react-router-dom';
 
 const RecipeDetails = ({ match, history }) => {
     const currentUser = useContext(AuthContext);

@@ -28,7 +28,6 @@ on photo upload, client-side error:
 - Update recipe
 
 ### Nav/Search
-- Dead recipes should redirect to root
 - Sorting
 - Pagination
 - Selectable search fields in fuzzy search
