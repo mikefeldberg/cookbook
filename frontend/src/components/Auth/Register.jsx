@@ -1,19 +1,21 @@
 import React, { useState, useContext } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
-import { useMutation } from '@apollo/react-hooks';
+import { useApolloClient, useMutation } from '@apollo/react-hooks';
 
 import Form from 'react-bootstrap/Form';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
 
-import { REGISTER_MUTATION } from '../../queries/queries';
+import { REGISTER_MUTATION, LOGIN_MUTATION } from '../../queries/queries';
 import { AuthContext } from '../../App';
 import Error from '../Shared/Error';
 
 const Register = () => {
+    const client = useApolloClient();
     const currentUser = useContext(AuthContext);
     const history = useHistory();
     const [createUser] = useMutation(REGISTER_MUTATION);
+    const [tokenAuth] = useMutation(LOGIN_MUTATION);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -24,6 +26,13 @@ const Register = () => {
         e.preventDefault();
         try {
             await createUser({ variables: { username, email, password } });
+            const { data, error } = await tokenAuth({ variables: { username, password } });
+            if (error) {
+                setErrorText(error);
+            }
+            localStorage.setItem('authToken', data.tokenAuth.token);
+            client.writeData({ data: { isLoggedIn: true } });
+            client.resetStore();
         } catch (e) {
             let errorMessage = e.graphQLErrors[0]['message'];
             if (e.graphQLErrors && errorMessage.includes('duplicate key')) {
