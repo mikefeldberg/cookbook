@@ -26,12 +26,11 @@ const Login = () => {
         try {
             const { data, error } = await tokenAuth({ variables: { username, password } });
             if (error) {
-                return `error`;
+                setErrorText(error);
             }
             localStorage.setItem('authToken', data.tokenAuth.token);
             client.writeData({ data: { isLoggedIn: true } });
             client.resetStore();
-            history.push('/');
         } catch (e) {
             let errorMessage = e.graphQLErrors[0]['message'];
             if (e.graphQLErrors && errorMessage.includes('enter valid credentials')) {
