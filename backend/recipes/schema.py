@@ -132,7 +132,7 @@ class Query(graphene.ObjectType):
     comment = graphene.Field(CommentType, id=graphene.String(required=True))
 
     def resolve_recipe(self, info, id):
-        return Recipe.objects.get(id=id)
+        return Recipe.objects.get(id=id, deleted_at=None)
 
     def resolve_recipes(self, info, search_terms=None):
         if not search_terms:

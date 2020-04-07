@@ -1,5 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
+import { Redirect } from 'react-router-dom';
 
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
@@ -18,7 +19,7 @@ const Profile = ({ match }) => {
     });
 
     if (loading) return `Loading recipe...`;
-    if (error) return `Error! ${error}`;
+    if (error) return <Redirect />;
 
     if (data) {
         const recipes = data.profile.recipeSet;

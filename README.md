@@ -28,7 +28,6 @@ on photo upload, client-side error:
 - Update recipe
 
 ### Nav/Search
-- Dead recipes should redirect to root
 - Sorting
 - Pagination
 - Selectable search fields in fuzzy search
@@ -40,6 +39,5 @@ on photo upload, client-side error:
 - Update recipe
 
 ### Misc
-- Make email unique
 - Fix clickable area for delete recipe/comment confirmation (currently must click directly on text; no handler on containing element)
 - Fix recipedetails rating update; does not live-update when comment is added/modified
