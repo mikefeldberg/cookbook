@@ -17,31 +17,27 @@ const Register = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [formIsDisabled, setFormIsDisabled] = useState(false);
-    const [error, setError] = useState(null);
+    const [submitIsDisabled] = useState(false);
+    const [errorText, setErrorText] = useState(null);
 
     const handleSubmit = async (e, createUser) => {
         e.preventDefault();
         try {
-            const { data, loading, error } = await createUser({ variables: { username, email, password } });
-            if (error) {
-                return `error`;
-            }
+            await createUser({ variables: { username, email, password } });
         } catch (e) {
             let errorMessage = e.graphQLErrors[0]['message'];
             if (e.graphQLErrors && errorMessage.includes('duplicate key')) {
                 if (errorMessage.includes('username')) {
-                    setError('Username already exists');
+                    setErrorText('Username already exists');
                 }
                 if (errorMessage.includes('email')) {
-                    setError('Email already exists');
+                    setErrorText('Email already exists');
                 }
             }
         }
     };
 
     if (!currentUser) {
-        console.log(error);
         return (
             <>
                 <Form className="mx-auto w-50" onSubmit={(e) => handleSubmit(e, createUser)}>
@@ -67,12 +63,12 @@ const Register = () => {
                         >
                             Already a user? Login here!
                         </Button>
-                        <Button disabled={formIsDisabled} className="w-50 p-1" variant="primary" type="submit">
+                        <Button disabled={submitIsDisabled} className="w-50 p-1" variant="primary" type="submit">
                             Register
                         </Button>
                     </ButtonGroup>
                 </Form>
-                {error && <Error error={error} setError={setError} />}
+                {errorText && <Error error={errorText} setErrorText={setErrorText} />}
             </>
         );
     } else {

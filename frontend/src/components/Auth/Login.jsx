@@ -17,55 +17,62 @@ const Login = () => {
     const [tokenAuth] = useMutation(LOGIN_MUTATION);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [formIsDisabled, setFormIsDisabled] = useState(false);
-    const [error, setError] = useState(null)
+    const [submitIsDisabled] = useState(false);
+    const [errorText, setErrorText] = useState(null);
 
     const handleSubmit = async (e, tokenAuth, client) => {
         e.preventDefault();
+
         try {
-            const {data, loading, error} = await tokenAuth({ variables: { username, password } });
-            if (error) {setError(error)}
+            const { data, error } = await tokenAuth({ variables: { username, password } });
+            if (error) {
+                return `error`;
+            }
             localStorage.setItem('authToken', data.tokenAuth.token);
             client.writeData({ data: { isLoggedIn: true } });
             client.resetStore();
             history.push('/');
         } catch (e) {
-            console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!gotta catch em all')
             let errorMessage = e.graphQLErrors[0]['message'];
             if (e.graphQLErrors && errorMessage.includes('enter valid credentials')) {
-                setError('Incorrect username or password');
-            }
-            if (e.graphQLErrors && errorMessage.includes('Invalid payload')) {
-                setError('Heyooooooo');
+                setErrorText('Incorrect username or password');
             }
         }
     };
 
     if (!currentUser) {
         return (
-            <Form className="mx-auto w-50" onSubmit={e => handleSubmit(e, tokenAuth, client)}>
-                <Form.Group controlId="formBasicUsername">
-                    <Form.Label>Username</Form.Label>
-                    <Form.Control onChange={e => setUsername(e.target.value)} type="username" />
-                </Form.Group>
+            <>
+                <Form className="mx-auto w-50" onSubmit={(e) => handleSubmit(e, tokenAuth, client)}>
+                    <Form.Group controlId="formBasicUsername">
+                        <Form.Label>Username</Form.Label>
+                        <Form.Control onChange={(e) => setUsername(e.target.value)} type="username" />
+                    </Form.Group>
 
-                <Form.Group className="mb-4" controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control onChange={e => setPassword(e.target.value)} type="password" />
-                </Form.Group>
-                <ButtonGroup className="w-100" aria-label="Basic example">
-                    <Button onClick={() => {history.push('/register')}} className="w-50 p-1" variant="outline-primary">
-                        Not a user? Register here!
-                    </Button>
-                    <Button className="w-50 p-1" variant="primary" type="submit">
-                        Login
-                    </Button>
-                </ButtonGroup>
-                {error && <Error error={error} setError={setError} />}
-            </Form>
+                    <Form.Group className="mb-4" controlId="formBasicPassword">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control onChange={(e) => setPassword(e.target.value)} type="password" />
+                    </Form.Group>
+                    <ButtonGroup className="w-100" aria-label="Basic example">
+                        <Button
+                            onClick={() => {
+                                history.push('/register');
+                            }}
+                            className="w-50 p-1"
+                            variant="outline-primary"
+                        >
+                            Not a user? Register here!
+                        </Button>
+                        <Button disabled={submitIsDisabled} className="w-50 p-1" variant="primary" type="submit">
+                            Login
+                        </Button>
+                    </ButtonGroup>
+                </Form>
+                {errorText && <Error error={errorText} setErrorText={setErrorText} />}
+            </>
         );
     } else {
-        return <Redirect />
+        return <Redirect />;
     }
 };
 

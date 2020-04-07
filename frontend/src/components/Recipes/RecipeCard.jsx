@@ -9,7 +9,7 @@ import Row from 'react-bootstrap/Row';
 const RecipeCard = ({ recipe }) => {
     const match = useRouteMatch();
     const url = match.url
-    console.log(url.includes('profile'))
+
     return (
         <Card className="shadow">
             <Card.Img
