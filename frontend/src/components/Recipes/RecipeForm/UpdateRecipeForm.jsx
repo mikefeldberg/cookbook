@@ -384,7 +384,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                         </InputGroup.Text>
                     </InputGroup.Prepend>
                     {photoSource === 'upload' && (
-                        <FormFile label="Choose file" custom accept=",jpg, .jpeg" onChange={getFile} />
+                        <FormFile label="Choose file (.jpg)" custom accept=".jpg, .jpeg" onChange={getFile} />
                     )}
                     {photoSource === 'link' && (
                         <Form.Control
