@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { Redirect } from 'react-router-dom';
+import bsCustomFileInput from 'bs-custom-file-input';
 
 import Form from 'react-bootstrap/Form';
 import FormFile from 'react-bootstrap/FormFile';
@@ -14,6 +15,7 @@ import InstructionInput from './InstructionInput';
 import { AuthContext } from '../../../App';
 
 const CreateRecipe = ({ history }) => {
+    bsCustomFileInput.init();
     const currentUser = useContext(AuthContext);
     const [createPhoto] = useMutation(CREATE_PHOTO_MUTATION);
     const [createRecipe] = useMutation(CREATE_RECIPE_MUTATION, {
@@ -335,7 +337,12 @@ const CreateRecipe = ({ history }) => {
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>Image</Form.Label>
-                    <FormFile id="custom-file" label="Choose file" custom accept=",jpg, .jpeg" onChange={getFile} />
+                    <FormFile
+                        label="Choose file"
+                        custom
+                        accept=",jpg, .jpeg"
+                        onChange={getFile}
+                    />
                 </Form.Group>
                 <div className="d-flex justify-content-center">
                     <Button

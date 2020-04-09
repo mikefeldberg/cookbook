@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
+import bsCustomFileInput from 'bs-custom-file-input';
 
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -16,6 +17,7 @@ import InstructionInput from './InstructionInput';
 
 
 const UpdateRecipeForm = ({ recipe }) => {
+    bsCustomFileInput.init();
     const history = useHistory();
     const [updateRecipe] = useMutation(UPDATE_RECIPE_MUTATION);
     const [createPhoto] = useMutation(CREATE_PHOTO_MUTATION);
@@ -352,8 +354,7 @@ const UpdateRecipeForm = ({ recipe }) => {
             </Form.Group>
             <Form.Group>
                 <Form.Label>Image</Form.Label>
-                <FormFile 
-                    id="custom-file"
+                <FormFile
                     label="Choose file"
                     custom
                     accept=",jpg, .jpeg"
