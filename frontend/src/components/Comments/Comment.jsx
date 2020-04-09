@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { useMutation } from '@apollo/react-hooks';
+import { useApolloClient, useMutation } from '@apollo/react-hooks';
 import Moment from 'react-moment';
 import moment from 'moment';
 
@@ -15,6 +15,7 @@ import CommentToolbar from './CommentToolbar';
 import StarRating from './StarRating';
 
 const Comment = ({ comment }) => {
+    const client = useApolloClient();
     const currentUser = useContext(AuthContext);
     const [editing, setEditing] = useState(false);
     const [newRating, setNewRating] = useState(comment.rating);
@@ -32,6 +33,7 @@ const Comment = ({ comment }) => {
                 query: GET_RECIPE_QUERY,
                 data: { recipe },
             });
+            client.resetStore();
         },
     });
 

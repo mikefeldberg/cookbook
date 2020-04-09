@@ -21,21 +21,14 @@ on photo upload, client-side error:
 - User info section
 - User photo upload
 
-### Validation
-- Create recipe
-- Update recipe
-
 ### Nav/Search
 - Sorting
 - Pagination
 - Selectable search fields in fuzzy search
 
 ### Error Handling
-- Login
-- Register
 - Create recipe
 - Update recipe
 
 ### Misc
 - Fix clickable area for delete recipe/comment confirmation (currently must click directly on text; no handler on containing element)
-- Fix recipedetails rating update; does not live-update when comment is added/modified
