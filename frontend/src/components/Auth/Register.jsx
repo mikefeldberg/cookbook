@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
 import { useApolloClient, useMutation } from '@apollo/react-hooks';
+import { useForm } from 'react-hook-form';
 
 import Form from 'react-bootstrap/Form';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
@@ -11,36 +12,34 @@ import { AuthContext } from '../../App';
 import Error from '../Shared/Error';
 
 const Register = () => {
-    const client = useApolloClient();
     const currentUser = useContext(AuthContext);
+    const client = useApolloClient();
     const history = useHistory();
     const [createUser] = useMutation(REGISTER_MUTATION);
     const [tokenAuth] = useMutation(LOGIN_MUTATION);
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [submitIsDisabled] = useState(false);
     const [errorText, setErrorText] = useState(null);
+    const { register, handleSubmit, errors, formState } = useForm({ mode: 'onChange' });
 
-    const handleSubmit = async (e, createUser) => {
-        e.preventDefault();
+    const onSubmit = async (data) => {
         try {
-            await createUser({ variables: { username, email, password } });
-            const { data, error } = await tokenAuth({ variables: { username, password } });
+            await createUser({ variables: { username: data.username, email: data.email, password: data.password } });
+            const { data: responseData, error } = await tokenAuth({
+                variables: { username: data.username, password: data.password },
+            });
             if (error) {
                 setErrorText(error);
             }
-            localStorage.setItem('authToken', data.tokenAuth.token);
+            localStorage.setItem('authToken', responseData.tokenAuth.token);
             client.writeData({ data: { isLoggedIn: true } });
             client.resetStore();
         } catch (e) {
             let errorMessage = e.graphQLErrors[0]['message'];
             if (e.graphQLErrors && errorMessage.includes('duplicate key')) {
                 if (errorMessage.includes('username')) {
-                    setErrorText('Username already exists');
+                    setErrorText('Username not available');
                 }
                 if (errorMessage.includes('email')) {
-                    setErrorText('Email already exists');
+                    setErrorText('An account with this email address already exists');
                 }
             }
         }
@@ -49,18 +48,58 @@ const Register = () => {
     if (!currentUser) {
         return (
             <>
-                <Form className="mx-auto w-50" onSubmit={(e) => handleSubmit(e, createUser)}>
-                    <Form.Group controlId="formBasicUsername">
+                <Form className="mx-auto w-50" onSubmit={handleSubmit(onSubmit)}>
+                    <Form.Group>
                         <Form.Label>Username</Form.Label>
-                        <Form.Control onChange={(e) => setUsername(e.target.value)} type="username" />
+                        <Form.Control
+                            type="text"
+                            placeholder=""
+                            name="username"
+                            ref={register({
+                                required: true,
+                                pattern: {
+                                    value: /^\w+$/,
+                                    message: 'Username may only contain alphanumeric characters',
+                                },
+                                maxLength: {
+                                    value: 20,
+                                    message: 'Username cannot exceed 20 characters',
+                                },
+                            })}
+                        />
+                        <small className="text-danger">{formState.touched.username && errors.username && errors.username.message}</small>
                     </Form.Group>
-                    <Form.Group controlId="formBasicEmail">
+                    <Form.Group>
                         <Form.Label>Email</Form.Label>
-                        <Form.Control onChange={(e) => setEmail(e.target.value)} type="email" />
+                        <Form.Control
+                            type="email"
+                            placeholder=""
+                            name="email"
+                            ref={register({
+                                required: true,
+                                pattern: {
+                                    value: /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/i,
+                                    message: 'Please enter a valid email address',
+                                },
+                            })}
+                        />
+                        <small className="text-danger">{formState.touched.email && errors.email && errors.email.message}</small>
                     </Form.Group>
-                    <Form.Group className="mb-4" controlId="formBasicPassword">
+                    <Form.Group>
                         <Form.Label>Password</Form.Label>
-                        <Form.Control onChange={(e) => setPassword(e.target.value)} type="password" />
+                        <Form.Control
+                            type="password"
+                            placeholder=""
+                            name="password"
+                            ref={register({
+                                required: true,
+                                minLength: {
+                                    value: 8,
+                                    message: 'Password must be at least 8 characters',
+                                },
+                            })}
+                        />
+                        <small className="text-danger">{formState.touched.password && errors.password && errors.password.message}</small>
                     </Form.Group>
                     <ButtonGroup className="w-100" aria-label="Basic example">
                         <Button
@@ -70,14 +109,14 @@ const Register = () => {
                             className="w-50 p-1"
                             variant="outline-primary"
                         >
-                            Already a user? Login here!
+                            Already registered? Login here!
                         </Button>
-                        <Button disabled={submitIsDisabled} className="w-50 p-1" variant="primary" type="submit">
+                        <Button disabled={!formState.isValid} className="w-50 p-1" variant="primary" type="submit">
                             Register
                         </Button>
                     </ButtonGroup>
+                    {errorText && <Error error={errorText} setErrorText={setErrorText} />}
                 </Form>
-                {errorText && <Error error={errorText} setErrorText={setErrorText} />}
             </>
         );
     } else {

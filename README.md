@@ -22,8 +22,6 @@ on photo upload, client-side error:
 - User photo upload
 
 ### Validation
-- Login
-- Register
 - Create recipe
 - Update recipe
 

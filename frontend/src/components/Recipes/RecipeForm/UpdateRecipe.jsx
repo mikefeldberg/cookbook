@@ -23,10 +23,10 @@ const UpdateRecipe = ({ match }) => {
     if (data) {
         const recipe = omitDeep(data, '__typename')
 
-        if (recipe.recipe.user.id === currentUser.id) {
+        if (currentUser && currentUser.id === recipe.recipe.user.id) {
             return <UpdateRecipeForm recipe={recipe.recipe} />;
         } else {
-            return <Redirect to='/' />
+            return <Redirect />
         }
     }
 };

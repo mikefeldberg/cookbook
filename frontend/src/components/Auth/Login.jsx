@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useApolloClient, useMutation } from '@apollo/react-hooks';
 import { useHistory, Redirect } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 import Form from 'react-bootstrap/Form';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
@@ -12,23 +13,25 @@ import Error from '../Shared/Error';
 
 const Login = () => {
     const currentUser = useContext(AuthContext);
-    const history = useHistory();
     const client = useApolloClient();
+    const history = useHistory();
     const [tokenAuth] = useMutation(LOGIN_MUTATION);
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [submitIsDisabled] = useState(false);
+    const { register, handleSubmit, errors, formState } = useForm({ mode: 'onChange' });
     const [errorText, setErrorText] = useState(null);
 
-    const handleSubmit = async (e, tokenAuth, client) => {
-        e.preventDefault();
-
+    const onSubmit = async (data) => {
         try {
-            const { data, error } = await tokenAuth({ variables: { username, password } });
+            const { data: responseData, error } = await tokenAuth({
+                variables: {
+                    username: data.username,
+                    email: data.email,
+                    password: data.password,
+                },
+            });
             if (error) {
                 setErrorText(error);
             }
-            localStorage.setItem('authToken', data.tokenAuth.token);
+            localStorage.setItem('authToken', responseData.tokenAuth.token);
             client.writeData({ data: { isLoggedIn: true } });
             client.resetStore();
         } catch (e) {
@@ -42,15 +45,36 @@ const Login = () => {
     if (!currentUser) {
         return (
             <>
-                <Form className="mx-auto w-50" onSubmit={(e) => handleSubmit(e, tokenAuth, client)}>
-                    <Form.Group controlId="formBasicUsername">
+                <Form className="mx-auto w-50" onSubmit={handleSubmit(onSubmit)}>
+                    <Form.Group>
                         <Form.Label>Username</Form.Label>
-                        <Form.Control onChange={(e) => setUsername(e.target.value)} type="username" />
+                        <Form.Control
+                            type="text"
+                            placeholder=""
+                            name="username"
+                            ref={register({
+                                required: {
+                                    value: true,
+                                    message: 'Enter your username'
+                                }
+                            })}
+                        />
+                        <small className="text-danger">{formState.touched.username && errors.username && errors.username.message}</small>
                     </Form.Group>
-
-                    <Form.Group className="mb-4" controlId="formBasicPassword">
+                    <Form.Group>
                         <Form.Label>Password</Form.Label>
-                        <Form.Control onChange={(e) => setPassword(e.target.value)} type="password" />
+                        <Form.Control
+                            type="password"
+                            placeholder=""
+                            name="password"
+                            ref={register({
+                                required: {
+                                    value: true,
+                                    message: 'Enter your password'
+                                }
+                            })}
+                        />
+                    <small className="text-danger">{formState.touched.password && errors.password && errors.password.message}</small>
                     </Form.Group>
                     <ButtonGroup className="w-100" aria-label="Basic example">
                         <Button
@@ -62,12 +86,12 @@ const Login = () => {
                         >
                             Not a user? Register here!
                         </Button>
-                        <Button disabled={submitIsDisabled} className="w-50 p-1" variant="primary" type="submit">
+                        <Button disabled={!formState.isValid} className="w-50 p-1" variant="primary" type="submit">
                             Login
                         </Button>
                     </ButtonGroup>
+                    {errorText && <Error error={errorText} setErrorText={setErrorText} />}
                 </Form>
-                {errorText && <Error error={errorText} setErrorText={setErrorText} />}
             </>
         );
     } else {
