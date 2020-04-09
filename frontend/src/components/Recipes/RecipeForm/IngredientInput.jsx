@@ -15,6 +15,7 @@ const IngredientInput = ({ idx, ingredients, handleIngredientChange, deleteIngre
                     data-idx={idx}
                     value={ingredients[idx].quantity}
                     onChange={handleIngredientChange}
+                    required
                 />
             </td>
             <td>
@@ -24,6 +25,7 @@ const IngredientInput = ({ idx, ingredients, handleIngredientChange, deleteIngre
                     data-idx={idx}
                     value={ingredients[idx].name}
                     onChange={handleIngredientChange}
+                    required
                 />
             </td>
             <td>

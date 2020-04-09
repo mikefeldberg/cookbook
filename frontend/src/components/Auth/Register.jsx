@@ -67,7 +67,7 @@ const Register = () => {
                                 },
                             })}
                         />
-                        {formState.touched.username && errors.username && errors.username.message}
+                        <small className="text-danger">{formState.touched.username && errors.username && errors.username.message}</small>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Email</Form.Label>
@@ -83,7 +83,7 @@ const Register = () => {
                                 },
                             })}
                         />
-                        {formState.touched.email && errors.email && errors.email.message}
+                        <small className="text-danger">{formState.touched.email && errors.email && errors.email.message}</small>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Password</Form.Label>
@@ -99,7 +99,7 @@ const Register = () => {
                                 },
                             })}
                         />
-                        {errors.password && errors.password.message}
+                        <small className="text-danger">{formState.touched.password && errors.password && errors.password.message}</small>
                     </Form.Group>
                     <ButtonGroup className="w-100" aria-label="Basic example">
                         <Button

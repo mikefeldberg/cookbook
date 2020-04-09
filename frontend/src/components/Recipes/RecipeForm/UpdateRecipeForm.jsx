@@ -134,9 +134,9 @@ const UpdateRecipeForm = ({ recipe }) => {
             title,
             description,
             skillLevel,
-            prepTime,
-            cookTime,
-            waitTime,
+            prepTime: prepTime || 0,
+            cookTime: cookTime || 0,
+            waitTime: waitTime || 0,
             servings,
             ingredients,
             instructions,
@@ -167,7 +167,13 @@ const UpdateRecipeForm = ({ recipe }) => {
         <Form onSubmit={e => handleSubmit(e, updateRecipe)}>
             <Form.Group controlId="formName">
                 <Form.Label>Recipe Title</Form.Label>
-                <Form.Control value={title} type="text" name="title" onChange={e => setTitle(e.target.value)} />
+                <Form.Control
+                    value={title}
+                    type="text"
+                    name="title"
+                    onChange={e => setTitle(e.target.value)} 
+                    required
+                />
             </Form.Group>
             <Form.Group controlId="formDescription">
                 <Form.Label>Recipe Description</Form.Label>
@@ -289,6 +295,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                     name="servings"
                     onChange={e => setServings(parseInt(e.target.value))}
                     pattern="\d+"
+                    required
                 />
             </Form.Group>
             <Form.Group controlId="formPrepTime">
@@ -299,6 +306,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                     name="prepTime"
                     onChange={e => setPrepTime(parseInt(e.target.value))}
                     pattern="\d+"
+                    required
                 />
             </Form.Group>
             <Form.Group controlId="formCookTime">
@@ -350,10 +358,15 @@ const UpdateRecipeForm = ({ recipe }) => {
                     custom
                     accept=",jpg, .jpeg"
                     onChange={getFile}
-                    />
+                />
             </Form.Group>
             <div className="d-flex justify-content-center">
-                <Button className="mr-2" type="submit" variant="primary">
+                <Button
+                    className="mr-2"
+                    type="submit"
+                    variant="primary"
+                    disabled={!title || !servings || !prepTime}
+                >
                     Save Recipe
                 </Button>
                 <Button onClick={() => {history.push(`/recipes/${recipeId}`)}} variant="danger">

@@ -53,10 +53,13 @@ const Login = () => {
                             placeholder=""
                             name="username"
                             ref={register({
-                                required: true,
+                                required: {
+                                    value: true,
+                                    message: 'Enter your username'
+                                }
                             })}
                         />
-                        {errors.username && errors.username.message}
+                        <small className="text-danger">{formState.touched.username && errors.username && errors.username.message}</small>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Password</Form.Label>
@@ -65,10 +68,13 @@ const Login = () => {
                             placeholder=""
                             name="password"
                             ref={register({
-                                required: true,
+                                required: {
+                                    value: true,
+                                    message: 'Enter your password'
+                                }
                             })}
                         />
-                        {errors.password && errors.password.message}
+                    <small className="text-danger">{formState.touched.password && errors.password && errors.password.message}</small>
                     </Form.Group>
                     <ButtonGroup className="w-100" aria-label="Basic example">
                         <Button

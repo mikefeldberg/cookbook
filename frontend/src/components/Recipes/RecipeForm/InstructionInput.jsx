@@ -15,6 +15,7 @@ const InstructionInput = ({ idx, instructions, handleInstructionChange, deleteIn
                     data-idx={idx}
                     value={instructions[idx].content}
                     onChange={handleInstructionChange}
+                    required
                 />
             </td>
             <td>
