@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useMutation } from '@apollo/react-hooks';
+import { useApolloClient, useMutation } from '@apollo/react-hooks';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -9,6 +9,7 @@ import { CREATE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries
 import StarRating from './StarRating';
 
 const CreateComment = ({ recipeId }) => {
+    const client = useApolloClient();
     const currentUser = useContext(AuthContext);
     const [rating, setRating] = useState(0);
     const [content, setContent] = useState(currentUser ? '' : `Log in to leave a comment`);
@@ -25,6 +26,7 @@ const CreateComment = ({ recipeId }) => {
                 query: GET_RECIPE_QUERY,
                 data: { recipe },
             });
+            client.resetStore();
         },
     });
 

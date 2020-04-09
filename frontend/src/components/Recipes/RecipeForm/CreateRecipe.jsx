@@ -31,37 +31,39 @@ const CreateRecipe = ({ history }) => {
         },
     });
 
-    const blankIngredient = { quantity: '', name: '', preparation: '' };
-    const blankInstruction = { order: 0, content: '' };
-    const [photoSource, setPhotoSource] = useState('upload');
-    const [file, setFile] = useState(null);
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [ingredients, setIngredients] = useState([{ ...blankIngredient }]);
-    const [instructions, setInstructions] = useState([{ ...blankInstruction }]);
-    const [instructionCounter, setInstructionCounter] = useState(1);
-    const [skillLevel, setSkillLevel] = useState('Easy');
-    const [servings, setServings] = useState('');
-    const [prepTime, setPrepTime] = useState('');
-    const [cookTime, setCookTime] = useState('');
-    const [waitTime, setWaitTime] = useState('');
-    const [photoUrl, setPhotoUrl] = useState('');
-
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ REMOVE WHEN DONE TESTING
-
-    // const blankIngredient = { quantity: '1', name: '1', preparation: '1' };
-    // const blankInstruction = { order: 0, content: '1' };
+    // const blankIngredient = { quantity: '', name: '', preparation: '' };
+    // const blankInstruction = { order: 0, content: '' };
+    // const [photoSource, setPhotoSource] = useState('upload');
     // const [file, setFile] = useState(null);
-    // const [title, setTitle] = useState('1');
-    // const [description, setDescription] = useState('1');
+    // const [title, setTitle] = useState('');
+    // const [description, setDescription] = useState('');
     // const [ingredients, setIngredients] = useState([{ ...blankIngredient }]);
     // const [instructions, setInstructions] = useState([{ ...blankInstruction }]);
     // const [instructionCounter, setInstructionCounter] = useState(1);
     // const [skillLevel, setSkillLevel] = useState('Easy');
-    // const [servings, setServings] = useState('1');
-    // const [prepTime, setPrepTime] = useState('1');
-    // const [cookTime, setCookTime] = useState('1');
-    // const [waitTime, setWaitTime] = useState('1');
+    // const [servings, setServings] = useState('');
+    // const [prepTime, setPrepTime] = useState('');
+    // const [cookTime, setCookTime] = useState('');
+    // const [waitTime, setWaitTime] = useState('');
+    // const [photoUrl, setPhotoUrl] = useState('');
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ REMOVE WHEN DONE TESTING
+
+    const blankIngredient = { quantity: '1', name: '1', preparation: '1' };
+    const blankInstruction = { order: 0, content: '1' };
+    const [photoSource, setPhotoSource] = useState('upload');
+    const [file, setFile] = useState(null);
+    const [title, setTitle] = useState('1');
+    const [description, setDescription] = useState('1');
+    const [ingredients, setIngredients] = useState([{ ...blankIngredient }]);
+    const [instructions, setInstructions] = useState([{ ...blankInstruction }]);
+    const [instructionCounter, setInstructionCounter] = useState(1);
+    const [skillLevel, setSkillLevel] = useState('Easy');
+    const [servings, setServings] = useState('1');
+    const [prepTime, setPrepTime] = useState('1');
+    const [cookTime, setCookTime] = useState('1');
+    const [waitTime, setWaitTime] = useState('1');
+    const [photoUrl, setPhotoUrl] = useState('');
 
     const handleIngredientChange = (e) => {
         const updatedIngredients = [...ingredients];
