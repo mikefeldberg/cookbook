@@ -3,7 +3,7 @@ import React from 'react';
 const Error = ( {error} ) => {
     return (
         <>
-            <div className="mt-3 mx-auto w-50 text-danger">Error: {error}</div>
+            <div className="mt-3 text-danger">Error: {error}</div>
         </>
     );
 };

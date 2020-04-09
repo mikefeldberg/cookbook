@@ -271,6 +271,7 @@ const CreateRecipe = ({ history }) => {
                                 label="Easy"
                                 name="formHorizontalRadios"
                                 id="Easy"
+                                defaultChecked
                                 onClick={() => setSkillLevel('Easy')}
                             />
                             <Form.Check

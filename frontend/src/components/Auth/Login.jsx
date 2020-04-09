@@ -45,7 +45,7 @@ const Login = () => {
     if (!currentUser) {
         return (
             <>
-                <Form onSubmit={handleSubmit(onSubmit)}>
+                <Form className="mx-auto w-50" onSubmit={handleSubmit(onSubmit)}>
                     <Form.Group>
                         <Form.Label>Username</Form.Label>
                         <Form.Control
@@ -90,8 +90,8 @@ const Login = () => {
                             Login
                         </Button>
                     </ButtonGroup>
+                    {errorText && <Error error={errorText} setErrorText={setErrorText} />}
                 </Form>
-                {errorText && <Error error={errorText} setErrorText={setErrorText} />}
             </>
         );
     } else {

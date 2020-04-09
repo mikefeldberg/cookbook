@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 
-import './styles.css';
+// import './styles.css';
 import Row from 'react-bootstrap/Row';
 import { AuthContext } from '../../App';
 

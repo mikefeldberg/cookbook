@@ -36,10 +36,10 @@ const Register = () => {
             let errorMessage = e.graphQLErrors[0]['message'];
             if (e.graphQLErrors && errorMessage.includes('duplicate key')) {
                 if (errorMessage.includes('username')) {
-                    setErrorText('Username already exists');
+                    setErrorText('Username not available');
                 }
                 if (errorMessage.includes('email')) {
-                    setErrorText('Email already exists');
+                    setErrorText('An account with this email address already exists');
                 }
             }
         }
@@ -48,7 +48,7 @@ const Register = () => {
     if (!currentUser) {
         return (
             <>
-                <Form onSubmit={handleSubmit(onSubmit)}>
+                <Form className="mx-auto w-50" onSubmit={handleSubmit(onSubmit)}>
                     <Form.Group>
                         <Form.Label>Username</Form.Label>
                         <Form.Control
@@ -115,8 +115,8 @@ const Register = () => {
                             Register
                         </Button>
                     </ButtonGroup>
+                    {errorText && <Error error={errorText} setErrorText={setErrorText} />}
                 </Form>
-                {errorText && <Error error={errorText} setErrorText={setErrorText} />}
             </>
         );
     } else {
