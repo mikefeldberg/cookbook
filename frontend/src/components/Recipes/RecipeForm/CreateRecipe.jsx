@@ -136,17 +136,6 @@ const CreateRecipe = ({ history }) => {
         }
     };
 
-    // const selectPhotoSource = (method) => {
-    //     if (method === 'upload') {
-    //         setUploadPhotoIsSelected(true);
-    //         setLinkPhotoIsSelected(false);
-    //     }
-    //     if (method === 'link') {
-    //         setUploadPhotoIsSelected(false);
-    //         setLinkPhotoIsSelected(true);
-    //     }
-    // }
-
     const handleSubmit = async (e, createRecipe) => {
         e.preventDefault();
 
@@ -361,7 +350,7 @@ const CreateRecipe = ({ history }) => {
                     />
                 </Form.Group>
                 <Form.Group>
-                    <Form.Label>Image</Form.Label>
+                    <Form.Label>Photo</Form.Label>
                     <InputGroup>
                         <InputGroup.Prepend>
                             <InputGroup.Text onClick={() => {setPhotoSource('upload');}}>
