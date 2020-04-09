@@ -1,9 +1,10 @@
 import React from 'react';
-import { useMutation } from '@apollo/react-hooks';
+import { useApolloClient, useMutation } from '@apollo/react-hooks';
 
 import { DELETE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries';
 
 const DeleteComment = ({ commentId }) => {
+    const client = useApolloClient();
     const [deleteComment] = useMutation(DELETE_COMMENT_MUTATION, {
         update(cache, { data: { deleteComment } }) {
             const recipeId = deleteComment.recipeId;
@@ -16,6 +17,7 @@ const DeleteComment = ({ commentId }) => {
                 query: GET_RECIPE_QUERY,
                 data: { recipe },
             });
+            client.resetStore();
         },
     });
 
