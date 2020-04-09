@@ -129,6 +129,7 @@ class RecipeInput(graphene.InputObjectType):
 class Query(graphene.ObjectType):
     recipes = graphene.List(RecipeType, search_terms=graphene.String())
     recipe = graphene.Field(RecipeType, id=graphene.String(required=True))
+    ratings = graphene.List(CommentType, recipe_id=graphene.String(required=True))
     comment = graphene.Field(CommentType, id=graphene.String(required=True))
 
     def resolve_recipe(self, info, id):
@@ -154,7 +155,11 @@ class Query(graphene.ObjectType):
         return Recipe.objects.filter(query, deleted_at=None).distinct('id')
 
     def resolve_comment(self, info, id):
-        return Comment.objects.filter(id=id)
+        return Comment.objects.filter(id=id, deleted_at=None)
+
+    def resolve_ratings(self, info, recipe_id):
+        user = info.context.user
+        return Comment.objects.filter(recipe_id=recipe_id, user=user, rating__gt=0, deleted_at=None)
 
 
 class CreateRecipe(graphene.Mutation):

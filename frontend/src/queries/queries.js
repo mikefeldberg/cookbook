@@ -230,6 +230,14 @@ export const GET_RECIPE_QUERY = gql`
     }
 `
 
+export const GET_RATINGS_QUERY = gql`
+    query getRatingsQuery($recipeId: String!) {
+        ratings (recipeId: $recipeId) {
+            id
+        }
+    }
+`
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~ MUTATIONS
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~ AUTH
@@ -392,33 +400,6 @@ export const UPDATE_COMMENT_MUTATION = gql`
         }
     }
 `
-
-// export const CREATE_COMMENT_MUTATION = gql`
-//     mutation ($comment: CommentInput!) {
-//         createComment(comment: $comment) {
-//                 comment {
-//                     id
-//                     content
-//                     rating
-//                     recipe {
-//                         id
-//                     }
-//                 }
-//         }
-//     }
-// `
-
-// export const UPDATE_COMMENT_MUTATION = gql`
-//     mutation ($comment: CommentInput!) {
-//         updateComment(comment: $comment) {
-//                 comment {
-//                     id
-//                     content
-//                     rating
-//                 }
-//         }
-//     }
-// `
 
 export const DELETE_COMMENT_MUTATION = gql`
     mutation($commentId: String!) {

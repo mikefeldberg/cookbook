@@ -22,7 +22,6 @@ const Recipe = ({ recipe, favorited }) => {
         update(cache, { data: { createFavorite } }) {
             const recipeId = createFavorite.favorite.recipe.id;
             const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables: { id: recipeId } });
-
             const recipe = data.recipe;
 
             recipe.favorites.push({ user: { id: currentUser.id, __typename: 'UserType' }, __typename: 'FavoriteType' });
