@@ -1,8 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { Redirect } from 'react-router-dom';
+import bsCustomFileInput from 'bs-custom-file-input';
 
 import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 import FormFile from 'react-bootstrap/FormFile';
 import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
@@ -14,6 +16,7 @@ import InstructionInput from './InstructionInput';
 import { AuthContext } from '../../../App';
 
 const CreateRecipe = ({ history }) => {
+    bsCustomFileInput.init();
     const currentUser = useContext(AuthContext);
     const [createPhoto] = useMutation(CREATE_PHOTO_MUTATION);
     const [createRecipe] = useMutation(CREATE_RECIPE_MUTATION, {
@@ -30,6 +33,7 @@ const CreateRecipe = ({ history }) => {
 
     const blankIngredient = { quantity: '', name: '', preparation: '' };
     const blankInstruction = { order: 0, content: '' };
+    const [photoSource, setPhotoSource] = useState('upload');
     const [file, setFile] = useState(null);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -41,6 +45,7 @@ const CreateRecipe = ({ history }) => {
     const [prepTime, setPrepTime] = useState('');
     const [cookTime, setCookTime] = useState('');
     const [waitTime, setWaitTime] = useState('');
+    const [photoUrl, setPhotoUrl] = useState('');
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ REMOVE WHEN DONE TESTING
 
@@ -151,6 +156,8 @@ const CreateRecipe = ({ history }) => {
 
         if (file) {
             handleUpload(recipeId, createPhoto);
+        } else if (photoUrl) {
+            handleCreateLinkedPhoto(recipeId, createPhoto);
         } else {
             history.push(`/recipes/${recipeId}`);
         }
@@ -163,6 +170,15 @@ const CreateRecipe = ({ history }) => {
         const photo = {
             recipeId,
             url,
+        };
+        await createPhoto({ variables: { photo } });
+        history.push(`/recipes/${recipeId}`);
+    };
+
+    const handleCreateLinkedPhoto = async (recipeId, createPhoto) => {
+        const photo = {
+            recipeId,
+            url: photoUrl,
         };
         await createPhoto({ variables: { photo } });
         history.push(`/recipes/${recipeId}`);
@@ -334,8 +350,35 @@ const CreateRecipe = ({ history }) => {
                     />
                 </Form.Group>
                 <Form.Group>
-                    <Form.Label>Image</Form.Label>
-                    <FormFile id="custom-file" label="Choose file" custom accept=",jpg, .jpeg" onChange={getFile} />
+                    <Form.Label>Photo</Form.Label>
+                    <InputGroup>
+                        <InputGroup.Prepend>
+                            <InputGroup.Text onClick={() => {setPhotoSource('upload');}}>
+                                <i className={
+                                    photoSource === 'upload'
+                                        ? 'text-primary fas fa-file-upload'
+                                        : 'text-light fas fa-file-upload'
+                                }></i>
+                            </InputGroup.Text>
+                            <InputGroup.Text onClick={() => {setPhotoSource('link');}}>
+                                <i className={
+                                    photoSource === 'link'
+                                    ? 'text-primary fas fa-link'
+                                    : 'text-light fas fa-link'
+                                }></i>
+                            </InputGroup.Text>
+                        </InputGroup.Prepend>
+                        {photoSource === 'upload' && (
+                            <FormFile label="Choose file (.jpg)" custom accept=".jpg, .jpeg" onChange={getFile} />
+                        )}
+                        {photoSource === 'link' && (
+                            <Form.Control
+                                value={photoUrl}
+                                placeholder="Paste image URL"
+                                onChange={(e) => setPhotoUrl(e.target.value)}
+                            />
+                        )}
+                    </InputGroup>
                 </Form.Group>
                 <div className="d-flex justify-content-center">
                     <Button
