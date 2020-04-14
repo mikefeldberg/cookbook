@@ -120,7 +120,7 @@ const Recipe = ({ recipe, favorited }) => {
                             src={
                                 recipe.photos.length > 0
                                     ? recipe.photos[0].url
-                                    : `https://cookbook-test-bucket.s3-us-west-1.amazonaws.com/_food_placeholder.jpg`
+                                    : `/recipe_placeholder.png`
                             }
                             fluid
                             className="shadow-lg"

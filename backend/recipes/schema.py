@@ -3,7 +3,7 @@ from graphene_django import DjangoObjectType
 from graphql import GraphQLError
 from django.db.models import Q
 from django.utils import timezone
-
+from backend.s3 import create_presigned_url
 from .models import Recipe, Ingredient, Instruction, Comment, Favorite, Photo
 from users.schema import UserType
 
@@ -107,7 +107,11 @@ class RecipeType(DjangoObjectType):
         return Comment.objects.filter(recipe_id=self.id, deleted_at=None).order_by('-created_at')
 
     def resolve_photos(self, info):
-        return Photo.objects.filter(recipe_id=self.id, deleted_at=None).order_by('-created_at')
+        photos = Photo.objects.filter(recipe_id=self.id, deleted_at=None).order_by('-created_at')
+        for p in photos:
+            p.url = create_presigned_url(p.url.split('com/')[1])
+
+        return photos
 
     def resolve_favorites(self, info):
         return Favorite.objects.filter(recipe_id=self.id, deleted_at=None)
