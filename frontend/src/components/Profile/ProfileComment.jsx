@@ -14,6 +14,7 @@ import CommentToolbar from '../Comments/CommentToolbar';
 import { AuthContext } from '../../App';
 import StarRating from '../Comments/StarRating';
 
+
 const Comment = ({ comment }) => {
     const currentUser = useContext(AuthContext);
     const [editing, setEditing] = useState(false);
@@ -76,7 +77,7 @@ const Comment = ({ comment }) => {
                             src={
                                 comment.recipe.photos.length > 0
                                     ? comment.recipe.photos[0].url
-                                    : `https://cookbook-test-bucket.s3-us-west-1.amazonaws.com/_food_placeholder.jpg`
+                                    : `/recipe_placeholder.png`
                             }
                             alt={comment.recipe.title}
                         />

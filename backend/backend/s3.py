@@ -1,23 +1,24 @@
+
+import os
 import logging
 import boto3
 from django.http import JsonResponse, HttpResponseServerError
 from botocore.exceptions import ClientError
 from datetime import datetime
-import uuid
+import ulid
 
+BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET')
+DEFAULT_EXPIRATION = 3600
 
 def create_presigned_post(request):
-    bucket_name = 'cookbook-test-bucket'
-    object_name = 'photo_{}.jpg'.format(uuid.uuid4())
-    expiration = 3600
-
     s3_client = boto3.client('s3')
+    object_name = 'photo_{}.jpg'.format(ulid.new())
 
     try:
         response = s3_client.generate_presigned_post(
-            Bucket=bucket_name,
+            Bucket=BUCKET_NAME,
             Key=object_name,
-            ExpiresIn=expiration
+            ExpiresIn=DEFAULT_EXPIRATION,
         )
 
     except ClientError as e:
@@ -25,3 +26,21 @@ def create_presigned_post(request):
         return HttpResponseServerError()
 
     return JsonResponse(response)
+
+def create_presigned_url(object_name):
+    s3_client = boto3.client('s3')
+
+    try:
+        response = s3_client.generate_presigned_url(
+            'get_object',
+            Params={
+                'Bucket': BUCKET_NAME,
+                'Key': object_name
+            },
+            ExpiresIn=DEFAULT_EXPIRATION
+        )
+    except ClientError as e:
+        logging.error(e)
+        return None
+
+    return response
