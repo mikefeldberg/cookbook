@@ -230,7 +230,7 @@ recipes = [
             {'quantity': "1 cup", 'name': "wild rice"},
             {'quantity': "1 (6-ounce) jar", 'name': "marinated artichoke hearts",
              'preparation': "drained and halved, reserve marinade"},
-            {'quantity': "1 (6-ounce) can", 'name': "green peas", 'preparation': "drained"}},
+            {'quantity': "1 (6-ounce) can", 'name': "green peas", 'preparation': "drained"},
             {'quantity': "1/3 cup", 'name': "green bell pepper",
                 'preparation': "coarsly chopped"},
             {'quantity': "3", 'name': "green onions",
