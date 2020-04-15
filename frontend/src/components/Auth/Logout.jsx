@@ -8,6 +8,7 @@ const Logout = () => {
         localStorage.removeItem('authToken');
         client.writeData({ data: { isLoggedIn: false } });
         client.resetStore();
+        console.log('logged out')
     };
 
     return <span onClick={handleLogout}>Logout</span>;
