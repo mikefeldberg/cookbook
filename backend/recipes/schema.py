@@ -162,8 +162,12 @@ class Query(graphene.ObjectType):
         return Comment.objects.filter(id=id, deleted_at=None)
 
     def resolve_ratings(self, info, recipe_id):
-        from IPython import embed; embed()
+        # from IPython import embed; embed()
         user = info.context.user
+
+        if user.is_anonymous:
+            return Comment.objects.filter(recipe_id=recipe_id, deleted_at=None)
+
         return Comment.objects.filter(recipe_id=recipe_id, user=user, rating__gt=0, deleted_at=None)
 
 

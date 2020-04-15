@@ -13,7 +13,7 @@ const CreateComment = ({ recipeId, rated }) => {
     const currentUser = useContext(AuthContext);
     const [rating, setRating] = useState(0);
     const [content, setContent] = useState(currentUser ? '' : `Log in to leave a comment`);
-    const [commentsDisabled] = useState(currentUser ? false : 'disabled');
+    const [commentsDisabled] = useState(currentUser ? '' : 'disabled');
 
     const [createComment] = useMutation(CREATE_COMMENT_MUTATION, {
         update(cache, { data: { createComment } }) {
@@ -61,7 +61,7 @@ const CreateComment = ({ recipeId, rated }) => {
                     onChange={(e) => setContent(e.target.value)}
                 />
                 <Button className="mb-3" type="submit">
-                    Add Comment
+                    Add Comment `{commentsDisabled}`
                 </Button>
             </fieldset>
         </Form>
