@@ -78,7 +78,8 @@ const StarRating = ({ rating, setRating, rated }) => {
                             key={i}
                         />
                     ))}
-                    {rated && ' (Already rated)'}
+                    &nbsp;
+                    {rated && '(Already rated)'}
                 </Row>
             </span>
         );

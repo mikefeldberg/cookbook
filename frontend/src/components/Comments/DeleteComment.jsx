@@ -17,7 +17,6 @@ const DeleteComment = ({ commentId }) => {
                 query: GET_RECIPE_QUERY,
                 data: { recipe },
             });
-            client.resetStore();
         },
     });
 

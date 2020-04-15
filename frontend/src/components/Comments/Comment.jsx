@@ -33,7 +33,6 @@ const Comment = ({ comment }) => {
                 query: GET_RECIPE_QUERY,
                 data: { recipe },
             });
-            client.resetStore();
         },
     });
 
@@ -71,7 +70,7 @@ const Comment = ({ comment }) => {
                             width={64}
                             height={64}
                             className="rounded mr-3"
-                            src="https://cookbook-test-bucket.s3-us-west-1.amazonaws.com/_avatarplaceholder.png"
+                            src="/avatar_placeholder.png"
                             alt={comment.user.username}
                         />
                     </Link>

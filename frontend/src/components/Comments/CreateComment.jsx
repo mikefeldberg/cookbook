@@ -26,7 +26,6 @@ const CreateComment = ({ recipeId, rated }) => {
                 query: GET_RECIPE_QUERY,
                 data: { recipe },
             });
-            client.resetStore();
         },
     });
 
@@ -49,8 +48,12 @@ const CreateComment = ({ recipeId, rated }) => {
 
     return (
         <Form className="text-right" onSubmit={(e) => handleSubmit(e)}>
-            <fieldset disabled={commentsDisabled}>
-                <StarRating rating={rating} setRating={setRating} rated={rated} />
+            <fieldset disabled={!currentUser}>
+                <StarRating
+                    rating={rating}
+                    setRating={setRating}
+                    rated={rated}
+                />
                 <Form.Control
                     className="mb-3 shadow-sm "
                     value={content}
@@ -60,8 +63,8 @@ const CreateComment = ({ recipeId, rated }) => {
                     name="content"
                     onChange={(e) => setContent(e.target.value)}
                 />
-                <Button className="mb-3" type="submit">
-                    Add Comment `{commentsDisabled}`
+                <Button disabled={!currentUser} className="mb-3" type="submit">
+                    Add Comment `{!currentUser}`
                 </Button>
             </fieldset>
         </Form>

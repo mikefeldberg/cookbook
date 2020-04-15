@@ -230,10 +230,15 @@ export const GET_RECIPE_QUERY = gql`
     }
 `
 
-export const GET_RATINGS_QUERY = gql`
-    query getRatingsQuery($recipeId: String!) {
-        ratings (recipeId: $recipeId) {
-            id
+export const GET_USER_RATINGS_QUERY = gql`
+    query getUserRatingsQuery($id: String!) {
+        user (id: $id) {
+            commentSet {
+                rating
+                recipe {
+                    id
+                }
+            }
         }
     }
 `
