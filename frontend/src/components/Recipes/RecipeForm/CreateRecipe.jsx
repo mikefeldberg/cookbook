@@ -403,7 +403,7 @@ const CreateRecipe = ({ history }) => {
             </Form>
         );
     } else {
-        return <Redirect />;
+        return <Redirect to="/" />;
     }
 };
 

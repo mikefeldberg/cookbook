@@ -35,11 +35,11 @@ const Star = ({ currentUser, currentStar, selected = false, hoveredStar, onClick
     </>
 );
 
-const StarRating = ({ rating, setRating, rated }) => {
+const StarRating = ({ rating, setRating, ratingIsDisabled }) => {
     const currentUser = useContext(AuthContext);
     const [hoveredStar, setHoveredStar] = useState(0);
 
-    if (currentUser && !rated) {
+    if (currentUser && !ratingIsDisabled) {
         return (
             <span>
                 <Row className="align-items-center" noGutters>
@@ -79,7 +79,7 @@ const StarRating = ({ rating, setRating, rated }) => {
                         />
                     ))}
                     &nbsp;
-                    {rated && '(Already rated)'}
+                    {ratingIsDisabled && '(Already rated)'}
                 </Row>
             </span>
         );

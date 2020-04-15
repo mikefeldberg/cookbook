@@ -5,15 +5,36 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 import { AuthContext } from '../../App';
-import { CREATE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries';
+import { CREATE_COMMENT_MUTATION, GET_RECIPE_QUERY, GET_USER_RATINGS_QUERY } from '../../queries/queries';
 import StarRating from './StarRating';
 
-const CreateComment = ({ recipeId, rated }) => {
+const CreateComment = ({ recipeId }) => {
     const client = useApolloClient();
     const currentUser = useContext(AuthContext);
     const [rating, setRating] = useState(0);
-    const [content, setContent] = useState(currentUser ? '' : `Log in to leave a comment`);
-    const [commentsDisabled] = useState(currentUser ? '' : 'disabled');
+    const [ratingIsDisabled, setRatingIsDisabled] = useState(false);
+    const [content, setContent] = useState('');
+
+    const fetchUserRatings = async () => {
+        const res = await client.query({
+            query: GET_USER_RATINGS_QUERY,
+            variables: { id: currentUser.id },
+        });
+
+        const commentSet = res.data.user.commentSet;
+
+        for (const c of commentSet) {
+            if (c.recipe.id === recipeId && c.rating) {
+                setRatingIsDisabled(true);
+            }
+        }
+    };
+
+    if (currentUser) {
+        fetchUserRatings();
+    }
+
+    console.log('CreateComment: CU', currentUser, 'RID', ratingIsDisabled)
 
     const [createComment] = useMutation(CREATE_COMMENT_MUTATION, {
         update(cache, { data: { createComment } }) {
@@ -52,11 +73,11 @@ const CreateComment = ({ recipeId, rated }) => {
                 <StarRating
                     rating={rating}
                     setRating={setRating}
-                    rated={rated}
+                    ratingIsDisabled={ratingIsDisabled}
                 />
                 <Form.Control
                     className="mb-3 shadow-sm "
-                    value={content}
+                    value={currentUser ? content : 'Log in to rate or comment'}
                     type="text"
                     as="textarea"
                     rows="3"
@@ -64,7 +85,7 @@ const CreateComment = ({ recipeId, rated }) => {
                     onChange={(e) => setContent(e.target.value)}
                 />
                 <Button disabled={!currentUser} className="mb-3" type="submit">
-                    Add Comment `{!currentUser}`
+                    Add Comment
                 </Button>
             </fieldset>
         </Form>

@@ -15,7 +15,7 @@ const RecipeDetails = ({ match, history }) => {
     });
 
     if (loading) return `Loading recipe...`;
-    if (error) return <Redirect />;
+    if (error) return <Redirect to="/" />;
 
     if (data) {
         const recipe = data.recipe;
