@@ -41,13 +41,14 @@ class UserType(DjangoObjectType):
         model = get_user_model()
 
     def resolve_recipe_set(self, info, **kwargs):
-        return RecipeFilter(kwargs).qs
+        # from IPython import embed; embed()
+        return RecipeFilter(kwargs).qs.filter(user_id=self.id) 
 
     def resolve_comment_set(self, info, **kwargs):
-        return CommentFilter(kwargs).qs
+        return CommentFilter(kwargs).qs.filter(user_id=self.id) 
 
     def resolve_favorite_set(self, info, **kwargs):
-        return FavoriteFilter(kwargs).qs
+        return FavoriteFilter(kwargs).qs.filter(user_id=self.id) 
 
 
 class Query(graphene.ObjectType):

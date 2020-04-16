@@ -33,7 +33,7 @@ const Comment = ({ comment, setRatingIsDisabled }) => {
                 data: { recipe },
             });
 
-            if (comment.rating != updateComment.comment.rating) {
+            if (comment.rating !== updateComment.comment.rating) {
                 if (comment.rating === 0) {
                     setRatingIsDisabled(true)
                 }
