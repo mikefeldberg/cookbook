@@ -86,7 +86,7 @@ const Comment = ({ comment }) => {
                 <Col>
                     <Row noGutters>
                         <Link style={{ textDecoration: 'none' }} to={`/recipes/${comment.recipe.id}`}>
-                            {comment.recipe.title}
+                            <span className="link">{comment.recipe.title}</span>
                         </Link>
                         &nbsp;posted&nbsp;
                         <Moment from={new Date()}>{comment.createdAt}</Moment>&nbsp;
