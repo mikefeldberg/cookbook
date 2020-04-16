@@ -162,7 +162,6 @@ class Query(graphene.ObjectType):
         return Comment.objects.filter(id=id, deleted_at=None)
 
     def resolve_ratings(self, info, recipe_id):
-        # from IPython import embed; embed()
         user = info.context.user
 
         if user.is_anonymous:
@@ -405,7 +404,6 @@ class DeleteComment(graphene.Mutation):
             recipe.rating_count = 0
             recipe.save()
 
-        # from IPython import embed; embed()
 
         deleted_comment = Comment(
             rating=comment.rating,
