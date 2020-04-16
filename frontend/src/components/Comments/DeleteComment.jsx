@@ -12,6 +12,15 @@ const DeleteComment = ({ commentId, setRatingIsDisabled }) => {
             const index = recipe.comments.findIndex(comment => comment.id === commentId);
             recipe.comments = [...recipe.comments.slice(0, index), ...recipe.comments.slice(index + 1)];
 
+            if (deleteComment.comment.rating > 0 && recipe.ratingCount > 1) {
+                recipe.rating = (recipe.rating * recipe.ratingCount - deleteComment.comment.rating) / (recipe.ratingCount - 1)
+                recipe.ratingCount -= 1
+            }
+            if (deleteComment.comment.rating > 0 && recipe.ratingCount === 1) {
+                recipe.rating = 0
+                recipe.ratingCount = 0
+            }
+            
             cache.writeQuery({
                 query: GET_RECIPE_QUERY,
                 data: { recipe },

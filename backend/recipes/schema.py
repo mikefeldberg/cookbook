@@ -164,9 +164,6 @@ class Query(graphene.ObjectType):
     def resolve_ratings(self, info, recipe_id):
         user = info.context.user
 
-        if user.is_anonymous:
-            return Comment.objects.filter(recipe_id=recipe_id, deleted_at=None)
-
         return Comment.objects.filter(recipe_id=recipe_id, user=user, rating__gt=0, deleted_at=None)
 
 
@@ -403,7 +400,6 @@ class DeleteComment(graphene.Mutation):
             recipe.rating = 0
             recipe.rating_count = 0
             recipe.save()
-
 
         deleted_comment = Comment(
             rating=comment.rating,

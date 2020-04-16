@@ -20,6 +20,11 @@ const CreateComment = ({ recipeId, ratingIsDisabled, setRatingIsDisabled }) => {
             const recipe = { ...data.recipe };
             recipe.comments = [createComment.comment, ...recipe.comments.slice(0)];
 
+            if (createComment.comment.rating > 0) {
+                recipe.rating = (recipe.rating * recipe.ratingCount + createComment.comment.rating) / (recipe.ratingCount + 1)
+                recipe.ratingCount += 1
+            }
+
             cache.writeQuery({
                 query: GET_RECIPE_QUERY,
                 data: { recipe },

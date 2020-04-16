@@ -28,6 +28,25 @@ const Comment = ({ comment, setRatingIsDisabled }) => {
             const index = recipe.comments.findIndex(comment => comment.id === updateComment.comment.id);
             recipe.comments = [...recipe.comments.slice(0, index), updateComment.comment, ...recipe.comments.slice(index + 1)]
 
+            if (comment.rating !== updateComment.comment.rating) {
+                if (comment.rating > 0) {
+                    if (updateComment.comment.rating > 0) {
+                        recipe.rating = (recipe.rating * recipe.ratingCount - comment.rating + updateComment.comment.rating) / (recipe.ratingCount)
+                    }
+                    if (updateComment.comment.rating === 0 && recipe.ratingCount > 1) {
+                        recipe.rating = (recipe.rating * recipe.ratingCount - comment.rating) / (recipe.ratingCount - 1)
+                        recipe.ratingCount -= 1
+                    }
+                    if (updateComment.comment.rating === 0 && recipe.ratingCount === 1) {
+                        recipe.rating = 0
+                        recipe.ratingCount = 0
+                    }
+                }
+            } else {
+                recipe.rating = (recipe.rating * recipe.ratingCount + updateComment.comment.rating) / (recipe.ratingCount + 1)
+                recipe.ratingCount += 1
+            }
+
             cache.writeQuery({
                 query: GET_RECIPE_QUERY,
                 data: { recipe },
