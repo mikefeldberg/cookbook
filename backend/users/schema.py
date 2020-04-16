@@ -44,6 +44,7 @@ class UserType(DjangoObjectType):
         return RecipeFilter(kwargs).qs.filter(user_id=self.id) 
 
     def resolve_comment_set(self, info, **kwargs):
+        # from IPython import embed; embed()
         return CommentFilter(kwargs).qs.filter(user_id=self.id) 
 
     def resolve_favorite_set(self, info, **kwargs):

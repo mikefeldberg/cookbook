@@ -24,6 +24,7 @@ export const PROFILE_QUERY = gql`
             id
             username
             email
+            createdAt
             recipeSet {
                 id
                 title
