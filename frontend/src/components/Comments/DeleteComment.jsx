@@ -3,10 +3,10 @@ import { useMutation } from '@apollo/react-hooks';
 
 import { DELETE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries';
 
-const DeleteComment = ({ commentId }) => {
+const DeleteComment = ({ commentId, setRatingIsDisabled }) => {
     const [deleteComment] = useMutation(DELETE_COMMENT_MUTATION, {
         update(cache, { data: { deleteComment } }) {
-            const recipeId = deleteComment.recipeId;
+            const recipeId = deleteComment.comment.recipeId;
             const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables: { id: recipeId } });
             const recipe = {...data.recipe}
             const index = recipe.comments.findIndex(comment => comment.id === commentId);
@@ -16,6 +16,10 @@ const DeleteComment = ({ commentId }) => {
                 query: GET_RECIPE_QUERY,
                 data: { recipe },
             });
+
+            if (deleteComment.comment.rating) {
+                setRatingIsDisabled(false)
+            }
         },
     });
 

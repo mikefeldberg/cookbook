@@ -1,40 +1,17 @@
 import React, { useState, useContext } from 'react';
-import { useApolloClient, useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 import { AuthContext } from '../../App';
-import { CREATE_COMMENT_MUTATION, GET_RECIPE_QUERY, GET_USER_RATINGS_QUERY } from '../../queries/queries';
+import { CREATE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries';
 import StarRating from './StarRating';
 
-const CreateComment = ({ recipeId }) => {
-    const client = useApolloClient();
+const CreateComment = ({ recipeId, ratingIsDisabled, setRatingIsDisabled }) => {
     const currentUser = useContext(AuthContext);
     const [rating, setRating] = useState(0);
-    const [ratingIsDisabled, setRatingIsDisabled] = useState(false);
     const [content, setContent] = useState('');
-
-    const fetchUserRatings = async () => {
-        const res = await client.query({
-            query: GET_USER_RATINGS_QUERY,
-            variables: { id: currentUser.id },
-        });
-
-        const commentSet = res.data.user.commentSet;
-
-        for (const c of commentSet) {
-            if (c.recipe.id === recipeId && c.rating) {
-                setRatingIsDisabled(true);
-            }
-        }
-    };
-
-    if (currentUser) {
-        fetchUserRatings();
-    }
-
-    console.log('CreateComment: CU', currentUser, 'RID', ratingIsDisabled)
 
     const [createComment] = useMutation(CREATE_COMMENT_MUTATION, {
         update(cache, { data: { createComment } }) {
@@ -47,7 +24,11 @@ const CreateComment = ({ recipeId }) => {
                 query: GET_RECIPE_QUERY,
                 data: { recipe },
             });
-        },
+
+            if (createComment.comment.rating) {
+                setRatingIsDisabled(true);
+            }
+        }
     });
 
     const handleSubmit = async (e) => {

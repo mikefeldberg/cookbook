@@ -379,7 +379,7 @@ class UpdateComment(graphene.Mutation):
 
 
 class DeleteComment(graphene.Mutation):
-    recipe_id = graphene.String()
+    comment = graphene.Field(CommentType)
 
     class Arguments:
         comment_id = graphene.String(required=True)
@@ -405,8 +405,14 @@ class DeleteComment(graphene.Mutation):
             recipe.rating_count = 0
             recipe.save()
 
+        # from IPython import embed; embed()
 
-        return DeleteComment(recipe_id=recipe.id)
+        deleted_comment = Comment(
+            rating=comment.rating,
+            recipe_id=recipe.id
+        )
+
+        return DeleteComment(comment=deleted_comment)
 
 
 class CreatePhoto(graphene.Mutation):

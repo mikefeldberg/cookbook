@@ -14,7 +14,7 @@ import { AuthContext } from '../../App';
 import CommentToolbar from './CommentToolbar';
 import StarRating from './StarRating';
 
-const Comment = ({ comment }) => {
+const Comment = ({ comment, setRatingIsDisabled }) => {
     const currentUser = useContext(AuthContext);
     const [editing, setEditing] = useState(false);
     const [newRating, setNewRating] = useState(comment.rating);
@@ -32,6 +32,8 @@ const Comment = ({ comment }) => {
                 query: GET_RECIPE_QUERY,
                 data: { recipe },
             });
+
+            console.log(updateComment)
         },
     });
 
@@ -101,6 +103,7 @@ const Comment = ({ comment }) => {
                             handleCancel={handleCancel}
                             handleSubmit={handleSubmit}
                             updateComment={updateComment}
+                            setRatingIsDisabled={setRatingIsDisabled}
                         />
                     }
                 </Col>
