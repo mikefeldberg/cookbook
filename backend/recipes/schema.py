@@ -163,6 +163,7 @@ class Query(graphene.ObjectType):
 
     def resolve_ratings(self, info, recipe_id):
         user = info.context.user
+
         return Comment.objects.filter(recipe_id=recipe_id, user=user, rating__gt=0, deleted_at=None)
 
 
@@ -374,7 +375,7 @@ class UpdateComment(graphene.Mutation):
 
 
 class DeleteComment(graphene.Mutation):
-    recipe_id = graphene.String()
+    comment = graphene.Field(CommentType)
 
     class Arguments:
         comment_id = graphene.String(required=True)
@@ -400,8 +401,12 @@ class DeleteComment(graphene.Mutation):
             recipe.rating_count = 0
             recipe.save()
 
+        deleted_comment = Comment(
+            rating=comment.rating,
+            recipe_id=recipe.id
+        )
 
-        return DeleteComment(recipe_id=recipe.id)
+        return DeleteComment(comment=deleted_comment)
 
 
 class CreatePhoto(graphene.Mutation):

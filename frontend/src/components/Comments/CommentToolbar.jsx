@@ -31,7 +31,7 @@ const CustomMenu = React.forwardRef(({ children, style, className, 'aria-labelle
     );
 });
 
-const CommentToolbar = ({ commentId, editing, setEditing, isSaveEnabled, handleCancel, handleSubmit, updateComment }) => {
+const CommentToolbar = ({ commentId, editing, setEditing, isSaveEnabled, handleCancel, handleSubmit, updateComment, setRatingIsDisabled }) => {
     const EditingToolbar = ({ handleCancel, handleSubmit, updateComment }) => {
         return (
             <Row noGutters className="float-right mb-2">
@@ -42,7 +42,7 @@ const CommentToolbar = ({ commentId, editing, setEditing, isSaveEnabled, handleC
         );
     };
 
-    const DefaultToolbar = ({ commentId, setEditing }) => {
+    const DefaultToolbar = ({ commentId, setEditing, setRatingIsDisabled }) => {
         return (
             <Row noGutters className="align-items-center float-right">
                 {<i onClick={() => setEditing(true)} className="clickable far fa-edit text-secondary mr-1"></i>}
@@ -56,7 +56,7 @@ const CommentToolbar = ({ commentId, editing, setEditing, isSaveEnabled, handleC
                     </Dropdown.Item>
                     <Dropdown.Divider />
                     <Dropdown.Item eventKey="2">
-                        <DeleteComment commentId={commentId} />
+                        <DeleteComment commentId={commentId} setRatingIsDisabled={setRatingIsDisabled} />
                     </Dropdown.Item>
                     <Dropdown.Item eventKey="2">Cancel</Dropdown.Item>
                 </Dropdown.Menu>
@@ -68,7 +68,7 @@ const CommentToolbar = ({ commentId, editing, setEditing, isSaveEnabled, handleC
     if (editing) {
         return <EditingToolbar handleCancel={handleCancel} handleSubmit={handleSubmit} updateComment={updateComment} />;
     } else {
-        return <DefaultToolbar commentId={commentId} setEditing={setEditing} />;
+        return <DefaultToolbar commentId={commentId} setEditing={setEditing} setRatingIsDisabled={setRatingIsDisabled} />;
     }
 };
 

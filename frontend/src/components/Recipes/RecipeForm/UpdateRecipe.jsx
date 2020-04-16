@@ -26,7 +26,7 @@ const UpdateRecipe = ({ match }) => {
         if (currentUser && currentUser.id === recipe.recipe.user.id) {
             return <UpdateRecipeForm recipe={recipe.recipe} />;
         } else {
-            return <Redirect />
+            return <Redirect to="/" />
         }
     }
 };

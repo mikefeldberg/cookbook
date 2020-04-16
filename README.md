@@ -32,4 +32,3 @@ on photo upload, client-side error:
 
 ### Misc
 - Fix clickable area for delete recipe/comment confirmation (currently must click directly on text; no handler on containing element)
-- Add filter to comments section to allow users to see their "already rated" comment

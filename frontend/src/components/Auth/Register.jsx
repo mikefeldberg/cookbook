@@ -120,7 +120,7 @@ const Register = () => {
             </>
         );
     } else {
-        return <Redirect />;
+        return <Redirect to="/" />;
     }
 };
 
