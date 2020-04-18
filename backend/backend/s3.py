@@ -13,7 +13,6 @@ DEFAULT_EXPIRATION = 3600
 def create_presigned_post(request, extension):
     s3_client = boto3.client('s3')
     object_name = 'photo_{}.{}'.format(ulid.new(), extension)
-    from IPython import embed; embed()
 
     try:
         response = s3_client.generate_presigned_post(

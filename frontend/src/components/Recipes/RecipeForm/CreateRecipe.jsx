@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { Redirect } from 'react-router-dom';
-import bsCustomFileInput from 'bs-custom-file-input';
 
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -16,7 +15,6 @@ import InstructionInput from './InstructionInput';
 import { AuthContext } from '../../../App';
 
 const CreateRecipe = ({ history }) => {
-    bsCustomFileInput.init();
     const currentUser = useContext(AuthContext);
     const [createPhoto] = useMutation(CREATE_PHOTO_MUTATION);
     const [createRecipe] = useMutation(CREATE_RECIPE_MUTATION, {
@@ -35,7 +33,9 @@ const CreateRecipe = ({ history }) => {
     // const blankInstruction = { order: 0, content: '' };
     // const [photoSource, setPhotoSource] = useState('upload');
     // const [file, setFile] = useState(null);
+    // const [fileName, setFileName] = useState('');
     // const [fileExtension, setFileExtension] = useState('');
+    // const [fileSize, setFileSize] = useState('');
     // const [title, setTitle] = useState('');
     // const [description, setDescription] = useState('');
     // const [ingredients, setIngredients] = useState([{ ...blankIngredient }]);
@@ -54,7 +54,9 @@ const CreateRecipe = ({ history }) => {
     const blankInstruction = { order: 0, content: '1' };
     const [photoSource, setPhotoSource] = useState('upload');
     const [file, setFile] = useState(null);
+    const [fileName, setFileName] = useState('');
     const [fileExtension, setFileExtension] = useState('');
+    const [fileSize, setFileSize] = useState('');
     const [title, setTitle] = useState('1');
     const [description, setDescription] = useState('1');
     const [ingredients, setIngredients] = useState([{ ...blankIngredient }]);
@@ -113,10 +115,21 @@ const CreateRecipe = ({ history }) => {
         if (files && files.length > 0) {
             const newFile = files[0];
             setFile({ newFile });
-            setFileExtension(e.target.value.split('.')[e.target.value.split('.').length-1])
+            setFileName(e.target.value.split('\\')[e.target.value.split('\\').length-1]);
+            setFileExtension(e.target.value.split('.')[e.target.value.split('.').length-1]);
+            setFileSize(formatFileSize(e.target.files[0].size))
         }
-        
     };
+
+    const formatFileSize = (fileSize) => {
+        if(fileSize < 1024) {
+            return fileSize + 'bytes';
+        } else if(fileSize >= 1024 && fileSize < 1048576) {
+            return (fileSize/1024).toFixed(1) + 'KB';
+        } else if(fileSize >= 1048576) {
+            return (fileSize/1048576).toFixed(1) + 'MB';
+        }
+    }
 
     const handleSubmit = async (e, createRecipe) => {
         e.preventDefault();
@@ -136,9 +149,9 @@ const CreateRecipe = ({ history }) => {
         const res = await createRecipe({ variables: { recipe } });
         const recipeId = res.data.createRecipe.recipe.id;
 
-        if (file) {
+        if (file && photoSource === 'upload') {
             handleUpload(recipeId, createPhoto);
-        } else if (photoUrl) {
+        } else if (photoUrl && photoSource === 'link') {
             handleCreateLinkedPhoto(recipeId, createPhoto);
         } else {
             history.push(`/recipes/${recipeId}`);
@@ -375,7 +388,7 @@ const CreateRecipe = ({ history }) => {
                             </InputGroup.Text>
                         </InputGroup.Prepend>
                         {photoSource === 'upload' && (
-                            <FormFile label="Choose file (.jpg, .png)" custom accept=".jpg, .jpeg, .png" onChange={getFile} />
+                            <FormFile label={fileName ? fileName + ' (' + fileSize + ')' : "Choose file (.jpg, .png)"} custom accept=".jpg, .jpeg, .png" onChange={getFile} />
                         )}
                         {photoSource === 'link' && (
                             <Form.Control
