@@ -14,6 +14,8 @@ import IngredientInput from './IngredientInput';
 import InstructionInput from './InstructionInput';
 import { AuthContext } from '../../../App';
 
+const MAX_FILE_SIZE = 2097152;
+
 const CreateRecipe = ({ history }) => {
     const currentUser = useContext(AuthContext);
     const [createPhoto] = useMutation(CREATE_PHOTO_MUTATION);
@@ -29,45 +31,45 @@ const CreateRecipe = ({ history }) => {
         },
     });
 
-    // const blankIngredient = { quantity: '', name: '', preparation: '' };
-    // const blankInstruction = { order: 0, content: '' };
-    // const [photoSource, setPhotoSource] = useState('upload');
-    // const [file, setFile] = useState(null);
-    // const [fileName, setFileName] = useState('');
-    // const [fileExtension, setFileExtension] = useState('');
-    // const [fileSize, setFileSize] = useState('');
-    // const [title, setTitle] = useState('');
-    // const [description, setDescription] = useState('');
-    // const [ingredients, setIngredients] = useState([{ ...blankIngredient }]);
-    // const [instructions, setInstructions] = useState([{ ...blankInstruction }]);
-    // const [instructionCounter, setInstructionCounter] = useState(1);
-    // const [skillLevel, setSkillLevel] = useState('Easy');
-    // const [servings, setServings] = useState('');
-    // const [prepTime, setPrepTime] = useState('');
-    // const [cookTime, setCookTime] = useState('');
-    // const [waitTime, setWaitTime] = useState('');
-    // const [photoUrl, setPhotoUrl] = useState('');
-
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ REMOVE WHEN DONE TESTING
-
-    const blankIngredient = { quantity: '1', name: '1', preparation: '1' };
-    const blankInstruction = { order: 0, content: '1' };
+    const blankIngredient = { quantity: '', name: '', preparation: '' };
+    const blankInstruction = { order: 0, content: '' };
     const [photoSource, setPhotoSource] = useState('upload');
+    const [photoUrl, setPhotoUrl] = useState('');
     const [file, setFile] = useState(null);
     const [fileName, setFileName] = useState('');
     const [fileExtension, setFileExtension] = useState('');
     const [fileSize, setFileSize] = useState('');
-    const [title, setTitle] = useState('1');
-    const [description, setDescription] = useState('1');
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
     const [ingredients, setIngredients] = useState([{ ...blankIngredient }]);
     const [instructions, setInstructions] = useState([{ ...blankInstruction }]);
     const [instructionCounter, setInstructionCounter] = useState(1);
     const [skillLevel, setSkillLevel] = useState('Easy');
-    const [servings, setServings] = useState('1');
-    const [prepTime, setPrepTime] = useState('1');
-    const [cookTime, setCookTime] = useState('1');
-    const [waitTime, setWaitTime] = useState('1');
-    const [photoUrl, setPhotoUrl] = useState('');
+    const [servings, setServings] = useState('');
+    const [prepTime, setPrepTime] = useState('');
+    const [cookTime, setCookTime] = useState('');
+    const [waitTime, setWaitTime] = useState('');
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TEST BLOCK
+
+    // const blankIngredient = { quantity: '1', name: '1', preparation: '1' };
+    // const blankInstruction = { order: 0, content: '1' };
+    // const [photoSource, setPhotoSource] = useState('upload');
+    // const [photoUrl, setPhotoUrl] = useState('');
+    // const [file, setFile] = useState(null);
+    // const [fileName, setFileName] = useState('');
+    // const [fileExtension, setFileExtension] = useState('');
+    // const [fileSize, setFileSize] = useState('');
+    // const [title, setTitle] = useState('1');
+    // const [description, setDescription] = useState('1');
+    // const [ingredients, setIngredients] = useState([{ ...blankIngredient }]);
+    // const [instructions, setInstructions] = useState([{ ...blankInstruction }]);
+    // const [instructionCounter, setInstructionCounter] = useState(1);
+    // const [skillLevel, setSkillLevel] = useState('Easy');
+    // const [servings, setServings] = useState('1');
+    // const [prepTime, setPrepTime] = useState('1');
+    // const [cookTime, setCookTime] = useState('1');
+    // const [waitTime, setWaitTime] = useState('1');
 
     const handleIngredientChange = (e) => {
         const updatedIngredients = [...ingredients];
@@ -113,11 +115,19 @@ const CreateRecipe = ({ history }) => {
     const getFile = (e) => {
         const files = e.target.files;
         if (files && files.length > 0) {
-            const newFile = files[0];
-            setFile({ newFile });
-            setFileName(e.target.value.split('\\')[e.target.value.split('\\').length-1]);
-            setFileExtension(e.target.value.split('.')[e.target.value.split('.').length-1]);
-            setFileSize(formatFileSize(e.target.files[0].size))
+            if (files[0].size > MAX_FILE_SIZE) {
+                setFile(null)
+                setFileName('');
+                setFileExtension('');
+                setFileSize(e.target.files[0].size)
+            }
+            if (files[0].size <= MAX_FILE_SIZE) {
+                const newFile = files[0];
+                setFile({ newFile });
+                setFileName(e.target.value.split('\\')[e.target.value.split('\\').length-1]);
+                setFileExtension(e.target.value.split('.')[e.target.value.split('.').length-1]);
+                setFileSize(e.target.files[0].size)
+            }
         }
     };
 
@@ -388,7 +398,7 @@ const CreateRecipe = ({ history }) => {
                             </InputGroup.Text>
                         </InputGroup.Prepend>
                         {photoSource === 'upload' && (
-                            <FormFile label={fileName ? fileName + ' (' + fileSize + ')' : "Choose file (.jpg, .png)"} custom accept=".jpg, .jpeg, .png" onChange={getFile} />
+                            <FormFile label={file && fileName && fileSize ? fileName + ' (' + formatFileSize(fileSize) + ')' : "Choose file (.jpg, .png)"} custom accept=".jpg, .jpeg, .png" onChange={getFile} />
                         )}
                         {photoSource === 'link' && (
                             <Form.Control
@@ -398,6 +408,7 @@ const CreateRecipe = ({ history }) => {
                             />
                         )}
                     </InputGroup>
+                    {fileSize > MAX_FILE_SIZE && photoSource === 'upload' && <small className="text-danger">File size exceeds 2MB maximum. Please select a smaller file.</small>}
                 </Form.Group>
                 <div className="d-flex justify-content-center">
                     <Button
