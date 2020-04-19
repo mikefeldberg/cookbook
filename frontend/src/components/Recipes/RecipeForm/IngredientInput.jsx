@@ -10,18 +10,17 @@ const IngredientInput = ({ idx, ingredients, handleIngredientChange, deleteIngre
             <td className="align-middle">{`${idx + 1}`}</td>
             <td>
                 <Form.Control
-                    placeholder={idx === 0 && "1"}
+                    placeholder={idx === 0 ? "1" : ''}
                     type="text"
                     name="quantity"
                     data-idx={idx}
                     value={ingredients[idx].quantity}
                     onChange={handleIngredientChange}
-                    required
                 />
             </td>
             <td>
                 <Form.Control
-                    placeholder={idx === 0 && "sweet onion"}
+                    placeholder={idx === 0 ? "sweet onion" : ''}
                     type="text"
                     name="name"
                     data-idx={idx}
@@ -32,7 +31,7 @@ const IngredientInput = ({ idx, ingredients, handleIngredientChange, deleteIngre
             </td>
             <td>
                 <Form.Control
-                    placeholder={idx === 0 && "chopped"}
+                    placeholder={idx === 0 ? "chopped" : ''}
                     type="text"
                     name="preparation"
                     data-idx={idx}

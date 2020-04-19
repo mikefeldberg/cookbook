@@ -14,9 +14,8 @@ import Button from 'react-bootstrap/Button';
 import { UPDATE_RECIPE_MUTATION, CREATE_PHOTO_MUTATION, DELETE_PHOTO_MUTATION } from '../../../queries/queries';
 import IngredientInput from './IngredientInput';
 import InstructionInput from './InstructionInput';
-require('dotenv').config()
 
-const MAX_FILE_SIZE = process.env.MAX_FILE_SIZE;
+const MAX_FILE_SIZE = 2097152;
 
 const UpdateRecipeForm = ({ recipe }) => {
     const history = useHistory();
@@ -27,7 +26,8 @@ const UpdateRecipeForm = ({ recipe }) => {
     const blankIngredient = { quantity: '', name: '', preparation: '' };
     const blankInstruction = { order: 0, content: '' };
     const [photoSource, setPhotoSource] = useState('upload');
-    const [photoUrl, setPhotoUrl] = useState(recipe.photos.length > 0 ? recipe.photos[0].url : null)
+    const [existingPhotoUrl] = useState(recipe.photos.length > 0 ? recipe.photos[0].url : null)
+    const [newPhotoUrl, setNewPhotoUrl] = useState('')
     const [file, setFile] = useState(null)
     const [fileName, setFileName] = useState('');
     const [fileExtension, setFileExtension] = useState('');
@@ -107,13 +107,12 @@ const UpdateRecipeForm = ({ recipe }) => {
                 setFileName(e.target.value.split('\\')[e.target.value.split('\\').length-1]);
                 setFileExtension(e.target.value.split('.')[e.target.value.split('.').length-1]);
                 setFileSize(e.target.files[0].size)
+                if (existingPhotoUrl) {
+                    setDeleteExistingPhoto(true)
+                }
             }
         }
     };
-
-    const handleDeletePhoto = async deletePhoto => {
-        await deletePhoto({variables: {photoId}})
-    }
 
     const formatFileSize = (fileSize) => {
         if(fileSize < 1024) {
@@ -123,6 +122,24 @@ const UpdateRecipeForm = ({ recipe }) => {
         } else if(fileSize >= 1048576) {
             return (fileSize/1048576).toFixed(1) + 'MB';
         }
+    }
+
+    const handleNewLinkedPhoto = (e) => {
+        setNewPhotoUrl(e.target.value);
+        if (existingPhotoUrl) {
+            setDeleteExistingPhoto(true);
+        }
+        if (e.target.value === '') {
+            setDeleteExistingPhoto(false);
+        }
+    }
+
+    const handleCancel = () => {
+        setDeleteExistingPhoto(false);
+        setFile(null);
+        setFileName('');
+        setFileSize('');
+        setNewPhotoUrl('');
     }
 
     const handleSubmit = async (e, updateRecipe) => {
@@ -145,17 +162,21 @@ const UpdateRecipeForm = ({ recipe }) => {
             ingredients,
             instructions,
         };
-        
+
         await updateRecipe({ variables: { recipe: updatedRecipe } });
 
-        if (file) {
+        if (file && photoSource === 'upload') {
             handleUpload(recipeId, createPhoto);
-        } else if (!file && photoUrl) {
+        } else if (newPhotoUrl && photoSource === 'link') {
             handleCreateLinkedPhoto(recipeId, createPhoto);
         } else {
             history.push(`/recipes/${recipeId}`);
         }
     };
+
+    const handleDeletePhoto = async deletePhoto => {
+        await deletePhoto({variables: {photoId}})
+    }
 
     const handleUpload = async (recipeId, createPhoto) => {
         const presignedPostData = await getPresignedPostData();
@@ -166,7 +187,7 @@ const UpdateRecipeForm = ({ recipe }) => {
             url
         }
         await createPhoto({ variables: { photo } });
-        setTimeout(() => {history.push(`/recipes/${recipeId}`)}, 1250);
+        setTimeout(() => {history.push(`/recipes/${recipeId}`)}, 2000);
     };
 
     const getPresignedPostData = async () => {
@@ -196,7 +217,7 @@ const UpdateRecipeForm = ({ recipe }) => {
     const handleCreateLinkedPhoto = async (recipeId, createPhoto) => {
         const photo = {
             recipeId,
-            url: photoUrl,
+            url: newPhotoUrl,
         };
         await createPhoto({ variables: { photo } });
         history.push(`/recipes/${recipeId}`);
@@ -205,7 +226,7 @@ const UpdateRecipeForm = ({ recipe }) => {
     return (
         <Form onSubmit={e => handleSubmit(e, updateRecipe)}>
             <Form.Group controlId="formName">
-                <Form.Label>Recipe Title</Form.Label>
+                <Form.Label>Recipe Title&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
                 <Form.Control
                     value={title}
                     type="text"
@@ -327,7 +348,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                 </Form.Group>
             </fieldset>
             <Form.Group controlId="formServings">
-                <Form.Label>Servings</Form.Label>
+                <Form.Label>Servings&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
                 <Form.Control
                     value={servings}
                     type="number"
@@ -338,7 +359,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                 />
             </Form.Group>
             <Form.Group controlId="formPrepTime">
-                <Form.Label>Prep Time</Form.Label>
+                <Form.Label>Prep Time&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
                 <Form.Control
                     value={prepTime}
                     type="number"
@@ -369,16 +390,17 @@ const UpdateRecipeForm = ({ recipe }) => {
                 />
             </Form.Group>
             <Form.Group>
-                { photoUrl &&
+                { existingPhotoUrl &&
                     <div className="mb-2">
                         Current Photo:
                         <Container>
                         <Row>
-                            <Image src={photoUrl} rounded thumbnail style={{maxWidth: `100px`}}/>
+                            <Image src={existingPhotoUrl} rounded thumbnail style={{maxWidth: `100px`}}/>
                             {deleteExistingPhoto && 
                                 <Row>
                                     'This image will be deleted after you save changes.'
-                                    <Button variant="success" onClick={() => setDeleteExistingPhoto(false)}>Cancel Delete</Button>
+                                    {/* <Button variant="success" onClick={() => setDeleteExistingPhoto(false)}>Cancel Delete</Button> */}
+                                    <Button variant="success" onClick={() => handleCancel()}>Cancel Delete</Button>
                                 </Row>
                             }
                             {!deleteExistingPhoto && 
@@ -393,14 +415,14 @@ const UpdateRecipeForm = ({ recipe }) => {
                 <Form.Label>Photo</Form.Label>
                 <InputGroup>
                     <InputGroup.Prepend>
-                        <InputGroup.Text onClick={() => {setPhotoSource('upload');}}>
+                        <InputGroup.Text onClick={() => {setPhotoSource('upload')}}>
                             <i className={
                                 photoSource === 'upload'
                                     ? 'text-primary fas fa-file-upload'
                                     : 'text-light fas fa-file-upload'
                             }></i>
                         </InputGroup.Text>
-                        <InputGroup.Text onClick={() => {setPhotoSource('link');}}>
+                        <InputGroup.Text onClick={() => {setPhotoSource('link')}}>
                             <i className={
                                 photoSource === 'link'
                                 ? 'text-primary fas fa-link'
@@ -421,9 +443,9 @@ const UpdateRecipeForm = ({ recipe }) => {
                     )}
                     {photoSource === 'link' && (
                         <Form.Control
-                            value={photoUrl}
+                            value={newPhotoUrl}
                             placeholder="Paste image URL"
-                            onChange={(e) => setPhotoUrl(e.target.value)}
+                            onChange={(e) => handleNewLinkedPhoto(e)}
                         />
                     )}
                 </InputGroup>
