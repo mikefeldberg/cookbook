@@ -1,3 +1,4 @@
+import os
 import graphene
 from graphene_django import DjangoObjectType
 from graphql import GraphQLError
@@ -7,6 +8,7 @@ from backend.s3 import create_presigned_url
 from .models import Recipe, Ingredient, Instruction, Comment, Favorite, Photo
 from users.schema import UserType
 
+BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET')
 
 class IngredientType(DjangoObjectType):
     quantity = graphene.String()
@@ -109,7 +111,8 @@ class RecipeType(DjangoObjectType):
     def resolve_photos(self, info):
         photos = Photo.objects.filter(recipe_id=self.id, deleted_at=None).order_by('-created_at')
         for p in photos:
-            p.url = create_presigned_url(p.url.split('com/')[1])
+            if BUCKET_NAME in p.url:
+                p.url = create_presigned_url(p.url.split('com/')[1])
 
         return photos
 
@@ -163,7 +166,6 @@ class Query(graphene.ObjectType):
 
     def resolve_ratings(self, info, recipe_id):
         user = info.context.user
-        from IPython import embed; embed()
         return Comment.objects.filter(recipe_id=recipe_id, user=user, rating__gt=0, deleted_at=None)
 
 
@@ -375,7 +377,7 @@ class UpdateComment(graphene.Mutation):
 
 
 class DeleteComment(graphene.Mutation):
-    recipe_id = graphene.String()
+    comment = graphene.Field(CommentType)
 
     class Arguments:
         comment_id = graphene.String(required=True)
@@ -401,8 +403,12 @@ class DeleteComment(graphene.Mutation):
             recipe.rating_count = 0
             recipe.save()
 
+        deleted_comment = Comment(
+            rating=comment.rating,
+            recipe_id=recipe.id
+        )
 
-        return DeleteComment(recipe_id=recipe.id)
+        return DeleteComment(comment=deleted_comment)
 
 
 class CreatePhoto(graphene.Mutation):

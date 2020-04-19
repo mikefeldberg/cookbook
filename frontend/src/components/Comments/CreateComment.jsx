@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useApolloClient, useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -8,12 +8,10 @@ import { AuthContext } from '../../App';
 import { CREATE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries';
 import StarRating from './StarRating';
 
-const CreateComment = ({ recipeId, rated }) => {
-    const client = useApolloClient();
+const CreateComment = ({ recipeId, ratingIsDisabled, setRatingIsDisabled }) => {
     const currentUser = useContext(AuthContext);
     const [rating, setRating] = useState(0);
-    const [content, setContent] = useState(currentUser ? '' : `Log in to leave a comment`);
-    const [commentsDisabled] = useState(currentUser ? false : 'disabled');
+    const [content, setContent] = useState('');
 
     const [createComment] = useMutation(CREATE_COMMENT_MUTATION, {
         update(cache, { data: { createComment } }) {
@@ -22,12 +20,20 @@ const CreateComment = ({ recipeId, rated }) => {
             const recipe = { ...data.recipe };
             recipe.comments = [createComment.comment, ...recipe.comments.slice(0)];
 
+            if (createComment.comment.rating > 0) {
+                recipe.rating = (recipe.rating * recipe.ratingCount + createComment.comment.rating) / (recipe.ratingCount + 1)
+                recipe.ratingCount += 1
+            }
+
             cache.writeQuery({
                 query: GET_RECIPE_QUERY,
                 data: { recipe },
             });
-            client.resetStore();
-        },
+
+            if (createComment.comment.rating) {
+                setRatingIsDisabled(true);
+            }
+        }
     });
 
     const handleSubmit = async (e) => {
@@ -49,18 +55,22 @@ const CreateComment = ({ recipeId, rated }) => {
 
     return (
         <Form className="text-right" onSubmit={(e) => handleSubmit(e)}>
-            <fieldset disabled={commentsDisabled}>
-                <StarRating rating={rating} setRating={setRating} rated={rated} />
+            <fieldset disabled={!currentUser}>
+                <StarRating
+                    rating={rating}
+                    setRating={setRating}
+                    ratingIsDisabled={ratingIsDisabled}
+                />
                 <Form.Control
                     className="mb-3 shadow-sm "
-                    value={content}
+                    value={currentUser ? content : 'Log in to rate or comment'}
                     type="text"
                     as="textarea"
                     rows="3"
                     name="content"
                     onChange={(e) => setContent(e.target.value)}
                 />
-                <Button className="mb-3" type="submit">
+                <Button disabled={!currentUser} className="mb-3" type="submit">
                     Add Comment
                 </Button>
             </fieldset>

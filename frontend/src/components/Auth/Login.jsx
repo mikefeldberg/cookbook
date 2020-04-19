@@ -95,7 +95,7 @@ const Login = () => {
             </>
         );
     } else {
-        return <Redirect />;
+        return <Redirect to="/" />;
     }
 };
 

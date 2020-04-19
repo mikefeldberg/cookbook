@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { useApolloClient, useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 import Moment from 'react-moment';
 import moment from 'moment';
 
@@ -14,8 +14,7 @@ import { AuthContext } from '../../App';
 import CommentToolbar from './CommentToolbar';
 import StarRating from './StarRating';
 
-const Comment = ({ comment }) => {
-    const client = useApolloClient();
+const Comment = ({ comment, setRatingIsDisabled }) => {
     const currentUser = useContext(AuthContext);
     const [editing, setEditing] = useState(false);
     const [newRating, setNewRating] = useState(comment.rating);
@@ -29,11 +28,38 @@ const Comment = ({ comment }) => {
             const index = recipe.comments.findIndex(comment => comment.id === updateComment.comment.id);
             recipe.comments = [...recipe.comments.slice(0, index), updateComment.comment, ...recipe.comments.slice(index + 1)]
 
+            if (comment.rating !== updateComment.comment.rating) {
+                if (comment.rating > 0) {
+                    if (updateComment.comment.rating > 0) {
+                        recipe.rating = (recipe.rating * recipe.ratingCount - comment.rating + updateComment.comment.rating) / (recipe.ratingCount)
+                    }
+                    if (updateComment.comment.rating === 0 && recipe.ratingCount > 1) {
+                        recipe.rating = (recipe.rating * recipe.ratingCount - comment.rating) / (recipe.ratingCount - 1)
+                        recipe.ratingCount -= 1
+                    }
+                    if (updateComment.comment.rating === 0 && recipe.ratingCount === 1) {
+                        recipe.rating = 0
+                        recipe.ratingCount = 0
+                    }
+                }
+            } else {
+                recipe.rating = (recipe.rating * recipe.ratingCount + updateComment.comment.rating) / (recipe.ratingCount + 1)
+                recipe.ratingCount += 1
+            }
+
             cache.writeQuery({
                 query: GET_RECIPE_QUERY,
                 data: { recipe },
             });
-            client.resetStore();
+
+            if (comment.rating !== updateComment.comment.rating) {
+                if (comment.rating === 0) {
+                    setRatingIsDisabled(true)
+                }
+                if (updateComment.comment.rating === 0) {
+                    setRatingIsDisabled(false)
+                }
+            }
         },
     });
 
@@ -71,14 +97,17 @@ const Comment = ({ comment }) => {
                             width={64}
                             height={64}
                             className="rounded mr-3"
-                            src="https://cookbook-test-bucket.s3-us-west-1.amazonaws.com/_avatarplaceholder.png"
+                            src="/avatar_placeholder.png"
                             alt={comment.user.username}
                         />
                     </Link>
                 </Col>
                 <Col>
                     <Row noGutters>
-                        <Link style={{ textDecoration: 'none' }} to={`/profile/${comment.user.id}`}><span className="link">{comment.user.username}</span></Link>&nbsp;posted&nbsp;
+                        <Link style={{ textDecoration: 'none' }} to={`/profile/${comment.user.id}`}>
+                            <span className="link">{comment.user.username}</span>
+                        </Link>
+                        &nbsp;posted&nbsp;
                         <Moment from={new Date()}>{comment.createdAt}</Moment>&nbsp;
                         {moment(comment.updatedAt).diff(moment(comment.createdAt), 'minutes') > 1 && (
                             <span>
@@ -103,6 +132,7 @@ const Comment = ({ comment }) => {
                             handleCancel={handleCancel}
                             handleSubmit={handleSubmit}
                             updateComment={updateComment}
+                            setRatingIsDisabled={setRatingIsDisabled}
                         />
                     }
                 </Col>
