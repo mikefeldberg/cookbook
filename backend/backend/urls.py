@@ -7,5 +7,5 @@ from . import s3
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True))),
-    path('upload/', s3.create_presigned_post),
+    path('upload/<extension>', s3.create_presigned_post),
 ]

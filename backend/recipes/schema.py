@@ -1,3 +1,4 @@
+import os
 import graphene
 from graphene_django import DjangoObjectType
 from graphql import GraphQLError
@@ -7,6 +8,7 @@ from backend.s3 import create_presigned_url
 from .models import Recipe, Ingredient, Instruction, Comment, Favorite, Photo
 from users.schema import UserType
 
+BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET')
 
 class IngredientType(DjangoObjectType):
     quantity = graphene.String()
@@ -109,7 +111,8 @@ class RecipeType(DjangoObjectType):
     def resolve_photos(self, info):
         photos = Photo.objects.filter(recipe_id=self.id, deleted_at=None).order_by('-created_at')
         for p in photos:
-            p.url = create_presigned_url(p.url.split('com/')[1])
+            if BUCKET_NAME in p.url:
+                p.url = create_presigned_url(p.url.split('com/')[1])
 
         return photos
 
