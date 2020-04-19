@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
-import bsCustomFileInput from 'bs-custom-file-input';
 
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -15,9 +14,11 @@ import Button from 'react-bootstrap/Button';
 import { UPDATE_RECIPE_MUTATION, CREATE_PHOTO_MUTATION, DELETE_PHOTO_MUTATION } from '../../../queries/queries';
 import IngredientInput from './IngredientInput';
 import InstructionInput from './InstructionInput';
+require('dotenv').config()
+
+const MAX_FILE_SIZE = process.env.MAX_FILE_SIZE;
 
 const UpdateRecipeForm = ({ recipe }) => {
-    bsCustomFileInput.init();
     const history = useHistory();
     const [updateRecipe] = useMutation(UPDATE_RECIPE_MUTATION);
     const [createPhoto] = useMutation(CREATE_PHOTO_MUTATION);
@@ -26,7 +27,11 @@ const UpdateRecipeForm = ({ recipe }) => {
     const blankIngredient = { quantity: '', name: '', preparation: '' };
     const blankInstruction = { order: 0, content: '' };
     const [photoSource, setPhotoSource] = useState('upload');
+    const [photoUrl, setPhotoUrl] = useState(recipe.photos.length > 0 ? recipe.photos[0].url : null)
     const [file, setFile] = useState(null)
+    const [fileName, setFileName] = useState('');
+    const [fileExtension, setFileExtension] = useState('');
+    const [fileSize, setFileSize] = useState('');
     const [title, setTitle] = useState(recipe.title)
     const [description, setDescription] = useState(recipe.description)
     const [ingredients, setIngredients] = useState(recipe.ingredients)
@@ -39,7 +44,6 @@ const UpdateRecipeForm = ({ recipe }) => {
     const [waitTime, setWaitTime] = useState(recipe.waitTime)
     const [photoId] = useState(recipe.photos.length > 0 ? recipe.photos[0].id : null)
     const [deleteExistingPhoto, setDeleteExistingPhoto] = useState(false)
-    const [photoUrl, setPhotoUrl] = useState(recipe.photos.length > 0 ? recipe.photos[0].url : null)
     const [recipeId] = useState(recipe.id)
 
     const removeListIds = () => {
@@ -67,10 +71,6 @@ const UpdateRecipeForm = ({ recipe }) => {
         }
     };
 
-    const handleDeletePhoto = async deletePhoto => {
-        await deletePhoto({variables: {photoId}})
-    }
-
     const handleInstructionChange = e => {
         const updatedInstructions = [...instructions];
         updatedInstructions[e.target.dataset.idx][e.target.name] = e.target.value;
@@ -92,37 +92,38 @@ const UpdateRecipeForm = ({ recipe }) => {
         }
     };
 
-    const uploadFileToS3 = (presignedPostData, file) => {
-        return new Promise((resolve, reject) => {
-            const formData = new FormData();
-            Object.keys(presignedPostData.fields).forEach(key => {
-                formData.append(key, presignedPostData.fields[key]);
-            });
-
-            formData.append('file', file);
-
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', presignedPostData.url, true);
-            xhr.send(formData);
-            xhr.onload = function() {
-                this.status === 204 ? resolve() : reject(this.responseText);
-            };
-        });
-    };
-
-    const getPresignedPostData = async () => {
-        const response = await fetch('http://localhost:8000/upload/');
-        const json = await response.json();
-        return json;
-    };
-
-    const getFile = e => {
+    const getFile = (e) => {
         const files = e.target.files;
         if (files && files.length > 0) {
-            const newFile = files[0];
-            setFile({ newFile });
+            if (files[0].size > MAX_FILE_SIZE) {
+                setFile(null)
+                setFileName('');
+                setFileExtension('');
+                setFileSize(e.target.files[0].size)
+            }
+            if (files[0].size <= MAX_FILE_SIZE) {
+                const newFile = files[0];
+                setFile({ newFile });
+                setFileName(e.target.value.split('\\')[e.target.value.split('\\').length-1]);
+                setFileExtension(e.target.value.split('.')[e.target.value.split('.').length-1]);
+                setFileSize(e.target.files[0].size)
+            }
         }
     };
+
+    const handleDeletePhoto = async deletePhoto => {
+        await deletePhoto({variables: {photoId}})
+    }
+
+    const formatFileSize = (fileSize) => {
+        if(fileSize < 1024) {
+            return fileSize + 'bytes';
+        } else if(fileSize >= 1024 && fileSize < 1048576) {
+            return (fileSize/1024).toFixed(1) + 'KB';
+        } else if(fileSize >= 1048576) {
+            return (fileSize/1048576).toFixed(1) + 'MB';
+        }
+    }
 
     const handleSubmit = async (e, updateRecipe) => {
         e.preventDefault();
@@ -165,7 +166,31 @@ const UpdateRecipeForm = ({ recipe }) => {
             url
         }
         await createPhoto({ variables: { photo } });
-        history.push(`/recipes/${recipeId}`);
+        setTimeout(() => {history.push(`/recipes/${recipeId}`)}, 1250);
+    };
+
+    const getPresignedPostData = async () => {
+        const response = await fetch(`http://localhost:8000/upload/${fileExtension}`);
+        const json = await response.json();
+        return json;
+    };
+
+    const uploadFileToS3 = (presignedPostData, file) => {
+        return new Promise((resolve, reject) => {
+            const formData = new FormData();
+            Object.keys(presignedPostData.fields).forEach(key => {
+                formData.append(key, presignedPostData.fields[key]);
+            });
+
+            formData.append('file', file);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', presignedPostData.url, true);
+            xhr.send(formData);
+            xhr.onload = function() {
+                this.status === 204 ? resolve() : reject(this.responseText);
+            };
+        });
     };
 
     const handleCreateLinkedPhoto = async (recipeId, createPhoto) => {
@@ -384,7 +409,15 @@ const UpdateRecipeForm = ({ recipe }) => {
                         </InputGroup.Text>
                     </InputGroup.Prepend>
                     {photoSource === 'upload' && (
-                        <FormFile label="Choose file (.jpg)" custom accept=".jpg, .jpeg" onChange={getFile} />
+                        <FormFile
+                            label={file && fileName && fileSize
+                                ? fileName + ' (' + formatFileSize(fileSize) + ')'
+                                : "Choose file (.jpg, .png)"
+                            }
+                            custom
+                            accept=".jpg, .jpeg, .png"
+                            onChange={getFile}
+                        />
                     )}
                     {photoSource === 'link' && (
                         <Form.Control
@@ -394,6 +427,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                         />
                     )}
                 </InputGroup>
+                {fileSize > MAX_FILE_SIZE && photoSource === 'upload' && <small className="text-danger">File size exceeds 2MB maximum. Please select a smaller file.</small>}
             </Form.Group>
             <div className="d-flex justify-content-center">
                 <Button

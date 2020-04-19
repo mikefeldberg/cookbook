@@ -13,8 +13,9 @@ import { CREATE_RECIPE_MUTATION, CREATE_PHOTO_MUTATION, GET_RECIPES_QUERY } from
 import IngredientInput from './IngredientInput';
 import InstructionInput from './InstructionInput';
 import { AuthContext } from '../../../App';
+require('dotenv').config()
 
-const MAX_FILE_SIZE = 2097152;
+const MAX_FILE_SIZE = process.env.MAX_FILE_SIZE;
 
 const CreateRecipe = ({ history }) => {
     const currentUser = useContext(AuthContext);
@@ -398,8 +399,16 @@ const CreateRecipe = ({ history }) => {
                             </InputGroup.Text>
                         </InputGroup.Prepend>
                         {photoSource === 'upload' && (
-                            <FormFile label={file && fileName && fileSize ? fileName + ' (' + formatFileSize(fileSize) + ')' : "Choose file (.jpg, .png)"} custom accept=".jpg, .jpeg, .png" onChange={getFile} />
-                        )}
+                        <FormFile
+                            label={file && fileName && fileSize
+                                ? fileName + ' (' + formatFileSize(fileSize) + ')'
+                                : "Choose file (.jpg, .png)"
+                            }
+                            custom
+                            accept=".jpg, .jpeg, .png"
+                            onChange={getFile}
+                        />
+                    )}
                         {photoSource === 'link' && (
                             <Form.Control
                                 value={photoUrl}
