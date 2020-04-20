@@ -8,6 +8,7 @@ import CardColumns from 'react-bootstrap/CardColumns';
 
 import { AuthContext } from '../../App';
 import { PROFILE_QUERY } from '../../queries/queries';
+import UserProfile from './UserProfile';
 import ProfileComment from './ProfileComment';
 import RecipeCard from '../Recipes/RecipeCard';
 
@@ -24,16 +25,16 @@ const Profile = ({ match }) => {
     if (error) return <Redirect to="/" />;
 
     if (data) {
-        const profileUser = data.profile.username;
+        const profileUsername = data.profile.username;
         const recipes = data.profile.recipeSet;
         const comments = data.profile.commentSet;
         const favorites = data.profile.favoriteSet;
 
         return (
             <>
-                <Tabs defaultActiveKey="info">
-                    <Tab eventKey="info" title="Info">
-                        User Info Here
+                <Tabs defaultActiveKey="user">
+                    <Tab eventKey="user" title={profileUsername}>
+                        <UserProfile profile={data.profile}/>
                     </Tab>
                     <Tab eventKey="recipes" title="Recipes">
                         <CardColumns>
@@ -41,7 +42,7 @@ const Profile = ({ match }) => {
                                 ? recipes.map((recipe) => <RecipeCard key={recipe.id} recipe={recipe} />)
                                 : currentUser && currentUser.id === id
                                 ? `You haven't added any recipes`
-                                : `${profileUser} hasn't added any recipes`
+                                : `${profileUsername} hasn't added any recipes`
                             }
                         </CardColumns>
                     </Tab>
@@ -51,7 +52,7 @@ const Profile = ({ match }) => {
                                 ? favorites.map((favorite) => <RecipeCard key={favorite.id} recipe={favorite.recipe} />)
                                 : currentUser && currentUser.id === id
                                 ? `You haven't saved any favorites`
-                                : `${profileUser} hasn't saved any favorites`
+                                : `${profileUsername} hasn't saved any favorites`
                             }
                         </CardColumns>
                     </Tab>
@@ -60,7 +61,7 @@ const Profile = ({ match }) => {
                             ? comments.map((comment) => <ProfileComment key={comment.id} comment={comment} />)
                             : currentUser && currentUser.id === id
                             ? `You haven't left any comments`
-                            : `${profileUser} hasn't left any comments`
+                            : `${profileUsername} hasn't left any comments`
                         }
                     </Tab>
                 </Tabs>
