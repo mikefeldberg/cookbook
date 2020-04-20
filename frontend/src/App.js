@@ -14,6 +14,7 @@ import RecipeDetails from './components/Recipes/RecipeDetails';
 import CreateRecipe from './components/Recipes/RecipeForm/CreateRecipe';
 import UpdateRecipe from './components/Recipes/RecipeForm/UpdateRecipe';
 import Profile from './components/Profile/Profile';
+import Footer from './components/Footer/Footer';
 
 
 export const AuthContext = React.createContext();
@@ -41,6 +42,7 @@ const App = () => {
                             <Route exact path="/profile/:id" component={Profile} />
                         </Switch>
                     </Container>
+                    <Footer />
                 </AuthContext.Provider>
             </Router>
         </div >
