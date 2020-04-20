@@ -1,6 +1,7 @@
 recipes = [
     {
         'title': 'Instant Pot Plov (Rice Pilaf)',
+        'photo': 'https://feldbergscookbook-photos.s3-us-west-1.amazonaws.com/photo_01E6C5YFY69DNP6Q1GG6SH9XJ5.jpeg',
         'description': 'Plov is a hearty dish that comes in many varieties. Just about every Eastern European or Central Asian culture has a version. This one comes pretty close to what my grandma used to make so I’m gonna surmise that it’s got Russian roots. While my grandma’s plov took many painstaking hours to come out just right, this pressure cooker approach gets us there in half the time and none of the guesswork.',
         'ingredients': [
             {'quantity': '2 1/2 cups',
@@ -42,6 +43,7 @@ recipes = [
     },
     {
         'title': 'Borsh',
+        'photo': 'https://feldbergscookbook-photos.s3-us-west-1.amazonaws.com/photo_01E6C6ATD2QN2BT3TGDSNJY2MX.JPG',
         'description': 'Classic Ukranian beet soup. Can be made as hearty or light as you like. For reference: I tend to opt for a heartier/denser version and I use a 12qt stockpot for this recipe. So, if you like your soup more soupy, feel free to reduce the vegetable quantities to about 75% of what’s listed below',
         'ingredients': [
             {'quantity': '2 lb', 'name': 'Beef chuck/stew meat',
@@ -86,6 +88,7 @@ recipes = [
     },
     {
         'title': 'Goulash Stew',
+        'photo': 'https://feldbergscookbook-photos.s3-us-west-1.amazonaws.com/photo_01E6C6M74CQJGY14KQ4TP8E0HC.jpg',
         'description': 'Some of the best goulash I’ve ever had was at Cafe Katja, a little Austrian place on Orchard Street in New York. Traditional Hungarian Goulash is a light beef soup. Cafe Katja made theirs in to a thick, melt-in-your-mouth stew. This recipe  pretty close to Katja’s goulash.',
         'ingredients': [
             {'quantity': '4 tbsp', 'name': 'olive oil'},
@@ -128,6 +131,7 @@ recipes = [
     },
     {
         'title': 'Linguine with White Clam Sauce',
+        'photo': 'https://feldbergscookbook-photos.s3-us-west-1.amazonaws.com/photo_01E6C6517H10JCCA35H388PX5R.jpg',
         'description': 'There are a lot of ways to prepare linguine with clam sauce, but I’ve repeatedly gone back to this one because it’s one of the simpler approaches and yields delicious results. This recipe uses canned clams, which keeps it low maintenance. All the necessary ingredients can hang out in your kitchen cabinet for months, while fresh clams need to be used within a few days.',
         'ingredients': [
             {'quantity': '1 pound', 'name': 'linguini'},
@@ -163,6 +167,7 @@ recipes = [
     },
     {
         'title': 'Blueberry Buttermilk Pancakes',
+        'photo': 'https://feldbergscookbook-photos.s3-us-west-1.amazonaws.com/photo_01E6C6EA4WHQ4WT5P8XT4Z31HE.JPG',
         'description': 'These are fantastic with or without berries. Also work with other fruits.',
         'ingredients': [
             {'quantity': '2 cups', 'name': 'all-purpose flour'},
@@ -198,6 +203,7 @@ recipes = [
     },
     {
         'title': 'Pan Roasted Chicken Thighs',
+        'photo': 'https://feldbergscookbook-photos.s3-us-west-1.amazonaws.com/photo_01E6C6NCAFA8H6T6Q8BHVA7N6F.jpg',
         'description': 'This recipe comes from The Bon Appétit Test Kitchen. I am mystified by cooks who know how to produce perfectly crispy, juicy, flavorful fried chicken because I am reliable terrible at it. This recipe has given me hope.',
         'ingredients': [
             {'quantity': '8', 'name': 'skin-on, bone-in chicken thighs'},
@@ -223,6 +229,7 @@ recipes = [
     },
     {
         'title': 'Lazy Wild Rice Salad',
+        'photo': 'https://feldbergscookbook-photos.s3-us-west-1.amazonaws.com/photo_01E6C6SZ1GDC980T4N8ECVGC1W.jpg',
         'description': 'The original recipe for this salad had an elaborate, many-ingredient dressing. I dropped that part of the process when I realized that the already very flavorful artichoke marinade was doing much of the heavy lifting. I really like this recipe because it’s pretty fool-proof, healthy, and has always been a crowd pleaser.',
         'ingredients': [
             {'quantity': '1 cup', 'name': 'wild rice'},
@@ -254,6 +261,7 @@ recipes = [
     },
     {
         'title': 'Tim’s Grandma’s Crepes',
+        'photo': 'https://feldbergscookbook-photos.s3-us-west-1.amazonaws.com/photo_01E6C6JEN63JWSH12ZR3AVVWRM.jpg',
         'description': 'This is a dangerous recipe. Dangerous because of how quickly you can get from raw materials to perfect crepes. Once you’ve prepped the batter, it won’t be long before you’re making reliably perfect crepes. You must first, of course, make one too thick, one too thin, one too raw, one that’s entirely on fire, and a few that fall apart mid-flip. Crepes can be finicky, so I highly recommend using a nonstick pan and a thin spatula. I use a crepe-pan and fish spatula. The crepe-pan is ideal because it has low walls and an easily accessible flat cooking surface. I prefer a fish spatula for stuff like crepes and thin omeletes because its rounded corner makes it easy to get between the surface and the thing you’re cooking without breaking it.',
         'ingredients': [
             {'quantity': '1.5 cups', 'name': 'flour'},
