@@ -36,7 +36,7 @@ const NavBar = () => {
             </Navbar>
             <Container>
                 <div className="text-center">
-                    <h3 className="display-4 text-white heroText text-left">Feldberguesa's</h3>
+                    <h3 className="display-4 text-white heroText text-left">Feldberg’s</h3>
                     <h1 className="display-1 text-white heroText text-left ml-5">Cookbook</h1>
                 </div>
             </Container>

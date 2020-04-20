@@ -63,7 +63,7 @@ h1, h2, h3, h4 {
 
 .link {
   text-decoration: none;
-  color: rgb(127, 127, 127)
+  color: rgb(160, 160, 160)
 }
 
 .link:hover {
@@ -91,4 +91,8 @@ h1, h2, h3, h4 {
 
 .form-control::placeholder { /* Most modern browsers support this now. */
  color:    rgb(200, 200, 200);
+}
+
+.nav-tabs > a {
+  color: rgb(160, 160, 160);
 }
