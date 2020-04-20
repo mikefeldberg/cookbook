@@ -229,7 +229,7 @@ recipes = [
     },
     {
         'title': 'Lazy Wild Rice Salad',
-        'photo': 'https://feldbergscookbook-photos.s3-us-west-1.amazonaws.com/photo_01E6C6SZ1GDC980T4N8ECVGC1W.jpg',
+        'photo': 'https://feldbergscookbook-photos.s3-us-west-1.amazonaws.com/photo_01E6C8F50GP7FX6CMYFYPST74Q.jpg',
         'description': 'The original recipe for this salad had an elaborate, many-ingredient dressing. I dropped that part of the process when I realized that the already very flavorful artichoke marinade was doing much of the heavy lifting. I really like this recipe because it’s pretty fool-proof, healthy, and has always been a crowd pleaser.',
         'ingredients': [
             {'quantity': '1 cup', 'name': 'wild rice'},
