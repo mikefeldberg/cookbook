@@ -17,7 +17,7 @@ const UserProfile = ({ profile }) => {
     };
 
     return (
-        <Row className="border rounded-bottom p-0 m-0 mb-5 align-items-center">
+        <Row className="shadow border rounded-bottom p-0 m-0 mb-5 align-items-center">
             <Col className="pl-0">
                 <Image src={`/avatar_placeholder.png`} fluid className="shadow-lg" />
             </Col>

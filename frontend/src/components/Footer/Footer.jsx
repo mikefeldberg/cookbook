@@ -1,13 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 
 const Footer = () => {
     return (
-        <Navbar expand="md" variant="dark" className="p-0 bg-dark sticky-bottom navBack text-center">
+        <Navbar expand="md" variant="dark" className="p-0 bg-dark sticky-bottom navBack">
             <>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse className="justify-content-center" id="basic-navbar-nav">
@@ -25,7 +24,7 @@ const Footer = () => {
                     </Nav>
                     <Nav>
                         <Nav.Item className="inline">
-                            <small className="text-secondary">© 2020 Under Development LLC</small>
+                            <small className="mr-1 text-secondary">© 2020 Under Development LLC</small>
                         </Nav.Item>
                     </Nav>
                 </Navbar.Collapse>
