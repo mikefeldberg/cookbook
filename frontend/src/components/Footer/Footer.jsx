@@ -16,11 +16,6 @@ const Footer = () => {
                                 <small>Terms of Service</small>
                             </Link>
                         </Nav.Item>
-                        <Nav.Item>
-                            <Link className="navLink nav-link" to="/privacy">
-                                <small>Privacy Policy</small>
-                            </Link>
-                        </Nav.Item>
                     </Nav>
                     <Nav>
                         <Nav.Item className="inline">
