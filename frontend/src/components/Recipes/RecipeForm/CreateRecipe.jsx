@@ -31,45 +31,45 @@ const CreateRecipe = ({ history }) => {
         },
     });
 
-    const blankIngredient = { quantity: '', name: '', preparation: '' };
-    const blankInstruction = { order: 0, content: '' };
-    const [photoSource, setPhotoSource] = useState('upload');
-    const [photoUrl, setPhotoUrl] = useState('');
-    const [file, setFile] = useState(null);
-    const [fileName, setFileName] = useState('');
-    const [fileExtension, setFileExtension] = useState('');
-    const [fileSize, setFileSize] = useState('');
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [ingredients, setIngredients] = useState([{ ...blankIngredient }]);
-    const [instructions, setInstructions] = useState([{ ...blankInstruction }]);
-    const [instructionCounter, setInstructionCounter] = useState(1);
-    const [skillLevel, setSkillLevel] = useState('Easy');
-    const [servings, setServings] = useState('');
-    const [prepTime, setPrepTime] = useState('');
-    const [cookTime, setCookTime] = useState('');
-    const [waitTime, setWaitTime] = useState('');
-
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TEST BLOCK
-
-    // const blankIngredient = { quantity: '1', name: '1', preparation: '1' };
-    // const blankInstruction = { order: 0, content: '1' };
+    // const blankIngredient = { quantity: '', name: '', preparation: '' };
+    // const blankInstruction = { order: 0, content: '' };
     // const [photoSource, setPhotoSource] = useState('upload');
     // const [photoUrl, setPhotoUrl] = useState('');
     // const [file, setFile] = useState(null);
     // const [fileName, setFileName] = useState('');
     // const [fileExtension, setFileExtension] = useState('');
     // const [fileSize, setFileSize] = useState('');
-    // const [title, setTitle] = useState('1');
-    // const [description, setDescription] = useState('1');
+    // const [title, setTitle] = useState('');
+    // const [description, setDescription] = useState('');
     // const [ingredients, setIngredients] = useState([{ ...blankIngredient }]);
     // const [instructions, setInstructions] = useState([{ ...blankInstruction }]);
     // const [instructionCounter, setInstructionCounter] = useState(1);
     // const [skillLevel, setSkillLevel] = useState('Easy');
-    // const [servings, setServings] = useState('1');
-    // const [prepTime, setPrepTime] = useState('1');
-    // const [cookTime, setCookTime] = useState('1');
-    // const [waitTime, setWaitTime] = useState('1');
+    // const [servings, setServings] = useState('');
+    // const [prepTime, setPrepTime] = useState('');
+    // const [cookTime, setCookTime] = useState('');
+    // const [waitTime, setWaitTime] = useState('');
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TEST BLOCK
+
+    const blankIngredient = { quantity: '1', name: 'Banana', preparation: 'Peeled' };
+    const blankInstruction = { order: 0, content: 'Peeeeeeeeeeeel' };
+    const [photoSource, setPhotoSource] = useState('upload');
+    const [photoUrl, setPhotoUrl] = useState('');
+    const [file, setFile] = useState(null);
+    const [fileName, setFileName] = useState('');
+    const [fileExtension, setFileExtension] = useState('');
+    const [fileSize, setFileSize] = useState('');
+    const [title, setTitle] = useState('Test');
+    const [description, setDescription] = useState('1');
+    const [ingredients, setIngredients] = useState([{ ...blankIngredient }]);
+    const [instructions, setInstructions] = useState([{ ...blankInstruction }]);
+    const [instructionCounter, setInstructionCounter] = useState(1);
+    const [skillLevel, setSkillLevel] = useState('Easy');
+    const [servings, setServings] = useState('1');
+    const [prepTime, setPrepTime] = useState('2');
+    const [cookTime, setCookTime] = useState('3');
+    const [waitTime, setWaitTime] = useState('4');
 
     const handleIngredientChange = (e) => {
         const updatedIngredients = [...ingredients];
@@ -217,7 +217,7 @@ const CreateRecipe = ({ history }) => {
         return (
             <Form onSubmit={(e) => handleSubmit(e, createRecipe)}>
                 <Form.Group controlId="formName">
-                    <Form.Label>Recipe Title</Form.Label>
+                    <Form.Label>Recipe Title&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
                     <Form.Control
                         value={title}
                         type="text"
@@ -337,7 +337,7 @@ const CreateRecipe = ({ history }) => {
                     </Form.Group>
                 </fieldset>
                 <Form.Group controlId="formServings">
-                    <Form.Label>Servings</Form.Label>
+                    <Form.Label>Servings&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
                     <Form.Control
                         value={servings}
                         type="number"
@@ -348,7 +348,7 @@ const CreateRecipe = ({ history }) => {
                     />
                 </Form.Group>
                 <Form.Group controlId="formPrepTime">
-                    <Form.Label>Prep Time</Form.Label>
+                    <Form.Label>Prep Time&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
                     <Form.Control
                         value={prepTime}
                         type="number"
@@ -398,8 +398,16 @@ const CreateRecipe = ({ history }) => {
                             </InputGroup.Text>
                         </InputGroup.Prepend>
                         {photoSource === 'upload' && (
-                            <FormFile label={file && fileName && fileSize ? fileName + ' (' + formatFileSize(fileSize) + ')' : "Choose file (.jpg, .png)"} custom accept=".jpg, .jpeg, .png" onChange={getFile} />
-                        )}
+                        <FormFile
+                            label={file && fileName && fileSize
+                                ? fileName + ' (' + formatFileSize(fileSize) + ')'
+                                : "Choose file (.jpg, .png)"
+                            }
+                            custom
+                            accept=".jpg, .jpeg, .png"
+                            onChange={getFile}
+                        />
+                    )}
                         {photoSource === 'link' && (
                             <Form.Control
                                 value={photoUrl}
