@@ -10,6 +10,7 @@ def seed_recipes(apps, schema_editor):
     Recipe = apps.get_model('recipes', 'Recipe')
     Ingredient = apps.get_model('recipes', 'Ingredient')
     Instruction = apps.get_model('recipes', 'Instruction')
+    Photo = apps.get_model('recipes', 'Photo')
 
     User.objects.create_superuser(
         os.getenv('ADMIN_USERNAME'),
@@ -26,10 +27,13 @@ def seed_recipes(apps, schema_editor):
     
     new_ingredients = []
     new_instructions = []
+    new_photos = []
 
     for recipe in recipe_data:
         ingredients = recipe.pop('ingredients')
         instructions = recipe.pop('instructions')
+        photo = recipe.pop('photo')
+
         new_recipe = Recipe(
             user_id=user.id,
             **recipe,
@@ -50,8 +54,14 @@ def seed_recipes(apps, schema_editor):
                 order=idx + 1,
             ))
 
+        new_photos.append(Photo(
+            recipe_id=new_recipe.id,
+            url=photo,
+        ))
+
     Ingredient.objects.bulk_create(new_ingredients)
     Instruction.objects.bulk_create(new_instructions)
+    Photo.objects.bulk_create(new_photos)
 
 
 class Migration(migrations.Migration):
