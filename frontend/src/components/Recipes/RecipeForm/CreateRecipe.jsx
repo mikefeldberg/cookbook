@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { Redirect } from 'react-router-dom';
-import bsCustomFileInput from 'bs-custom-file-input';
 
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -15,8 +14,9 @@ import IngredientInput from './IngredientInput';
 import InstructionInput from './InstructionInput';
 import { AuthContext } from '../../../App';
 
+const MAX_FILE_SIZE = 2097152;
+
 const CreateRecipe = ({ history }) => {
-    bsCustomFileInput.init();
     const currentUser = useContext(AuthContext);
     const [createPhoto] = useMutation(CREATE_PHOTO_MUTATION);
     const [createRecipe] = useMutation(CREATE_RECIPE_MUTATION, {
@@ -34,7 +34,11 @@ const CreateRecipe = ({ history }) => {
     // const blankIngredient = { quantity: '', name: '', preparation: '' };
     // const blankInstruction = { order: 0, content: '' };
     // const [photoSource, setPhotoSource] = useState('upload');
+    // const [photoUrl, setPhotoUrl] = useState('');
     // const [file, setFile] = useState(null);
+    // const [fileName, setFileName] = useState('');
+    // const [fileExtension, setFileExtension] = useState('');
+    // const [fileSize, setFileSize] = useState('');
     // const [title, setTitle] = useState('');
     // const [description, setDescription] = useState('');
     // const [ingredients, setIngredients] = useState([{ ...blankIngredient }]);
@@ -45,25 +49,27 @@ const CreateRecipe = ({ history }) => {
     // const [prepTime, setPrepTime] = useState('');
     // const [cookTime, setCookTime] = useState('');
     // const [waitTime, setWaitTime] = useState('');
-    // const [photoUrl, setPhotoUrl] = useState('');
 
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ REMOVE WHEN DONE TESTING
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TEST BLOCK
 
-    const blankIngredient = { quantity: '1', name: '1', preparation: '1' };
-    const blankInstruction = { order: 0, content: '1' };
+    const blankIngredient = { quantity: '1', name: 'Banana', preparation: 'Peeled' };
+    const blankInstruction = { order: 0, content: 'Peeeeeeeeeeeel' };
     const [photoSource, setPhotoSource] = useState('upload');
+    const [photoUrl, setPhotoUrl] = useState('');
     const [file, setFile] = useState(null);
-    const [title, setTitle] = useState('1');
+    const [fileName, setFileName] = useState('');
+    const [fileExtension, setFileExtension] = useState('');
+    const [fileSize, setFileSize] = useState('');
+    const [title, setTitle] = useState('Test');
     const [description, setDescription] = useState('1');
     const [ingredients, setIngredients] = useState([{ ...blankIngredient }]);
     const [instructions, setInstructions] = useState([{ ...blankInstruction }]);
     const [instructionCounter, setInstructionCounter] = useState(1);
     const [skillLevel, setSkillLevel] = useState('Easy');
     const [servings, setServings] = useState('1');
-    const [prepTime, setPrepTime] = useState('1');
-    const [cookTime, setCookTime] = useState('1');
-    const [waitTime, setWaitTime] = useState('1');
-    const [photoUrl, setPhotoUrl] = useState('');
+    const [prepTime, setPrepTime] = useState('2');
+    const [cookTime, setCookTime] = useState('3');
+    const [waitTime, setWaitTime] = useState('4');
 
     const handleIngredientChange = (e) => {
         const updatedIngredients = [...ingredients];
@@ -106,37 +112,34 @@ const CreateRecipe = ({ history }) => {
         }
     };
 
-    const uploadFileToS3 = (presignedPostData, file) => {
-        return new Promise((resolve, reject) => {
-            const formData = new FormData();
-            Object.keys(presignedPostData.fields).forEach((key) => {
-                formData.append(key, presignedPostData.fields[key]);
-            });
-
-            formData.append('file', file);
-
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', presignedPostData.url, true);
-            xhr.send(formData);
-            xhr.onload = function () {
-                this.status === 204 ? resolve() : reject(this.responseText);
-            };
-        });
-    };
-
-    const getPresignedPostData = async () => {
-        const response = await fetch('http://localhost:8000/upload/');
-        const json = await response.json();
-        return json;
-    };
-
     const getFile = (e) => {
         const files = e.target.files;
         if (files && files.length > 0) {
-            const newFile = files[0];
-            setFile({ newFile });
+            if (files[0].size > MAX_FILE_SIZE) {
+                setFile(null)
+                setFileName('');
+                setFileExtension('');
+                setFileSize(e.target.files[0].size)
+            }
+            if (files[0].size <= MAX_FILE_SIZE) {
+                const newFile = files[0];
+                setFile({ newFile });
+                setFileName(e.target.value.split('\\')[e.target.value.split('\\').length-1]);
+                setFileExtension(e.target.value.split('.')[e.target.value.split('.').length-1]);
+                setFileSize(e.target.files[0].size)
+            }
         }
     };
+
+    const formatFileSize = (fileSize) => {
+        if(fileSize < 1024) {
+            return fileSize + 'bytes';
+        } else if(fileSize >= 1024 && fileSize < 1048576) {
+            return (fileSize/1024).toFixed(1) + 'KB';
+        } else if(fileSize >= 1048576) {
+            return (fileSize/1048576).toFixed(1) + 'MB';
+        }
+    }
 
     const handleSubmit = async (e, createRecipe) => {
         e.preventDefault();
@@ -156,9 +159,9 @@ const CreateRecipe = ({ history }) => {
         const res = await createRecipe({ variables: { recipe } });
         const recipeId = res.data.createRecipe.recipe.id;
 
-        if (file) {
+        if (file && photoSource === 'upload') {
             handleUpload(recipeId, createPhoto);
-        } else if (photoUrl) {
+        } else if (photoUrl && photoSource === 'link') {
             handleCreateLinkedPhoto(recipeId, createPhoto);
         } else {
             history.push(`/recipes/${recipeId}`);
@@ -174,7 +177,31 @@ const CreateRecipe = ({ history }) => {
             url,
         };
         await createPhoto({ variables: { photo } });
-        history.push(`/recipes/${recipeId}`);
+        setTimeout(() => {history.push(`/recipes/${recipeId}`)}, 1250);
+    };
+
+    const getPresignedPostData = async () => {
+        const response = await fetch(`http://localhost:8000/upload/${fileExtension}`);
+        const json = await response.json();
+        return json;
+    };
+
+    const uploadFileToS3 = (presignedPostData, file) => {
+        return new Promise((resolve, reject) => {
+            const formData = new FormData();
+            Object.keys(presignedPostData.fields).forEach((key) => {
+                formData.append(key, presignedPostData.fields[key]);
+            });
+
+            formData.append('file', file);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', presignedPostData.url, true);
+            xhr.send(formData);
+            xhr.onload = function () {
+                this.status === 204 ? resolve() : reject(this.responseText);
+            };
+        });
     };
 
     const handleCreateLinkedPhoto = async (recipeId, createPhoto) => {
@@ -190,7 +217,7 @@ const CreateRecipe = ({ history }) => {
         return (
             <Form onSubmit={(e) => handleSubmit(e, createRecipe)}>
                 <Form.Group controlId="formName">
-                    <Form.Label>Recipe Title</Form.Label>
+                    <Form.Label>Recipe Title&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
                     <Form.Control
                         value={title}
                         type="text"
@@ -310,7 +337,7 @@ const CreateRecipe = ({ history }) => {
                     </Form.Group>
                 </fieldset>
                 <Form.Group controlId="formServings">
-                    <Form.Label>Servings</Form.Label>
+                    <Form.Label>Servings&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
                     <Form.Control
                         value={servings}
                         type="number"
@@ -321,7 +348,7 @@ const CreateRecipe = ({ history }) => {
                     />
                 </Form.Group>
                 <Form.Group controlId="formPrepTime">
-                    <Form.Label>Prep Time</Form.Label>
+                    <Form.Label>Prep Time&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
                     <Form.Control
                         value={prepTime}
                         type="number"
@@ -371,8 +398,16 @@ const CreateRecipe = ({ history }) => {
                             </InputGroup.Text>
                         </InputGroup.Prepend>
                         {photoSource === 'upload' && (
-                            <FormFile label="Choose file (.jpg)" custom accept=".jpg, .jpeg" onChange={getFile} />
-                        )}
+                        <FormFile
+                            label={file && fileName && fileSize
+                                ? fileName + ' (' + formatFileSize(fileSize) + ')'
+                                : "Choose file (.jpg, .png)"
+                            }
+                            custom
+                            accept=".jpg, .jpeg, .png"
+                            onChange={getFile}
+                        />
+                    )}
                         {photoSource === 'link' && (
                             <Form.Control
                                 value={photoUrl}
@@ -381,6 +416,7 @@ const CreateRecipe = ({ history }) => {
                             />
                         )}
                     </InputGroup>
+                    {fileSize > MAX_FILE_SIZE && photoSource === 'upload' && <small className="text-danger">File size exceeds 2MB maximum. Please select a smaller file.</small>}
                 </Form.Group>
                 <div className="d-flex justify-content-center">
                     <Button

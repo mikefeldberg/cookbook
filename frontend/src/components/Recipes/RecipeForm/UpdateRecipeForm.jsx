@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
-import bsCustomFileInput from 'bs-custom-file-input';
 
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -16,8 +15,9 @@ import { UPDATE_RECIPE_MUTATION, CREATE_PHOTO_MUTATION, DELETE_PHOTO_MUTATION } 
 import IngredientInput from './IngredientInput';
 import InstructionInput from './InstructionInput';
 
+const MAX_FILE_SIZE = 2097152;
+
 const UpdateRecipeForm = ({ recipe }) => {
-    bsCustomFileInput.init();
     const history = useHistory();
     const [updateRecipe] = useMutation(UPDATE_RECIPE_MUTATION);
     const [createPhoto] = useMutation(CREATE_PHOTO_MUTATION);
@@ -26,7 +26,12 @@ const UpdateRecipeForm = ({ recipe }) => {
     const blankIngredient = { quantity: '', name: '', preparation: '' };
     const blankInstruction = { order: 0, content: '' };
     const [photoSource, setPhotoSource] = useState('upload');
+    const [existingPhotoUrl] = useState(recipe.photos.length > 0 ? recipe.photos[0].url : null)
+    const [newPhotoUrl, setNewPhotoUrl] = useState('')
     const [file, setFile] = useState(null)
+    const [fileName, setFileName] = useState('');
+    const [fileExtension, setFileExtension] = useState('');
+    const [fileSize, setFileSize] = useState('');
     const [title, setTitle] = useState(recipe.title)
     const [description, setDescription] = useState(recipe.description)
     const [ingredients, setIngredients] = useState(recipe.ingredients)
@@ -39,7 +44,6 @@ const UpdateRecipeForm = ({ recipe }) => {
     const [waitTime, setWaitTime] = useState(recipe.waitTime)
     const [photoId] = useState(recipe.photos.length > 0 ? recipe.photos[0].id : null)
     const [deleteExistingPhoto, setDeleteExistingPhoto] = useState(false)
-    const [photoUrl, setPhotoUrl] = useState(recipe.photos.length > 0 ? recipe.photos[0].url : null)
     const [recipeId] = useState(recipe.id)
 
     const removeListIds = () => {
@@ -67,10 +71,6 @@ const UpdateRecipeForm = ({ recipe }) => {
         }
     };
 
-    const handleDeletePhoto = async deletePhoto => {
-        await deletePhoto({variables: {photoId}})
-    }
-
     const handleInstructionChange = e => {
         const updatedInstructions = [...instructions];
         updatedInstructions[e.target.dataset.idx][e.target.name] = e.target.value;
@@ -92,37 +92,55 @@ const UpdateRecipeForm = ({ recipe }) => {
         }
     };
 
-    const uploadFileToS3 = (presignedPostData, file) => {
-        return new Promise((resolve, reject) => {
-            const formData = new FormData();
-            Object.keys(presignedPostData.fields).forEach(key => {
-                formData.append(key, presignedPostData.fields[key]);
-            });
-
-            formData.append('file', file);
-
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', presignedPostData.url, true);
-            xhr.send(formData);
-            xhr.onload = function() {
-                this.status === 204 ? resolve() : reject(this.responseText);
-            };
-        });
-    };
-
-    const getPresignedPostData = async () => {
-        const response = await fetch('http://localhost:8000/upload/');
-        const json = await response.json();
-        return json;
-    };
-
-    const getFile = e => {
+    const getFile = (e) => {
         const files = e.target.files;
         if (files && files.length > 0) {
-            const newFile = files[0];
-            setFile({ newFile });
+            if (files[0].size > MAX_FILE_SIZE) {
+                setFile(null)
+                setFileName('');
+                setFileExtension('');
+                setFileSize(e.target.files[0].size)
+            }
+            if (files[0].size <= MAX_FILE_SIZE) {
+                const newFile = files[0];
+                setFile({ newFile });
+                setFileName(e.target.value.split('\\')[e.target.value.split('\\').length-1]);
+                setFileExtension(e.target.value.split('.')[e.target.value.split('.').length-1]);
+                setFileSize(e.target.files[0].size)
+                if (existingPhotoUrl) {
+                    setDeleteExistingPhoto(true)
+                }
+            }
         }
     };
+
+    const formatFileSize = (fileSize) => {
+        if(fileSize < 1024) {
+            return fileSize + 'bytes';
+        } else if(fileSize >= 1024 && fileSize < 1048576) {
+            return (fileSize/1024).toFixed(1) + 'KB';
+        } else if(fileSize >= 1048576) {
+            return (fileSize/1048576).toFixed(1) + 'MB';
+        }
+    }
+
+    const handleNewLinkedPhoto = (e) => {
+        setNewPhotoUrl(e.target.value);
+        if (existingPhotoUrl) {
+            setDeleteExistingPhoto(true);
+        }
+        if (e.target.value === '') {
+            setDeleteExistingPhoto(false);
+        }
+    }
+
+    const handleCancel = () => {
+        setDeleteExistingPhoto(false);
+        setFile(null);
+        setFileName('');
+        setFileSize('');
+        setNewPhotoUrl('');
+    }
 
     const handleSubmit = async (e, updateRecipe) => {
         e.preventDefault();
@@ -144,17 +162,21 @@ const UpdateRecipeForm = ({ recipe }) => {
             ingredients,
             instructions,
         };
-        
+
         await updateRecipe({ variables: { recipe: updatedRecipe } });
 
-        if (file) {
+        if (file && photoSource === 'upload') {
             handleUpload(recipeId, createPhoto);
-        } else if (!file && photoUrl) {
+        } else if (newPhotoUrl && photoSource === 'link') {
             handleCreateLinkedPhoto(recipeId, createPhoto);
         } else {
             history.push(`/recipes/${recipeId}`);
         }
     };
+
+    const handleDeletePhoto = async deletePhoto => {
+        await deletePhoto({variables: {photoId}})
+    }
 
     const handleUpload = async (recipeId, createPhoto) => {
         const presignedPostData = await getPresignedPostData();
@@ -165,13 +187,37 @@ const UpdateRecipeForm = ({ recipe }) => {
             url
         }
         await createPhoto({ variables: { photo } });
-        history.push(`/recipes/${recipeId}`);
+        setTimeout(() => {history.push(`/recipes/${recipeId}`)}, 2000);
+    };
+
+    const getPresignedPostData = async () => {
+        const response = await fetch(`http://localhost:8000/upload/${fileExtension}`);
+        const json = await response.json();
+        return json;
+    };
+
+    const uploadFileToS3 = (presignedPostData, file) => {
+        return new Promise((resolve, reject) => {
+            const formData = new FormData();
+            Object.keys(presignedPostData.fields).forEach(key => {
+                formData.append(key, presignedPostData.fields[key]);
+            });
+
+            formData.append('file', file);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', presignedPostData.url, true);
+            xhr.send(formData);
+            xhr.onload = function() {
+                this.status === 204 ? resolve() : reject(this.responseText);
+            };
+        });
     };
 
     const handleCreateLinkedPhoto = async (recipeId, createPhoto) => {
         const photo = {
             recipeId,
-            url: photoUrl,
+            url: newPhotoUrl,
         };
         await createPhoto({ variables: { photo } });
         history.push(`/recipes/${recipeId}`);
@@ -180,7 +226,7 @@ const UpdateRecipeForm = ({ recipe }) => {
     return (
         <Form onSubmit={e => handleSubmit(e, updateRecipe)}>
             <Form.Group controlId="formName">
-                <Form.Label>Recipe Title</Form.Label>
+                <Form.Label>Recipe Title&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
                 <Form.Control
                     value={title}
                     type="text"
@@ -302,7 +348,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                 </Form.Group>
             </fieldset>
             <Form.Group controlId="formServings">
-                <Form.Label>Servings</Form.Label>
+                <Form.Label>Servings&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
                 <Form.Control
                     value={servings}
                     type="number"
@@ -313,7 +359,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                 />
             </Form.Group>
             <Form.Group controlId="formPrepTime">
-                <Form.Label>Prep Time</Form.Label>
+                <Form.Label>Prep Time&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
                 <Form.Control
                     value={prepTime}
                     type="number"
@@ -344,16 +390,17 @@ const UpdateRecipeForm = ({ recipe }) => {
                 />
             </Form.Group>
             <Form.Group>
-                { photoUrl &&
+                { existingPhotoUrl &&
                     <div className="mb-2">
                         Current Photo:
                         <Container>
                         <Row>
-                            <Image src={photoUrl} rounded thumbnail style={{maxWidth: `100px`}}/>
+                            <Image src={existingPhotoUrl} rounded thumbnail style={{maxWidth: `100px`}}/>
                             {deleteExistingPhoto && 
                                 <Row>
                                     'This image will be deleted after you save changes.'
-                                    <Button variant="success" onClick={() => setDeleteExistingPhoto(false)}>Cancel Delete</Button>
+                                    {/* <Button variant="success" onClick={() => setDeleteExistingPhoto(false)}>Cancel Delete</Button> */}
+                                    <Button variant="success" onClick={() => handleCancel()}>Cancel Delete</Button>
                                 </Row>
                             }
                             {!deleteExistingPhoto && 
@@ -368,14 +415,14 @@ const UpdateRecipeForm = ({ recipe }) => {
                 <Form.Label>Photo</Form.Label>
                 <InputGroup>
                     <InputGroup.Prepend>
-                        <InputGroup.Text onClick={() => {setPhotoSource('upload');}}>
+                        <InputGroup.Text onClick={() => {setPhotoSource('upload')}}>
                             <i className={
                                 photoSource === 'upload'
                                     ? 'text-primary fas fa-file-upload'
                                     : 'text-light fas fa-file-upload'
                             }></i>
                         </InputGroup.Text>
-                        <InputGroup.Text onClick={() => {setPhotoSource('link');}}>
+                        <InputGroup.Text onClick={() => {setPhotoSource('link')}}>
                             <i className={
                                 photoSource === 'link'
                                 ? 'text-primary fas fa-link'
@@ -384,16 +431,25 @@ const UpdateRecipeForm = ({ recipe }) => {
                         </InputGroup.Text>
                     </InputGroup.Prepend>
                     {photoSource === 'upload' && (
-                        <FormFile label="Choose file (.jpg)" custom accept=".jpg, .jpeg" onChange={getFile} />
+                        <FormFile
+                            label={file && fileName && fileSize
+                                ? fileName + ' (' + formatFileSize(fileSize) + ')'
+                                : "Choose file (.jpg, .png)"
+                            }
+                            custom
+                            accept=".jpg, .jpeg, .png"
+                            onChange={getFile}
+                        />
                     )}
                     {photoSource === 'link' && (
                         <Form.Control
-                            value={photoUrl}
+                            value={newPhotoUrl}
                             placeholder="Paste image URL"
-                            onChange={(e) => setPhotoUrl(e.target.value)}
+                            onChange={(e) => handleNewLinkedPhoto(e)}
                         />
                     )}
                 </InputGroup>
+                {fileSize > MAX_FILE_SIZE && photoSource === 'upload' && <small className="text-danger">File size exceeds 2MB maximum. Please select a smaller file.</small>}
             </Form.Group>
             <div className="d-flex justify-content-center">
                 <Button

@@ -10,9 +10,9 @@ import ulid
 BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET')
 DEFAULT_EXPIRATION = 3600
 
-def create_presigned_post(request):
+def create_presigned_post(request, extension):
     s3_client = boto3.client('s3')
-    object_name = 'photo_{}.jpg'.format(ulid.new())
+    object_name = 'photo_{}.{}'.format(ulid.new(), extension)
 
     try:
         response = s3_client.generate_presigned_post(
