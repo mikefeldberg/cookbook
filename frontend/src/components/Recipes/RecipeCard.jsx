@@ -11,7 +11,7 @@ const RecipeCard = ({ recipe }) => {
     const url = match.url
 
     return (
-        <Card className="shadow">
+        <Card className="shadow mb-4">
             <Card.Img
                 variant="top"
                 src={

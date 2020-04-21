@@ -37,7 +37,7 @@ const Profile = ({ match }) => {
                         <UserProfile profile={data.profile}/>
                     </Tab>
                     <Tab eventKey="recipes" title="Recipes">
-                        <CardColumns>
+                        <CardColumns className={recipes.length > 0 ? '' : 'mb-5'}>
                             {recipes.length > 0
                                 ? recipes.map((recipe) => <RecipeCard key={recipe.id} recipe={recipe} />)
                                 : currentUser && currentUser.id === id
@@ -47,7 +47,7 @@ const Profile = ({ match }) => {
                         </CardColumns>
                     </Tab>
                     <Tab eventKey="favorites" title="Favorites">
-                        <CardColumns>
+                        <CardColumns className={favorites.length > 0 ? '' : 'mb-5'}>
                             {favorites.length > 0
                                 ? favorites.map((favorite) => <RecipeCard key={favorite.id} recipe={favorite.recipe} />)
                                 : currentUser && currentUser.id === id
