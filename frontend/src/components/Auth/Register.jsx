@@ -48,7 +48,7 @@ const Register = () => {
     if (!currentUser) {
         return (
             <>
-                <Form className="mx-auto w-50" onSubmit={handleSubmit(onSubmit)}>
+                <Form className="mb-5 mx-auto w-50" onSubmit={handleSubmit(onSubmit)}>
                     <Form.Group>
                         <Form.Label>Username</Form.Label>
                         <Form.Control

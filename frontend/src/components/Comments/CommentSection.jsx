@@ -45,6 +45,9 @@ const CommentSection = ({ recipeId, comments }) => {
                     setRatingIsDisabled={setRatingIsDisabled}
                 />
             )}
+            {comments.length === 0 &&
+                <div border="light" className="pt-2 pb-2 shadow-sm text-center text-secondary rounded mb-5">No one has left any comments or ratings yet</div>
+            }
         </>
     );
 };
