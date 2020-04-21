@@ -166,7 +166,6 @@ class Query(graphene.ObjectType):
 
     def resolve_ratings(self, info, recipe_id):
         user = info.context.user
-
         return Comment.objects.filter(recipe_id=recipe_id, user=user, rating__gt=0, deleted_at=None)
 
 
