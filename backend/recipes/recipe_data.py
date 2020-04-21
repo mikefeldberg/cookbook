@@ -4,7 +4,7 @@ recipes = [
         'photo': 'https://feldbergscookbook-photos.s3-us-west-1.amazonaws.com/photo_01E6C5YFY69DNP6Q1GG6SH9XJ5.jpeg',
         'description': 'Plov is a hearty dish that comes in many varieties. Just about every Eastern European or Central Asian culture has a version. This one comes pretty close to what my grandma used to make so I’m gonna surmise that it’s got Russian roots. While my grandma’s plov took many painstaking hours to prepare, this pressure cooker approach gets us there with minimal effort and in less than half the time.',
         'ingredients': [
-            {'quantity': '2 1/2 cups', 'name': 'your favorite rice (I usually go with basmati or jasmine)', 'preparation': 'rinsed and drained'},
+            {'quantity': '2 1/2 cups', 'name': 'your favorite rice (I usually go with basmati or jasmine, but it works with short-grain as well.)', 'preparation': 'rinsed and drained'},
             {'quantity': '1 lb', 'name': 'beef chuck or beef stew meat', 'preparation': 'cut into 3/4″ pieces'},
             {'quantity': '4 tbsp', 'name': 'olive oil'},
             {'quantity': '4 tbsp', 'name': 'butter'},
@@ -203,17 +203,17 @@ recipes = [
     },
     {
         'title': 'Pan Roasted Chicken Thighs',
-        'photo': 'https://feldbergscookbook-photos.s3-us-west-1.amazonaws.com/photo_01E6C6NCAFA8H6T6Q8BHVA7N6F.jpg',
-        'description': 'This chicken recipe is game-changing. If, like me, you’ve made over-cooked, under-cooked, or just generally uninspired chicken before, once you try these thighs you’ll never use a different way. This recipe is based on one from The Bon Appétit Test Kitchen and produces perfectly crispy, juicy, flavorful fried chicken every single time.',
+        'photo': 'https://feldbergscookbook-photos.s3-us-west-1.amazonaws.com/photo_01E6DHN6F13XTAN845HC03322S.jpg',
+        'description': 'This chicken recipe super simple and game-changing. At least if your game, like mine, has ever involved making dry, rubbery, simultaneously over and under cooked chicken. This recipe is from The Bon Appétit Test Kitchen and produces perfectly crispy, juicy, flavorful fried chicken every single time.',
         'ingredients': [
-            {'quantity': '8', 'name': 'skin-on, bone-in chicken thighs'},
+            {'quantity': '4-8', 'name': 'Skin-on, bone-in chicken thighs'},
             {'quantity': '', 'name': 'Kosher salt'},
-            {'quantity': '', 'name': 'freshly ground black pepper'},
-            {'quantity': '1 tablespoon', 'name': 'vegetable oil'},
+            {'quantity': '', 'name': 'Freshly ground black pepper'},
+            {'quantity': '1 tbsp', 'name': 'vegetable oil'},
         ],
         'instructions': [
             'Preheat oven to 475°F.',
-            'Season chicken with salt and pepper.',
+            'Season chicken generously with salt and pepper.',
             'Heat oil in a 12" cast-iron or heavy non-stick skillet over high heat until hot but not smoking.',
             'Nestle chicken in skillet, skin side down, and cook 2 minutes',
             'Reduce heat to medium-high; continue cooking skin side down, occasionally rearranging chicken thighs and rotating pan to evenly distribute heat, until fat renders and skin is golden brown, about 12 minutes',
