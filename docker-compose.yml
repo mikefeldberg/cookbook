@@ -1,0 +1,21 @@
+version: '3'
+services:
+    django-server:
+        # restart: always
+        build: 
+            context: ./backend
+            dockerfile: ./Dockerfile
+        ports:
+            - "8000:8000"
+    react-client:
+        # restart: always
+        build: 
+            context: ./frontend
+            dockerfile: ./Dockerfile
+        ports:
+            - "3000:3000"
+    db:
+        image: postgres:latest
+        # restart: always
+        ports:
+            - "5432:5432"
