@@ -1,8 +1,9 @@
 from django.contrib.auth import get_user_model
 from graphql import GraphQLError
-
 import graphene
-from recipes.models import Recipe, Comment, Favorite
+import uuid
+
+from recipes.models import Recipe, Comment, Favorite, PasswordResetRequest
 from graphene_django import DjangoObjectType
 from django_filters import FilterSet
 
@@ -50,6 +51,13 @@ class UserType(DjangoObjectType):
         return FavoriteFilter(kwargs).qs.filter(user_id=self.id) 
 
 
+class PasswordResetRequestType(DjangoObjectType):
+    email = graphene.String()
+
+    class Meta:
+        model = PasswordResetRequest
+
+
 class Query(graphene.ObjectType):
     users = graphene.List(UserType)
     user = graphene.Field(UserType, id=graphene.String(required=True))
@@ -92,5 +100,23 @@ class CreateUser(graphene.Mutation):
         return CreateUser(user=user)
 
 
+class CreatePasswordResetRequest(graphene.Mutation):
+    password_reset_request = graphene.Field(PasswordResetRequestType)
+
+    class Arguments:
+        email = graphene.String(required=True)
+
+    def mutate(self, info, email):
+        new_password_reset_request = PasswordResetRequest(
+            reset_code = uuid.uuid4(),
+            user=get_user_model().objects.get(email=email),
+        )
+
+        new_password_reset_request.save()
+
+        return CreatePasswordResetRequest(password_reset_request=new_password_reset_request)
+
+
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
+    create_password_reset_request = CreatePasswordResetRequest.Field()

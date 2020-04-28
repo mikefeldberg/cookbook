@@ -444,3 +444,18 @@ export const DELETE_FAVORITE_MUTATION = gql`
         }
     }
 `
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~ AUTH
+
+export const CREATE_PASSWORD_RESET_REQUEST_MUTATION = gql`
+    mutation ($email: String!) {
+        createRequestPasswordReset(email: $email) {
+            passwordResetRequest {
+                resetCode
+                user {
+                    id
+                }
+            }
+        }
+    }
+`
