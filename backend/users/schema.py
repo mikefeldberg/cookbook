@@ -1,11 +1,12 @@
 from django.contrib.auth import get_user_model
-from graphql import GraphQLError
 import graphene
 import uuid
+from graphene_django import DjangoObjectType
+from graphql import GraphQLError
+from django_filters import FilterSet
+from backend.password_util import send_password_reset_email
 
 from recipes.models import Recipe, Comment, Favorite, PasswordResetRequest
-from graphene_django import DjangoObjectType
-from django_filters import FilterSet
 
 
 class RecipeFilter(FilterSet):
@@ -109,14 +110,16 @@ class CreatePasswordResetRequest(graphene.Mutation):
 
     def mutate(self, info, email):
         user = get_user_model().objects.filter(email=email).first()
+        reset_code=uuid.uuid4()
 
         if user:
             new_password_reset_request = PasswordResetRequest(
-                reset_code=uuid.uuid4(),
+                reset_code=reset_code,
                 user=user
             )
 
             new_password_reset_request.save()
+            send_password_reset_email(email, reset_code)
 
 
 class Mutation(graphene.ObjectType):
