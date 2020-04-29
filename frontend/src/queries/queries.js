@@ -80,6 +80,14 @@ export const PROFILE_QUERY = gql`
     }
 `
 
+export const GET_PASSWORD_RESET_REQUEST_QUERY = gql`
+    query getPasswordResetRequestQuery($resetCode: String!) {
+        passwordResetRequest(resetCode: $resetCode) {
+            expiresAt
+        }
+    }
+`
+
 export const GET_USERS_QUERY = gql`
     query getUsersQuery {
         users {
@@ -452,6 +460,18 @@ export const CREATE_PASSWORD_RESET_REQUEST_MUTATION = gql`
         createPasswordResetRequest(email: $email) {
             passwordResetRequest {
                 resetCode
+                user {
+                    id
+                }
+            }
+        }
+    }
+`
+
+export const RESET_PASSWORD_MUTATION = gql`
+    mutation ($password: String!) {
+        resetPassword(password: $password) {
+            resetPassword {
                 user {
                     id
                 }

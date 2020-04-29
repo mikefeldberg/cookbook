@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useMutation } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import { useHistory, Redirect } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
@@ -7,22 +7,25 @@ import Form from 'react-bootstrap/Form';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
 
-import { CREATE_PASSWORD_RESET_REQUEST_MUTATION } from '../../queries/queries';
+import { RESET_PASSWORD_MUTATION } from '../../queries/queries';
 import { AuthContext } from '../../App';
 import Error from '../Shared/Error';
 
-const ResetPassword = () => {
+const ResetPassword = ({match}) => {
+    const resetCode = match.params.reset_code;
+
     const currentUser = useContext(AuthContext);
     const history = useHistory();
-    const [createPasswordResetRequest] = useMutation(CREATE_PASSWORD_RESET_REQUEST_MUTATION);
     const { register, handleSubmit, errors, formState } = useForm({ mode: 'onChange' });
     const [errorText, setErrorText] = useState(null);
     const [formIsSubmitted, setFormIsSubmitted] = useState(false);
 
+    const [resetPassword] = useMutation(RESET_PASSWORD_MUTATION);
+
     const onSubmit = async (data) => {
-        createPasswordResetRequest({
-            variables: { email: data.email },
-        });
+        // createPasswordResetRequest({
+        //     variables: { email: data.email },
+        // });
         setFormIsSubmitted(true);
     };
 

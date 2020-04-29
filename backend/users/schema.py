@@ -66,7 +66,7 @@ class Query(graphene.ObjectType):
     user = graphene.Field(UserType, id=graphene.String(required=True))
     profile = graphene.Field(UserType, id=graphene.String(required=True))
     me = graphene.Field(UserType)
-    password_reset_request = graphene.Field(PasswordResetRequestType)
+    password_reset_request = graphene.Field(PasswordResetRequestType, reset_code=graphene.String(required=True))
 
     def resolve_profile(self, info, id):
         return get_user_model().objects.filter(id=id, deleted_at=None).first()
@@ -129,6 +129,25 @@ class CreatePasswordResetRequest(graphene.Mutation):
             new_password_reset_request.save()
             send_password_reset_email(email, reset_code)
 
+
+class ResetPassword(graphene.Mutation):
+    user = graphene.Field(UserType)
+
+    class Arguments:
+        password = graphene.String(required=True)
+        reset_code = graphene.String(requried=True)
+
+    def mutate(self, info, password, reset_code):
+        password_reset_request = PasswordResetRequest.objects.filter(reset_code=reset_code).first()
+        if password_reset_request and password_reset_request.expires_at > datetime.now():
+            user = password_reset_request.user
+            user.set_password(password)
+
+            user.save()
+
+            return True
+        
+        return False
 
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
