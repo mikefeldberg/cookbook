@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { Redirect } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -14,10 +14,12 @@ import Error from '../Shared/Error';
 const ResetPassword = ({ match, history }) => {
     const currentUser = useContext(AuthContext);
     const resetCode = match.params.reset_code;
-    const { register, handleSubmit, errors, formState } = useForm({ mode: 'onChange' });
+    const { register, handleSubmit, errors, formState, watch } = useForm({ mode: 'onChange' });
     const [formIsSubmitted, setFormIsSubmitted] = useState(false);
     const [errorText, setErrorText] = useState(null);
     const [resetPassword] = useMutation(RESET_PASSWORD_MUTATION);
+    const password = useRef({});
+    password.current = watch("password", "")
 
     const onSubmit = async (data) => {
         const res = await resetPassword({
@@ -53,6 +55,25 @@ const ResetPassword = ({ match, history }) => {
                             />
                             <small className="text-danger">
                                 {formState.touched.password && errors.password && errors.password.message}
+                            </small>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Re-enter password</Form.Label>
+                            <Form.Control
+                                type="password"
+                                placeholder=""
+                                name="password2"
+                                ref={register({
+                                    required: true,
+                                    minLength: {
+                                        value: 8,
+                                        message: 'Password must be at least 8 characters',
+                                    },
+                                    validate: value => value === password.current || "Passwords do not match"
+                                })}
+                            />
+                            <small className="text-danger">
+                                {formState.touched.password && errors.password2 && errors.password2.message}
                             </small>
                         </Form.Group>
                         <ButtonGroup className="w-100 mb-3" aria-label="Basic example">
