@@ -62,13 +62,6 @@ class PasswordResetRequestType(DjangoObjectType):
         model = PasswordResetRequest
 
 
-# class ResetPasswordType(DjangoObjectType):
-#     password = graphene.String()
-#     reset_code = graphene.String()
-
-#     class Meta:
-#         pass
-
 class Query(graphene.ObjectType):
     users = graphene.List(UserType)
     user = graphene.Field(UserType, id=graphene.String(required=True))
@@ -92,9 +85,6 @@ class Query(graphene.ObjectType):
             return None
 
         return user
-
-    def resolve_password_reset_request(self, info, reset_code):
-        return PasswordResetRequest.objects.filter(reset_code=reset_code).first()
 
 
 class CreateUser(graphene.Mutation):

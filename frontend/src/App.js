@@ -41,7 +41,6 @@ const App = () => {
                             <Route exact path="/logout" component={Logout} />
                             <Route exact path="/forgot" component={ForgotPassword} />
                             <Route exact path="/reset_password/:reset_code" component={ResetPassword} />
-                            {/* <Route exact path="accounts/reset_password" component={ResetPassword} /> */}
                             <Route exact path="/recipes/new" component={CreateRecipe} />
                             <Route exact path="/recipes/:id" component={RecipeDetails} />
                             <Route exact path="/recipes/:id/edit" component={UpdateRecipe} />
