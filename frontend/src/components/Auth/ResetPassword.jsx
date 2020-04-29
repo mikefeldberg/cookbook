@@ -24,7 +24,6 @@ const ResetPassword = ({ match, history }) => {
             variables: { password: data.password, resetCode },
         });
         if (res) {
-            debugger
             if (res.data.resetPassword.user) {
                 setFormIsSubmitted(true)
             } else {

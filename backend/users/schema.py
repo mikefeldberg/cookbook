@@ -74,7 +74,8 @@ class Query(graphene.ObjectType):
     user = graphene.Field(UserType, id=graphene.String(required=True))
     profile = graphene.Field(UserType, id=graphene.String(required=True))
     me = graphene.Field(UserType)
-    password_reset_request = graphene.Field(PasswordResetRequestType, reset_code=graphene.String(required=True))
+    password_reset_request = graphene.Field(
+        PasswordResetRequestType, reset_code=graphene.String(required=True))
 
     def resolve_profile(self, info, id):
         return get_user_model().objects.filter(id=id, deleted_at=None).first()
@@ -150,16 +151,16 @@ class ResetPassword(graphene.Mutation):
         reset_code = graphene.String(required=True)
 
     def mutate(self, info, password, reset_code):
-        password_reset_request = PasswordResetRequest.objects.filter(reset_code=reset_code).first()
+        password_reset_request = PasswordResetRequest.objects.filter(
+            reset_code=reset_code).first()
         if password_reset_request and password_reset_request.expires_at > timezone.now():
             user = password_reset_request.user
             user.set_password(password)
 
             user.save()
-            from IPython import embed; embed()
+
             password_reset_request.expires_at = timezone.now()
             password_reset_request.save()
-            from IPython import embed; embed()
 
             return ResetPassword(user=user)
 
