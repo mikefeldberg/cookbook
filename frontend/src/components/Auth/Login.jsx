@@ -91,7 +91,7 @@ const Login = () => {
                         </Button>
                     </ButtonGroup>
                     {errorText && <Error error={errorText} setErrorText={setErrorText} />}
-                    <div className="text-right"><Link to="/accounts/forgot"><span className="link">Forgot password?</span></Link></div>
+                    <div className="text-center"><Link to="/forgot"><span className="link">Forgot password?</span></Link></div>
                 </Form>
             </>
         );
