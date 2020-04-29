@@ -5,7 +5,8 @@ from graphene_django import DjangoObjectType
 from graphql import GraphQLError
 from django_filters import FilterSet
 from backend.password_util import send_password_reset_email
-from datetime import datetime, timedelta
+from django.utils import timezone
+from datetime import timedelta
 
 from recipes.models import Recipe, Comment, Favorite, PasswordResetRequest
 
@@ -60,6 +61,13 @@ class PasswordResetRequestType(DjangoObjectType):
     class Meta:
         model = PasswordResetRequest
 
+
+# class ResetPasswordType(DjangoObjectType):
+#     password = graphene.String()
+#     reset_code = graphene.String()
+
+#     class Meta:
+#         pass
 
 class Query(graphene.ObjectType):
     users = graphene.List(UserType)
@@ -123,32 +131,37 @@ class CreatePasswordResetRequest(graphene.Mutation):
             new_password_reset_request = PasswordResetRequest(
                 reset_code=reset_code,
                 user=user,
-                expires_at=datetime.now() + timedelta(**RESET_PASSWORD_EXPIRES_IN),
+                expires_at=timezone.now() + timedelta(**RESET_PASSWORD_EXPIRES_IN),
             )
 
             new_password_reset_request.save()
             send_password_reset_email(email, reset_code)
 
+            return CreatePasswordResetRequest(password_reset_request=new_password_reset_request)
+
+        return False
 
 class ResetPassword(graphene.Mutation):
     user = graphene.Field(UserType)
 
     class Arguments:
         password = graphene.String(required=True)
-        reset_code = graphene.String(requried=True)
+        reset_code = graphene.String(required=True)
 
     def mutate(self, info, password, reset_code):
+        from IPython import embed; embed()
         password_reset_request = PasswordResetRequest.objects.filter(reset_code=reset_code).first()
-        if password_reset_request and password_reset_request.expires_at > datetime.now():
+        if password_reset_request and password_reset_request.expires_at > timezone.now():
             user = password_reset_request.user
             user.set_password(password)
 
             user.save()
 
-            return True
-        
+            return ResetPassword(user=user)
+
         return False
 
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
     create_password_reset_request = CreatePasswordResetRequest.Field()
+    reset_password = ResetPassword.Field()

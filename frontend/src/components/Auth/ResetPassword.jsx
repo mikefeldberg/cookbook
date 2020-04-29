@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
-import { useQuery, useMutation } from '@apollo/react-hooks';
-import { useHistory, Redirect } from 'react-router-dom';
+import { useMutation } from '@apollo/react-hooks';
+import { Redirect } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import Form from 'react-bootstrap/Form';
@@ -11,22 +11,18 @@ import { RESET_PASSWORD_MUTATION } from '../../queries/queries';
 import { AuthContext } from '../../App';
 import Error from '../Shared/Error';
 
-const ResetPassword = ({match}) => {
-    const resetCode = match.params.reset_code;
-
+const ResetPassword = ({ match, history }) => {
     const currentUser = useContext(AuthContext);
-    const history = useHistory();
+    const resetCode = match.params.reset_code;
     const { register, handleSubmit, errors, formState } = useForm({ mode: 'onChange' });
     const [errorText, setErrorText] = useState(null);
-    const [formIsSubmitted, setFormIsSubmitted] = useState(false);
 
     const [resetPassword] = useMutation(RESET_PASSWORD_MUTATION);
 
     const onSubmit = async (data) => {
-        // createPasswordResetRequest({
-        //     variables: { email: data.email },
-        // });
-        setFormIsSubmitted(true);
+        resetPassword({
+            variables: { password: data.password, resetCode },
+        });
     };
 
     if (!currentUser) {
@@ -34,21 +30,21 @@ const ResetPassword = ({match}) => {
             <>
                 <Form className="mx-auto w-50 mb-5" onSubmit={handleSubmit(onSubmit)}>
                     <Form.Group>
-                        <Form.Label>Please enter the email address you registered with</Form.Label>
+                        <Form.Label>Please enter a new password</Form.Label>
                         <Form.Control
-                            type="email"
+                            type="password"
                             placeholder=""
-                            name="email"
+                            name="password"
                             ref={register({
                                 required: true,
-                                pattern: {
-                                    value: /^([a-zA-Z0-9_\-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/i,
-                                    message: 'Please enter a valid email address',
+                                minLength: {
+                                    value: 8,
+                                    message: 'Password must be at least 8 characters',
                                 },
                             })}
                         />
                         <small className="text-danger">
-                            {formState.touched.email && errors.email && errors.email.message}
+                            {formState.touched.password && errors.password && errors.password.message}
                         </small>
                     </Form.Group>
                     <ButtonGroup className="w-100 mb-3" aria-label="Basic example">
@@ -66,7 +62,6 @@ const ResetPassword = ({match}) => {
                         </Button>
                     </ButtonGroup>
                     {errorText && <Error error={errorText} setErrorText={setErrorText} />}
-                    {formIsSubmitted && <Form.Label>A reset link has been sent to the email address above. It will expire in 10 minutes.</Form.Label>}
                 </Form>
             </>
         );

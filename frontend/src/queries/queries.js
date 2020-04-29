@@ -468,13 +468,13 @@ export const CREATE_PASSWORD_RESET_REQUEST_MUTATION = gql`
     }
 `
 
+
+
 export const RESET_PASSWORD_MUTATION = gql`
-    mutation ($password: String!) {
-        resetPassword(password: $password) {
-            resetPassword {
-                user {
-                    id
-                }
+    mutation ($password:String!, $resetCode:String!) {
+        resetPassword(password:$password, resetCode:$resetCode) {
+            user {
+                id
             }
         }
     }
