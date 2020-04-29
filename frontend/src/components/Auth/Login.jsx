@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useApolloClient, useMutation } from '@apollo/react-hooks';
-import { useHistory, Redirect } from 'react-router-dom';
+import { useHistory, Redirect, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import Form from 'react-bootstrap/Form';
@@ -76,7 +76,7 @@ const Login = () => {
                         />
                     <small className="text-danger">{formState.touched.password && errors.password && errors.password.message}</small>
                     </Form.Group>
-                    <ButtonGroup className="w-100" aria-label="Basic example">
+                    <ButtonGroup className="w-100 mb-3" aria-label="Basic example">
                         <Button
                             onClick={() => {
                                 history.push('/register');
@@ -91,6 +91,7 @@ const Login = () => {
                         </Button>
                     </ButtonGroup>
                     {errorText && <Error error={errorText} setErrorText={setErrorText} />}
+                    <div className="text-right"><Link to="/accounts/forgot"><span className="link">Forgot password?</span></Link></div>
                 </Form>
             </>
         );

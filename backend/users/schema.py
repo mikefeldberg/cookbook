@@ -7,6 +7,7 @@ from recipes.models import Recipe, Comment, Favorite, PasswordResetRequest
 from graphene_django import DjangoObjectType
 from django_filters import FilterSet
 
+
 class RecipeFilter(FilterSet):
     class Meta:
         model = Recipe
@@ -42,13 +43,13 @@ class UserType(DjangoObjectType):
         model = get_user_model()
 
     def resolve_recipe_set(self, info, **kwargs):
-        return RecipeFilter(kwargs).qs.filter(user_id=self.id) 
+        return RecipeFilter(kwargs).qs.filter(user_id=self.id)
 
     def resolve_comment_set(self, info, **kwargs):
-        return CommentFilter(kwargs).qs.filter(user_id=self.id) 
+        return CommentFilter(kwargs).qs.filter(user_id=self.id)
 
     def resolve_favorite_set(self, info, **kwargs):
-        return FavoriteFilter(kwargs).qs.filter(user_id=self.id) 
+        return FavoriteFilter(kwargs).qs.filter(user_id=self.id)
 
 
 class PasswordResetRequestType(DjangoObjectType):
@@ -65,13 +66,13 @@ class Query(graphene.ObjectType):
     me = graphene.Field(UserType)
 
     def resolve_profile(self, info, id):
-        return get_user_model().objects.get(id=id, deleted_at=None)
+        return get_user_model().objects.filter(id=id, deleted_at=None).first()
 
     def resolve_users(self, info):
         return get_user_model().objects.all()
 
     def resolve_user(self, info, id):
-        return get_user_model().objects.get(id=id)
+        return get_user_model().objects.filter(id=id).first()
 
     def resolve_me(self, info):
         user = info.context.user
@@ -107,14 +108,15 @@ class CreatePasswordResetRequest(graphene.Mutation):
         email = graphene.String(required=True)
 
     def mutate(self, info, email):
-        new_password_reset_request = PasswordResetRequest(
-            reset_code = uuid.uuid4(),
-            user=get_user_model().objects.get(email=email),
-        )
+        user = get_user_model().objects.filter(email=email).first()
 
-        new_password_reset_request.save()
+        if user:
+            new_password_reset_request = PasswordResetRequest(
+                reset_code=uuid.uuid4(),
+                user=user
+            )
 
-        return CreatePasswordResetRequest(password_reset_request=new_password_reset_request)
+            new_password_reset_request.save()
 
 
 class Mutation(graphene.ObjectType):
