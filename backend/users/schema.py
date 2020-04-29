@@ -5,6 +5,7 @@ from graphene_django import DjangoObjectType
 from graphql import GraphQLError
 from django_filters import FilterSet
 from backend.password_util import send_password_reset_email
+from datetime import datetime, timedelta
 
 from recipes.models import Recipe, Comment, Favorite, PasswordResetRequest
 
@@ -65,6 +66,7 @@ class Query(graphene.ObjectType):
     user = graphene.Field(UserType, id=graphene.String(required=True))
     profile = graphene.Field(UserType, id=graphene.String(required=True))
     me = graphene.Field(UserType)
+    password_reset_request = graphene.Field(PasswordResetRequestType)
 
     def resolve_profile(self, info, id):
         return get_user_model().objects.filter(id=id, deleted_at=None).first()
@@ -81,6 +83,9 @@ class Query(graphene.ObjectType):
             return None
 
         return user
+
+    def resolve_password_reset_request(self, info, reset_code):
+        return PasswordResetRequest.objects.filter(reset_code=reset_code).first()
 
 
 class CreateUser(graphene.Mutation):
@@ -109,13 +114,16 @@ class CreatePasswordResetRequest(graphene.Mutation):
         email = graphene.String(required=True)
 
     def mutate(self, info, email):
+        RESET_PASSWORD_EXPIRES_IN = {'minutes': 11}
+
         user = get_user_model().objects.filter(email=email).first()
-        reset_code=uuid.uuid4()
+        reset_code = uuid.uuid4()
 
         if user:
             new_password_reset_request = PasswordResetRequest(
                 reset_code=reset_code,
-                user=user
+                user=user,
+                expires_at=datetime.now() + timedelta(**RESET_PASSWORD_EXPIRES_IN),
             )
 
             new_password_reset_request.save()

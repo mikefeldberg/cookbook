@@ -24,6 +24,7 @@ class User(AbstractUser):
 
 class PasswordResetRequest(StandardModel):
     reset_code = models.TextField(blank=False)
+    expires_at = models.DateTimeField(null=True, blank=True)
     user = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE)
 
 
