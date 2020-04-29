@@ -24,12 +24,12 @@ const ResetPassword = ({ match, history }) => {
             variables: { password: data.password, resetCode },
         });
         if (res) {
-            if (res.data.user) {
+            debugger
+            if (res.data.resetPassword.user) {
                 setFormIsSubmitted(true)
             } else {
                 setErrorText('Your password reset link has expired.')
             }
-            
         }
     };
 
