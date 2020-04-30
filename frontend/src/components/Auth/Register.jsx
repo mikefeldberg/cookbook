@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useHistory, Redirect } from 'react-router-dom';
+import { useHistory, Redirect, Link } from 'react-router-dom';
 import { useApolloClient, useMutation } from '@apollo/react-hooks';
 import { useForm } from 'react-hook-form';
 
@@ -67,7 +67,9 @@ const Register = () => {
                                 },
                             })}
                         />
-                        <small className="text-danger">{formState.touched.username && errors.username && errors.username.message}</small>
+                        <small className="text-danger">
+                            {formState.touched.username && errors.username && errors.username.message}
+                        </small>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Email</Form.Label>
@@ -83,7 +85,9 @@ const Register = () => {
                                 },
                             })}
                         />
-                        <small className="text-danger">{formState.touched.email && errors.email && errors.email.message}</small>
+                        <small className="text-danger">
+                            {formState.touched.email && errors.email && errors.email.message}
+                        </small>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Password</Form.Label>
@@ -99,8 +103,15 @@ const Register = () => {
                                 },
                             })}
                         />
-                        <small className="text-danger">{formState.touched.password && errors.password && errors.password.message}</small>
+                        <small className="text-danger">
+                            {formState.touched.password && errors.password && errors.password.message}
+                        </small>
                     </Form.Group>
+                    <Form.Label className="mb-3">
+                        <small>
+                            By clicking Register you agree to our <Link className="link" to="/terms">Terms of Use</Link>.
+                        </small>
+                    </Form.Label>
                     <ButtonGroup className="w-100" aria-label="Basic example">
                         <Button
                             onClick={() => {

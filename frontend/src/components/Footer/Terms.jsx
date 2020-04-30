@@ -4,22 +4,22 @@ const Terms = () => {
     return (
         <div>
             <p>
-                Welcome to Feldberg's Cookbook, a service provided by Under Development LLC ("<strong>we</strong>" "
-                <strong>our</strong>", or "<strong>us</strong>").
+                Welcome to Feldberg's Cookbook, a service provided by Under Development LLC (“<strong>we</strong>”, “
+                <strong>our</strong>”, or “<strong>us</strong>”).
             </p>
             <p>
-                These Terms of Use govern your use of feldbergscookbook.com (the "<strong>Website</strong>") and all
+                These Terms of Use govern your use of feldbergscookbook.com (the “<strong>Website</strong>”) and all
                 related, widgets, tools, features, applications, data, APIs (which may also be subject to separate API
-                Terms of Use) and other services provided by us (the "<strong>Services</strong>").
+                Terms of Use), and other services provided by us (the “<strong>Services</strong>”).
             </p>
             <p>
-                These Terms of Use constitute a legally binding contract (the "<strong>Agreement</strong>"), between you
-                and Under Development LLC in relation to your use of the Website and Services (together, the "
-                <strong>Platform</strong>").
+                These Terms of Use constitute a legally binding contract (the “<strong>Agreement</strong>”), between you
+                and Under Development LLC in relation to your use of the Website and Services (together, the “
+                <strong>Platform</strong>”).
             </p>
             <h5>Acceptance of Terms of Use</h5>
             <p>
-                Please read these Terms of Use (the "<strong>Terms</strong>") very carefully. If you do not agree to any
+                Please read these Terms of Use (the “<strong>Terms</strong>”) very carefully. If you do not agree to any
                 of the provisions set out in those documents, you should not use the Platform. By accessing or using the
                 Platform, registering an account, or by viewing, accessing, uploading, or downloading any information or
                 content from or to the Platform, you represent and warrant that you have read and understood the Terms
@@ -35,7 +35,7 @@ const Terms = () => {
             <p>
                 Feldberg’s Cookbook is an online recipe sharing tool that allows users to browse recipes, comments, and
                 reviews submitted by registered users. Registered users may submit, upload, and post text, photos,
-                pictures, graphics, comments, and other content, data, or information ("<strong>Content</strong>"),
+                pictures, graphics, comments, and other content, data, or information (“<strong>Content</strong>”),
                 which will be stored by us at the direction of such registered users. Feldberg’s Cookbook also enables
                 registered users to interact with one another and to contribute to discussions, and enables any user of
                 the Platform to view Content uploaded and made available by registered users.
@@ -56,8 +56,8 @@ const Terms = () => {
                 Subject to your strict compliance with the Terms at any and all times during your use of the Platform,
                 Under Development LLC grants you a limited, personal, non-exclusive, revocable, non-assignable and
                 non-transferable right and license to use the Platform in order to view Content uploaded and posted to
-                the Website by the user who uploaded or otherwise submitted the relevant Content (the "
-                <strong>Uploader</strong>").
+                the Website by the user who uploaded or otherwise submitted the relevant Content (the “
+                <strong>Uploader</strong>”).
             </p>
             <p>
                 In addition, if you register to use the Platform, and subject to your strict compliance with the
@@ -219,8 +219,8 @@ const Terms = () => {
             <h5>Your Content</h5>
             <p>
                 Any and all text, photos, pictures, graphics, comments, and other content, data, or information that you
-                upload, store, transmit, submit, exchange, or make available to or via the Platform (hereinafter "Your
-                Content") is generated, owned and controlled solely by you, and not by us.
+                upload, store, transmit, submit, exchange, or make available to or via the Platform (hereinafter “Your
+                Content”) is generated, owned, and controlled solely by you, and not by us.
             </p>
             <p>
                 We does not claim any ownership rights in Your Content, and you hereby expressly acknowledge and agree
@@ -243,7 +243,7 @@ const Terms = () => {
                 store Your Content on our servers. By uploading Your Content to the Platform, you also grant us a
                 limited, worldwide, non-exclusive, royalty-free, fully paid up, license to other users of the Platform,
                 and to operators and users of any other websites, apps and/or platforms to which Your Content has been
-                shared or embedded using the Services ("<strong>Linked Services</strong>"), to use, copy, repost,
+                shared or embedded using the Services (“<strong>Linked Services</strong>”), to use, copy, repost,
                 transmit, or otherwise distribute, publicly display, publicly perform, adapt, prepare derivative works
                 of, compile, make available, and otherwise communicate to the public, Your Content utilizing the
                 features of the Platform from time to time.
@@ -252,8 +252,8 @@ const Terms = () => {
             <p>
                 Notwithstanding the foregoing, nothing in these Terms of Use grants any rights to any other user of the
                 Platform with respect to any proprietary name, logo, trademark, or service mark uploaded by you as part
-                of Your Content (for example, your profile picture) ("<strong>Marks</strong>"), other than the right to
-                reproduce, publicly display, make available and otherwise communicate to the public those Marks,
+                of Your Content (for example, your profile picture) (“<strong>Marks</strong>”), other than the right to
+                reproduce, publicly display, make available, and otherwise communicate to the public those Marks,
                 automatically and without alteration, as part of the act of reposting Content with which you have
                 associated those Marks.
             </p>
@@ -344,7 +344,7 @@ const Terms = () => {
             <p>
                 You hereby acknowledge and agree that Under Development LLC cannot and does not review the content
                 created or uploaded by its users, and neither Under Development LLC nor its subsidiaries, affiliates,
-                successors, assigns, employees, agents, directors, officers and shareholders has any obligation, and
+                successors, assigns, employees, agents, directors, officers, or shareholders has any obligation, and
                 may, but does not undertake or assume any duty to, monitor the Platform for content that is
                 inappropriate, that does or might infringe any third party rights, or has otherwise been uploaded in
                 breach of these Terms of Use or applicable law.
@@ -352,7 +352,7 @@ const Terms = () => {
 
             <p>
                 Under Development LLC and its subsidiaries, affiliates, successors, assigns, employees, agents,
-                directors, officers and shareholders hereby exclude, to the fullest extent permitted by law, any and all
+                directors, officers, and shareholders hereby exclude, to the fullest extent permitted by law, any and all
                 liability which may arise from any content uploaded to the Platform by users, including, but not limited
                 to, any claims for infringement of intellectual property rights, rights of privacy or publicity rights,
                 any claims relating to publication of abusive, defamatory, pornographic, or obscene material, or any
@@ -367,7 +367,7 @@ const Terms = () => {
             <p>
                 If you discover any content on the Platform that you believe infringes your copyright, please report
                 this to us at <a href="mailto:feldbergscookbook@gmail.com">feldbergscookbook@gmail.com</a>, and include
-                the words "Copyright Claim" in the subject line. Please make sure that you include the following
+                the words “Copyright Claim” in the subject line. Please make sure that you include the following
                 information:
             </p>
 
@@ -421,7 +421,7 @@ const Terms = () => {
             <p>
                 The Platform may provide you with access to third party websites, databases, networks, servers,
                 information, software, programs, systems, directories, applications, products, or services, including
-                without limitation, linked services (hereinafter "<strong>External Services</strong>").
+                without limitation, linked services (hereinafter “<strong>External Services</strong>”).
             </p>
 
             <p>
@@ -479,8 +479,8 @@ const Terms = () => {
 
             <p>
                 THE PLATFORM, INCLUDING, WITHOUT LIMITATION, THE WEBSITE, THE APPS AND ALL CONTENT AND SERVICES ACCESSED
-                THROUGH OR VIA THE WEBSITE, THE SERVICES OR OTHERWISE, ARE PROVIDED "AS IS", "AS AVAILABLE", AND "WITH
-                ALL FAULTS".
+                THROUGH OR VIA THE WEBSITE, THE SERVICES OR OTHERWISE, ARE PROVIDED “AS IS”, “AS AVAILABLE”, AND “WITH
+                ALL FAULTS”.
             </p>
 
             <p>
@@ -597,8 +597,8 @@ const Terms = () => {
             <h5>Indemnification</h5>
 
             <p>
-                You hereby agree to indemnify, defend and hold harmless Under Development LLC, its successors, assigns,
-                affiliates, agents, directors, officers, employees and shareholders from and against any and all claims,
+                You hereby agree to indemnify, defend, and hold harmless Under Development LLC, its successors, assigns,
+                affiliates, agents, directors, officers, employees, and shareholders from and against any and all claims,
                 obligations, damages, losses, expenses, and costs, including reasonable attorneys' fees, resulting from:
             </p>
 
@@ -653,7 +653,7 @@ const Terms = () => {
                 modifications to this Agreement must be made in writing.
             </p>
 
-            <p>Last Updated: April 20, 2020</p>
+            <p>Last Updated: April 29, 2020</p>
         </div>
     );
 };
