@@ -12,6 +12,12 @@ code {
     monospace;
 }
 
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
 .clickable {
   cursor:pointer;
 }
@@ -95,4 +101,8 @@ h1, h2, h3, h4 {
 
 .nav-tabs > a {
   color: rgb(160, 160, 160);
+}
+
+.content {
+  flex: 1 0 auto;
 }

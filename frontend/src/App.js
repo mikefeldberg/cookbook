@@ -9,6 +9,8 @@ import NavBar from './components/Nav/NavBar';
 import Register from './components/Auth/Register';
 import Login from './components/Auth/Login';
 import Logout from './components/Auth/Logout';
+import ForgotPassword from './components/Auth/ForgotPassword';
+import ResetPassword from './components/Auth/ResetPassword';
 import RecipesList from './components/Recipes/RecipesList';
 import RecipeDetails from './components/Recipes/RecipeDetails';
 import CreateRecipe from './components/Recipes/RecipeForm/CreateRecipe';
@@ -31,12 +33,14 @@ const App = () => {
             <Router>
                 <AuthContext.Provider value={currentUser}>
                     <NavBar />
-                    <Container>
+                    <Container className="content">
                         <Switch>
                             <Route exact path="/" component={RecipesList} />
                             <Route exact path="/register" component={Register} />
                             <Route exact path="/login" component={Login} />
                             <Route exact path="/logout" component={Logout} />
+                            <Route exact path="/forgot" component={ForgotPassword} />
+                            <Route exact path="/reset_password/:reset_code" component={ResetPassword} />
                             <Route exact path="/recipes/new" component={CreateRecipe} />
                             <Route exact path="/recipes/:id" component={RecipeDetails} />
                             <Route exact path="/recipes/:id/edit" component={UpdateRecipe} />
