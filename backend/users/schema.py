@@ -141,8 +141,8 @@ class ResetPassword(graphene.Mutation):
         reset_code = graphene.String(required=True)
 
     def mutate(self, info, password, reset_code):
-        password_reset_request = PasswordResetRequest.objects.filter(
-            reset_code=reset_code).first()
+        password_reset_request = PasswordResetRequest.objects.filter(reset_code=reset_code).first()
+
         if password_reset_request and password_reset_request.expires_at > timezone.now():
             user = password_reset_request.user
             user.set_password(password)
