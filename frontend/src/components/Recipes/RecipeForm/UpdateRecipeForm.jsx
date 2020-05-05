@@ -191,7 +191,7 @@ const UpdateRecipeForm = ({ recipe }) => {
     };
 
     const getPresignedPostData = async () => {
-        const response = await fetch(`http://localhost:8000/upload/${fileExtension}`);
+        const response = await fetch(`/api/upload/${fileExtension}`);
         const json = await response.json();
         return json;
     };
@@ -231,7 +231,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                     value={title}
                     type="text"
                     name="title"
-                    onChange={e => setTitle(e.target.value)} 
+                    onChange={e => setTitle(e.target.value)}
                     required
                 />
             </Form.Group>
@@ -396,14 +396,14 @@ const UpdateRecipeForm = ({ recipe }) => {
                         <Container>
                         <Row>
                             <Image src={existingPhotoUrl} rounded thumbnail style={{maxWidth: `100px`}}/>
-                            {deleteExistingPhoto && 
+                            {deleteExistingPhoto &&
                                 <Row>
                                     'This image will be deleted after you save changes.'
                                     {/* <Button variant="success" onClick={() => setDeleteExistingPhoto(false)}>Cancel Delete</Button> */}
                                     <Button variant="success" onClick={() => handleCancel()}>Cancel Delete</Button>
                                 </Row>
                             }
-                            {!deleteExistingPhoto && 
+                            {!deleteExistingPhoto &&
                                 <Button variant="danger" onClick={() => setDeleteExistingPhoto(true)}>x</Button>
                             }
                         </Row>
