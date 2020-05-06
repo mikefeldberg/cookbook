@@ -7,7 +7,7 @@ import App from './App';
 import './index.css';
 
 const client = new ApolloClient({
-    uri: 'http://api/graphql/',
+    uri: '/api/graphql/',
     fetchOptions: {
         credentials: "include"
     },

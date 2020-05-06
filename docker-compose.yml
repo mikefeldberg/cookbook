@@ -14,15 +14,20 @@ services:
         depends_on:
             - postgres
         restart: on-failure
+        command: python manage.py runserver 0.0.0.0:8000
         build:
             dockerfile: ./Dockerfile.dev
             context: ./backend
+        volumes:
+            - .:/code
         environment:
             - PGUSER=postgres
             - PGHOST=postgres
             - PGDATABASE=postgres
             - PGPASSWORD=postgres_password
             - PGPORT=5432
+        ports:
+            - '8000:8000'
     frontend:
         # restart: on-failure
         build:
