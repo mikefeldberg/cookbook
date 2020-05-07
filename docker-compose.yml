@@ -19,7 +19,7 @@ services:
             dockerfile: ./Dockerfile.dev
             context: ./backend
         volumes:
-            - .:/code
+            - ./backend:/usr/src/app
         environment:
             - PGUSER=postgres
             - PGHOST=postgres
