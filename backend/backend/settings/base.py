@@ -6,12 +6,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.getenv('DEBUG', default=0))
 
-# ALLOWED_HOSTS = ['api']
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS').split(' ')
 
-ALLOWED_HOSTS = ['api', 'localhost']
+
 
 EMAIL_USE_TLS = True
 EMAIL_HOST=os.getenv('EMAIL_HOST')
