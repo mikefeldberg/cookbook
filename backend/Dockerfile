@@ -1,9 +1,12 @@
 FROM python:3
 
-WORKDIR /usr/app/
+WORKDIR /usr/src/app
 
-COPY . .
-RUN pip install pipenv
-RUN pipenv install --system --deploy --ignore-pipfile
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-CMD ["python", "manage.py", "runserver"]
+RUN pip install --upgrade pip
+COPY Pipfile Pipfile.lock /usr/src/app/
+RUN pip install pipenv && pipenv install --system
+
+COPY . /usr/src/app/
