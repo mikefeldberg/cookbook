@@ -11,4 +11,4 @@ RUN pip install pipenv && pipenv install --system
 COPY . /usr/src/app/
 
 ENTRYPOINT ["gunicorn"]
-CMD ["backend.wsgi:application", "--bind 0.0.0.0:8000"]
+CMD ["backend.wsgi:application", "--bind", "0.0.0.0:8000"]
