@@ -181,7 +181,7 @@ const CreateRecipe = ({ history }) => {
     };
 
     const getPresignedPostData = async () => {
-        const response = await fetch(`http://localhost:8000/upload/${fileExtension}`);
+        const response = await fetch(`/api/upload/${fileExtension}`);
         const json = await response.json();
         return json;
     };

@@ -18,6 +18,8 @@ ipython = "*"
 colour-runner = "*"
 boto3 = "*"
 django-filter = "*"
+ulid-py = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.7"

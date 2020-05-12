@@ -1,0 +1,39 @@
+version: '3'
+services:
+    nginx:
+        restart: always
+        depends_on:
+            - api
+            - frontend
+        build:
+            dockerfile: Dockerfile
+            context: ./nginx
+        ports:
+            - '3050:80'
+    api:
+        depends_on:
+            - postgres
+        restart: on-failure
+        command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000
+        build:
+            dockerfile: ./Dockerfile
+            context: ./backend
+        volumes:
+            - ./backend:/usr/src/app
+        env_file:
+            - ./backend/.env
+    frontend:
+        # restart: on-failure
+        build:
+            dockerfile: ./Dockerfile
+            context: ./frontend
+        volumes:
+            - /app/node_modules
+            - ./frontend:/app
+        stdin_open: true
+    postgres:
+        image: postgres:latest
+        environment:
+            - POSTGRES_DB=cookbook
+            - POSTGRES_PASSWORD=postgres_password
+        # restart: on-failure

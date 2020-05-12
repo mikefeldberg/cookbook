@@ -4,18 +4,17 @@ load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', default=False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(' ')
 
 EMAIL_USE_TLS = True
-EMAIL_HOST=os.getenv('EMAIL_HOST')
-EMAIL_HOST_USER=os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD=os.getenv('EMAIL_HOST_PASSWORD')
-EMAIL_PORT=os.getenv('EMAIL_PORT')
+EMAIL_HOST=os.environ.get('EMAIL_HOST')
+EMAIL_HOST_USER=os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_PORT=os.environ.get('EMAIL_PORT')
 
 
 # Application definition
