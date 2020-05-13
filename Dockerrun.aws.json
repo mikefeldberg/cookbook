@@ -5,8 +5,13 @@
             "name": "client",
             "image": "mikefeldberg/cookbook-client",
             "hostname": "client",
-            "essential": false,
-            "memory": 128
+            "essential": false
+        },
+        {
+            "name": "server",
+            "image": "mikefeldberg/cookbook-server",
+            "hostname": "api",
+            "essential": false
         },
         {
             "name": "nginx",
@@ -18,7 +23,7 @@
                     "containerPort": 80
                 }
             ],
-            "memory": 128
+            "links": ["client", "server"]
         }
     ]
 }
