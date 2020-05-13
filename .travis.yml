@@ -12,13 +12,11 @@ script:
 after_success:
     - docker build -t mikefeldberg/cookbook-client ./frontend
     - docker build -t mikefeldberg/cookbook-nginx ./nginx
-    - docker build -t mikefeldberg/cookbook-server ./backend
 
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
     - docker push mikefeldberg/cookbook-client
     - docker push mikefeldberg/cookbook-nginx
-    - docker push mikefeldberg/cookbook-server
 
 deploy:
     provider: elasticbeanstalk
