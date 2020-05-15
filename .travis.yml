@@ -12,11 +12,13 @@ script:
 after_success:
     - docker build -t mikefeldberg/cookbook-client ./frontend
     - docker build -t mikefeldberg/cookbook-nginx ./nginx
+    - docker build -t mikefeldberg/cookbook-server ./backend
 
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
     - docker push mikefeldberg/cookbook-client
     - docker push mikefeldberg/cookbook-nginx
+    - docker push mikefeldberg/cookbook-server
 
 deploy:
     provider: elasticbeanstalk
@@ -29,15 +31,3 @@ deploy:
         branch: deploy
     access_key_id: $AWS_ACCESS_KEY
     secret_access_key: $AWS_SECRET_KEY
-
-# deploy:
-#     provider: elasticbeanstalk
-#     region: "us-west-1"
-#     app: "feldbergs-cookbook"
-#     env: "FeldbergsCookbook-env-1"
-#     bucket_name: "elasticbeanstalk-us-west-1-379351303014"
-#     bucket_path: "feldbergs-cookbook"
-#     on:
-#         branch: deploy
-#     access_key_id: $AWS_ACCESS_KEY
-#     secret_access_key: $AWS_SECRET_KEY

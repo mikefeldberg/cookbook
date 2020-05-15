@@ -14,7 +14,6 @@ services:
         depends_on:
             - postgres
         restart: on-failure
-        command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000
         build:
             dockerfile: ./Dockerfile
             context: ./backend
@@ -23,7 +22,6 @@ services:
         env_file:
             - ./backend/.env
     frontend:
-        # restart: on-failure
         build:
             dockerfile: ./Dockerfile
             context: ./frontend
@@ -36,4 +34,3 @@ services:
         environment:
             - POSTGRES_DB=cookbook
             - POSTGRES_PASSWORD=postgres_password
-        # restart: on-failure

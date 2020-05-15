@@ -1,10 +1,17 @@
 {
-    "AWSEBDockerrunVersion": 2,
+    "AWSEBDockerrunVersion": "2",
     "containerDefinitions": [
         {
             "name": "client",
             "image": "mikefeldberg/cookbook-client",
             "hostname": "client",
+            "essential": false,
+            "memory": 128
+        },
+        {
+            "name": "server",
+            "image": "mikefeldberg/cookbook-server",
+            "hostname": "api",
             "essential": false,
             "memory": 128
         },
