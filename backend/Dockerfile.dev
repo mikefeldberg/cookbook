@@ -4,23 +4,10 @@ WORKDIR /usr/src/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
-COPY . .
+RUN pip install --upgrade pip
+COPY Pipfile Pipfile.lock /usr/src/app/
+RUN pip install pipenv && pipenv install --system
+COPY . /usr/src/app/
 
 ENTRYPOINT ["python"]
 CMD ["manage.py", "runserver", "0.0.0.0:8000"]
-
-# FROM python:3.7-slim-buster
-# WORKDIR /usr/src/app
-
-# ENV PYTHONDONTWRITEBYTECODE 1
-# ENV PYTHONUNBUFFERED 1
-
-# RUN pip install --upgrade pip
-# COPY Pipfile Pipfile.lock /usr/src/app/
-# RUN pip install pipenv && pipenv install --system
-# COPY . /usr/src/app/
-
-# ENTRYPOINT ["python"]
-# CMD ["manage.py", "runserver", "0.0.0.0:8000"]
