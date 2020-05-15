@@ -23,10 +23,10 @@ after_success:
 deploy:
     provider: elasticbeanstalk
     region: "us-west-1"
-    app: "cookbook-vpc-test"
-    env: "CookbookVpcTest-env"
+    app: "feldbergs-cookbook"
+    env: "FeldbergsCookbook-env"
     bucket_name: "elasticbeanstalk-us-west-1-379351303014"
-    bucket_path: "cookbook-vpc-test"
+    bucket_path: "feldbergs-cookbook"
     on:
         branch: deploy
     access_key_id: $AWS_ACCESS_KEY
