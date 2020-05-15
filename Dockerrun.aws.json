@@ -2,15 +2,15 @@
     "AWSEBDockerrunVersion": "2",
     "containerDefinitions": [
         {
-            "name": "client",
-            "image": "mikefeldberg/cookbook-client",
-            "hostname": "client",
+            "name": "frontend",
+            "image": "mikefeldberg/cookbook-frontend",
+            "hostname": "frontend",
             "essential": false,
             "memory": 128
         },
         {
-            "name": "server",
-            "image": "mikefeldberg/cookbook-server",
+            "name": "backend",
+            "image": "mikefeldberg/cookbook-backend",
             "hostname": "api",
             "essential": false,
             "memory": 128
@@ -25,7 +25,7 @@
                     "containerPort": 80
                 }
             ],
-            "links": ["client", "server"],
+            "links": ["frontend", "backend"],
             "memory": 128
         }
     ]

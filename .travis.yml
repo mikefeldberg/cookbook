@@ -10,23 +10,23 @@ script:
     - docker run -e CI=true mikefeldberg/cookbook npm test
 
 after_success:
-    - docker build -t mikefeldberg/cookbook-client ./frontend
+    - docker build -t mikefeldberg/cookbook-frontend ./frontend
     - docker build -t mikefeldberg/cookbook-nginx ./nginx
-    - docker build -t mikefeldberg/cookbook-server ./backend
+    - docker build -t mikefeldberg/cookbook-backend ./backend
 
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
-    - docker push mikefeldberg/cookbook-client
+    - docker push mikefeldberg/cookbook-frontend
     - docker push mikefeldberg/cookbook-nginx
-    - docker push mikefeldberg/cookbook-server
+    - docker push mikefeldberg/cookbook-backend
 
 deploy:
     provider: elasticbeanstalk
-    region: "us-west-1"
-    app: "feldbergs-cookbook"
-    env: "FeldbergsCookbook-env"
-    bucket_name: "elasticbeanstalk-us-west-1-379351303014"
-    bucket_path: "feldbergs-cookbook"
+    region: 'us-west-1'
+    app: 'feldbergs-cookbook'
+    env: 'FeldbergsCookbook-env'
+    bucket_name: 'elasticbeanstalk-us-west-1-379351303014'
+    bucket_path: 'feldbergs-cookbook'
     on:
         branch: deploy
     access_key_id: $AWS_ACCESS_KEY
