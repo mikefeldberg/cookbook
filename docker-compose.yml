@@ -17,11 +17,11 @@ services:
             dockerfile: ./Dockerfile.dev
             context: ./backend
         environment:
-            - PGUSER=postgres
             - PGHOST=postgres
-            - PGDATABASE=cookbook
-            - PGPASSWORD=postgres_password
             - PGPORT=5432
+            - PGDATABASE=cookbook
+            - PGUSER=postgres
+            - PGPASSWORD=postgres_password
         ports:
             - '8000:8000'
         volumes:
