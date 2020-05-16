@@ -8,7 +8,7 @@ SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 DEBUG = os.environ['DJANGO_DEBUG']
 
-ALLOWED_HOSTS = ['http://feldbergscookbook-env.eba-x3tipmgv.us-west-1.elasticbeanstalk.com/']
+ALLOWED_HOSTS = ['http://feldbergscookbook-env.eba-x3tipmgv.us-west-1.elasticbeanstalk.com/api']
 
 EMAIL_USE_TLS = True
 EMAIL_HOST=os.environ.get('EMAIL_HOST')
