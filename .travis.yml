@@ -28,6 +28,6 @@ deploy:
     bucket_name: 'elasticbeanstalk-us-west-1-379351303014'
     bucket_path: 'feldbergs-cookbook'
     on:
-        branch: deploy
+        branch: master
     access_key_id: $AWS_ACCESS_KEY
     secret_access_key: $AWS_SECRET_KEY
