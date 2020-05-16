@@ -18,6 +18,7 @@
         {
             "name": "nginx",
             "image": "mikefeldberg/cookbook-nginx",
+            "hostname": "nginx",
             "essential": true,
             "portMappings": [
                 {
