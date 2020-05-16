@@ -4,11 +4,11 @@ load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
-DEBUG = os.environ.get('DEBUG', default=False)
+DEBUG = os.environ['DJANGO_DEBUG']
 
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(' ')
+ALLOWED_HOSTS = ['api']
 
 EMAIL_USE_TLS = True
 EMAIL_HOST=os.environ.get('EMAIL_HOST')
@@ -85,12 +85,25 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cookbook',
+
+if 'PGHOST' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'HOST': os.environ['PGHOST'],
+            'PORT': os.environ['PGPORT'],
+            'NAME': os.environ['PGDATABASE'],
+            'USER': os.environ['PGUSER'],
+            'PASSWORD': os.environ['PGPASSWORD'],
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+        }
+    }
+
 
 # Custom user model with extra fields
 AUTH_USER_MODEL = 'recipes.User'

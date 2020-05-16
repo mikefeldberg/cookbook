@@ -2,34 +2,32 @@ version: '3'
 services:
     nginx:
         restart: always
-        depends_on:
-            - api
-            - frontend
         build:
             dockerfile: Dockerfile.dev
             context: ./nginx
+        depends_on:
+            - api
+            - frontend
         ports:
             - '3050:80'
     api:
         depends_on:
             - postgres
-        restart: on-failure
-        command: python manage.py runserver 0.0.0.0:8000
         build:
             dockerfile: ./Dockerfile.dev
             context: ./backend
-        volumes:
-            - ./backend:/usr/src/app
         environment:
-            - PGUSER=postgres
             - PGHOST=postgres
-            - PGDATABASE=postgres
-            - PGPASSWORD=postgres_password
             - PGPORT=5432
+            - PGDATABASE=cookbook
+            - PGUSER=postgres
+            - PGPASSWORD=postgres_password
         ports:
             - '8000:8000'
+        volumes:
+            - ./backend:/usr/src/app
+        command: manage.py runserver 0.0.0.0:8000
     frontend:
-        # restart: on-failure
         build:
             dockerfile: ./Dockerfile.dev
             context: ./frontend
@@ -42,4 +40,7 @@ services:
         environment:
             - POSTGRES_DB=cookbook
             - POSTGRES_PASSWORD=postgres_password
-        # restart: on-failure
+        # volumes:
+        #     - ./postgres-data:/var/lib/postgresql/data
+        # ports:
+        #     - "5432:5432"
