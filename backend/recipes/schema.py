@@ -109,7 +109,7 @@ class RecipeType(DjangoObjectType):
         return Comment.objects.filter(recipe_id=self.id, deleted_at=None).order_by('-created_at')
 
     def resolve_photos(self, info):
-        photos = Photo.objects.filter(recipe_id=self.id, deleted_at=None).order_by('-created_at')
+        photos = RecipePhoto.objects.filter(recipe_id=self.id, deleted_at=None).order_by('-created_at')
         for p in photos:
             if BUCKET_NAME in p.url:
                 p.url = create_presigned_url(p.url.split('com/')[1])
