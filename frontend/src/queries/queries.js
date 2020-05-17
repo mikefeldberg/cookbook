@@ -28,7 +28,7 @@ export const PROFILE_QUERY = gql`
             recipeSet {
                 id
                 title
-                recipePhotos {
+                photos {
                     id
                     url
                 }
@@ -45,7 +45,7 @@ export const PROFILE_QUERY = gql`
                 recipe {
                     id
                     title
-                    recipePhotos {
+                    photos {
                         id
                         url
                     }
@@ -61,7 +61,7 @@ export const PROFILE_QUERY = gql`
                 recipe {
                     id
                     title
-                    recipePhotos {
+                    photos {
                         id
                         url
                     }
@@ -112,7 +112,7 @@ export const GET_RECIPES_QUERY = gql`
             rating
             ratingCount
             favoriteCount
-            recipePhotos {
+            photos {
                 id
                 url
             }
@@ -151,7 +151,7 @@ export const SEARCH_RECIPES_QUERY = gql`
             rating
             ratingCount
             favoriteCount
-            recipePhotos {
+            photos {
                 id
                 url
             }
@@ -195,7 +195,7 @@ export const GET_RECIPE_QUERY = gql`
                 order
                 content
             }
-            recipePhotos {
+            photos {
                 id
                 url
             }
@@ -288,7 +288,7 @@ export const CREATE_RECIPE_MUTATION = gql`
                 rating
                 ratingCount
                 favoriteCount
-                recipePhotos {
+                photos {
                     id
                     url
                 }
