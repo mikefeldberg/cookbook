@@ -64,6 +64,20 @@ class PasswordResetRequestType(DjangoObjectType):
         model = PasswordResetRequest
 
 
+class UserPhotoType(DjangoObjectType):
+    url = graphene.String()
+    user_id = graphene.String()
+
+    class Meta:
+        model = UserPhoto
+
+
+class UserPhotoInput(graphene.InputObjectType):
+    id = graphene.String(required=False)
+    url = graphene.String()
+    user_id = graphene.String()
+
+
 class Query(graphene.ObjectType):
     users = graphene.List(UserType)
     user = graphene.Field(UserType, id=graphene.String(required=True))
