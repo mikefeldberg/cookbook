@@ -12,19 +12,14 @@ services:
             - '3050:80'
     api:
         restart: on-failure
+        command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000
         build:
             dockerfile: ./Dockerfile
             context: ./backend
         volumes:
             - ./backend:/usr/src/app
-        # env_file:
-        #     - ./backend/.env
-        environment:
-            - PGHOST=postgres
-            - PGPORT=5432
-            - PGDATABASE=cookbook
-            - PGUSER=postgres
-            - PGPASSWORD=postgres_password
+        env_file:
+            - ./backend/.env
     frontend:
         build:
             dockerfile: ./Dockerfile
@@ -33,12 +28,3 @@ services:
             - /app/node_modules
             - ./frontend:/app
         stdin_open: true
-    postgres:
-        image: postgres:latest
-        environment:
-            - POSTGRES_DB=cookbook
-            - POSTGRES_PASSWORD=postgres_password
-        # volumes:
-        #     - ./postgres-data:/var/lib/postgresql/data
-        # ports:
-        #     - "5432:5432"

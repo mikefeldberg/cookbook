@@ -25,7 +25,7 @@ deploy:
     region: 'us-west-1'
     app: $AWS_DEV_APP
     env: $AWS_DEV_ENV
-    bucket_name: $AWS_BUCKET_PATH
+    bucket_name: $AWS_BUCKET_NAME
     bucket_path: $AWS_DEV_APP
     on:
       branch: develop
@@ -36,7 +36,7 @@ deploy:
     region: 'us-west-1'
     app: $AWS_PROD_APP
     env: $AWS_PROD_ENV
-    bucket_name: $AWS_BUCKET_PATH
+    bucket_name: $AWS_BUCKET_NAME
     bucket_path: $AWS_PROD_APP
     on:
       branch: master
