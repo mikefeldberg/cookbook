@@ -43,6 +43,16 @@ class FavoriteFilter(FilterSet):
         return super().qs.filter(deleted_at=None)
 
 
+class PhotoFilter(FilterSet):
+    class Meta:
+        model = UserPhoto
+        fields = ['created_at', 'deleted_at']
+
+    @property
+    def qs(self):
+        return super().qs.filter(deleted_at=None)
+
+
 class UserType(DjangoObjectType):
     class Meta:
         model = get_user_model()
@@ -55,6 +65,9 @@ class UserType(DjangoObjectType):
 
     def resolve_favorite_set(self, info, **kwargs):
         return FavoriteFilter(kwargs).qs.filter(user_id=self.id)
+
+    def resolve_photo_set(self, info, **kwargs):
+        return PhotoFilter(kwargs).qs.filter(user_id=self.id)
 
 
 class PasswordResetRequestType(DjangoObjectType):

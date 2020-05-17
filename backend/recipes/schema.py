@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.utils import timezone
 from backend.s3 import create_presigned_url
 from .models import Recipe, Ingredient, Instruction, Comment, Favorite, RecipePhoto
-from users.schema import UserType
+
 
 BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET')
 

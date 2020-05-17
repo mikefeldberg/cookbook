@@ -76,6 +76,10 @@ export const PROFILE_QUERY = gql`
                     }
                 }
             }
+            photos {
+                id
+                url
+            }
         }
     }
 `

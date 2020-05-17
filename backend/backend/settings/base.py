@@ -8,7 +8,7 @@ SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 DEBUG = os.environ['DJANGO_DEBUG']
 
-ALLOWED_HOSTS = ['api']
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(' ') or ['api']
 
 EMAIL_USE_TLS = True
 EMAIL_HOST=os.environ.get('EMAIL_HOST')
