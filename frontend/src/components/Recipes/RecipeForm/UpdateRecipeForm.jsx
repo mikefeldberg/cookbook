@@ -11,7 +11,7 @@ import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
 
-import { UPDATE_RECIPE_MUTATION, CREATE_PHOTO_MUTATION, DELETE_PHOTO_MUTATION } from '../../../queries/queries';
+import { UPDATE_RECIPE_MUTATION, CREATE_RECIPE_PHOTO_MUTATION, DELETE_RECIPE_PHOTO_MUTATION } from '../../../queries/queries';
 import IngredientInput from './IngredientInput';
 import InstructionInput from './InstructionInput';
 
@@ -20,8 +20,8 @@ const MAX_FILE_SIZE = 2097152;
 const UpdateRecipeForm = ({ recipe }) => {
     const history = useHistory();
     const [updateRecipe] = useMutation(UPDATE_RECIPE_MUTATION);
-    const [createPhoto] = useMutation(CREATE_PHOTO_MUTATION);
-    const [deletePhoto] = useMutation(DELETE_PHOTO_MUTATION);
+    const [createPhoto] = useMutation(CREATE_RECIPE_PHOTO_MUTATION);
+    const [deletePhoto] = useMutation(DELETE_RECIPE_PHOTO_MUTATION);
 
     const blankIngredient = { quantity: '', name: '', preparation: '' };
     const blankInstruction = { order: 0, content: '' };
@@ -42,7 +42,7 @@ const UpdateRecipeForm = ({ recipe }) => {
     const [prepTime, setPrepTime] = useState(recipe.prepTime)
     const [cookTime, setCookTime] = useState(recipe.cookTime)
     const [waitTime, setWaitTime] = useState(recipe.waitTime)
-    const [photoId] = useState(recipe.photos.length > 0 ? recipe.photos[0].id : null)
+    const [recipePhotoId] = useState(recipe.photos.length > 0 ? recipe.photos[0].id : null)
     const [deleteExistingPhoto, setDeleteExistingPhoto] = useState(false)
     const [recipeId] = useState(recipe.id)
 
@@ -175,18 +175,18 @@ const UpdateRecipeForm = ({ recipe }) => {
     };
 
     const handleDeletePhoto = async deletePhoto => {
-        await deletePhoto({variables: {photoId}})
+        await deletePhoto({variables: {recipePhotoId}})
     }
 
     const handleUpload = async (recipeId, createPhoto) => {
         const presignedPostData = await getPresignedPostData();
         uploadFileToS3(presignedPostData, file.newFile);
         const url = presignedPostData.url + presignedPostData.fields.key;
-        const photo = {
+        const recipe_photo = {
             recipeId,
             url
         }
-        await createPhoto({ variables: { photo } });
+        await createPhoto({ variables: { recipe_photo } });
         setTimeout(() => {history.push(`/recipes/${recipeId}`)}, 2000);
     };
 
@@ -215,11 +215,11 @@ const UpdateRecipeForm = ({ recipe }) => {
     };
 
     const handleCreateLinkedPhoto = async (recipeId, createPhoto) => {
-        const photo = {
+        const recipe_photo = {
             recipeId,
             url: newPhotoUrl,
         };
-        await createPhoto({ variables: { photo } });
+        await createPhoto({ variables: { recipe_photo } });
         history.push(`/recipes/${recipeId}`);
     };
 
