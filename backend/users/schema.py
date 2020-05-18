@@ -132,7 +132,7 @@ class CreateUser(graphene.Mutation):
     def mutate(self, info, username, password, email):
         user = get_user_model()(
             username=username,
-            email=email,
+            email=email.lower(),
         )
         user.set_password(password)
         user.save()
@@ -191,6 +191,35 @@ class ResetPassword(graphene.Mutation):
         return False
 
 
+class ChangePassword(graphene.Mutation):
+    user = graphene.Field(UserType)
+
+    class Arguments:
+        password = graphene.String(required=True)
+
+    def mutate(self, info, password):
+        user = info.context.user
+        user.set_password(password)
+
+        user.save()
+
+        return ChangePassword(user=user)
+
+
+class ChangeUsername(graphene.Mutation):
+    user = graphene.Field(UserType)
+
+    class Arguments:
+        username = graphene.String(required=True)
+
+    def mutate(self, info, username):
+        user = info.context.user
+        user.username = username
+        user.save()
+
+        return ChangeUsername(user=user)
+
+
 class CreateUserPhoto(graphene.Mutation):
     user_photo = graphene.Field(UserPhotoType)
 
@@ -229,5 +258,7 @@ class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
     create_password_reset_request = CreatePasswordResetRequest.Field()
     reset_password = ResetPassword.Field()
+    change_password = ChangePassword.Field()
+    change_username = ChangeUsername.Field()
     create_user_photo = CreateUserPhoto.Field()
     delete_user_photo = DeleteUserPhoto.Field()

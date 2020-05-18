@@ -22,9 +22,18 @@ const Register = () => {
 
     const onSubmit = async (data) => {
         try {
-            await createUser({ variables: { username: data.username, email: data.email, password: data.password } });
+            await createUser({
+                variables: {
+                    username: data.username,
+                    email: data.email.toLowerCase(),
+                    password: data.password,
+                },
+            });
             const { data: responseData, error } = await tokenAuth({
-                variables: { username: data.username, password: data.password },
+                variables: {
+                    username: data.email.toLowerCase(),
+                    password: data.password
+                },
             });
             if (error) {
                 setErrorText(error);
@@ -109,7 +118,11 @@ const Register = () => {
                     </Form.Group>
                     <Form.Label className="mb-3">
                         <small>
-                            By clicking Register you agree to our <Link className="link" to="/terms">Terms of Use</Link>.
+                            By clicking Register you agree to our{' '}
+                            <Link className="link" to="/terms">
+                                Terms of Use
+                            </Link>
+                            .
                         </small>
                     </Form.Label>
                     <ButtonGroup className="w-100" aria-label="Basic example">
