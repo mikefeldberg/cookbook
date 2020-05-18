@@ -20,7 +20,7 @@ const MAX_FILE_SIZE = 2097152;
 const UpdateRecipeForm = ({ recipe }) => {
     const history = useHistory();
     const [updateRecipe] = useMutation(UPDATE_RECIPE_MUTATION);
-    const [createPhoto] = useMutation(CREATE_RECIPE_PHOTO_MUTATION);
+    const [createRecipePhoto] = useMutation(CREATE_RECIPE_PHOTO_MUTATION);
     const [deletePhoto] = useMutation(DELETE_RECIPE_PHOTO_MUTATION);
 
     const blankIngredient = { quantity: '', name: '', preparation: '' };
@@ -166,9 +166,9 @@ const UpdateRecipeForm = ({ recipe }) => {
         await updateRecipe({ variables: { recipe: updatedRecipe } });
 
         if (file && photoSource === 'upload') {
-            handleUpload(recipeId, createPhoto);
+            handleUpload(recipeId, createRecipePhoto);
         } else if (newPhotoUrl && photoSource === 'link') {
-            handleCreateLinkedPhoto(recipeId, createPhoto);
+            handleCreateLinkedPhoto(recipeId, createRecipePhoto);
         } else {
             history.push(`/recipes/${recipeId}`);
         }
@@ -178,15 +178,15 @@ const UpdateRecipeForm = ({ recipe }) => {
         await deletePhoto({variables: {recipePhotoId}})
     }
 
-    const handleUpload = async (recipeId, createPhoto) => {
+    const handleUpload = async (recipeId, createRecipePhoto) => {
         const presignedPostData = await getPresignedPostData();
         uploadFileToS3(presignedPostData, file.newFile);
         const url = presignedPostData.url + presignedPostData.fields.key;
-        const recipe_photo = {
+        const recipePhoto = {
             recipeId,
             url
         }
-        await createPhoto({ variables: { recipe_photo } });
+        await createRecipePhoto({ variables: { recipePhoto } });
         setTimeout(() => {history.push(`/recipes/${recipeId}`)}, 2000);
     };
 
@@ -214,12 +214,12 @@ const UpdateRecipeForm = ({ recipe }) => {
         });
     };
 
-    const handleCreateLinkedPhoto = async (recipeId, createPhoto) => {
-        const recipe_photo = {
+    const handleCreateLinkedPhoto = async (recipeId, createRecipePhoto) => {
+        const recipePhoto = {
             recipeId,
             url: newPhotoUrl,
         };
-        await createPhoto({ variables: { recipe_photo } });
+        await createRecipePhoto({ variables: { recipePhoto } });
         history.push(`/recipes/${recipeId}`);
     };
 

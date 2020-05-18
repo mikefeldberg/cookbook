@@ -11,6 +11,7 @@ import { PROFILE_QUERY } from '../../queries/queries';
 import UserProfile from './UserProfile';
 import ProfileComment from './ProfileComment';
 import RecipeCard from '../Recipes/RecipeCard';
+import UserSettings from './UserSettings';
 
 const Profile = ({ match }) => {
     const currentUser = useContext(AuthContext);
@@ -64,6 +65,11 @@ const Profile = ({ match }) => {
                             : `${profileUsername} hasn't left any comments`
                         }
                     </Tab>
+                    {currentUser && currentUser.username === data.profile.username &&
+                        <Tab eventKey="settings" title="Settings">
+                            <UserSettings profile={data.profile} />
+                        </Tab>
+                    }
                 </Tabs>
             </>
         );

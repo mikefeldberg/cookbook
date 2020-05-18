@@ -18,7 +18,7 @@ const MAX_FILE_SIZE = 2097152;
 
 const CreateRecipe = ({ history }) => {
     const currentUser = useContext(AuthContext);
-    const [createPhoto] = useMutation(CREATE_RECIPE_PHOTO_MUTATION);
+    const [createRecipePhoto] = useMutation(CREATE_RECIPE_PHOTO_MUTATION);
     const [createRecipe] = useMutation(CREATE_RECIPE_MUTATION, {
         update(cache, { data: { createRecipe } }) {
             const data = cache.readQuery({ query: GET_RECIPES_QUERY });
@@ -139,23 +139,24 @@ const CreateRecipe = ({ history }) => {
         const recipeId = res.data.createRecipe.recipe.id;
 
         if (file && photoSource === 'upload') {
-            handleUpload(recipeId, createPhoto);
+            handleUpload(recipeId, createRecipePhoto);
         } else if (photoUrl && photoSource === 'link') {
-            handleCreateLinkedPhoto(recipeId, createPhoto);
+            handleCreateLinkedPhoto(recipeId, createRecipePhoto);
         } else {
             history.push(`/recipes/${recipeId}`);
         }
     };
 
-    const handleUpload = async (recipeId, createPhoto) => {
+    const handleUpload = async (recipeId, createRecipePhoto) => {
         const presignedPostData = await getPresignedPostData();
         uploadFileToS3(presignedPostData, file.newFile);
         const url = presignedPostData.url + presignedPostData.fields.key;
-        const recipe_photo = {
+        const recipePhoto = {
             recipeId,
             url,
         };
-        await createPhoto({ variables: { recipe_photo } });
+        await createRecipePhoto({ variables: { recipePhoto } });
+
         setTimeout(() => {history.push(`/recipes/${recipeId}`)}, 1250);
     };
 
@@ -183,12 +184,12 @@ const CreateRecipe = ({ history }) => {
         });
     };
 
-    const handleCreateLinkedPhoto = async (recipeId, createPhoto) => {
+    const handleCreateLinkedPhoto = async (recipeId, createRecipePhoto) => {
         const recipe_photo = {
             recipeId,
             url: photoUrl,
         };
-        await createPhoto({ variables: { recipe_photo } });
+        await createRecipePhoto({ variables: { recipe_photo } });
         history.push(`/recipes/${recipeId}`);
     };
 

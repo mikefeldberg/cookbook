@@ -8,6 +8,7 @@ from django_filters import FilterSet
 from backend.password_util import send_password_reset_email
 from django.utils import timezone
 from datetime import timedelta
+from backend.s3 import create_presigned_url
 
 from recipes.models import Recipe, Comment, Favorite, PasswordResetRequest, UserPhoto
 
@@ -66,9 +67,13 @@ class UserType(DjangoObjectType):
     def resolve_favorite_set(self, info, **kwargs):
         return FavoriteFilter(kwargs).qs.filter(user_id=self.id)
 
-    def resolve_photo_set(self, info, **kwargs):
-        return PhotoFilter(kwargs).qs.filter(user_id=self.id)
+    def resolve_photos(self, info):
+        photos = UserPhoto.objects.filter(user_id=self.id, deleted_at=None).order_by('-created_at')
+        for p in photos:
+            if BUCKET_NAME in p.url:
+                p.url = create_presigned_url(p.url.split('com/')[1])
 
+        return photos
 
 class PasswordResetRequestType(DjangoObjectType):
     email = graphene.String()
