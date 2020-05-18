@@ -24,7 +24,7 @@ const Register = () => {
         try {
             await createUser({ variables: { username: data.username, email: data.email, password: data.password } });
             const { data: responseData, error } = await tokenAuth({
-                variables: { username: data.username, password: data.password },
+                variables: { username: data.email, password: data.password },
             });
             if (error) {
                 setErrorText(error);

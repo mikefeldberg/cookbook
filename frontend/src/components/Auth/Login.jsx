@@ -37,7 +37,7 @@ const Login = () => {
         } catch (e) {
             let errorMessage = e.graphQLErrors[0]['message'];
             if (e.graphQLErrors && errorMessage.includes('enter valid credentials')) {
-                setErrorText('Incorrect username or password');
+                setErrorText('Incorrect email or password');
             }
         }
     };
@@ -47,7 +47,7 @@ const Login = () => {
             <>
                 <Form className="mx-auto w-50 mb-5" onSubmit={handleSubmit(onSubmit)}>
                     <Form.Group>
-                        <Form.Label>Username</Form.Label>
+                        <Form.Label>Email</Form.Label>
                         <Form.Control
                             type="text"
                             placeholder=""
@@ -55,7 +55,7 @@ const Login = () => {
                             ref={register({
                                 required: {
                                     value: true,
-                                    message: 'Enter your username'
+                                    message: 'Enter your email'
                                 }
                             })}
                         />
