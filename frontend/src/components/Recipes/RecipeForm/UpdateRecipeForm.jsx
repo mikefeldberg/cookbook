@@ -399,7 +399,6 @@ const UpdateRecipeForm = ({ recipe }) => {
                             {deleteExistingPhoto &&
                                 <Row>
                                     'This image will be deleted after you save changes.'
-                                    {/* <Button variant="success" onClick={() => setDeleteExistingPhoto(false)}>Cancel Delete</Button> */}
                                     <Button variant="success" onClick={() => handleCancel()}>Cancel Delete</Button>
                                 </Row>
                             }

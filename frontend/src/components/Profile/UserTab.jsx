@@ -7,7 +7,7 @@ import Image from 'react-bootstrap/Image';
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
-const UserProfile = ({ profile }) => {
+const UserTab = ({ profile }) => {
     const renderTooltip = (props) => {
         return (
             <Tooltip {...props}>
@@ -43,4 +43,4 @@ const UserProfile = ({ profile }) => {
     );
 };
 
-export default UserProfile;
+export default UserTab;

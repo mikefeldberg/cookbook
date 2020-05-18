@@ -5,16 +5,24 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormFile from 'react-bootstrap/FormFile';
 import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Image from 'react-bootstrap/Image';
 
-import { CREATE_USER_PHOTO_MUTATION, PROFILE_QUERY } from '../../queries/queries';
+import { CREATE_USER_PHOTO_MUTATION, DELETE_USER_PHOTO_MUTATION, PROFILE_QUERY } from '../../queries/queries';
 import { AuthContext } from '../../App';
 
 const MAX_FILE_SIZE = 2097152;
 
-const UserSettings = () => {
+const PhotoSettings = ({ profile }) => {
     const currentUser = useContext(AuthContext);
+    const [existingPhotoUrl, setExistingPhotoUrl] = useState(profile.photos.length > 0 ? profile.photos[0].url : null);
+    const [userPhotoId, setUserPhotoId] = useState(profile.photos.length > 0 ? profile.photos[0].id : null);
+    const [deleteExistingPhoto, setDeleteExistingPhoto] = useState(false);
+
     const [createUserPhoto] = useMutation(CREATE_USER_PHOTO_MUTATION, {
         update(cache, { data: { createUserPhoto } }) {
+            setUserPhotoId(createUserPhoto.userPhoto.id)
             const userId = createUserPhoto.userPhoto.user.id;
             const data = cache.readQuery({ query: PROFILE_QUERY, variables: { id: userId } });
             const photos = data.profile.photos
@@ -31,52 +39,78 @@ const UserSettings = () => {
         }
     });
 
+    const [deletePhoto] = useMutation(DELETE_USER_PHOTO_MUTATION);
     const [photoSource, setPhotoSource] = useState('upload');
-    const [photoUrl, setPhotoUrl] = useState('');
+    const [newPhotoUrl, setNewPhotoUrl] = useState('');
     const [file, setFile] = useState(null);
     const [fileName, setFileName] = useState('');
     const [fileExtension, setFileExtension] = useState('');
     const [fileSize, setFileSize] = useState('');
+    const [photoStatus, setPhotoStatus] = useState('')
 
-    const [photoWasSaved, setPhotoWasSaved] = useState(false)
+    const handlePhotoUrlInput = (e) => {
+        setNewPhotoUrl(e.target.value);
+        setPhotoStatus('');
+        if (existingPhotoUrl) {
+            console.log('existing url when handling link input', existingPhotoUrl)
+            setDeleteExistingPhoto(true)
+        }
+    };
 
     const getFile = (e) => {
         const files = e.target.files;
         if (files && files.length > 0) {
             if (files[0].size > MAX_FILE_SIZE) {
-                setFile(null)
+                setFile(null);
                 setFileName('');
                 setFileExtension('');
-                setFileSize(e.target.files[0].size)
+                setFileSize(e.target.files[0].size);
             }
             if (files[0].size <= MAX_FILE_SIZE) {
                 const newFile = files[0];
                 setFile({ newFile });
-                setFileName(e.target.value.split('\\')[e.target.value.split('\\').length-1]);
-                setFileExtension(e.target.value.split('.')[e.target.value.split('.').length-1]);
-                setFileSize(e.target.files[0].size)
+                setFileName(e.target.value.split('\\')[e.target.value.split('\\').length - 1]);
+                setFileExtension(e.target.value.split('.')[e.target.value.split('.').length - 1]);
+                setFileSize(e.target.files[0].size);
+            }
+            setPhotoStatus('');
+            if (existingPhotoUrl) {
+                console.log('existing url when uploading', existingPhotoUrl)
+                setDeleteExistingPhoto(true)
             }
         }
     };
 
     const formatFileSize = (fileSize) => {
-        if(fileSize < 1024) {
+        if (fileSize < 1024) {
             return fileSize + 'bytes';
-        } else if(fileSize >= 1024 && fileSize < 1048576) {
-            return (fileSize/1024).toFixed(1) + 'KB';
-        } else if(fileSize >= 1048576) {
-            return (fileSize/1048576).toFixed(1) + 'MB';
+        } else if (fileSize >= 1024 && fileSize < 1048576) {
+            return (fileSize / 1024).toFixed(1) + 'KB';
+        } else if (fileSize >= 1048576) {
+            return (fileSize / 1048576).toFixed(1) + 'MB';
         }
+    };
+
+    const handleCancel = () => {
+        setDeleteExistingPhoto(false);
+        setFile(null);
+        setFileName('');
+        setFileSize('');
+        setNewPhotoUrl('');
     }
 
-    const handleSavePhoto = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (file && photoSource === 'upload') {
-            handleUpload(currentUser, createUserPhoto);
-        }
-        if (photoUrl && photoSource === 'link') {
-            handleCreateLinkedPhoto(currentUser, createUserPhoto);
+        if (!file && !newPhotoUrl && deleteExistingPhoto) {
+            handleDeletePhoto(deletePhoto);
+        } else {
+            if (file && photoSource === 'upload') {
+                handleUpload(currentUser, createUserPhoto);
+            }
+            if (newPhotoUrl && photoSource === 'link') {
+                handleCreateLinkedPhoto(currentUser, createUserPhoto);
+            }
         }
     };
 
@@ -90,7 +124,8 @@ const UserSettings = () => {
         };
 
         await createUserPhoto({ variables: { userPhoto } });
-        setPhotoWasSaved(true)
+        console.log('handleUpload')
+        handleSuccessfulUpdate();
     };
 
     const getPresignedPostData = async () => {
@@ -120,15 +155,37 @@ const UserSettings = () => {
     const handleCreateLinkedPhoto = async (currentUser, createUserPhoto) => {
         const userPhoto = {
             userId: currentUser.id,
-            url: photoUrl,
+            url: newPhotoUrl,
         };
         await createUserPhoto({ variables: { userPhoto } });
-        setPhotoWasSaved(true)
+        console.log('handleCreateLinkedPhoto')
+        handleSuccessfulUpdate();
+    };
+
+    const handleSuccessfulUpdate = () => {
+        setPhotoStatus('saved successfully');
+        setNewPhotoUrl('');
+        setFile(null);
+        setFileName('');
+        setFileExtension('');
+        setFileSize('');
+        if (existingPhotoUrl) {
+            handleDeletePhoto(deletePhoto);
+        }
+    };
+
+    const handleDeletePhoto = async (deletePhoto) => {
+        await deletePhoto({ variables: { userPhotoId } });
+        if (!photoStatus.length > 0) {
+            setPhotoStatus('deleted successfully');
+            setExistingPhotoUrl(null);
+            setDeleteExistingPhoto(false);
+        }
     };
 
     return (
         <>
-            <Form onSubmit={(e) => handleSavePhoto(e, createUserPhoto)}>
+            <Form onSubmit={(e) => handleSubmit(e, createUserPhoto)}>
                 <Form.Group>
                     <Form.Label>Link or upload a profile photo</Form.Label>
                     <InputGroup>
@@ -174,35 +231,52 @@ const UserSettings = () => {
                         {photoSource === 'link' && (
                             <Form.Control
                                 className="mr-2"
-                                value={photoUrl}
+                                value={newPhotoUrl}
                                 placeholder="Paste image URL"
-                                onChange={(e) => setPhotoUrl(e.target.value)}
+                                onChange={(e) => handlePhotoUrlInput(e)}
                             />
                         )}
-                    <InputGroup.Append>
-                        <Button
-                            type="submit"
-                            variant="primary"
-                            disabled={!((file && photoSource === 'upload') || (photoUrl && photoSource === 'link'))}
-                        >
-                            Save Photo
-                        </Button>
-                    </InputGroup.Append>
+                        <InputGroup.Append>
+                            <Button
+                                type="submit"
+                                variant="primary"
+                                disabled={!((file && photoSource === 'upload') || (newPhotoUrl && photoSource === 'link') || (deleteExistingPhoto)) }
+                            >
+                                Save Photo
+                            </Button>
+                        </InputGroup.Append>
                     </InputGroup>
                     {fileSize > MAX_FILE_SIZE && photoSource === 'upload' && (
                         <small className="text-danger">
                             File size exceeds 2MB maximum. Please select a smaller file.
                         </small>
                     )}
-                    {photoWasSaved && (
-                        <small className="text-success">
-                            Photo saved
-                        </small>
-                    )}
+                    {photoStatus.length > 0 && <small className="text-success">Photo {photoStatus}</small>}
+                </Form.Group>
+                <Form.Group>
+                    { existingPhotoUrl &&
+                        <div className="mb-2">
+                            Current Photo:
+                            <Container>
+                            <Row>
+                                <Image src={existingPhotoUrl} rounded thumbnail style={{maxWidth: `100px`}}/>
+                                {deleteExistingPhoto &&
+                                    <Row>
+                                        'This image will be deleted after you save changes.'
+                                        <Button variant="success" onClick={() => handleCancel()}>Cancel Delete</Button>
+                                    </Row>
+                                }
+                                {!deleteExistingPhoto &&
+                                    <Button variant="danger" onClick={() => setDeleteExistingPhoto(true)}>x</Button>
+                                }
+                            </Row>
+                            </Container>
+                        </div>
+                    }
                 </Form.Group>
             </Form>
         </>
     );
 };
 
-export default UserSettings;
+export default PhotoSettings;
