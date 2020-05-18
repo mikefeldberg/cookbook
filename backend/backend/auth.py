@@ -7,7 +7,7 @@ class EmailAuth(ModelBackend):
         UserModel = get_user_model()
 
         try:
-            user = UserModel.objects.get(email=username.lower())
+            user = UserModel.objects.get(email=username)
 
         except UserModel.DoesNotExist:
             return None

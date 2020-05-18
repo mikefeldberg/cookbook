@@ -87,7 +87,7 @@ const PasswordSettings = () => {
                         </Button>
                     </ButtonGroup>
                     {errorText && <Error error={errorText} setErrorText={setErrorText} />}
-                    {formIsSubmitted && <>Your password has been reset. You can now use it to log in.</>}
+                    {formIsSubmitted && <small className="text-success">Your password has been updated.</small>}
                 </Form>
             </>
         );

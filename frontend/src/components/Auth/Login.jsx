@@ -23,8 +23,7 @@ const Login = () => {
         try {
             const { data: responseData, error } = await tokenAuth({
                 variables: {
-                    username: data.username,
-                    email: data.email,
+                    username: data.email.toLowerCase(),
                     password: data.password,
                 },
             });
@@ -49,9 +48,9 @@ const Login = () => {
                     <Form.Group>
                         <Form.Label>Email</Form.Label>
                         <Form.Control
-                            type="text"
+                            type="email"
                             placeholder=""
-                            name="username"
+                            name="email"
                             ref={register({
                                 required: {
                                     value: true,
@@ -59,7 +58,7 @@ const Login = () => {
                                 }
                             })}
                         />
-                        <small className="text-danger">{formState.touched.username && errors.username && errors.username.message}</small>
+                        <small className="text-danger">{formState.touched.email && errors.email && errors.email.message}</small>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Password</Form.Label>

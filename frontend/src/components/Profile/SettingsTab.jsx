@@ -5,6 +5,7 @@ import Card from 'react-bootstrap/Card';
 
 import PhotoSettings from './PhotoSettings';
 import PasswordSettings from './PasswordSettings';
+import UsernameSettings from './UsernameSettings';
 
 const SettingsTab = ({ profile }) => {
     return (
@@ -26,6 +27,16 @@ const SettingsTab = ({ profile }) => {
                 <Accordion.Collapse eventKey="password">
                     <Card.Body>
                         <PasswordSettings profile={profile} />
+                    </Card.Body>
+                </Accordion.Collapse>
+            </Card>
+            <Card key="username">
+                <Accordion.Toggle as={Card.Header} eventKey="username">
+                    Change username
+                </Accordion.Toggle>
+                <Accordion.Collapse eventKey="username">
+                    <Card.Body>
+                        <UsernameSettings />
                     </Card.Body>
                 </Accordion.Collapse>
             </Card>

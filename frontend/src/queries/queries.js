@@ -509,3 +509,14 @@ export const CHANGE_PASSWORD_MUTATION = gql`
         }
     }
 `
+
+export const CHANGE_USERNAME_MUTATION = gql`
+    mutation ($username:String!) {
+        changeUsername(username:$username) {
+            user {
+                id
+                username
+            }
+        }
+    }
+`

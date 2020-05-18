@@ -22,9 +22,10 @@ const Register = () => {
 
     const onSubmit = async (data) => {
         try {
-            await createUser({ variables: { username: data.username, email: data.email.toLowerCase(), password: data.password } });
+            await createUser({ variables: {
+                username: data.username, email: data.email.toLowerCase(), password: data.password } });
             const { data: responseData, error } = await tokenAuth({
-                variables: { username: data.email.toLowerCase(), password: data.password },
+                variables: { email: data.email.toLowerCase(), password: data.password },
             });
             if (error) {
                 setErrorText(error);
