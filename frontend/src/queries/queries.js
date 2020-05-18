@@ -499,3 +499,13 @@ export const RESET_PASSWORD_MUTATION = gql`
         }
     }
 `
+
+export const CHANGE_PASSWORD_MUTATION = gql`
+    mutation ($password:String!) {
+        changePassword(password:$password) {
+            user {
+                id
+            }
+        }
+    }
+`
