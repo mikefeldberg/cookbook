@@ -97,8 +97,12 @@ const Comment = ({ comment, setRatingIsDisabled }) => {
                             width={64}
                             height={64}
                             className="rounded mr-3"
-                            src="/avatar_placeholder.png"
                             alt={comment.user.username}
+                            src={comment.user.photos.length > 0
+                                ? comment.user.photos[0].url
+                                :
+                                `/avatar_placeholder.png`
+                            }
                         />
                     </Link>
                 </Col>

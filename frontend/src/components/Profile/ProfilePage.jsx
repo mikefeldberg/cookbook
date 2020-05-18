@@ -8,11 +8,12 @@ import CardColumns from 'react-bootstrap/CardColumns';
 
 import { AuthContext } from '../../App';
 import { PROFILE_QUERY } from '../../queries/queries';
-import UserProfile from './UserProfile';
+import UserTab from './UserTab';
 import ProfileComment from './ProfileComment';
 import RecipeCard from '../Recipes/RecipeCard';
+import SettingsTab from './SettingsTab';
 
-const Profile = ({ match }) => {
+const ProfilePage = ({ match }) => {
     const currentUser = useContext(AuthContext);
     const id = match.params.id;
 
@@ -21,7 +22,7 @@ const Profile = ({ match }) => {
         fetchPolicy: 'network-only',
     });
 
-    if (loading) return `Loading recipe...`;
+    if (loading) return `Loading profile...`;
     if (error) return <Redirect to="/" />;
 
     if (data) {
@@ -34,7 +35,7 @@ const Profile = ({ match }) => {
             <>
                 <Tabs defaultActiveKey="user">
                     <Tab eventKey="user" title={profileUsername}>
-                        <UserProfile profile={data.profile}/>
+                        <UserTab profile={data.profile}/>
                     </Tab>
                     <Tab eventKey="recipes" title="Recipes">
                         <CardColumns className={recipes.length > 0 ? '' : 'mb-5'}>
@@ -64,10 +65,15 @@ const Profile = ({ match }) => {
                             : `${profileUsername} hasn't left any comments`
                         }
                     </Tab>
+                    {currentUser && currentUser.username === data.profile.username &&
+                        <Tab eventKey="settings" title="Settings">
+                            <SettingsTab profile={data.profile} />
+                        </Tab>
+                    }
                 </Tabs>
             </>
         );
     }
 };
 
-export default Profile;
+export default ProfilePage;
