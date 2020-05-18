@@ -22,7 +22,7 @@ const Profile = ({ match }) => {
         fetchPolicy: 'network-only',
     });
 
-    if (loading) return `Loading recipe...`;
+    if (loading) return `Loading profile...`;
     if (error) return <Redirect to="/" />;
 
     if (data) {

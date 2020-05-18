@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import { useHistory, Redirect } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
 
 import Form from 'react-bootstrap/Form';
@@ -7,15 +6,30 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import FormFile from 'react-bootstrap/FormFile';
 import Button from 'react-bootstrap/Button';
 
-import { CREATE_USER_PHOTO_MUTATION } from '../../queries/queries';
+import { CREATE_USER_PHOTO_MUTATION, PROFILE_QUERY } from '../../queries/queries';
 import { AuthContext } from '../../App';
 
 const MAX_FILE_SIZE = 2097152;
 
 const UserSettings = () => {
     const currentUser = useContext(AuthContext);
-    const history = useHistory();
-    const [createUserPhoto] = useMutation(CREATE_USER_PHOTO_MUTATION);
+    const [createUserPhoto] = useMutation(CREATE_USER_PHOTO_MUTATION, {
+        update(cache, { data: { createUserPhoto } }) {
+            const userId = createUserPhoto.userPhoto.user.id;
+            const data = cache.readQuery({ query: PROFILE_QUERY, variables: { id: userId } });
+            const photos = data.profile.photos
+            photos.unshift({
+                id: createUserPhoto.userPhoto.id,
+                url: createUserPhoto.userPhoto.url,
+                __typename: 'UserPhotoType'
+            });
+
+            cache.writeQuery({
+                query: PROFILE_QUERY,
+                data: { photos },
+            });
+        }
+    });
 
     const [photoSource, setPhotoSource] = useState('upload');
     const [photoUrl, setPhotoUrl] = useState('');
