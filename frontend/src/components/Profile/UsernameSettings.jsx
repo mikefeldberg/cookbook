@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { useApolloClient, useMutation } from '@apollo/react-hooks';
-import { Redirect, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import Form from 'react-bootstrap/Form';
@@ -8,13 +8,11 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
 
 import { CHANGE_USERNAME_MUTATION } from '../../queries/queries';
-import { AuthContext } from '../../App';
 import Error from '../Shared/Error';
 
 const UsernameSettings = () => {
     const client = useApolloClient();
     const history = useHistory();
-    const currentUser = useContext(AuthContext);
     const { register, handleSubmit, errors, formState } = useForm({ mode: 'onChange' });
     const [formIsSubmitted, setFormIsSubmitted] = useState(false);
     const [errorText, setErrorText] = useState(null);

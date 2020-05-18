@@ -26,7 +26,7 @@ const SettingsTab = ({ profile }) => {
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="password">
                     <Card.Body>
-                        <PasswordSettings profile={profile} />
+                        <PasswordSettings />
                     </Card.Body>
                 </Accordion.Collapse>
             </Card>
