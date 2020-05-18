@@ -52,7 +52,6 @@ const PhotoSettings = ({ profile }) => {
         setNewPhotoUrl(e.target.value);
         setPhotoStatus('');
         if (existingPhotoUrl) {
-            console.log('existing url when handling link input', existingPhotoUrl)
             setDeleteExistingPhoto(true)
         }
     };
@@ -75,7 +74,6 @@ const PhotoSettings = ({ profile }) => {
             }
             setPhotoStatus('');
             if (existingPhotoUrl) {
-                console.log('existing url when uploading', existingPhotoUrl)
                 setDeleteExistingPhoto(true)
             }
         }
@@ -124,7 +122,6 @@ const PhotoSettings = ({ profile }) => {
         };
 
         await createUserPhoto({ variables: { userPhoto } });
-        console.log('handleUpload')
         handleSuccessfulUpdate();
     };
 
@@ -158,7 +155,6 @@ const PhotoSettings = ({ profile }) => {
             url: newPhotoUrl,
         };
         await createUserPhoto({ variables: { userPhoto } });
-        console.log('handleCreateLinkedPhoto')
         handleSuccessfulUpdate();
     };
 
