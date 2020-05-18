@@ -5,8 +5,8 @@ from graphql import GraphQLError
 from django.db.models import Q
 from django.utils import timezone
 from backend.s3 import create_presigned_url
-from .models import Recipe, Ingredient, Instruction, Comment, Favorite, Photo
-from users.schema import UserType
+from .models import Recipe, Ingredient, Instruction, Comment, Favorite, RecipePhoto
+
 
 BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET')
 
@@ -38,15 +38,15 @@ class InstructionInput(graphene.InputObjectType):
     order = graphene.Int()
 
 
-class PhotoType(DjangoObjectType):
+class RecipePhotoType(DjangoObjectType):
     url = graphene.String()
     recipe_id = graphene.String()
 
     class Meta:
-        model = Photo
+        model = RecipePhoto
 
 
-class PhotoInput(graphene.InputObjectType):
+class RecipePhotoInput(graphene.InputObjectType):
     id = graphene.String(required=False)
     url = graphene.String()
     recipe_id = graphene.String()
@@ -109,7 +109,7 @@ class RecipeType(DjangoObjectType):
         return Comment.objects.filter(recipe_id=self.id, deleted_at=None).order_by('-created_at')
 
     def resolve_photos(self, info):
-        photos = Photo.objects.filter(recipe_id=self.id, deleted_at=None).order_by('-created_at')
+        photos = RecipePhoto.objects.filter(recipe_id=self.id, deleted_at=None).order_by('-created_at')
         for p in photos:
             if BUCKET_NAME in p.url:
                 p.url = create_presigned_url(p.url.split('com/')[1])
@@ -411,38 +411,38 @@ class DeleteComment(graphene.Mutation):
         return DeleteComment(comment=deleted_comment)
 
 
-class CreatePhoto(graphene.Mutation):
-    photo = graphene.Field(PhotoType)
+class CreateRecipePhoto(graphene.Mutation):
+    recipe_photo = graphene.Field(RecipePhotoType)
 
     class Arguments:
-        photo = PhotoInput(required=True)
+        recipe_photo = RecipePhotoInput(required=True)
 
-    def mutate(self, info, photo):
-        recipe = Recipe.objects.get(id=photo.recipe_id, deleted_at=None)
+    def mutate(self, info, recipe_photo):
+        recipe = Recipe.objects.get(id=recipe_photo.recipe_id, deleted_at=None)
 
-        new_photo = Photo(
-            url=photo.url,
+        new_recipe_photo = RecipePhoto(
+            url=recipe_photo.url,
             recipe=recipe
         )
 
-        new_photo.save()
+        new_recipe_photo.save()
 
-        return CreatePhoto(photo=new_photo)
+        return CreateRecipePhoto(recipe_photo=new_recipe_photo)
 
 
-class DeletePhoto(graphene.Mutation):
-    photo_id = graphene.String()
+class DeleteRecipePhoto(graphene.Mutation):
+    recipe_photo_id = graphene.String()
 
     class Arguments:
-        photo_id = graphene.String(required=True)
+        recipe_photo_id = graphene.String(required=True)
 
-    def mutate(self, info, photo_id):
-        photo = Photo.objects.get(id=photo_id, deleted_at=None)
+    def mutate(self, info, recipe_photo_id):
+        recipe_photo = RecipePhoto.objects.get(id=recipe_photo_id, deleted_at=None)
 
-        photo.deleted_at = timezone.now()
-        photo.save()
+        recipe_photo.deleted_at = timezone.now()
+        recipe_photo.save()
 
-        return DeletePhoto(photo_id=photo_id)
+        return DeleteRecipePhoto(recipe_photo_id=recipe_photo_id)
 
 
 class CreateFavorite(graphene.Mutation):
@@ -498,9 +498,8 @@ class Mutation(graphene.ObjectType):
     create_recipe = CreateRecipe.Field()
     update_recipe = UpdateRecipe.Field()
     delete_recipe = DeleteRecipe.Field()
-    create_photo = CreatePhoto.Field()
-    # update_photo = UpdatePhoto.Field()
-    delete_photo = DeletePhoto.Field()
+    create_recipe_photo = CreateRecipePhoto.Field()
+    delete_recipe_photo = DeleteRecipePhoto.Field()
     create_comment = CreateComment.Field()
     update_comment = UpdateComment.Field()
     delete_comment = DeleteComment.Field()

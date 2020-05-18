@@ -15,7 +15,7 @@ import RecipesList from './components/Recipes/RecipesList';
 import RecipeDetails from './components/Recipes/RecipeDetails';
 import CreateRecipe from './components/Recipes/RecipeForm/CreateRecipe';
 import UpdateRecipe from './components/Recipes/RecipeForm/UpdateRecipe';
-import Profile from './components/Profile/Profile';
+import ProfilePage from './components/Profile/ProfilePage';
 import Footer from './components/Footer/Footer';
 import Terms from './components/Footer/Terms';
 
@@ -44,7 +44,7 @@ const App = () => {
                             <Route exact path="/recipes/new" component={CreateRecipe} />
                             <Route exact path="/recipes/:id" component={RecipeDetails} />
                             <Route exact path="/recipes/:id/edit" component={UpdateRecipe} />
-                            <Route exact path="/profile/:id" component={Profile} />
+                            <Route exact path="/profile/:id" component={ProfilePage} />
                             <Route exact path="/terms" component={Terms} />
                         </Switch>
                     </Container>

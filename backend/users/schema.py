@@ -1,3 +1,4 @@
+import os
 from django.contrib.auth import get_user_model
 import graphene
 import uuid
@@ -7,9 +8,11 @@ from django_filters import FilterSet
 from backend.password_util import send_password_reset_email
 from django.utils import timezone
 from datetime import timedelta
+from backend.s3 import create_presigned_url
 
-from recipes.models import Recipe, Comment, Favorite, PasswordResetRequest
+from recipes.models import Recipe, Comment, Favorite, PasswordResetRequest, UserPhoto
 
+BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET')
 
 class RecipeFilter(FilterSet):
     class Meta:
@@ -41,6 +44,16 @@ class FavoriteFilter(FilterSet):
         return super().qs.filter(deleted_at=None)
 
 
+class PhotoFilter(FilterSet):
+    class Meta:
+        model = UserPhoto
+        fields = ['created_at', 'deleted_at']
+
+    @property
+    def qs(self):
+        return super().qs.filter(deleted_at=None)
+
+
 class UserType(DjangoObjectType):
     class Meta:
         model = get_user_model()
@@ -54,12 +67,33 @@ class UserType(DjangoObjectType):
     def resolve_favorite_set(self, info, **kwargs):
         return FavoriteFilter(kwargs).qs.filter(user_id=self.id)
 
+    def resolve_photos(self, info):
+        photos = UserPhoto.objects.filter(user_id=self.id, deleted_at=None).order_by('-created_at')
+        for p in photos:
+            if BUCKET_NAME in p.url:
+                p.url = create_presigned_url(p.url.split('com/')[1])
+
+        return photos
 
 class PasswordResetRequestType(DjangoObjectType):
     email = graphene.String()
 
     class Meta:
         model = PasswordResetRequest
+
+
+class UserPhotoType(DjangoObjectType):
+    url = graphene.String()
+    user_id = graphene.String()
+
+    class Meta:
+        model = UserPhoto
+
+
+class UserPhotoInput(graphene.InputObjectType):
+    id = graphene.String(required=False)
+    url = graphene.String()
+    user_id = graphene.String()
 
 
 class Query(graphene.ObjectType):
@@ -157,7 +191,43 @@ class ResetPassword(graphene.Mutation):
         return False
 
 
+class CreateUserPhoto(graphene.Mutation):
+    user_photo = graphene.Field(UserPhotoType)
+
+    class Arguments:
+        user_photo = UserPhotoInput(required=True)
+
+    def mutate(self, info, user_photo):
+        user = info.context.user
+
+        new_user_photo = UserPhoto(
+            url=user_photo.url,
+            user=user
+        )
+
+        new_user_photo.save()
+
+        return CreateUserPhoto(user_photo=new_user_photo)
+
+
+class DeleteUserPhoto(graphene.Mutation):
+    user_photo_id = graphene.String()
+
+    class Arguments:
+        user_photo_id = graphene.String(required=True)
+
+    def mutate(self, info, user_photo_id):
+        user_photo = UserPhoto.objects.get(id=user_photo_id, deleted_at=None)
+
+        user_photo.deleted_at = timezone.now()
+        user_photo.save()
+
+        return DeleteUserPhoto(user_photo_id=user_photo_id)
+
+
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
     create_password_reset_request = CreatePasswordResetRequest.Field()
     reset_password = ResetPassword.Field()
+    create_user_photo = CreateUserPhoto.Field()
+    delete_user_photo = DeleteUserPhoto.Field()

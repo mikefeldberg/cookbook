@@ -76,6 +76,10 @@ export const PROFILE_QUERY = gql`
                     }
                 }
             }
+            photos {
+                id
+                url
+            }
         }
     }
 `
@@ -215,6 +219,10 @@ export const GET_RECIPE_QUERY = gql`
                 user {
                     id
                     username
+                    photos {
+                        url
+                        id
+                    }
                 }
                 recipe {
                     id
@@ -341,10 +349,10 @@ export const DELETE_RECIPE_MUTATION = gql`
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~ PHOTOS
 
-export const CREATE_PHOTO_MUTATION = gql`
-    mutation ($photo: PhotoInput!) {
-        createPhoto(photo: $photo) {
-            photo {
+export const CREATE_RECIPE_PHOTO_MUTATION = gql`
+    mutation ($recipePhoto: RecipePhotoInput!) {
+        createRecipePhoto(recipePhoto: $recipePhoto) {
+            recipePhoto {
                 id
                 url
                 recipe {
@@ -355,10 +363,32 @@ export const CREATE_PHOTO_MUTATION = gql`
     }
 `
 
-export const DELETE_PHOTO_MUTATION = gql`
-    mutation($photoId: String!) {
-        deletePhoto(photoId: $photoId) {
-            photoId
+export const DELETE_RECIPE_PHOTO_MUTATION = gql`
+    mutation($recipePhotoId: String!) {
+        deleteRecipePhoto(recipePhotoId: $recipePhotoId) {
+            recipePhotoId
+        }
+    }
+`
+
+export const CREATE_USER_PHOTO_MUTATION = gql`
+    mutation ($userPhoto: UserPhotoInput!) {
+        createUserPhoto(userPhoto: $userPhoto) {
+            userPhoto {
+                id
+                url
+                user {
+                    id
+                }
+            }
+        }
+    }
+`
+
+export const DELETE_USER_PHOTO_MUTATION = gql`
+    mutation($userPhotoId: String!) {
+        deleteUserPhoto(userPhotoId: $userPhotoId) {
+            userPhotoId
         }
     }
 `

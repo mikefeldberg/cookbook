@@ -15,7 +15,7 @@ import { AuthContext } from '../../App';
 import StarRating from '../Comments/StarRating';
 
 
-const Comment = ({ comment }) => {
+const ProfileComment = ({ comment }) => {
     const currentUser = useContext(AuthContext);
     const [editing, setEditing] = useState(false);
     const [newRating, setNewRating] = useState(comment.rating);
@@ -143,4 +143,4 @@ const Comment = ({ comment }) => {
     );
 };
 
-export default Comment;
+export default ProfileComment;

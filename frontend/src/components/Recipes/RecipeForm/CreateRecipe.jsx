@@ -9,7 +9,7 @@ import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 
-import { CREATE_RECIPE_MUTATION, CREATE_PHOTO_MUTATION, GET_RECIPES_QUERY } from '../../../queries/queries';
+import { CREATE_RECIPE_MUTATION, CREATE_RECIPE_PHOTO_MUTATION, GET_RECIPES_QUERY } from '../../../queries/queries';
 import IngredientInput from './IngredientInput';
 import InstructionInput from './InstructionInput';
 import { AuthContext } from '../../../App';
@@ -18,7 +18,7 @@ const MAX_FILE_SIZE = 2097152;
 
 const CreateRecipe = ({ history }) => {
     const currentUser = useContext(AuthContext);
-    const [createPhoto] = useMutation(CREATE_PHOTO_MUTATION);
+    const [createRecipePhoto] = useMutation(CREATE_RECIPE_PHOTO_MUTATION);
     const [createRecipe] = useMutation(CREATE_RECIPE_MUTATION, {
         update(cache, { data: { createRecipe } }) {
             const data = cache.readQuery({ query: GET_RECIPES_QUERY });
@@ -31,45 +31,24 @@ const CreateRecipe = ({ history }) => {
         },
     });
 
-    // const blankIngredient = { quantity: '', name: '', preparation: '' };
-    // const blankInstruction = { order: 0, content: '' };
-    // const [photoSource, setPhotoSource] = useState('upload');
-    // const [photoUrl, setPhotoUrl] = useState('');
-    // const [file, setFile] = useState(null);
-    // const [fileName, setFileName] = useState('');
-    // const [fileExtension, setFileExtension] = useState('');
-    // const [fileSize, setFileSize] = useState('');
-    // const [title, setTitle] = useState('');
-    // const [description, setDescription] = useState('');
-    // const [ingredients, setIngredients] = useState([{ ...blankIngredient }]);
-    // const [instructions, setInstructions] = useState([{ ...blankInstruction }]);
-    // const [instructionCounter, setInstructionCounter] = useState(1);
-    // const [skillLevel, setSkillLevel] = useState('Easy');
-    // const [servings, setServings] = useState('');
-    // const [prepTime, setPrepTime] = useState('');
-    // const [cookTime, setCookTime] = useState('');
-    // const [waitTime, setWaitTime] = useState('');
-
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TEST BLOCK
-
-    const blankIngredient = { quantity: '1', name: 'Banana', preparation: 'Peeled' };
-    const blankInstruction = { order: 0, content: 'Peeeeeeeeeeeel' };
+    const blankIngredient = { quantity: '', name: '', preparation: '' };
+    const blankInstruction = { order: 0, content: '' };
     const [photoSource, setPhotoSource] = useState('upload');
     const [photoUrl, setPhotoUrl] = useState('');
     const [file, setFile] = useState(null);
     const [fileName, setFileName] = useState('');
     const [fileExtension, setFileExtension] = useState('');
     const [fileSize, setFileSize] = useState('');
-    const [title, setTitle] = useState('Test');
-    const [description, setDescription] = useState('1');
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
     const [ingredients, setIngredients] = useState([{ ...blankIngredient }]);
     const [instructions, setInstructions] = useState([{ ...blankInstruction }]);
     const [instructionCounter, setInstructionCounter] = useState(1);
     const [skillLevel, setSkillLevel] = useState('Easy');
-    const [servings, setServings] = useState('1');
-    const [prepTime, setPrepTime] = useState('2');
-    const [cookTime, setCookTime] = useState('3');
-    const [waitTime, setWaitTime] = useState('4');
+    const [servings, setServings] = useState('');
+    const [prepTime, setPrepTime] = useState('');
+    const [cookTime, setCookTime] = useState('');
+    const [waitTime, setWaitTime] = useState('');
 
     const handleIngredientChange = (e) => {
         const updatedIngredients = [...ingredients];
@@ -160,23 +139,24 @@ const CreateRecipe = ({ history }) => {
         const recipeId = res.data.createRecipe.recipe.id;
 
         if (file && photoSource === 'upload') {
-            handleUpload(recipeId, createPhoto);
+            handleUpload(recipeId, createRecipePhoto);
         } else if (photoUrl && photoSource === 'link') {
-            handleCreateLinkedPhoto(recipeId, createPhoto);
+            handleCreateLinkedPhoto(recipeId, createRecipePhoto);
         } else {
             history.push(`/recipes/${recipeId}`);
         }
     };
 
-    const handleUpload = async (recipeId, createPhoto) => {
+    const handleUpload = async (recipeId, createRecipePhoto) => {
         const presignedPostData = await getPresignedPostData();
         uploadFileToS3(presignedPostData, file.newFile);
         const url = presignedPostData.url + presignedPostData.fields.key;
-        const photo = {
+        const recipePhoto = {
             recipeId,
             url,
         };
-        await createPhoto({ variables: { photo } });
+        await createRecipePhoto({ variables: { recipePhoto } });
+
         setTimeout(() => {history.push(`/recipes/${recipeId}`)}, 1250);
     };
 
@@ -204,12 +184,12 @@ const CreateRecipe = ({ history }) => {
         });
     };
 
-    const handleCreateLinkedPhoto = async (recipeId, createPhoto) => {
-        const photo = {
+    const handleCreateLinkedPhoto = async (recipeId, createRecipePhoto) => {
+        const recipe_photo = {
             recipeId,
             url: photoUrl,
         };
-        await createPhoto({ variables: { photo } });
+        await createRecipePhoto({ variables: { recipe_photo } });
         history.push(`/recipes/${recipeId}`);
     };
 
