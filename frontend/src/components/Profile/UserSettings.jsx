@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
 
 import Form from 'react-bootstrap/Form';
@@ -23,6 +23,8 @@ const UserSettings = () => {
     const [fileName, setFileName] = useState('');
     const [fileExtension, setFileExtension] = useState('');
     const [fileSize, setFileSize] = useState('');
+
+    const [photoWasSaved, setPhotoWasSaved] = useState(false)
 
     const getFile = (e) => {
         const files = e.target.files;
@@ -53,15 +55,14 @@ const UserSettings = () => {
         }
     }
 
-    const handleSubmit = async (e) => {
+    const handleSavePhoto = async (e) => {
         e.preventDefault();
 
         if (file && photoSource === 'upload') {
             handleUpload(currentUser, createUserPhoto);
-        } else if (photoUrl && photoSource === 'link') {
+        }
+        if (photoUrl && photoSource === 'link') {
             handleCreateLinkedPhoto(currentUser, createUserPhoto);
-        } else {
-            history.push(`/recipes/${currentUser.id}`);
         }
     };
 
@@ -73,9 +74,9 @@ const UserSettings = () => {
             url,
             userId: currentUser.id,
         };
-        debugger
+
         await createUserPhoto({ variables: { userPhoto } });
-        setTimeout(() => {history.push(`/profile/${currentUser.id}`)}, 1250);
+        setPhotoWasSaved(true)
     };
 
     const getPresignedPostData = async () => {
@@ -108,12 +109,12 @@ const UserSettings = () => {
             url: photoUrl,
         };
         await createUserPhoto({ variables: { userPhoto } });
-        history.push(`/profile/${currentUser.id}`);
+        setPhotoWasSaved(true)
     };
 
     return (
         <>
-            <Form onSubmit={(e) => handleSubmit(e, createUserPhoto)}>
+            <Form onSubmit={(e) => handleSavePhoto(e, createUserPhoto)}>
                 <Form.Group>
                     <Form.Label>Link or upload a profile photo</Form.Label>
                     <InputGroup>
@@ -168,7 +169,7 @@ const UserSettings = () => {
                         <Button
                             type="submit"
                             variant="primary"
-                            disabled={!file && !photoUrl}
+                            disabled={!((file && photoSource === 'upload') || (photoUrl && photoSource === 'link'))}
                         >
                             Save Photo
                         </Button>
@@ -177,6 +178,11 @@ const UserSettings = () => {
                     {fileSize > MAX_FILE_SIZE && photoSource === 'upload' && (
                         <small className="text-danger">
                             File size exceeds 2MB maximum. Please select a smaller file.
+                        </small>
+                    )}
+                    {photoWasSaved && (
+                        <small className="text-success">
+                            Photo saved
                         </small>
                     )}
                 </Form.Group>
