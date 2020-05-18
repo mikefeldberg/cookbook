@@ -13,7 +13,7 @@ import ProfileComment from './ProfileComment';
 import RecipeCard from '../Recipes/RecipeCard';
 import SettingsTab from './SettingsTab';
 
-const Profile = ({ match }) => {
+const ProfilePage = ({ match }) => {
     const currentUser = useContext(AuthContext);
     const id = match.params.id;
 
@@ -76,4 +76,4 @@ const Profile = ({ match }) => {
     }
 };
 
-export default Profile;
+export default ProfilePage;

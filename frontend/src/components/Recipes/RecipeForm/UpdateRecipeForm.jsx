@@ -21,7 +21,7 @@ const UpdateRecipeForm = ({ recipe }) => {
     const history = useHistory();
     const [updateRecipe] = useMutation(UPDATE_RECIPE_MUTATION);
     const [createRecipePhoto] = useMutation(CREATE_RECIPE_PHOTO_MUTATION);
-    const [deletePhoto] = useMutation(DELETE_RECIPE_PHOTO_MUTATION);
+    const [deleteRecipePhoto] = useMutation(DELETE_RECIPE_PHOTO_MUTATION);
 
     const blankIngredient = { quantity: '', name: '', preparation: '' };
     const blankInstruction = { order: 0, content: '' };
@@ -147,7 +147,7 @@ const UpdateRecipeForm = ({ recipe }) => {
         removeListIds();
 
         if (deleteExistingPhoto) {
-            await handleDeletePhoto(deletePhoto)
+            await handleDeletePhoto(deleteRecipePhoto)
         }
 
         const updatedRecipe = {
@@ -174,8 +174,8 @@ const UpdateRecipeForm = ({ recipe }) => {
         }
     };
 
-    const handleDeletePhoto = async deletePhoto => {
-        await deletePhoto({variables: {recipePhotoId}})
+    const handleDeletePhoto = async deleteRecipePhoto => {
+        await deleteRecipePhoto({variables: {recipePhotoId}})
     }
 
     const handleUpload = async (recipeId, createRecipePhoto) => {

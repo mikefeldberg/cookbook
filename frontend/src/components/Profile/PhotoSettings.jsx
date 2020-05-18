@@ -39,7 +39,7 @@ const PhotoSettings = ({ profile }) => {
         }
     });
 
-    const [deletePhoto] = useMutation(DELETE_USER_PHOTO_MUTATION);
+    const [deleteUserPhoto] = useMutation(DELETE_USER_PHOTO_MUTATION);
     const [photoSource, setPhotoSource] = useState('upload');
     const [newPhotoUrl, setNewPhotoUrl] = useState('');
     const [file, setFile] = useState(null);
@@ -101,7 +101,7 @@ const PhotoSettings = ({ profile }) => {
         e.preventDefault();
 
         if (!file && !newPhotoUrl && deleteExistingPhoto) {
-            handleDeletePhoto(deletePhoto);
+            handleDeletePhoto(deleteUserPhoto);
         } else {
             if (file && photoSource === 'upload') {
                 handleUpload(currentUser, createUserPhoto);
@@ -166,12 +166,12 @@ const PhotoSettings = ({ profile }) => {
         setFileExtension('');
         setFileSize('');
         if (existingPhotoUrl) {
-            handleDeletePhoto(deletePhoto);
+            handleDeletePhoto(deleteUserPhoto);
         }
     };
 
-    const handleDeletePhoto = async (deletePhoto) => {
-        await deletePhoto({ variables: { userPhotoId } });
+    const handleDeletePhoto = async (deleteUserPhoto) => {
+        await deleteUserPhoto({ variables: { userPhotoId } });
         if (!photoStatus.length > 0) {
             setPhotoStatus('deleted successfully');
             setExistingPhotoUrl(null);
