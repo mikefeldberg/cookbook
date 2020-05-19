@@ -38,10 +38,11 @@ const CommentSection = ({ recipeId, comments }) => {
                 ratingIsDisabled={ratingIsDisabled}
                 setRatingIsDisabled={setRatingIsDisabled}
             />
-            {comments.length > 0 && comments.map((comment) => 
+            {comments.length > 0 && comments.map((comment) =>
                 <Comment
                     key={comment.id}
                     comment={comment}
+                    ratingIsDisabled={ratingIsDisabled}
                     setRatingIsDisabled={setRatingIsDisabled}
                 />
             )}

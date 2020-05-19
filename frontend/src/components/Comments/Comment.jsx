@@ -14,7 +14,7 @@ import { AuthContext } from '../../App';
 import CommentToolbar from './CommentToolbar';
 import StarRating from './StarRating';
 
-const Comment = ({ comment, setRatingIsDisabled }) => {
+const Comment = ({ comment, ratingIsDisabled, setRatingIsDisabled }) => {
     const currentUser = useContext(AuthContext);
     const [editing, setEditing] = useState(false);
     const [newRating, setNewRating] = useState(comment.rating);
@@ -122,7 +122,11 @@ const Comment = ({ comment, setRatingIsDisabled }) => {
                     {!editing && <Row noGutters className="selected">{'★'.repeat(comment.rating)}</Row>}
                     {editing && (
                         <Row noGutters>
-                            <StarRating rating={newRating} setRating={setNewRating} />
+                            <StarRating
+                                rating={newRating}
+                                setRating={setNewRating}
+                                ratingIsDisabled={ratingIsDisabled}
+                            />
                         </Row>
                     )}
                 </Col>
