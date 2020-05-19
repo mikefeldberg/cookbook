@@ -39,7 +39,6 @@ const NewCommentStarRating = ({ rating, setRating, newRatingIsDisabled }) => {
     const currentUser = useContext(AuthContext);
     const [hoveredStar, setHoveredStar] = useState(0);
 
-
     if (currentUser && !newRatingIsDisabled) {
         return (
             <span>

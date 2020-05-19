@@ -39,7 +39,6 @@ const EditCommentStarRating = ({ rating, setRating, editRatingIsDisabled }) => {
     const currentUser = useContext(AuthContext);
     const [hoveredStar, setHoveredStar] = useState(0);
 
-
     if (currentUser && !editRatingIsDisabled) {
         return (
             <span>

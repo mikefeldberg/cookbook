@@ -19,7 +19,7 @@ const Comment = ({ comment, newRatingIsDisabled, setNewRatingIsDisabled }) => {
     const [editing, setEditing] = useState(false);
     const [newRating, setNewRating] = useState(comment.rating);
     const [newContent, setNewContent] = useState(comment.content);
-    const [editRatingIsDisabled, setEditRatingIsDisabled] = useState(newRatingIsDisabled === true && comment.rating === 0);
+    const [editRatingIsDisabled, setEditRatingIsDisabled] = useState(newRatingIsDisabled === true && comment.rating === 0 ? true : false);
 
     const [updateComment] = useMutation(UPDATE_COMMENT_MUTATION, {
         update(cache, { data: { updateComment } }) {
@@ -30,9 +30,7 @@ const Comment = ({ comment, newRatingIsDisabled, setNewRatingIsDisabled }) => {
             recipe.comments = [...recipe.comments.slice(0, index), updateComment.comment, ...recipe.comments.slice(index + 1)]
 
             if (comment.rating !== updateComment.comment.rating) {
-                console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@ in update comment cache update')
                 if (comment.rating > 0) {
-                    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@ in update comment cache update comment.rating > 0')
                     if (updateComment.comment.rating > 0) {
                         recipe.rating = (recipe.rating * recipe.ratingCount - comment.rating + updateComment.comment.rating) / (recipe.ratingCount)
                     }
@@ -45,7 +43,6 @@ const Comment = ({ comment, newRatingIsDisabled, setNewRatingIsDisabled }) => {
                         recipe.ratingCount = 0
                     }
                 } else {
-                    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@ in update comment cache update comment.rating = 0')
                     recipe.rating = (recipe.rating * recipe.ratingCount + updateComment.comment.rating) / (recipe.ratingCount + 1)
                     recipe.ratingCount += 1
                 }
@@ -65,6 +62,7 @@ const Comment = ({ comment, newRatingIsDisabled, setNewRatingIsDisabled }) => {
                 }
             }
 
+            // MAY NOT NEED THIS
             const userRatingData = cache.readQuery({ query: GET_USER_RATINGS_QUERY, variables: { id: currentUser.id } });
             const ratings = {...userRatingData.recipe}
 
