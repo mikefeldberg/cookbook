@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 
 import { AuthContext } from '../../App';
 import { CREATE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries';
-import StarRating from './StarRating';
+import NewCommentStarRating from './Comments/NewCommentStarRating'
 
 const CreateComment = ({ recipeId, ratingIsDisabled, setRatingIsDisabled }) => {
     const currentUser = useContext(AuthContext);
@@ -56,7 +56,7 @@ const CreateComment = ({ recipeId, ratingIsDisabled, setRatingIsDisabled }) => {
     return (
         <Form className="text-right" onSubmit={(e) => handleSubmit(e)}>
             <fieldset disabled={!currentUser}>
-                <StarRating
+                <NewCommentStarRating
                     rating={rating}
                     setRating={setRating}
                     ratingIsDisabled={ratingIsDisabled}

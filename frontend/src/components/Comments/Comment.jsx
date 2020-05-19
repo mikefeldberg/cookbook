@@ -12,7 +12,7 @@ import Image from 'react-bootstrap/Image';
 import { UPDATE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries';
 import { AuthContext } from '../../App';
 import CommentToolbar from './CommentToolbar';
-import StarRating from './StarRating';
+import EditCommentStarRating from './EditCommentStarRating';
 
 const Comment = ({ comment, ratingIsDisabled, setRatingIsDisabled }) => {
     const currentUser = useContext(AuthContext);
@@ -122,7 +122,7 @@ const Comment = ({ comment, ratingIsDisabled, setRatingIsDisabled }) => {
                     {!editing && <Row noGutters className="selected">{'★'.repeat(comment.rating)}</Row>}
                     {editing && (
                         <Row noGutters>
-                            <StarRating
+                            <EditCommentStarRating
                                 rating={newRating}
                                 setRating={setNewRating}
                                 ratingIsDisabled={ratingIsDisabled}

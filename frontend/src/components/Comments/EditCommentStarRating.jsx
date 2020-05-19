@@ -35,7 +35,7 @@ const Star = ({ currentUser, currentStar, selected = false, hoveredStar, onClick
     </>
 );
 
-const StarRating = ({ rating, setRating, ratingIsDisabled }) => {
+const EditCommentStarRating = ({ rating, setRating, ratingIsDisabled }) => {
     const currentUser = useContext(AuthContext);
     const [hoveredStar, setHoveredStar] = useState(0);
 
@@ -87,4 +87,4 @@ const StarRating = ({ rating, setRating, ratingIsDisabled }) => {
     }
 };
 
-export default StarRating;
+export default EditCommentStarRating;
