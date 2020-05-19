@@ -23,8 +23,7 @@ const Login = () => {
         try {
             const { data: responseData, error } = await tokenAuth({
                 variables: {
-                    username: data.username,
-                    email: data.email,
+                    username: data.email.toLowerCase(),
                     password: data.password,
                 },
             });
@@ -37,7 +36,7 @@ const Login = () => {
         } catch (e) {
             let errorMessage = e.graphQLErrors[0]['message'];
             if (e.graphQLErrors && errorMessage.includes('enter valid credentials')) {
-                setErrorText('Incorrect username or password');
+                setErrorText('Incorrect email or password');
             }
         }
     };
@@ -47,19 +46,19 @@ const Login = () => {
             <>
                 <Form className="mx-auto w-50 mb-5" onSubmit={handleSubmit(onSubmit)}>
                     <Form.Group>
-                        <Form.Label>Username</Form.Label>
+                        <Form.Label>Email</Form.Label>
                         <Form.Control
-                            type="text"
+                            type="email"
                             placeholder=""
-                            name="username"
+                            name="email"
                             ref={register({
                                 required: {
                                     value: true,
-                                    message: 'Enter your username'
+                                    message: 'Enter your email'
                                 }
                             })}
                         />
-                        <small className="text-danger">{formState.touched.username && errors.username && errors.username.message}</small>
+                        <small className="text-danger">{formState.touched.email && errors.email && errors.email.message}</small>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Password</Form.Label>

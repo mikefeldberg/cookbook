@@ -58,7 +58,7 @@ CORS_ORIGIN_WHITELIST = [
 
 AUTHENTICATION_BACKENDS = [
     'graphql_jwt.backends.JSONWebTokenBackend',
-    'django.contrib.auth.backends.ModelBackend',
+    'backend.auth.EmailAuth',
 ]
 
 ROOT_URLCONF = 'backend.urls'

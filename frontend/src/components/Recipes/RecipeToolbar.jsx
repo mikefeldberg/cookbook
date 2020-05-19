@@ -3,13 +3,15 @@ import { Link } from 'react-router-dom';
 
 import Row from 'react-bootstrap/Row';
 import Dropdown from 'react-bootstrap/Dropdown';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Button from 'react-bootstrap/Button';
 
 import DeleteRecipe from './DeleteRecipe';
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     <span
         ref={ref}
-        onClick={e => {
+        onClick={(e) => {
             e.preventDefault();
             onClick(e);
         }}
@@ -25,7 +27,7 @@ const CustomMenu = React.forwardRef(({ children, style, className, 'aria-labelle
         <div ref={ref} style={style} className={className} aria-labelledby={labeledBy}>
             <ul className="list-unstyled">
                 {React.Children.toArray(children).filter(
-                    child => !value || child.props.children.toLowerCase().startsWith(value)
+                    (child) => !value || child.props.children.toLowerCase().startsWith(value)
                 )}
             </ul>
         </div>
@@ -35,21 +37,30 @@ const CustomMenu = React.forwardRef(({ children, style, className, 'aria-labelle
 const RecipeToolbar = ({ recipe }) => {
     return (
         <Row noGutters>
-            <Link style={{ textDecoration: 'none' }} to={`/recipes/${recipe.id}/edit`} className="mr-2">{<i className="far fa-edit text-secondary"></i>}</Link>
+            <Link style={{ textDecoration: 'none' }} to={`/recipes/${recipe.id}/edit`} className="mr-2">
+                {<i className="far fa-edit text-secondary"></i>}
+            </Link>
             <Dropdown>
                 <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
                     <i className="clickable far fa-trash-alt"></i>
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu as={CustomMenu}>
-                    <Dropdown.Item disabled eventKey="0">
-                        Are you sure?
-                    </Dropdown.Item>
+                    <Dropdown.Item disabled>Are you sure?</Dropdown.Item>
                     <Dropdown.Divider />
-                    <Dropdown.Item eventKey="1">
+                    <Dropdown.Item className="p-0">
                         <DeleteRecipe recipe={recipe} />
                     </Dropdown.Item>
-                    <Dropdown.Item eventKey="2">Cancel</Dropdown.Item>
+                    <Dropdown.Item className="p-0">
+                        <ButtonGroup className="w-100">
+                            <Button
+                                variant="light-outline"
+                                className="rounded-0 text-left"
+                            >
+                                Cancel
+                            </Button>
+                        </ButtonGroup>
+                    </Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
         </Row>

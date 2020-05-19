@@ -5,6 +5,7 @@ import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import Image from 'react-bootstrap/Image';
 
 const RecipeCard = ({ recipe }) => {
     const match = useRouteMatch();
@@ -12,21 +13,40 @@ const RecipeCard = ({ recipe }) => {
 
     return (
         <Card className="shadow mb-4">
-            <Card.Img
-                variant="top"
-                src={
-                    recipe.photos.length > 0
-                        ? recipe.photos[0].url
-                        : `/recipe_placeholder.png`
-                }
-            />
-            <Card.Body>
+            <Link to={`/recipes/${recipe.id}`}>
+                <Card.Img
+                    variant="top"
+                    src={
+                        recipe.photos.length > 0
+                            ? recipe.photos[0].url
+                            : `/recipe_placeholder.png`
+                    }
+                />
+            </Link>
+            <Card.Body className="pt-3 pb-3">
                 <Card.Title>
                     <Link style={{ textDecoration: 'none' }} to={`/recipes/${recipe.id}`}><span className="link">{recipe.title}</span></Link>
                 </Card.Title>
                 { !url.includes('profile') &&
                     <Card.Text>
-                        Added by <Link style={{ textDecoration: 'none' }} to={`/profile/${recipe.user.id}`}><span className="link">{recipe.user.username}</span></Link>
+                        {/* Added by  */}
+                        <Link
+                            style={{ textDecoration: 'none' }}
+                            to={`/profile/${recipe.user.username}`}
+                        >
+                            <Image
+                                width={32}
+                                height={32}
+                                className="border-light rounded-circle mr-1 shadow-sm"
+                                alt={recipe.user.username}
+                                src={recipe.user.photos.length > 0
+                                    ? recipe.user.photos[0].url
+                                    :
+                                    `/avatar_placeholder.png`
+                                }
+                            />
+                            <span className="link">{recipe.user.username}</span>
+                        </Link>
                     </Card.Text>
                 }
             </Card.Body>
