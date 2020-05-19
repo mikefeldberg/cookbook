@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 
 import { AuthContext } from '../../App';
 import { CREATE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries';
-import NewCommentStarRating from './Comments/NewCommentStarRating'
+import NewCommentStarRating from './NewCommentStarRating'
 
 const CreateComment = ({ recipeId, newRatingIsDisabled, setNewRatingIsDisabled }) => {
     const currentUser = useContext(AuthContext);

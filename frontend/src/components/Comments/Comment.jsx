@@ -9,27 +9,30 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
 
-import { UPDATE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries';
+import { UPDATE_COMMENT_MUTATION, GET_RECIPE_QUERY, GET_USER_RATINGS_QUERY } from '../../queries/queries';
 import { AuthContext } from '../../App';
 import CommentToolbar from './CommentToolbar';
 import EditCommentStarRating from './EditCommentStarRating';
 
-const Comment = ({ comment, ratingIsDisabled, setRatingIsDisabled }) => {
+const Comment = ({ comment, newRatingIsDisabled, setNewRatingIsDisabled }) => {
     const currentUser = useContext(AuthContext);
     const [editing, setEditing] = useState(false);
     const [newRating, setNewRating] = useState(comment.rating);
     const [newContent, setNewContent] = useState(comment.content);
+    const [editRatingIsDisabled, setEditRatingIsDisabled] = useState(newRatingIsDisabled === true && comment.rating === 0);
 
     const [updateComment] = useMutation(UPDATE_COMMENT_MUTATION, {
         update(cache, { data: { updateComment } }) {
             const recipeId = updateComment.comment.recipe.id;
-            const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables: { id: recipeId } });
-            const recipe = {...data.recipe}
+            const recipeData = cache.readQuery({ query: GET_RECIPE_QUERY, variables: { id: recipeId } });
+            const recipe = {...recipeData.recipe}
             const index = recipe.comments.findIndex(comment => comment.id === updateComment.comment.id);
             recipe.comments = [...recipe.comments.slice(0, index), updateComment.comment, ...recipe.comments.slice(index + 1)]
 
             if (comment.rating !== updateComment.comment.rating) {
+                console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@ in update comment cache update')
                 if (comment.rating > 0) {
+                    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@ in update comment cache update comment.rating > 0')
                     if (updateComment.comment.rating > 0) {
                         recipe.rating = (recipe.rating * recipe.ratingCount - comment.rating + updateComment.comment.rating) / (recipe.ratingCount)
                     }
@@ -41,10 +44,11 @@ const Comment = ({ comment, ratingIsDisabled, setRatingIsDisabled }) => {
                         recipe.rating = 0
                         recipe.ratingCount = 0
                     }
+                } else {
+                    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@ in update comment cache update comment.rating = 0')
+                    recipe.rating = (recipe.rating * recipe.ratingCount + updateComment.comment.rating) / (recipe.ratingCount + 1)
+                    recipe.ratingCount += 1
                 }
-            } else {
-                recipe.rating = (recipe.rating * recipe.ratingCount + updateComment.comment.rating) / (recipe.ratingCount + 1)
-                recipe.ratingCount += 1
             }
 
             cache.writeQuery({
@@ -54,12 +58,16 @@ const Comment = ({ comment, ratingIsDisabled, setRatingIsDisabled }) => {
 
             if (comment.rating !== updateComment.comment.rating) {
                 if (comment.rating === 0) {
-                    setRatingIsDisabled(true)
+                    setNewRatingIsDisabled(true)
                 }
                 if (updateComment.comment.rating === 0) {
-                    setRatingIsDisabled(false)
+                    setNewRatingIsDisabled(false)
                 }
             }
+
+            const userRatingData = cache.readQuery({ query: GET_USER_RATINGS_QUERY, variables: { id: currentUser.id } });
+            const ratings = {...userRatingData.recipe}
+
         },
     });
 
@@ -125,7 +133,7 @@ const Comment = ({ comment, ratingIsDisabled, setRatingIsDisabled }) => {
                             <EditCommentStarRating
                                 rating={newRating}
                                 setRating={setNewRating}
-                                ratingIsDisabled={ratingIsDisabled}
+                                editRatingIsDisabled={editRatingIsDisabled}
                             />
                         </Row>
                     )}
@@ -140,7 +148,8 @@ const Comment = ({ comment, ratingIsDisabled, setRatingIsDisabled }) => {
                             handleCancel={handleCancel}
                             handleSubmit={handleSubmit}
                             updateComment={updateComment}
-                            setRatingIsDisabled={setRatingIsDisabled}
+                            setNewRatingIsDisabled={setNewRatingIsDisabled}
+                            setEditRatingIsDisabled={setEditRatingIsDisabled}
                         />
                     }
                 </Col>
