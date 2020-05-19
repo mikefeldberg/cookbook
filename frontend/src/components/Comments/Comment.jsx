@@ -9,7 +9,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
 
-import { UPDATE_COMMENT_MUTATION, GET_RECIPE_QUERY, GET_USER_RATINGS_QUERY } from '../../queries/queries';
+import { UPDATE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries';
 import { AuthContext } from '../../App';
 import CommentToolbar from './CommentToolbar';
 import EditCommentStarRating from './EditCommentStarRating';
@@ -19,7 +19,7 @@ const Comment = ({ comment, newRatingIsDisabled, setNewRatingIsDisabled }) => {
     const [editing, setEditing] = useState(false);
     const [newRating, setNewRating] = useState(comment.rating);
     const [newContent, setNewContent] = useState(comment.content);
-    const [editRatingIsDisabled, setEditRatingIsDisabled] = useState(true);
+
 
     const [updateComment] = useMutation(UPDATE_COMMENT_MUTATION, {
         update(cache, { data: { updateComment } }) {
@@ -142,7 +142,6 @@ const Comment = ({ comment, newRatingIsDisabled, setNewRatingIsDisabled }) => {
                             handleSubmit={handleSubmit}
                             updateComment={updateComment}
                             setNewRatingIsDisabled={setNewRatingIsDisabled}
-                            setEditRatingIsDisabled={setEditRatingIsDisabled}
                         />
                     }
                 </Col>
