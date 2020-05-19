@@ -78,7 +78,7 @@ const UsernameSettings = () => {
                             {formState.touched.username && errors.username && errors.username.message}
                         </small>
                     </Form.Group>
-                    <Form.Label><small className="text-danger mb-5">Note: You will be automatically logged out upon successful username change</small></Form.Label>
+                    <Form.Label><small className="text-danger">Note: You will be automatically logged out upon successful username change</small></Form.Label>
                     <ButtonGroup className="w-100 mb-3" aria-label="Basic example">
                         <Button
                             disabled={!formState.isValid || formIsSubmitted}
