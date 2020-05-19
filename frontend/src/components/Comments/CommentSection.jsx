@@ -9,7 +9,7 @@ import CreateComment from './CreateComment';
 const CommentSection = ({ recipeId, comments }) => {
     const client = useApolloClient();
     const currentUser = useContext(AuthContext);
-    const [ratingIsDisabled, setRatingIsDisabled] = useState(false);
+    const [newRatingIsDisabled, setNewRatingIsDisabled] = useState(false);
 
     const fetchUserRatings = async () => {
         const res = await client.query({
@@ -21,7 +21,7 @@ const CommentSection = ({ recipeId, comments }) => {
 
         for (const c of commentSet) {
             if (c.recipe.id === recipeId && c.rating) {
-                setRatingIsDisabled(true);
+                setNewRatingIsDisabled(true);
             }
         }
     };
@@ -35,15 +35,15 @@ const CommentSection = ({ recipeId, comments }) => {
             <h1>Comments</h1>
             <CreateComment
                 recipeId={recipeId}
-                ratingIsDisabled={ratingIsDisabled}
-                setRatingIsDisabled={setRatingIsDisabled}
+                newRatingIsDisabled={newRatingIsDisabled}
+                setNewRatingIsDisabled={setNewRatingIsDisabled}
             />
             {comments.length > 0 && comments.map((comment) =>
                 <Comment
                     key={comment.id}
                     comment={comment}
-                    ratingIsDisabled={ratingIsDisabled}
-                    setRatingIsDisabled={setRatingIsDisabled}
+                    newRatingIsDisabled={newRatingIsDisabled}
+                    setNewRatingIsDisabled={setNewRatingIsDisabled}
                 />
             )}
             {comments.length === 0 &&

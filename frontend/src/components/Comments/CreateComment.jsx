@@ -8,7 +8,7 @@ import { AuthContext } from '../../App';
 import { CREATE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries';
 import NewCommentStarRating from './Comments/NewCommentStarRating'
 
-const CreateComment = ({ recipeId, ratingIsDisabled, setRatingIsDisabled }) => {
+const CreateComment = ({ recipeId, newRatingIsDisabled, setNewRatingIsDisabled }) => {
     const currentUser = useContext(AuthContext);
     const [rating, setRating] = useState(0);
     const [content, setContent] = useState('');
@@ -31,7 +31,7 @@ const CreateComment = ({ recipeId, ratingIsDisabled, setRatingIsDisabled }) => {
             });
 
             if (createComment.comment.rating) {
-                setRatingIsDisabled(true);
+                setNewRatingIsDisabled(true);
             }
         }
     });
@@ -59,7 +59,7 @@ const CreateComment = ({ recipeId, ratingIsDisabled, setRatingIsDisabled }) => {
                 <NewCommentStarRating
                     rating={rating}
                     setRating={setRating}
-                    ratingIsDisabled={ratingIsDisabled}
+                    newRatingIsDisabled={newRatingIsDisabled}
                 />
                 <Form.Control
                     className="mb-3 shadow-sm"
