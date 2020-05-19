@@ -126,6 +126,10 @@ export const GET_RECIPES_QUERY = gql`
             user {
                 id
                 username
+                photos {
+                    id
+                    url
+                }
             }
             favorites {
                 id
