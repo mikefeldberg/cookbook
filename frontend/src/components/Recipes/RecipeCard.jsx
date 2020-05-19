@@ -23,7 +23,7 @@ const RecipeCard = ({ recipe }) => {
                     }
                 />
             </Link>
-            <Card.Body className="pt-2 pb-3">
+            <Card.Body className="pt-3 pb-3">
                 <Card.Title>
                     <Link style={{ textDecoration: 'none' }} to={`/recipes/${recipe.id}`}><span className="link">{recipe.title}</span></Link>
                 </Card.Title>

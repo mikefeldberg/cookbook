@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
 
 import { AuthContext } from '../../App';
 import UserNav from './UserNav';

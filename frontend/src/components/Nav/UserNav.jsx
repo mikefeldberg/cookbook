@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useApolloClient } from '@apollo/react-hooks';
 
 import Nav from 'react-bootstrap/Nav';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Image from 'react-bootstrap/Image';
-import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-
-// import Logout from '../Auth/Logout';
+import Button from 'react-bootstrap/Button';
 
 const UserNav = ({ currentUser }) => {
     const client = useApolloClient();
