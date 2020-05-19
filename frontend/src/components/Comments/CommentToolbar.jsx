@@ -33,7 +33,7 @@ const CustomMenu = React.forwardRef(({ children, style, className, 'aria-labelle
     );
 });
 
-const CommentToolbar = ({ commentId, editing, setEditing, isSaveEnabled, handleCancel, handleSubmit, updateComment, setRatingIsDisabled }) => {
+const CommentToolbar = ({ commentId, editing, setEditing, isSaveEnabled, handleCancel, handleSubmit, updateComment, setNewRatingIsDisabled }) => {
     const EditingToolbar = ({ handleCancel, handleSubmit, updateComment }) => {
         return (
             <Row noGutters className="float-right mb-2">
@@ -44,7 +44,7 @@ const CommentToolbar = ({ commentId, editing, setEditing, isSaveEnabled, handleC
         );
     };
 
-    const DefaultToolbar = ({ commentId, setEditing, setRatingIsDisabled }) => {
+    const DefaultToolbar = ({ commentId, setEditing, setNewRatingIsDisabled }) => {
         return (
             <Row noGutters className="align-items-center float-right">
                 {<i onClick={() => setEditing(true)} className="clickable far fa-edit text-secondary mr-1"></i>}
@@ -58,7 +58,7 @@ const CommentToolbar = ({ commentId, editing, setEditing, isSaveEnabled, handleC
                     </Dropdown.Item>
                     <Dropdown.Divider />
                     <Dropdown.Item className="p-0">
-                        <DeleteComment commentId={commentId} setRatingIsDisabled={setRatingIsDisabled} />
+                        <DeleteComment commentId={commentId} setNewRatingIsDisabled={setNewRatingIsDisabled} />
                     </Dropdown.Item>
                     <Dropdown.Item className="p-0">
                         <ButtonGroup className="w-100">
@@ -79,7 +79,7 @@ const CommentToolbar = ({ commentId, editing, setEditing, isSaveEnabled, handleC
     if (editing) {
         return <EditingToolbar handleCancel={handleCancel} handleSubmit={handleSubmit} updateComment={updateComment} />;
     } else {
-        return <DefaultToolbar commentId={commentId} setEditing={setEditing} setRatingIsDisabled={setRatingIsDisabled} />;
+        return <DefaultToolbar commentId={commentId} setEditing={setEditing} setNewRatingIsDisabled={setNewRatingIsDisabled} />;
     }
 };
 

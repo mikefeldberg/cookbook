@@ -6,9 +6,9 @@ import Button from 'react-bootstrap/Button';
 
 import { AuthContext } from '../../App';
 import { CREATE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries';
-import StarRating from './StarRating';
+import NewCommentStarRating from './NewCommentStarRating'
 
-const CreateComment = ({ recipeId, ratingIsDisabled, setRatingIsDisabled }) => {
+const CreateComment = ({ recipeId, newRatingIsDisabled, setNewRatingIsDisabled }) => {
     const currentUser = useContext(AuthContext);
     const [rating, setRating] = useState(0);
     const [content, setContent] = useState('');
@@ -31,7 +31,7 @@ const CreateComment = ({ recipeId, ratingIsDisabled, setRatingIsDisabled }) => {
             });
 
             if (createComment.comment.rating) {
-                setRatingIsDisabled(true);
+                setNewRatingIsDisabled(true);
             }
         }
     });
@@ -56,17 +56,18 @@ const CreateComment = ({ recipeId, ratingIsDisabled, setRatingIsDisabled }) => {
     return (
         <Form className="text-right" onSubmit={(e) => handleSubmit(e)}>
             <fieldset disabled={!currentUser}>
-                <StarRating
+                <NewCommentStarRating
                     rating={rating}
                     setRating={setRating}
-                    ratingIsDisabled={ratingIsDisabled}
+                    newRatingIsDisabled={newRatingIsDisabled}
                 />
                 <Form.Control
-                    className="mb-3 shadow-sm "
+                    className="mb-3 shadow-sm"
                     value={currentUser ? content : 'Log in to rate or comment'}
                     type="text"
                     as="textarea"
                     rows="3"
+                    style={{minHeight:"80px", maxHeight:"300px"}}
                     name="content"
                     onChange={(e) => setContent(e.target.value)}
                 />

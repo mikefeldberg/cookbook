@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 
-// import './styles.css';
 import Row from 'react-bootstrap/Row';
 import { AuthContext } from '../../App';
 
@@ -35,11 +34,11 @@ const Star = ({ currentUser, currentStar, selected = false, hoveredStar, onClick
     </>
 );
 
-const StarRating = ({ rating, setRating, ratingIsDisabled }) => {
+const EditCommentStarRating = ({ rating, setRating, editRatingIsDisabled }) => {
     const currentUser = useContext(AuthContext);
     const [hoveredStar, setHoveredStar] = useState(0);
 
-    if (currentUser && !ratingIsDisabled) {
+    if (currentUser && !editRatingIsDisabled) {
         return (
             <span>
                 <Row className="align-items-center" noGutters>
@@ -79,11 +78,11 @@ const StarRating = ({ rating, setRating, ratingIsDisabled }) => {
                         />
                     ))}
                     &nbsp;
-                    {ratingIsDisabled && '(Already rated)'}
+                    {editRatingIsDisabled && '(Already rated)'}
                 </Row>
             </span>
         );
     }
 };
 
-export default StarRating;
+export default EditCommentStarRating;
