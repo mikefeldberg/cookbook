@@ -14,13 +14,16 @@ export const ME_QUERY = gql`
             id
             username
             email
+            photos {
+                url
+            }
         }
     }
 `
 
 export const PROFILE_QUERY = gql`
-    query profileQuery ($id: String!) {
-        profile(id: $id) {
+    query profileQuery ($username: String!) {
+        profile(username: $username) {
             id
             username
             email
@@ -126,6 +129,10 @@ export const GET_RECIPES_QUERY = gql`
             user {
                 id
                 username
+                photos {
+                    id
+                    url
+                }
             }
             favorites {
                 id
@@ -495,6 +502,27 @@ export const RESET_PASSWORD_MUTATION = gql`
         resetPassword(password:$password, resetCode:$resetCode) {
             user {
                 id
+            }
+        }
+    }
+`
+
+export const CHANGE_PASSWORD_MUTATION = gql`
+    mutation ($password:String!) {
+        changePassword(password:$password) {
+            user {
+                id
+            }
+        }
+    }
+`
+
+export const CHANGE_USERNAME_MUTATION = gql`
+    mutation ($username:String!) {
+        changeUsername(username:$username) {
+            user {
+                id
+                username
             }
         }
     }

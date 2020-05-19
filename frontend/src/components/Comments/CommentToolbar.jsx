@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import Row from 'react-bootstrap/Row';
 import Dropdown from 'react-bootstrap/Dropdown';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Button from 'react-bootstrap/Button';
 
 import DeleteComment from './DeleteComment';
 
@@ -51,14 +53,23 @@ const CommentToolbar = ({ commentId, editing, setEditing, isSaveEnabled, handleC
                         <i className="clickable far fa-trash-alt"></i>
                     </Dropdown.Toggle>
                     <Dropdown.Menu as={CustomMenu}>
-                    <Dropdown.Item disabled eventKey="0">
+                    <Dropdown.Item disabled>
                         Are you sure?
                     </Dropdown.Item>
                     <Dropdown.Divider />
-                    <Dropdown.Item eventKey="2">
+                    <Dropdown.Item className="p-0">
                         <DeleteComment commentId={commentId} setRatingIsDisabled={setRatingIsDisabled} />
                     </Dropdown.Item>
-                    <Dropdown.Item eventKey="2">Cancel</Dropdown.Item>
+                    <Dropdown.Item className="p-0">
+                        <ButtonGroup className="w-100">
+                            <Button
+                                variant="light-outline"
+                                className="rounded-0 text-left"
+                            >
+                                Cancel
+                            </Button>
+                        </ButtonGroup>
+                    </Dropdown.Item>
                 </Dropdown.Menu>
                 </Dropdown>
             </Row>

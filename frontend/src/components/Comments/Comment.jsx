@@ -108,7 +108,7 @@ const Comment = ({ comment, setRatingIsDisabled }) => {
                 </Col>
                 <Col>
                     <Row noGutters>
-                        <Link style={{ textDecoration: 'none' }} to={`/profile/${comment.user.id}`}>
+                        <Link style={{ textDecoration: 'none' }} to={`/profile/${comment.user.username}`}>
                             <span className="link">{comment.user.username}</span>
                         </Link>
                         &nbsp;posted&nbsp;
