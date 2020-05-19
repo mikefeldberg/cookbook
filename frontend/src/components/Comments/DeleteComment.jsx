@@ -1,6 +1,9 @@
 import React from 'react';
 import { useMutation } from '@apollo/react-hooks';
 
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Button from 'react-bootstrap/Button';
+
 import { DELETE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries';
 
 const DeleteComment = ({ commentId, setRatingIsDisabled }) => {
@@ -20,7 +23,7 @@ const DeleteComment = ({ commentId, setRatingIsDisabled }) => {
                 recipe.rating = 0
                 recipe.ratingCount = 0
             }
-            
+
             cache.writeQuery({
                 query: GET_RECIPE_QUERY,
                 data: { recipe },
@@ -36,7 +39,16 @@ const DeleteComment = ({ commentId, setRatingIsDisabled }) => {
         await deleteComment({ variables: { commentId } });
     };
 
-    return <span onClick={() => handleDelete()}>Confirm Delete</span>;
+    return (
+        <ButtonGroup className="w-100" onClick={() => handleDelete()}>
+            <Button
+                variant="light-outline"
+                className="rounded-0 text-left"
+            >
+                Confirm Delete
+            </Button>
+        </ButtonGroup>
+    );
 };
 
 export default DeleteComment;
