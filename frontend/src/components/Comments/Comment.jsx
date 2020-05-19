@@ -19,7 +19,7 @@ const Comment = ({ comment, newRatingIsDisabled, setNewRatingIsDisabled }) => {
     const [editing, setEditing] = useState(false);
     const [newRating, setNewRating] = useState(comment.rating);
     const [newContent, setNewContent] = useState(comment.content);
-    const [editRatingIsDisabled, setEditRatingIsDisabled] = useState(newRatingIsDisabled === true && comment.rating === 0 ? true : false);
+    const [editRatingIsDisabled, setEditRatingIsDisabled] = useState(true);
 
     const [updateComment] = useMutation(UPDATE_COMMENT_MUTATION, {
         update(cache, { data: { updateComment } }) {
@@ -61,11 +61,6 @@ const Comment = ({ comment, newRatingIsDisabled, setNewRatingIsDisabled }) => {
                     setNewRatingIsDisabled(false)
                 }
             }
-
-            // MAY NOT NEED THIS
-            const userRatingData = cache.readQuery({ query: GET_USER_RATINGS_QUERY, variables: { id: currentUser.id } });
-            const ratings = {...userRatingData.recipe}
-
         },
     });
 
@@ -131,7 +126,7 @@ const Comment = ({ comment, newRatingIsDisabled, setNewRatingIsDisabled }) => {
                             <EditCommentStarRating
                                 rating={newRating}
                                 setRating={setNewRating}
-                                editRatingIsDisabled={editRatingIsDisabled}
+                                editRatingIsDisabled={newRatingIsDisabled === true && comment.rating === 0 ? true : false}
                             />
                         </Row>
                     )}
