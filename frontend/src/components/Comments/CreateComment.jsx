@@ -62,11 +62,12 @@ const CreateComment = ({ recipeId, ratingIsDisabled, setRatingIsDisabled }) => {
                     ratingIsDisabled={ratingIsDisabled}
                 />
                 <Form.Control
-                    className="mb-3 shadow-sm "
+                    className="mb-3 shadow-sm"
                     value={currentUser ? content : 'Log in to rate or comment'}
                     type="text"
                     as="textarea"
                     rows="3"
+                    style={{minHeight:"80px", maxHeight:"300px"}}
                     name="content"
                     onChange={(e) => setContent(e.target.value)}
                 />
