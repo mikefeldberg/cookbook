@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 
 import { DELETE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries';
 
-const DeleteComment = ({ commentId, setRatingIsDisabled }) => {
+const DeleteComment = ({ commentId, setNewRatingIsDisabled }) => {
     const [deleteComment] = useMutation(DELETE_COMMENT_MUTATION, {
         update(cache, { data: { deleteComment } }) {
             const recipeId = deleteComment.comment.recipeId;
@@ -30,7 +30,7 @@ const DeleteComment = ({ commentId, setRatingIsDisabled }) => {
             });
 
             if (deleteComment.comment.rating) {
-                setRatingIsDisabled(false)
+                setNewRatingIsDisabled(false)
             }
         },
     });

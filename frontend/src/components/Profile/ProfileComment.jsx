@@ -12,7 +12,7 @@ import Image from 'react-bootstrap/Image';
 import { UPDATE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries';
 import CommentToolbar from '../Comments/CommentToolbar';
 import { AuthContext } from '../../App';
-import StarRating from '../Comments/StarRating';
+import StarRating from '../Comments/NewCommentStarRating';
 
 
 const ProfileComment = ({ comment }) => {
