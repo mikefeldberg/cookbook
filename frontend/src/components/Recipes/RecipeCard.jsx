@@ -12,14 +12,16 @@ const RecipeCard = ({ recipe }) => {
 
     return (
         <Card className="shadow mb-4">
-            <Card.Img
-                variant="top"
-                src={
-                    recipe.photos.length > 0
-                        ? recipe.photos[0].url
-                        : `/recipe_placeholder.png`
-                }
-            />
+            <Link to={`/recipes/${recipe.id}`}>
+                <Card.Img
+                    variant="top"
+                    src={
+                        recipe.photos.length > 0
+                            ? recipe.photos[0].url
+                            : `/recipe_placeholder.png`
+                    }
+                />
+            </Link>
             <Card.Body>
                 <Card.Title>
                     <Link style={{ textDecoration: 'none' }} to={`/recipes/${recipe.id}`}><span className="link">{recipe.title}</span></Link>
