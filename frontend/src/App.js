@@ -25,6 +25,8 @@ export const AuthContext = React.createContext();
 const App = () => {
     const { data, loading } = useQuery(ME_QUERY);
 
+
+
     if (loading) return `Loading`
     let currentUser = data ? data.me : null;
 
