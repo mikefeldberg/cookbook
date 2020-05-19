@@ -99,13 +99,13 @@ class UserPhotoInput(graphene.InputObjectType):
 class Query(graphene.ObjectType):
     users = graphene.List(UserType)
     user = graphene.Field(UserType, id=graphene.String(required=True))
-    profile = graphene.Field(UserType, id=graphene.String(required=True))
+    profile = graphene.Field(UserType, username=graphene.String(required=True))
     me = graphene.Field(UserType)
     password_reset_request = graphene.Field(
         PasswordResetRequestType, reset_code=graphene.String(required=True))
 
-    def resolve_profile(self, info, id):
-        return get_user_model().objects.filter(id=id, deleted_at=None).first()
+    def resolve_profile(self, info, username):
+        return get_user_model().objects.filter(username=username, deleted_at=None).first()
 
     def resolve_users(self, info):
         return get_user_model().objects.all()

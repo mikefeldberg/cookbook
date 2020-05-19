@@ -29,11 +29,10 @@ const RecipeCard = ({ recipe }) => {
                 </Card.Title>
                 { !url.includes('profile') &&
                     <Card.Text>
-                        <Row className="no-gutters">
                         {/* Added by  */}
                         <Link
                             style={{ textDecoration: 'none' }}
-                            to={`/profile/${recipe.user.id}`}
+                            to={`/profile/${recipe.user.username}`}
                         >
                             <Image
                                 width={32}
@@ -48,7 +47,6 @@ const RecipeCard = ({ recipe }) => {
                             />
                             <span className="link">{recipe.user.username}</span>
                         </Link>
-                        </Row>
                     </Card.Text>
                 }
             </Card.Body>

@@ -44,7 +44,7 @@ const App = () => {
                             <Route exact path="/recipes/new" component={CreateRecipe} />
                             <Route exact path="/recipes/:id" component={RecipeDetails} />
                             <Route exact path="/recipes/:id/edit" component={UpdateRecipe} />
-                            <Route exact path="/profile/:id" component={ProfilePage} />
+                            <Route exact path="/profile/:username" component={ProfilePage} />
                             <Route exact path="/terms" component={Terms} />
                         </Switch>
                     </Container>

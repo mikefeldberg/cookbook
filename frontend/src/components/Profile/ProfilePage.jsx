@@ -15,10 +15,10 @@ import SettingsTab from './SettingsTab';
 
 const ProfilePage = ({ match }) => {
     const currentUser = useContext(AuthContext);
-    const id = match.params.id;
+    const username = match.params.username;
 
     const { data, loading, error } = useQuery(PROFILE_QUERY, {
-        variables: { id },
+        variables: { username },
         fetchPolicy: 'network-only',
     });
 
@@ -41,7 +41,7 @@ const ProfilePage = ({ match }) => {
                         <CardColumns className={recipes.length > 0 ? '' : 'mb-5'}>
                             {recipes.length > 0
                                 ? recipes.map((recipe) => <RecipeCard key={recipe.id} recipe={recipe} />)
-                                : currentUser && currentUser.id === id
+                                : currentUser && currentUser.username === username
                                 ? `You haven't added any recipes`
                                 : `${profileUsername} hasn't added any recipes`
                             }
@@ -51,7 +51,7 @@ const ProfilePage = ({ match }) => {
                         <CardColumns className={favorites.length > 0 ? '' : 'mb-5'}>
                             {favorites.length > 0
                                 ? favorites.map((favorite) => <RecipeCard key={favorite.id} recipe={favorite.recipe} />)
-                                : currentUser && currentUser.id === id
+                                : currentUser && currentUser.username === username
                                 ? `You haven't saved any favorites`
                                 : `${profileUsername} hasn't saved any favorites`
                             }
@@ -60,7 +60,7 @@ const ProfilePage = ({ match }) => {
                     <Tab eventKey="comments" title="Comments">
                         {comments.length > 0
                             ? comments.map((comment) => <ProfileComment key={comment.id} comment={comment} />)
-                            : currentUser && currentUser.id === id
+                            : currentUser && currentUser.username === username
                             ? `You haven't left any comments`
                             : `${profileUsername} hasn't left any comments`
                         }
