@@ -12,19 +12,20 @@ import Image from 'react-bootstrap/Image';
 import { UPDATE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries';
 import { AuthContext } from '../../App';
 import CommentToolbar from './CommentToolbar';
-import StarRating from './StarRating';
+import EditCommentStarRating from './EditCommentStarRating';
 
-const Comment = ({ comment, setRatingIsDisabled }) => {
+const Comment = ({ comment, newRatingIsDisabled, setNewRatingIsDisabled }) => {
     const currentUser = useContext(AuthContext);
     const [editing, setEditing] = useState(false);
     const [newRating, setNewRating] = useState(comment.rating);
     const [newContent, setNewContent] = useState(comment.content);
 
+
     const [updateComment] = useMutation(UPDATE_COMMENT_MUTATION, {
         update(cache, { data: { updateComment } }) {
             const recipeId = updateComment.comment.recipe.id;
-            const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables: { id: recipeId } });
-            const recipe = {...data.recipe}
+            const recipeData = cache.readQuery({ query: GET_RECIPE_QUERY, variables: { id: recipeId } });
+            const recipe = {...recipeData.recipe}
             const index = recipe.comments.findIndex(comment => comment.id === updateComment.comment.id);
             recipe.comments = [...recipe.comments.slice(0, index), updateComment.comment, ...recipe.comments.slice(index + 1)]
 
@@ -41,10 +42,10 @@ const Comment = ({ comment, setRatingIsDisabled }) => {
                         recipe.rating = 0
                         recipe.ratingCount = 0
                     }
+                } else {
+                    recipe.rating = (recipe.rating * recipe.ratingCount + updateComment.comment.rating) / (recipe.ratingCount + 1)
+                    recipe.ratingCount += 1
                 }
-            } else {
-                recipe.rating = (recipe.rating * recipe.ratingCount + updateComment.comment.rating) / (recipe.ratingCount + 1)
-                recipe.ratingCount += 1
             }
 
             cache.writeQuery({
@@ -54,10 +55,10 @@ const Comment = ({ comment, setRatingIsDisabled }) => {
 
             if (comment.rating !== updateComment.comment.rating) {
                 if (comment.rating === 0) {
-                    setRatingIsDisabled(true)
+                    setNewRatingIsDisabled(true)
                 }
                 if (updateComment.comment.rating === 0) {
-                    setRatingIsDisabled(false)
+                    setNewRatingIsDisabled(false)
                 }
             }
         },
@@ -122,7 +123,11 @@ const Comment = ({ comment, setRatingIsDisabled }) => {
                     {!editing && <Row noGutters className="selected">{'★'.repeat(comment.rating)}</Row>}
                     {editing && (
                         <Row noGutters>
-                            <StarRating rating={newRating} setRating={setNewRating} />
+                            <EditCommentStarRating
+                                rating={newRating}
+                                setRating={setNewRating}
+                                editRatingIsDisabled={newRatingIsDisabled === true && comment.rating === 0 ? true : false}
+                            />
                         </Row>
                     )}
                 </Col>
@@ -136,7 +141,7 @@ const Comment = ({ comment, setRatingIsDisabled }) => {
                             handleCancel={handleCancel}
                             handleSubmit={handleSubmit}
                             updateComment={updateComment}
-                            setRatingIsDisabled={setRatingIsDisabled}
+                            setNewRatingIsDisabled={setNewRatingIsDisabled}
                         />
                     }
                 </Col>
