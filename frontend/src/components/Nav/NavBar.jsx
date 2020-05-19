@@ -19,7 +19,7 @@ const NavBar = () => {
                     <Navbar.Brand>
                         <Link to="/">
                             <img
-                                src="/logo.png"
+                                src="/logo_white_border.png"
                                 width="30"
                                 height="30"
                                 className="d-inline-block align-top"
