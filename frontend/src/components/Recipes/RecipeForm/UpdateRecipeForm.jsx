@@ -253,9 +253,9 @@ const UpdateRecipeForm = ({ recipe }) => {
                             <thead>
                                 <tr>
                                     <th className="text-center">#</th>
-                                    <th className="text-center">Qty & Unit</th>
-                                    <th className="text-center">Ingredient</th>
-                                    <th className="text-center">Preparation</th>
+                                    <th className="text-center" style={{ minWidth: "200px" }}>Qty & Unit</th>
+                                    <th className="col-5 text-center">Ingredient</th>
+                                    <th className="text-center" style={{ minWidth: "200px" }}>Preparation</th>
                                     <th className="text-center">-</th>
                                 </tr>
                             </thead>
@@ -288,7 +288,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                             <thead>
                                 <tr>
                                     <th className="text-center">#</th>
-                                    <th className="text-center">Instruction</th>
+                                    <th className="col-10 text-center">Instruction</th>
                                     <th className="text-center">-</th>
                                 </tr>
                             </thead>
