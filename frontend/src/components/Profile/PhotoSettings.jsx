@@ -254,18 +254,20 @@ const PhotoSettings = ({ profile }) => {
                         <div className="mb-2">
                             Current Photo:
                             <Container>
-                            <Row>
-                                <Image src={existingPhotoUrl} rounded thumbnail style={{maxWidth: `100px`}}/>
-                                {deleteExistingPhoto &&
-                                    <Row>
-                                        'This image will be deleted after you save changes.'
-                                        <Button variant="success" onClick={() => handleCancel()}>Cancel Delete</Button>
-                                    </Row>
-                                }
-                                {!deleteExistingPhoto &&
-                                    <Button variant="danger" onClick={() => setDeleteExistingPhoto(true)}>x</Button>
-                                }
-                            </Row>
+                                <Row className="align-items-center">
+                                    <Image src={existingPhotoUrl} rounded thumbnail style={{maxWidth: `100px`}} className="mr-3"/>
+                                    {deleteExistingPhoto &&
+                                        <div>
+                                            <div><small className="text-danger">This image will be deleted after you save changes.</small></div>
+                                            <Button onClick={() => handleCancel()} className="btn btn-dark pt-0 pb-0 shadow-sm" size="sm">
+                                                Cancel Delete
+                                            </Button>
+                                        </div>
+                                    }
+                                    {!deleteExistingPhoto &&
+                                        <i onClick={() => setDeleteExistingPhoto(true)} className="cancelBtn clickable fas fa-times mr-1"></i>
+                                    }
+                                </Row>
                             </Container>
                         </div>
                     }

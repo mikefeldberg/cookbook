@@ -71,7 +71,7 @@ const CreateComment = ({ recipeId, newRatingIsDisabled, setNewRatingIsDisabled }
                     name="content"
                     onChange={(e) => setContent(e.target.value)}
                 />
-                <Button disabled={!currentUser} className="mb-3" type="submit">
+                <Button disabled={!currentUser} type="submit" className="mb-3" variant="dark">
                     Add Comment
                 </Button>
             </fieldset>

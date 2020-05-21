@@ -8,6 +8,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import FormFile from 'react-bootstrap/FormFile';
 import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
 
@@ -224,10 +225,11 @@ const UpdateRecipeForm = ({ recipe }) => {
     };
 
     return (
-        <Form onSubmit={e => handleSubmit(e, updateRecipe)}>
+        <Form onSubmit={e => handleSubmit(e, updateRecipe)} className="mb-3">
             <Form.Group controlId="formName">
-                <Form.Label>Recipe Title&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
+                <Form.Label className="font-weight-bold">Recipe Title&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
                 <Form.Control
+                    size="sm"
                     value={title}
                     type="text"
                     name="title"
@@ -236,8 +238,9 @@ const UpdateRecipeForm = ({ recipe }) => {
                 />
             </Form.Group>
             <Form.Group controlId="formDescription">
-                <Form.Label>Recipe Description</Form.Label>
+                <Form.Label className="font-weight-bold">Recipe Description</Form.Label>
                 <Form.Control
+                    size="sm"
                     value={description}
                     type="text"
                     name="description"
@@ -247,6 +250,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                 />
             </Form.Group>
             <Form.Group>
+                <Form.Label className="font-weight-bold">Ingredients</Form.Label>
                 <div className="row clearfix">
                     <div name="ingredients" className="col-12 column">
                         <Table className="mb-2" size="sm" striped bordered hover>
@@ -274,7 +278,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                             </tbody>
                         </Table>
                         <div className="d-flex justify-content-end">
-                            <Button onClick={addIngredient} className="btn btn-primary" size="sm">
+                            <Button onClick={addIngredient} className="btn btn-dark pt-0 pb-0 shadow-sm" size="sm">
                                 Add Ingredient
                             </Button>
                         </div>
@@ -282,6 +286,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                 </div>
             </Form.Group>
             <Form.Group controlId="instructionsData">
+                <Form.Label className="font-weight-bold">Instructions</Form.Label>
                 <div className="row clearfix">
                     <div name="instructions" className="col-12 column">
                         <Table className="mb-2" size="sm" striped bordered hover>
@@ -307,7 +312,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                             </tbody>
                         </Table>
                         <div className="d-flex justify-content-end">
-                            <Button onClick={addInstruction} className="btn btn-primary" size="sm">
+                            <Button onClick={addInstruction} className="btn btn-dark pt-0 pb-0 shadow-sm" size="sm">
                                 Add Instruction
                             </Button>
                         </div>
@@ -316,7 +321,7 @@ const UpdateRecipeForm = ({ recipe }) => {
             </Form.Group>
             <fieldset>
                 <Form.Group as={Row}>
-                    <Form.Label as="legend" column sm={2}>
+                    <Form.Label as="legend" column sm={2} className="font-weight-bold">
                         Difficulty
                     </Form.Label>
                     <Row sm={10}>
@@ -327,6 +332,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                             name="formHorizontalRadios"
                             id="Easy"
                             onClick={() => setSkillLevel('Easy')}
+                            className="mr-3"
                         />
                         <Form.Check
                             defaultChecked={skillLevel === 'Intermediate'}
@@ -335,6 +341,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                             name="formHorizontalRadios"
                             id="Intermediate"
                             onClick={() => setSkillLevel('Intermediate')}
+                            className="mr-3"
                         />
                         <Form.Check
                             defaultChecked={skillLevel === 'Advanced'}
@@ -347,9 +354,11 @@ const UpdateRecipeForm = ({ recipe }) => {
                     </Row>
                 </Form.Group>
             </fieldset>
-            <Form.Group controlId="formServings">
-                <Form.Label>Servings&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
+            <Form.Row>
+                <Form.Group as={Col} controlId="formServings" className="mr-5">
+                <Form.Label className="font-weight-bold">Servings&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
                 <Form.Control
+                    size="sm"
                     value={servings}
                     type="number"
                     name="servings"
@@ -358,9 +367,10 @@ const UpdateRecipeForm = ({ recipe }) => {
                     required
                 />
             </Form.Group>
-            <Form.Group controlId="formPrepTime">
-                <Form.Label>Prep Time&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
+            <Form.Group as={Col} controlId="formPrepTime" className="mr-1">
+                <Form.Label className="font-weight-bold">Prep Time&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
                 <Form.Control
+                    size="sm"
                     value={prepTime}
                     type="number"
                     name="prepTime"
@@ -369,9 +379,10 @@ const UpdateRecipeForm = ({ recipe }) => {
                     required
                 />
             </Form.Group>
-            <Form.Group controlId="formCookTime">
-                <Form.Label>Cook Time</Form.Label>
+            <Form.Group as={Col} controlId="formCookTime" className="mr-1">
+                <Form.Label className="font-weight-bold">Cook Time</Form.Label>
                 <Form.Control
+                    size="sm"
                     value={cookTime}
                     type="number"
                     name="cookTime"
@@ -379,9 +390,10 @@ const UpdateRecipeForm = ({ recipe }) => {
                     pattern="\d+"
                 />
             </Form.Group>
-            <Form.Group controlId="formWaitTime">
-                <Form.Label>Wait Time</Form.Label>
+            <Form.Group as={Col} controlId="formWaitTime">
+                <Form.Label className="font-weight-bold">Wait Time</Form.Label>
                 <Form.Control
+                    size="sm"
                     value={waitTime}
                     type="number"
                     name="waitTime"
@@ -389,30 +401,33 @@ const UpdateRecipeForm = ({ recipe }) => {
                     pattern="\d+"
                 />
             </Form.Group>
+            </Form.Row>
             <Form.Group>
+                <Form.Label className="font-weight-bold">Photo</Form.Label>
+                <Form.Group>
                 { existingPhotoUrl &&
                     <div className="mb-2">
                         Current Photo:
                         <Container>
-                        <Row>
-                            <Image src={existingPhotoUrl} rounded thumbnail style={{maxWidth: `100px`}}/>
-                            {deleteExistingPhoto &&
-                                <Row>
-                                    'This image will be deleted after you save changes.'
-                                    <Button variant="success" onClick={() => handleCancel()}>Cancel Delete</Button>
-                                </Row>
-                            }
-                            {!deleteExistingPhoto &&
-                                <Button variant="danger" onClick={() => setDeleteExistingPhoto(true)}>x</Button>
-                            }
-                        </Row>
+                            <Row className="align-items-center">
+                                <Image src={existingPhotoUrl} rounded thumbnail style={{maxWidth: `100px`}} className="mr-3"/>
+                                {deleteExistingPhoto &&
+                                    <div>
+                                        <div><small className="text-danger">This image will be deleted after you save changes.</small></div>
+                                        <Button onClick={() => handleCancel()} className="btn btn-dark pt-0 pb-0 shadow-sm" size="sm">
+                                            Cancel Delete
+                                        </Button>
+                                    </div>
+                                }
+                                {!deleteExistingPhoto &&
+                                    <i onClick={() => setDeleteExistingPhoto(true)} className="cancelBtn clickable fas fa-times mr-1"></i>
+                                }
+                            </Row>
                         </Container>
                     </div>
                 }
             </Form.Group>
-            <Form.Group>
-                <Form.Label>Photo</Form.Label>
-                <InputGroup>
+                <InputGroup size="sm">
                     <InputGroup.Prepend>
                         <InputGroup.Text onClick={() => {setPhotoSource('upload')}}>
                             <i className={
@@ -454,12 +469,12 @@ const UpdateRecipeForm = ({ recipe }) => {
                 <Button
                     className="mr-2"
                     type="submit"
-                    variant="primary"
+                    variant="dark"
                     disabled={!title || !servings || !prepTime}
                 >
                     Save Recipe
                 </Button>
-                <Button onClick={() => {history.push(`/recipes/${recipeId}`)}} variant="danger">
+                <Button onClick={() => {history.push(`/recipes/${recipeId}`)}} variant="light">
                     Cancel
                 </Button>
             </div>

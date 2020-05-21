@@ -196,9 +196,9 @@ const CreateRecipe = ({ history }) => {
 
     if (currentUser) {
         return (
-            <Form className="mb-3" onSubmit={(e) => handleSubmit(e, createRecipe)}>
+            <Form onSubmit={(e) => handleSubmit(e, createRecipe)} className="mb-3">
                 <Form.Group controlId="formName">
-                    <Form.Label>Recipe Title&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
+                    <Form.Label className="font-weight-bold">Recipe Title&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
                     <Form.Control
                         size="sm"
                         value={title}
@@ -209,7 +209,7 @@ const CreateRecipe = ({ history }) => {
                     />
                 </Form.Group>
                 <Form.Group controlId="formDescription">
-                    <Form.Label>Recipe Description</Form.Label>
+                    <Form.Label className="font-weight-bold">Recipe Description</Form.Label>
                     <Form.Control
                         size="sm"
                         value={description}
@@ -221,6 +221,7 @@ const CreateRecipe = ({ history }) => {
                     />
                 </Form.Group>
                 <Form.Group>
+                    <Form.Label className="font-weight-bold">Ingredients</Form.Label>
                     <div className="row clearfix">
                         <div name="ingredients" className="col-12 column">
                             <Table className="mb-2" size="sm" striped bordered hover>
@@ -248,7 +249,7 @@ const CreateRecipe = ({ history }) => {
                                 </tbody>
                             </Table>
                             <div className="d-flex justify-content-end">
-                                <Button onClick={addIngredient} className="btn btn-primary" size="sm">
+                                <Button onClick={addIngredient} className="btn btn-dark pt-0 pb-0 shadow-sm" size="sm">
                                     Add Ingredient
                                 </Button>
                             </div>
@@ -256,6 +257,7 @@ const CreateRecipe = ({ history }) => {
                     </div>
                 </Form.Group>
                 <Form.Group controlId="instructionsData">
+                    <Form.Label className="font-weight-bold">Instructions</Form.Label>
                     <div className="row clearfix">
                         <div name="instructions" className="col-12 column">
                             <Table className="mb-2" size="sm" striped bordered hover>
@@ -281,7 +283,7 @@ const CreateRecipe = ({ history }) => {
                                 </tbody>
                             </Table>
                             <div className="d-flex justify-content-end">
-                                <Button onClick={addIngredient} className="btn btn-primary" size="sm">
+                                <Button onClick={addInstruction} className="btn btn-dark pt-0 pb-0 shadow-sm" size="sm">
                                     Add Instruction
                                 </Button>
                             </div>
@@ -290,7 +292,7 @@ const CreateRecipe = ({ history }) => {
                 </Form.Group>
                 <fieldset>
                     <Form.Group as={Row}>
-                        <Form.Label as="legend" column sm={2}>
+                        <Form.Label as="legend" column sm={2} className="font-weight-bold">
                             Skill Level
                         </Form.Label>
                         <Row sm={10}>
@@ -301,6 +303,7 @@ const CreateRecipe = ({ history }) => {
                                 id="Easy"
                                 defaultChecked
                                 onClick={() => setSkillLevel('Easy')}
+                                className="mr-3"
                             />
                             <Form.Check
                                 type="radio"
@@ -308,6 +311,7 @@ const CreateRecipe = ({ history }) => {
                                 name="formHorizontalRadios"
                                 id="Intermediate"
                                 onClick={() => setSkillLevel('Intermediate')}
+                                className="mr-3"
                             />
                             <Form.Check
                                 type="radio"
@@ -320,8 +324,8 @@ const CreateRecipe = ({ history }) => {
                     </Form.Group>
                 </fieldset>
                 <Form.Row>
-                <Form.Group as={Col} controlId="formServings" className="mr-4">
-                    <Form.Label>Servings&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
+                <Form.Group as={Col} controlId="formServings" className="mr-5">
+                    <Form.Label className="font-weight-bold">Servings&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
                     <Form.Control
                         size="sm"
                         value={servings}
@@ -332,8 +336,8 @@ const CreateRecipe = ({ history }) => {
                         required
                     />
                 </Form.Group>
-                <Form.Group as={Col} controlId="formPrepTime" className="mr-4">
-                    <Form.Label>Prep Time&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
+                <Form.Group as={Col} controlId="formPrepTime" className="mr-1">
+                    <Form.Label className="font-weight-bold">Prep Time&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
                     <Form.Control
                         size="sm"
                         value={prepTime}
@@ -344,8 +348,8 @@ const CreateRecipe = ({ history }) => {
                         required
                     />
                 </Form.Group>
-                <Form.Group as={Col} controlId="formCookTime" className="mr-4">
-                    <Form.Label>Cook Time</Form.Label>
+                <Form.Group as={Col} controlId="formCookTime" className="mr-1">
+                    <Form.Label className="font-weight-bold">Cook Time</Form.Label>
                     <Form.Control
                         size="sm"
                         value={cookTime}
@@ -355,8 +359,8 @@ const CreateRecipe = ({ history }) => {
                         pattern="\d+"
                     />
                 </Form.Group>
-                <Form.Group as={Col} controlId="formWaitTime">
-                    <Form.Label>Wait Time</Form.Label>
+                <Form.Group as={Col} controlId="formWaitTime" className="font-weight-bold">
+                    <Form.Label className="font-weight-bold">Wait Time</Form.Label>
                     <Form.Control
                         size="sm"
                         value={waitTime}
@@ -368,24 +372,24 @@ const CreateRecipe = ({ history }) => {
                 </Form.Group>
                 </Form.Row>
                 <Form.Group>
-                    <Form.Label>Photo</Form.Label>
+                    <Form.Label className="font-weight-bold">Photo</Form.Label>
                     <InputGroup size="sm">
                         <InputGroup.Prepend>
-                            <InputGroup.Text onClick={() => {setPhotoSource('upload');}}>
+                            <InputGroup.Text onClick={() => {setPhotoSource('upload');}} >
                                 <i className={
                                     photoSource === 'upload'
                                         ? 'text-primary fas fa-file-upload'
                                         : 'text-light fas fa-file-upload'
                                 }></i>
                             </InputGroup.Text>
-                            <InputGroup.Text onClick={() => {setPhotoSource('link');}}>
+                            <InputGroup.Text onClick={() => {setPhotoSource('link');}} >
                                 <i className={
                                     photoSource === 'link'
                                     ? 'text-primary fas fa-link'
                                     : 'text-light fas fa-link'
                                 }></i>
                             </InputGroup.Text>
-                        </InputGroup.Prepend>
+                        </InputGroup.Prepend >
                         {photoSource === 'upload' && (
                         <FormFile
                             label={file && fileName && fileSize
@@ -393,14 +397,12 @@ const CreateRecipe = ({ history }) => {
                                 : "Choose file (.jpg, .png)"
                             }
                             custom
-                            size="sm"
                             accept=".jpg, .jpeg, .png"
                             onChange={getFile}
                         />
                     )}
                         {photoSource === 'link' && (
                             <Form.Control
-                                size="sm"
                                 value={photoUrl}
                                 placeholder="Paste image URL"
                                 onChange={(e) => setPhotoUrl(e.target.value)}
@@ -413,17 +415,12 @@ const CreateRecipe = ({ history }) => {
                     <Button
                         className={'mr-2'}
                         type="submit"
-                        variant="primary"
+                        variant="dark"
                         disabled={!title || !servings || !prepTime}
                     >
                         Save Recipe
                     </Button>
-                    <Button
-                        onClick={() => {
-                            history.push(`/`);
-                        }}
-                        variant="danger"
-                    >
+                    <Button onClick={() => {history.push(`/`)}} variant="light">
                         Cancel
                     </Button>
                 </div>
