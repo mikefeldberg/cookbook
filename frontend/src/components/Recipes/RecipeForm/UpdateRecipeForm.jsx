@@ -249,14 +249,14 @@ const UpdateRecipeForm = ({ recipe }) => {
             <Form.Group>
                 <div className="row clearfix">
                     <div name="ingredients" className="col-12 column">
-                        <Table striped bordered hover>
+                        <Table className="mb-2" size="sm" striped bordered hover>
                             <thead>
                                 <tr>
-                                    <th className="text-center">#</th>
-                                    <th className="text-center" style={{ minWidth: "200px" }}>Qty & Unit</th>
-                                    <th className="col-5 text-center">Ingredient</th>
-                                    <th className="text-center" style={{ minWidth: "200px" }}>Preparation</th>
-                                    <th className="text-center">-</th>
+                                    <th className="text-center"></th>
+                                    <th className="text-center" style={{ minWidth: "100px" }}><small><strong>Qty & Unit</strong></small></th>
+                                    <th className="col-5 text-center"><small><strong>Ingredient</strong></small></th>
+                                    <th className="text-center" style={{ minWidth: "150px" }}><small><strong>Preparation</strong></small></th>
+                                    <th className="text-center"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -274,7 +274,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                             </tbody>
                         </Table>
                         <div className="d-flex justify-content-end">
-                            <Button onClick={addIngredient} className="btn btn-primary">
+                            <Button onClick={addIngredient} className="btn btn-primary" size="sm">
                                 Add Ingredient
                             </Button>
                         </div>
@@ -284,12 +284,12 @@ const UpdateRecipeForm = ({ recipe }) => {
             <Form.Group controlId="instructionsData">
                 <div className="row clearfix">
                     <div name="instructions" className="col-12 column">
-                        <Table striped bordered hover>
+                        <Table className="mb-2" size="sm" striped bordered hover>
                             <thead>
                                 <tr>
-                                    <th className="text-center">#</th>
-                                    <th className="col-10 text-center">Instruction</th>
-                                    <th className="text-center">-</th>
+                                    <th className="text-center"></th>
+                                    <th className="col-10 text-center"><small><strong>Instruction</strong></small></th>
+                                    <th className="text-center"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -307,7 +307,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                             </tbody>
                         </Table>
                         <div className="d-flex justify-content-end">
-                            <Button onClick={addInstruction} className="btn btn-primary">
+                            <Button onClick={addInstruction} className="btn btn-primary" size="sm">
                                 Add Instruction
                             </Button>
                         </div>

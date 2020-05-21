@@ -7,9 +7,10 @@ import Button from 'react-bootstrap/Button';
 const IngredientInput = ({ idx, ingredients, handleIngredientChange, deleteIngredient }) => {
     return (
         <tr key={`cat-${idx}`}>
-            <td className="align-middle">{`${idx + 1}`}</td>
+            <td className="align-middle text-center pr-0"><small><strong>{`${idx + 1}`}</strong></small></td>
             <td>
                 <Form.Control
+                    size="sm"
                     placeholder={idx === 0 ? "1" : ''}
                     type="text"
                     name="quantity"
@@ -20,6 +21,7 @@ const IngredientInput = ({ idx, ingredients, handleIngredientChange, deleteIngre
             </td>
             <td>
                 <Form.Control
+                    size="sm"
                     placeholder={idx === 0 ? "sweet onion" : ''}
                     type="text"
                     name="name"
@@ -31,6 +33,7 @@ const IngredientInput = ({ idx, ingredients, handleIngredientChange, deleteIngre
             </td>
             <td>
                 <Form.Control
+                    size="sm"
                     placeholder={idx === 0 ? "chopped" : ''}
                     type="text"
                     name="preparation"
@@ -39,8 +42,8 @@ const IngredientInput = ({ idx, ingredients, handleIngredientChange, deleteIngre
                     onChange={handleIngredientChange}
                 />
             </td>
-            <td>
-                <Button onClick={() => deleteIngredient(idx)}>-</Button>
+            <td className="align-middle">
+                {<i onClick={() => deleteIngredient(idx)} className="cancelBtn clickable fas fa-times mr-1"></i>}
             </td>
         </tr>
     );

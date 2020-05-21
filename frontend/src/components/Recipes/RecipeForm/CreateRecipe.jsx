@@ -7,6 +7,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import FormFile from 'react-bootstrap/FormFile';
 import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
 import { CREATE_RECIPE_MUTATION, CREATE_RECIPE_PHOTO_MUTATION, GET_RECIPES_QUERY } from '../../../queries/queries';
@@ -195,10 +196,11 @@ const CreateRecipe = ({ history }) => {
 
     if (currentUser) {
         return (
-            <Form onSubmit={(e) => handleSubmit(e, createRecipe)}>
+            <Form className="mb-3" onSubmit={(e) => handleSubmit(e, createRecipe)}>
                 <Form.Group controlId="formName">
                     <Form.Label>Recipe Title&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
                     <Form.Control
+                        size="sm"
                         value={title}
                         type="text"
                         name="title"
@@ -209,6 +211,7 @@ const CreateRecipe = ({ history }) => {
                 <Form.Group controlId="formDescription">
                     <Form.Label>Recipe Description</Form.Label>
                     <Form.Control
+                        size="sm"
                         value={description}
                         type="text"
                         name="description"
@@ -220,14 +223,14 @@ const CreateRecipe = ({ history }) => {
                 <Form.Group>
                     <div className="row clearfix">
                         <div name="ingredients" className="col-12 column">
-                            <Table striped bordered hover>
+                            <Table className="mb-2" size="sm" striped bordered hover>
                                 <thead>
                                     <tr>
-                                        <th className="text-center">#</th>
-                                        <th className="text-center" style={{ minWidth: "200px" }}>Qty & Unit</th>
-                                        <th className="col-5 text-center">Ingredient</th>
-                                        <th className="text-center" style={{ minWidth: "200px" }}>Preparation</th>
-                                        <th className="text-center">-</th>
+                                        <th className="text-center"></th>
+                                        <th className="text-center" style={{ minWidth: "100px" }}><small><strong>Qty & Unit</strong></small></th>
+                                        <th className="col-5 text-center"><small><strong>Ingredient</strong></small></th>
+                                        <th className="text-center" style={{ minWidth: "150px" }}><small><strong>Preparation</strong></small></th>
+                                        <th className="text-center"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -245,7 +248,7 @@ const CreateRecipe = ({ history }) => {
                                 </tbody>
                             </Table>
                             <div className="d-flex justify-content-end">
-                                <Button onClick={addIngredient} className="btn btn-primary">
+                                <Button onClick={addIngredient} className="btn btn-primary" size="sm">
                                     Add Ingredient
                                 </Button>
                             </div>
@@ -255,12 +258,12 @@ const CreateRecipe = ({ history }) => {
                 <Form.Group controlId="instructionsData">
                     <div className="row clearfix">
                         <div name="instructions" className="col-12 column">
-                            <Table striped bordered hover>
+                            <Table className="mb-2" size="sm" striped bordered hover>
                                 <thead>
                                     <tr>
-                                        <th className="text-center">#</th>
-                                        <th className="col-10 text-center">Instruction</th>
-                                        <th className="text-center">-</th>
+                                        <th className="text-center"></th>
+                                        <th className="col-10 text-center"><small><strong>Instruction</strong></small></th>
+                                        <th className="text-center"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -278,7 +281,7 @@ const CreateRecipe = ({ history }) => {
                                 </tbody>
                             </Table>
                             <div className="d-flex justify-content-end">
-                                <Button onClick={addInstruction} className="btn btn-primary">
+                                <Button onClick={addIngredient} className="btn btn-primary" size="sm">
                                     Add Instruction
                                 </Button>
                             </div>
@@ -316,9 +319,11 @@ const CreateRecipe = ({ history }) => {
                         </Row>
                     </Form.Group>
                 </fieldset>
-                <Form.Group controlId="formServings">
+                <Form.Row>
+                <Form.Group as={Col} controlId="formServings" className="mr-4">
                     <Form.Label>Servings&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
                     <Form.Control
+                        size="sm"
                         value={servings}
                         type="number"
                         name="servings"
@@ -327,9 +332,10 @@ const CreateRecipe = ({ history }) => {
                         required
                     />
                 </Form.Group>
-                <Form.Group controlId="formPrepTime">
+                <Form.Group as={Col} controlId="formPrepTime" className="mr-4">
                     <Form.Label>Prep Time&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
                     <Form.Control
+                        size="sm"
                         value={prepTime}
                         type="number"
                         name="prepTime"
@@ -338,9 +344,10 @@ const CreateRecipe = ({ history }) => {
                         required
                     />
                 </Form.Group>
-                <Form.Group controlId="formCookTime">
+                <Form.Group as={Col} controlId="formCookTime" className="mr-4">
                     <Form.Label>Cook Time</Form.Label>
                     <Form.Control
+                        size="sm"
                         value={cookTime}
                         type="number"
                         name="cookTime"
@@ -348,9 +355,10 @@ const CreateRecipe = ({ history }) => {
                         pattern="\d+"
                     />
                 </Form.Group>
-                <Form.Group controlId="formWaitTime">
+                <Form.Group as={Col} controlId="formWaitTime">
                     <Form.Label>Wait Time</Form.Label>
                     <Form.Control
+                        size="sm"
                         value={waitTime}
                         type="number"
                         name="waitTime"
@@ -358,9 +366,10 @@ const CreateRecipe = ({ history }) => {
                         pattern="\d+"
                     />
                 </Form.Group>
+                </Form.Row>
                 <Form.Group>
                     <Form.Label>Photo</Form.Label>
-                    <InputGroup>
+                    <InputGroup size="sm">
                         <InputGroup.Prepend>
                             <InputGroup.Text onClick={() => {setPhotoSource('upload');}}>
                                 <i className={
@@ -384,12 +393,14 @@ const CreateRecipe = ({ history }) => {
                                 : "Choose file (.jpg, .png)"
                             }
                             custom
+                            size="sm"
                             accept=".jpg, .jpeg, .png"
                             onChange={getFile}
                         />
                     )}
                         {photoSource === 'link' && (
                             <Form.Control
+                                size="sm"
                                 value={photoUrl}
                                 placeholder="Paste image URL"
                                 onChange={(e) => setPhotoUrl(e.target.value)}

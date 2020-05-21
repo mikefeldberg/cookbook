@@ -106,3 +106,35 @@ h1, h2, h3, h4 {
 .content {
   flex: 1 0 auto;
 }
+
+table, caption, tbody, tfoot, thead, tr, th, td {
+  margin: 0 !important;
+  /* padding: 0 !important; */
+  border: 0 !important;
+  /* outline: 0 !important; */
+  /* font-size: 100% !important; */
+  /* vertical-align: baseline !important; */
+  /* background: transparent !important; */
+}
+
+.cancelBtn, .confirmBtn, .editBtn, .deleteBtn {
+  color: rgb(180, 180, 180);
+}
+
+.cancelBtn:hover {
+  color: rgb(239, 52, 0);
+}
+
+.confirmBtn:hover {
+  color: rgb(17,170,82);
+}
+
+.editBtn:hover, .deleteBtn:hover {
+  color: rgb(109, 109, 109);
+}
+
+/* .dropdownUnformat added exclusively to remove top margin in Toolbar trash/delete dropdown  */
+
+.dropdownUnformat {
+  margin-top: -3px;
+}

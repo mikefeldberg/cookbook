@@ -7,9 +7,10 @@ import Button from 'react-bootstrap/Button';
 const InstructionInput = ({ idx, instructions, handleInstructionChange, deleteInstruction }) => {
     return (
         <tr key={`cat-${idx}`}>
-            <td className="align-middle">{`${idx + 1}`}</td>
+            <td className="align-middle text-center pr-0"><small><strong>{`${idx + 1}`}</strong></small></td>
             <td>
                 <Form.Control
+                    size="sm"
                     type="text"
                     name="content"
                     data-idx={idx}
@@ -18,8 +19,8 @@ const InstructionInput = ({ idx, instructions, handleInstructionChange, deleteIn
                     required
                 />
             </td>
-            <td>
-                <Button onClick={() => deleteInstruction(idx)}>-</Button>
+            <td className="align-middle">
+                {<i onClick={() => deleteInstruction(idx)} className="cancelBtn clickable fas fa-times mr-1"></i>}
             </td>
         </tr>
     );
