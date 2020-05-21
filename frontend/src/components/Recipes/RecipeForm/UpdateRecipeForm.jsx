@@ -278,7 +278,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                             </tbody>
                         </Table>
                         <div className="d-flex justify-content-end">
-                            <Button onClick={addIngredient} className="btn btn-dark pt-0 pb-0 shadow-sm" size="sm">
+                            <Button onClick={addIngredient} className="btn confirmBtn pt-0 pb-0 shadow-sm" size="sm">
                                 Add Ingredient
                             </Button>
                         </div>
@@ -312,7 +312,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                             </tbody>
                         </Table>
                         <div className="d-flex justify-content-end">
-                            <Button onClick={addInstruction} className="btn btn-dark pt-0 pb-0 shadow-sm" size="sm">
+                            <Button onClick={addInstruction} className="btn confirmBtn pt-0 pb-0 shadow-sm" size="sm">
                                 Add Instruction
                             </Button>
                         </div>
@@ -420,7 +420,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                                     </div>
                                 }
                                 {!deleteExistingPhoto &&
-                                    <i onClick={() => setDeleteExistingPhoto(true)} className="cancelBtn clickable fas fa-times mr-1"></i>
+                                    <i onClick={() => setDeleteExistingPhoto(true)} className="cancelIcon clickable fas fa-times mr-1"></i>
                                 }
                             </Row>
                         </Container>
@@ -467,9 +467,9 @@ const UpdateRecipeForm = ({ recipe }) => {
             </Form.Group>
             <div className="d-flex justify-content-center">
                 <Button
-                    className="mr-2"
+                    className="mr-2 confirmBtn"
                     type="submit"
-                    variant="dark"
+                    // variant="dark"
                     disabled={!title || !servings || !prepTime}
                 >
                     Save Recipe

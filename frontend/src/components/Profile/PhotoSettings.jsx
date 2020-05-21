@@ -265,7 +265,7 @@ const PhotoSettings = ({ profile }) => {
                                         </div>
                                     }
                                     {!deleteExistingPhoto &&
-                                        <i onClick={() => setDeleteExistingPhoto(true)} className="cancelBtn clickable fas fa-times mr-1"></i>
+                                        <i onClick={() => setDeleteExistingPhoto(true)} className="cancelIcon clickable fas fa-times mr-1"></i>
                                     }
                                 </Row>
                             </Container>

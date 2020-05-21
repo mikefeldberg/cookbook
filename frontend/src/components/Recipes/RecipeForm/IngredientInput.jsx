@@ -43,7 +43,7 @@ const IngredientInput = ({ idx, ingredients, handleIngredientChange, deleteIngre
                 />
             </td>
             <td className="align-middle">
-                {<i onClick={() => deleteIngredient(idx)} className="cancelBtn clickable fas fa-times mr-1"></i>}
+                {<i onClick={() => deleteIngredient(idx)} className="cancelIcon clickable fas fa-times mr-1"></i>}
             </td>
         </tr>
     );

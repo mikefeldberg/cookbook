@@ -117,20 +117,32 @@ table, caption, tbody, tfoot, thead, tr, th, td {
   /* background: transparent !important; */
 }
 
-.cancelBtn, .confirmBtn, .editBtn, .deleteBtn {
-  color: rgb(180, 180, 180);
+.cancelIcon, .confirmIcon, .editIcon, .deleteIcon {
+  color: #b4b4b4;
 }
 
-.cancelBtn:hover {
-  color: rgb(239, 52, 0);
+.cancelIcon:hover {
+  color: #ef3400;
+}
+
+.confirmIcon:hover {
+  color: #11aa52;
+}
+
+.editIcon:hover, .deleteIcon:hover {
+  color: #6d6d6d;
+}
+
+.confirmBtn {
+  color: #fff;
+  background-color: #087F7B;
+  border-color: #087F7B;
 }
 
 .confirmBtn:hover {
-  color: rgb(17,170,82);
-}
-
-.editBtn:hover, .deleteBtn:hover {
-  color: rgb(109, 109, 109);
+  color: #fff;
+  background-color: #055754;
+  border-color: #087F7B;
 }
 
 /* .dropdownUnformat added exclusively to remove top margin in Toolbar trash/delete dropdown  */
@@ -138,3 +150,4 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 .dropdownUnformat {
   margin-top: -3px;
 }
+

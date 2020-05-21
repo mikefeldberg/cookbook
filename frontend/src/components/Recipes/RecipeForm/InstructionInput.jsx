@@ -20,7 +20,7 @@ const InstructionInput = ({ idx, instructions, handleInstructionChange, deleteIn
                 />
             </td>
             <td className="align-middle">
-                {<i onClick={() => deleteInstruction(idx)} className="cancelBtn clickable fas fa-times mr-1"></i>}
+                {<i onClick={() => deleteInstruction(idx)} className="cancelIcon clickable fas fa-times mr-1"></i>}
             </td>
         </tr>
     );
