@@ -196,235 +196,238 @@ const CreateRecipe = ({ history }) => {
 
     if (currentUser) {
         return (
-            <Form onSubmit={(e) => handleSubmit(e, createRecipe)} className="mb-3">
-                <Form.Group controlId="formName">
-                    <Form.Label className="font-weight-bold">Recipe Title&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
-                    <Form.Control
-                        size="sm"
-                        value={title}
-                        type="text"
-                        name="title"
-                        onChange={(e) => setTitle(e.target.value)}
-                        required
-                    />
-                </Form.Group>
-                <Form.Group controlId="formDescription">
-                    <Form.Label className="font-weight-bold">Recipe Description</Form.Label>
-                    <Form.Control
-                        size="sm"
-                        value={description}
-                        type="text"
-                        name="description"
-                        onChange={(e) => setDescription(e.target.value)}
-                        as="textarea"
-                        rows="3"
-                    />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label className="font-weight-bold">Ingredients</Form.Label>
-                    <div className="row clearfix">
-                        <div name="ingredients" className="col-12 column">
-                            <Table className="mb-2" size="sm" striped bordered hover>
-                                <thead>
-                                    <tr>
-                                        <th className="text-center"></th>
-                                        <th className="text-center" style={{ minWidth: "100px" }}><small><strong>Qty & Unit</strong></small></th>
-                                        <th className="col-5 text-center"><small><strong>Ingredient</strong></small></th>
-                                        <th className="text-center" style={{ minWidth: "150px" }}><small><strong>Preparation</strong></small></th>
-                                        <th className="text-center"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {ingredients.map((val, idx) => {
-                                        return (
-                                            <IngredientInput
-                                                key={`ingredient-${idx}`}
-                                                idx={idx}
-                                                ingredients={ingredients}
-                                                handleIngredientChange={handleIngredientChange}
-                                                deleteIngredient={deleteIngredient}
-                                            />
-                                        );
-                                    })}
-                                </tbody>
-                            </Table>
-                            <div className="d-flex justify-content-end">
-                                <Button onClick={addIngredient} className="btn confirmBtn pt-0 pb-0 shadow-sm" size="sm">
-                                    Add Ingredient
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </Form.Group>
-                <Form.Group controlId="instructionsData">
-                    <Form.Label className="font-weight-bold">Instructions</Form.Label>
-                    <div className="row clearfix">
-                        <div name="instructions" className="col-12 column">
-                            <Table className="mb-2" size="sm" striped bordered hover>
-                                <thead>
-                                    <tr>
-                                        <th className="text-center"></th>
-                                        <th className="col-10 text-center"><small><strong>Instruction</strong></small></th>
-                                        <th className="text-center"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {instructions.map((val, idx) => {
-                                        return (
-                                            <InstructionInput
-                                                key={`instruction-${idx}`}
-                                                idx={idx}
-                                                instructions={instructions}
-                                                handleInstructionChange={handleInstructionChange}
-                                                deleteInstruction={deleteInstruction}
-                                            />
-                                        );
-                                    })}
-                                </tbody>
-                            </Table>
-                            <div className="d-flex justify-content-end">
-                                <Button onClick={addInstruction} className="btn confirmBtn pt-0 pb-0 shadow-sm" size="sm">
-                                    Add Instruction
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </Form.Group>
-                <fieldset>
-                    <Form.Group as={Row}>
-                        <Form.Label as="legend" column sm={2} className="font-weight-bold">
-                            Skill Level
-                        </Form.Label>
-                        <Row sm={10}>
-                            <Form.Check
-                                type="radio"
-                                label="Easy"
-                                name="formHorizontalRadios"
-                                id="Easy"
-                                defaultChecked
-                                onClick={() => setSkillLevel('Easy')}
-                                className="mr-3"
-                            />
-                            <Form.Check
-                                type="radio"
-                                label="Intermediate"
-                                name="formHorizontalRadios"
-                                id="Intermediate"
-                                onClick={() => setSkillLevel('Intermediate')}
-                                className="mr-3"
-                            />
-                            <Form.Check
-                                type="radio"
-                                label="Advanced"
-                                name="formHorizontalRadios"
-                                id="Advanced"
-                                onClick={() => setSkillLevel('Advanced')}
-                            />
-                        </Row>
-                    </Form.Group>
-                </fieldset>
-                <Form.Row>
-                <Form.Group as={Col} controlId="formServings" className="mr-5">
-                    <Form.Label className="font-weight-bold">Servings&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
-                    <Form.Control
-                        size="sm"
-                        value={servings}
-                        type="number"
-                        name="servings"
-                        onChange={(e) => setServings(parseInt(e.target.value))}
-                        pattern="\d+"
-                        required
-                    />
-                </Form.Group>
-                <Form.Group as={Col} controlId="formPrepTime" className="mr-1">
-                    <Form.Label className="font-weight-bold">Prep Time&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
-                    <Form.Control
-                        size="sm"
-                        value={prepTime}
-                        type="number"
-                        name="prepTime"
-                        onChange={(e) => setPrepTime(parseInt(e.target.value))}
-                        pattern="\d+"
-                        required
-                    />
-                </Form.Group>
-                <Form.Group as={Col} controlId="formCookTime" className="mr-1">
-                    <Form.Label className="font-weight-bold">Cook Time</Form.Label>
-                    <Form.Control
-                        size="sm"
-                        value={cookTime}
-                        type="number"
-                        name="cookTime"
-                        onChange={(e) => setCookTime(parseInt(e.target.value))}
-                        pattern="\d+"
-                    />
-                </Form.Group>
-                <Form.Group as={Col} controlId="formWaitTime" className="font-weight-bold">
-                    <Form.Label className="font-weight-bold">Wait Time</Form.Label>
-                    <Form.Control
-                        size="sm"
-                        value={waitTime}
-                        type="number"
-                        name="waitTime"
-                        onChange={(e) => setWaitTime(parseInt(e.target.value))}
-                        pattern="\d+"
-                    />
-                </Form.Group>
-                </Form.Row>
-                <Form.Group>
-                    <Form.Label className="font-weight-bold">Photo</Form.Label>
-                    <InputGroup size="sm">
-                        <InputGroup.Prepend>
-                            <InputGroup.Text onClick={() => {setPhotoSource('upload');}} >
-                                <i className={
-                                    photoSource === 'upload'
-                                        ? 'text-primary fas fa-file-upload'
-                                        : 'text-light fas fa-file-upload'
-                                }></i>
-                            </InputGroup.Text>
-                            <InputGroup.Text onClick={() => {setPhotoSource('link');}} >
-                                <i className={
-                                    photoSource === 'link'
-                                    ? 'text-primary fas fa-link'
-                                    : 'text-light fas fa-link'
-                                }></i>
-                            </InputGroup.Text>
-                        </InputGroup.Prepend >
-                        {photoSource === 'upload' && (
-                        <FormFile
-                            label={file && fileName && fileSize
-                                ? fileName + ' (' + formatFileSize(fileSize) + ')'
-                                : "Choose file (.jpg, .png)"
-                            }
-                            custom
-                            accept=".jpg, .jpeg, .png"
-                            onChange={getFile}
+            <>
+                <h2>Add a New Recipe</h2>
+                <Form onSubmit={(e) => handleSubmit(e, createRecipe)} className="mb-3">
+                    <Form.Group controlId="formName">
+                        <Form.Label className="font-weight-bold">Title&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
+                        <Form.Control
+                            size="sm"
+                            value={title}
+                            type="text"
+                            name="title"
+                            onChange={(e) => setTitle(e.target.value)}
+                            required
                         />
-                    )}
-                        {photoSource === 'link' && (
-                            <Form.Control
-                                value={photoUrl}
-                                placeholder="Paste image URL"
-                                onChange={(e) => setPhotoUrl(e.target.value)}
+                    </Form.Group>
+                    <Form.Group controlId="formDescription">
+                        <Form.Label className="font-weight-bold">Description</Form.Label>
+                        <Form.Control
+                            size="sm"
+                            value={description}
+                            type="text"
+                            name="description"
+                            onChange={(e) => setDescription(e.target.value)}
+                            as="textarea"
+                            rows="3"
+                        />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label className="font-weight-bold">Ingredients</Form.Label>
+                        <div className="row clearfix">
+                            <div name="ingredients" className="col-12 column">
+                                <Table className="mb-2" size="sm" striped bordered hover>
+                                    <thead>
+                                        <tr>
+                                            <th className="text-center"></th>
+                                            <th className="text-center" style={{ minWidth: "100px" }}><small><strong>Qty & Unit</strong></small></th>
+                                            <th className="col-5 text-center"><small><strong>Ingredient</strong></small></th>
+                                            <th className="text-center" style={{ minWidth: "150px" }}><small><strong>Preparation</strong></small></th>
+                                            <th className="text-center"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {ingredients.map((val, idx) => {
+                                            return (
+                                                <IngredientInput
+                                                    key={`ingredient-${idx}`}
+                                                    idx={idx}
+                                                    ingredients={ingredients}
+                                                    handleIngredientChange={handleIngredientChange}
+                                                    deleteIngredient={deleteIngredient}
+                                                />
+                                            );
+                                        })}
+                                    </tbody>
+                                </Table>
+                                <div className="d-flex justify-content-center">
+                                    <Button onClick={addIngredient} className="btn confirmBtn pt-0 pb-0 shadow-sm" size="sm">
+                                        Add Ingredient
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </Form.Group>
+                    <Form.Group controlId="instructionsData">
+                        <Form.Label className="font-weight-bold">Instructions</Form.Label>
+                        <div className="row clearfix">
+                            <div name="instructions" className="col-12 column">
+                                <Table className="mb-2" size="sm" striped bordered hover>
+                                    <thead>
+                                        <tr>
+                                            <th className="text-center"></th>
+                                            <th className="col-10 text-center"></th>
+                                            <th className="text-center"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {instructions.map((val, idx) => {
+                                            return (
+                                                <InstructionInput
+                                                    key={`instruction-${idx}`}
+                                                    idx={idx}
+                                                    instructions={instructions}
+                                                    handleInstructionChange={handleInstructionChange}
+                                                    deleteInstruction={deleteInstruction}
+                                                />
+                                            );
+                                        })}
+                                    </tbody>
+                                </Table>
+                                <div className="d-flex justify-content-center">
+                                    <Button onClick={addInstruction} className="btn confirmBtn pt-0 pb-0 shadow-sm" size="sm">
+                                        Add Instruction
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </Form.Group>
+                    <fieldset>
+                        <Form.Group as={Row}>
+                            <Form.Label as="legend" column sm={2} className="font-weight-bold">
+                                Skill Level
+                            </Form.Label>
+                            <Row sm={10}>
+                                <Form.Check
+                                    type="radio"
+                                    label="Easy"
+                                    name="formHorizontalRadios"
+                                    id="Easy"
+                                    defaultChecked
+                                    onClick={() => setSkillLevel('Easy')}
+                                    className="mr-3"
+                                />
+                                <Form.Check
+                                    type="radio"
+                                    label="Intermediate"
+                                    name="formHorizontalRadios"
+                                    id="Intermediate"
+                                    onClick={() => setSkillLevel('Intermediate')}
+                                    className="mr-3"
+                                />
+                                <Form.Check
+                                    type="radio"
+                                    label="Advanced"
+                                    name="formHorizontalRadios"
+                                    id="Advanced"
+                                    onClick={() => setSkillLevel('Advanced')}
+                                />
+                            </Row>
+                        </Form.Group>
+                    </fieldset>
+                    <Form.Row>
+                    <Form.Group as={Col} controlId="formServings" className="mr-5">
+                        <Form.Label className="font-weight-bold">Servings&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
+                        <Form.Control
+                            size="sm"
+                            value={servings}
+                            type="number"
+                            name="servings"
+                            onChange={(e) => setServings(parseInt(e.target.value))}
+                            pattern="\d+"
+                            required
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formPrepTime" className="mr-1">
+                        <Form.Label className="font-weight-bold">Prep Time&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
+                        <Form.Control
+                            size="sm"
+                            value={prepTime}
+                            type="number"
+                            name="prepTime"
+                            onChange={(e) => setPrepTime(parseInt(e.target.value))}
+                            pattern="\d+"
+                            required
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formCookTime" className="mr-1">
+                        <Form.Label className="font-weight-bold">Cook Time</Form.Label>
+                        <Form.Control
+                            size="sm"
+                            value={cookTime}
+                            type="number"
+                            name="cookTime"
+                            onChange={(e) => setCookTime(parseInt(e.target.value))}
+                            pattern="\d+"
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formWaitTime" className="font-weight-bold">
+                        <Form.Label className="font-weight-bold">Wait Time</Form.Label>
+                        <Form.Control
+                            size="sm"
+                            value={waitTime}
+                            type="number"
+                            name="waitTime"
+                            onChange={(e) => setWaitTime(parseInt(e.target.value))}
+                            pattern="\d+"
+                        />
+                    </Form.Group>
+                    </Form.Row>
+                    <Form.Group>
+                        <Form.Label className="font-weight-bold">Photo</Form.Label>
+                        <InputGroup>
+                            <InputGroup.Prepend>
+                                <InputGroup.Text onClick={() => {setPhotoSource('upload');}} >
+                                    <i className={
+                                        photoSource === 'upload'
+                                            ? 'text-primary fas fa-file-upload'
+                                            : 'text-light fas fa-file-upload'
+                                    }></i>
+                                </InputGroup.Text>
+                                <InputGroup.Text onClick={() => {setPhotoSource('link');}} >
+                                    <i className={
+                                        photoSource === 'link'
+                                        ? 'text-primary fas fa-link'
+                                        : 'text-light fas fa-link'
+                                    }></i>
+                                </InputGroup.Text>
+                            </InputGroup.Prepend >
+                            {photoSource === 'upload' && (
+                            <FormFile
+                                label={file && fileName && fileSize
+                                    ? fileName + ' (' + formatFileSize(fileSize) + ')'
+                                    : "Choose file (.jpg, .png)"
+                                }
+                                custom
+                                accept=".jpg, .jpeg, .png"
+                                onChange={getFile}
                             />
                         )}
-                    </InputGroup>
-                    {fileSize > MAX_FILE_SIZE && photoSource === 'upload' && <small className="text-danger">File size exceeds 2MB maximum. Please select a smaller file.</small>}
-                </Form.Group>
-                <div className="d-flex justify-content-center">
-                    <Button
-                        className="mr-2 confirmBtn"
-                        type="submit"
-                        // variant="dark"
-                        disabled={!title || !servings || !prepTime}
-                    >
-                        Save Recipe
-                    </Button>
-                    <Button onClick={() => {history.push(`/`)}} variant="light">
-                        Cancel
-                    </Button>
-                </div>
-            </Form>
+                            {photoSource === 'link' && (
+                                <Form.Control
+                                    value={photoUrl}
+                                    placeholder="Paste image URL"
+                                    onChange={(e) => setPhotoUrl(e.target.value)}
+                                />
+                            )}
+                        </InputGroup>
+                        {fileSize > MAX_FILE_SIZE && photoSource === 'upload' && <small className="text-danger">File size exceeds 2MB maximum. Please select a smaller file.</small>}
+                    </Form.Group>
+                    <div className="d-flex justify-content-center">
+                        <Button
+                            className="mr-2 confirmBtn"
+                            type="submit"
+                            // variant="dark"
+                            disabled={!title || !servings || !prepTime}
+                        >
+                            Save Recipe
+                        </Button>
+                        <Button onClick={() => {history.push(`/`)}} variant="light">
+                            Cancel
+                        </Button>
+                    </div>
+                </Form>
+            </>
         );
     } else {
         return <Redirect to="/" />;

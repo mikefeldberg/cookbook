@@ -107,7 +107,7 @@ const ProfileComment = ({ comment }) => {
                         </Row>
                     )}
                 </Col>
-                <Col md={2}>
+                {/* <Col md={2}>
                     {currentUser && currentUser.id === comment.user.id && (
                         <CommentToolbar
                             commentId={comment.id}
@@ -119,7 +119,7 @@ const ProfileComment = ({ comment }) => {
                             updateComment={updateComment}
                         />
                     )}
-                </Col>
+                </Col> */}
             </Row>
             {editing && (
                 <div className="p-2">

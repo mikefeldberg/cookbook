@@ -133,16 +133,22 @@ table, caption, tbody, tfoot, thead, tr, th, td {
   color: #6d6d6d;
 }
 
+.confirmBtn:hover {
+  color: #fff;
+  background-color: #055754;
+  border-color: #087F7B;
+}
+
 .confirmBtn {
   color: #fff;
   background-color: #087F7B;
   border-color: #087F7B;
 }
 
-.confirmBtn:hover {
+.confirmBtn:disabled {
   color: #fff;
-  background-color: #055754;
-  border-color: #087F7B;
+  background-color: rgba(8, 127, 123, 0.674);
+  border-color: rgba(8, 127, 123, 0.674);
 }
 
 /* .dropdownUnformat added exclusively to remove top margin in Toolbar trash/delete dropdown  */
@@ -151,3 +157,24 @@ table, caption, tbody, tfoot, thead, tr, th, td {
   margin-top: -3px;
 }
 
+.ingredientsList {
+  list-style: none;
+  padding-left: 0;
+}
+.ingredientsList li {
+  position: relative;
+  padding-left: 20px;
+  left: 18px;
+}
+.ingredientsList li:before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  background-image: url("/spoons.png");
+  background-size: cover;
+  background-position: center;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
