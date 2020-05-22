@@ -38,11 +38,11 @@ const RecipeToolbar = ({ recipe }) => {
     return (
         <Row noGutters>
             <Link style={{ textDecoration: 'none' }} to={`/recipes/${recipe.id}/edit`} className="mr-2">
-                {<i className="far fa-edit text-secondary"></i>}
+                <i className="clickable editIcon fa-sm fas fa-pen"></i>
             </Link>
             <Dropdown>
                 <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-                    <i className="clickable far fa-trash-alt"></i>
+                    <i className="clickable deleteIcon fa-sm far fa-trash-alt"></i>
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu as={CustomMenu}>
