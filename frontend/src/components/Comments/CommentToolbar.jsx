@@ -37,20 +37,20 @@ const CommentToolbar = ({ commentId, editing, setEditing, isSaveEnabled, handleC
     const EditingToolbar = ({ handleCancel, handleSubmit, updateComment }) => {
         return (
             <Row noGutters className="float-right mb-2">
-                {<i onClick={handleCancel} className="clickable fas fa-times text-danger mr-1"></i>}
+                {<i onClick={handleCancel} className="cancelIcon clickable fas fa-times mr-1"></i>}
                 {<i onClick={e => handleSubmit(e, updateComment)}
-                    className={[isSaveEnabled() ? 'clickable' : 'disabled-icon', 'fas fa-check text-success'].join(' ')}></i>}
+                    className={[isSaveEnabled() ? 'clickable' : 'disabled-icon', 'confirmIcon fas fa-check'].join(' ')}></i>}
             </Row>
         );
     };
 
     const DefaultToolbar = ({ commentId, setEditing, setNewRatingIsDisabled }) => {
         return (
-            <Row noGutters className="align-items-center float-right">
-                {<i onClick={() => setEditing(true)} className="clickable far fa-edit text-secondary mr-1"></i>}
-                <Dropdown>
+            <Row noGutters className="align-items-center float-right dropdownUnformat">
+                <i onClick={() => setEditing(true)} className="editIcon clickable fas fa-pen fa-xs mr-2"></i>
+                <Dropdown className="dropdownUnformat">
                     <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-                        <i className="clickable far fa-trash-alt"></i>
+                        <i className="deleteIcon clickable far fa-xs fa-trash-alt"></i>
                     </Dropdown.Toggle>
                     <Dropdown.Menu as={CustomMenu}>
                     <Dropdown.Item disabled>

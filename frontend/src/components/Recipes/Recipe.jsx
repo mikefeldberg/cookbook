@@ -168,10 +168,10 @@ const Recipe = ({ recipe, favorited }) => {
             </Row>
             <>
                 <h1>Ingredients</h1>
-                <ul>
+                <ul className="ingredientsList">
                     {recipe.ingredients.map(ingredient => (
                         <li key={ingredient.id}>
-                            <strong>{ingredient.quantity}</strong> {ingredient.name}
+                            <strong className="ml-2">{ingredient.quantity}</strong> {ingredient.name}
                             {ingredient.preparation && (
                                 <>
                                     <> (</>

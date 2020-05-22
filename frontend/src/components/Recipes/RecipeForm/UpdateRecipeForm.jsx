@@ -8,6 +8,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import FormFile from 'react-bootstrap/FormFile';
 import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
 
@@ -224,246 +225,263 @@ const UpdateRecipeForm = ({ recipe }) => {
     };
 
     return (
-        <Form onSubmit={e => handleSubmit(e, updateRecipe)}>
-            <Form.Group controlId="formName">
-                <Form.Label>Recipe Title&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
-                <Form.Control
-                    value={title}
-                    type="text"
-                    name="title"
-                    onChange={e => setTitle(e.target.value)}
-                    required
-                />
-            </Form.Group>
-            <Form.Group controlId="formDescription">
-                <Form.Label>Recipe Description</Form.Label>
-                <Form.Control
-                    value={description}
-                    type="text"
-                    name="description"
-                    onChange={e => setDescription(e.target.value)}
-                    as="textarea"
-                    rows="3"
-                />
-            </Form.Group>
-            <Form.Group>
-                <div className="row clearfix">
-                    <div name="ingredients" className="col-12 column">
-                        <Table striped bordered hover>
-                            <thead>
-                                <tr>
-                                    <th className="text-center">#</th>
-                                    <th className="text-center">Qty & Unit</th>
-                                    <th className="text-center">Ingredient</th>
-                                    <th className="text-center">Preparation</th>
-                                    <th className="text-center">-</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {ingredients.map((val, idx) => {
-                                    return (
-                                        <IngredientInput
-                                            key={`ingredient-${idx}`}
-                                            idx={idx}
-                                            ingredients={ingredients}
-                                            handleIngredientChange={handleIngredientChange}
-                                            deleteIngredient={deleteIngredient}
-                                        />
-                                    );
-                                })}
-                            </tbody>
-                        </Table>
-                        <div className="d-flex justify-content-end">
-                            <Button onClick={addIngredient} className="btn btn-primary">
-                                Add Ingredient
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </Form.Group>
-            <Form.Group controlId="instructionsData">
-                <div className="row clearfix">
-                    <div name="instructions" className="col-12 column">
-                        <Table striped bordered hover>
-                            <thead>
-                                <tr>
-                                    <th className="text-center">#</th>
-                                    <th className="text-center">Instruction</th>
-                                    <th className="text-center">-</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {instructions.map((val, idx) => {
-                                    return (
-                                        <InstructionInput
-                                            key={`instruction-${idx}`}
-                                            idx={idx}
-                                            instructions={instructions}
-                                            handleInstructionChange={handleInstructionChange}
-                                            deleteInstruction={deleteInstruction}
-                                        />
-                                    );
-                                })}
-                            </tbody>
-                        </Table>
-                        <div className="d-flex justify-content-end">
-                            <Button onClick={addInstruction} className="btn btn-primary">
-                                Add Instruction
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </Form.Group>
-            <fieldset>
-                <Form.Group as={Row}>
-                    <Form.Label as="legend" column sm={2}>
-                        Difficulty
-                    </Form.Label>
-                    <Row sm={10}>
-                        <Form.Check
-                            defaultChecked={skillLevel === 'Easy'}
-                            type="radio"
-                            label="Easy"
-                            name="formHorizontalRadios"
-                            id="Easy"
-                            onClick={() => setSkillLevel('Easy')}
-                        />
-                        <Form.Check
-                            defaultChecked={skillLevel === 'Intermediate'}
-                            type="radio"
-                            label="Intermediate"
-                            name="formHorizontalRadios"
-                            id="Intermediate"
-                            onClick={() => setSkillLevel('Intermediate')}
-                        />
-                        <Form.Check
-                            defaultChecked={skillLevel === 'Advanced'}
-                            type="radio"
-                            label="Advanced"
-                            name="formHorizontalRadios"
-                            id="Advanced"
-                            onClick={() => setSkillLevel('Advanced')}
-                        />
-                    </Row>
+        <>
+            <h2>Update Recipe</h2>
+            <Form onSubmit={e => handleSubmit(e, updateRecipe)} className="mb-3">
+                <Form.Group controlId="formName">
+                    <Form.Label className="font-weight-bold">Title&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
+                    <Form.Control
+                        size="sm"
+                        value={title}
+                        type="text"
+                        name="title"
+                        onChange={e => setTitle(e.target.value)}
+                        required
+                    />
                 </Form.Group>
-            </fieldset>
-            <Form.Group controlId="formServings">
-                <Form.Label>Servings&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
-                <Form.Control
-                    value={servings}
-                    type="number"
-                    name="servings"
-                    onChange={e => setServings(parseInt(e.target.value))}
-                    pattern="\d+"
-                    required
-                />
-            </Form.Group>
-            <Form.Group controlId="formPrepTime">
-                <Form.Label>Prep Time&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
-                <Form.Control
-                    value={prepTime}
-                    type="number"
-                    name="prepTime"
-                    onChange={e => setPrepTime(parseInt(e.target.value))}
-                    pattern="\d+"
-                    required
-                />
-            </Form.Group>
-            <Form.Group controlId="formCookTime">
-                <Form.Label>Cook Time</Form.Label>
-                <Form.Control
-                    value={cookTime}
-                    type="number"
-                    name="cookTime"
-                    onChange={e => setCookTime(parseInt(e.target.value))}
-                    pattern="\d+"
-                />
-            </Form.Group>
-            <Form.Group controlId="formWaitTime">
-                <Form.Label>Wait Time</Form.Label>
-                <Form.Control
-                    value={waitTime}
-                    type="number"
-                    name="waitTime"
-                    onChange={e => setWaitTime(parseInt(e.target.value))}
-                    pattern="\d+"
-                />
-            </Form.Group>
-            <Form.Group>
-                { existingPhotoUrl &&
-                    <div className="mb-2">
-                        Current Photo:
-                        <Container>
-                        <Row>
-                            <Image src={existingPhotoUrl} rounded thumbnail style={{maxWidth: `100px`}}/>
-                            {deleteExistingPhoto &&
-                                <Row>
-                                    'This image will be deleted after you save changes.'
-                                    <Button variant="success" onClick={() => handleCancel()}>Cancel Delete</Button>
-                                </Row>
-                            }
-                            {!deleteExistingPhoto &&
-                                <Button variant="danger" onClick={() => setDeleteExistingPhoto(true)}>x</Button>
-                            }
-                        </Row>
-                        </Container>
+                <Form.Group controlId="formDescription">
+                    <Form.Label className="font-weight-bold">Description</Form.Label>
+                    <Form.Control
+                        size="sm"
+                        value={description}
+                        type="text"
+                        name="description"
+                        onChange={e => setDescription(e.target.value)}
+                        as="textarea"
+                        rows="3"
+                    />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label className="font-weight-bold">Ingredients</Form.Label>
+                    <div className="row clearfix">
+                        <div name="ingredients" className="col-12 column">
+                            <Table className="mb-2" size="sm" striped bordered hover>
+                                <thead>
+                                    <tr>
+                                        <th className="text-center"></th>
+                                        <th className="text-center" style={{ minWidth: "100px" }}><small><strong>Qty & Unit</strong></small></th>
+                                        <th className="col-5 text-center"><small><strong>Ingredient</strong></small></th>
+                                        <th className="text-center" style={{ minWidth: "150px" }}><small><strong>Preparation</strong></small></th>
+                                        <th className="text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {ingredients.map((val, idx) => {
+                                        return (
+                                            <IngredientInput
+                                                key={`ingredient-${idx}`}
+                                                idx={idx}
+                                                ingredients={ingredients}
+                                                handleIngredientChange={handleIngredientChange}
+                                                deleteIngredient={deleteIngredient}
+                                            />
+                                        );
+                                    })}
+                                </tbody>
+                            </Table>
+                            <div className="d-flex justify-content-center">
+                                <Button onClick={addIngredient} className="btn confirmBtn pt-0 pb-0 shadow-sm" size="sm">
+                                    Add Ingredient
+                                </Button>
+                            </div>
+                        </div>
                     </div>
-                }
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>Photo</Form.Label>
-                <InputGroup>
-                    <InputGroup.Prepend>
-                        <InputGroup.Text onClick={() => {setPhotoSource('upload')}}>
-                            <i className={
-                                photoSource === 'upload'
-                                    ? 'text-primary fas fa-file-upload'
-                                    : 'text-light fas fa-file-upload'
-                            }></i>
-                        </InputGroup.Text>
-                        <InputGroup.Text onClick={() => {setPhotoSource('link')}}>
-                            <i className={
-                                photoSource === 'link'
-                                ? 'text-primary fas fa-link'
-                                : 'text-light fas fa-link'
-                            }></i>
-                        </InputGroup.Text>
-                    </InputGroup.Prepend>
-                    {photoSource === 'upload' && (
-                        <FormFile
-                            label={file && fileName && fileSize
-                                ? fileName + ' (' + formatFileSize(fileSize) + ')'
-                                : "Choose file (.jpg, .png)"
-                            }
-                            custom
-                            accept=".jpg, .jpeg, .png"
-                            onChange={getFile}
-                        />
-                    )}
-                    {photoSource === 'link' && (
-                        <Form.Control
-                            value={newPhotoUrl}
-                            placeholder="Paste image URL"
-                            onChange={(e) => handleNewLinkedPhoto(e)}
-                        />
-                    )}
-                </InputGroup>
-                {fileSize > MAX_FILE_SIZE && photoSource === 'upload' && <small className="text-danger">File size exceeds 2MB maximum. Please select a smaller file.</small>}
-            </Form.Group>
-            <div className="d-flex justify-content-center">
-                <Button
-                    className="mr-2"
-                    type="submit"
-                    variant="primary"
-                    disabled={!title || !servings || !prepTime}
-                >
-                    Save Recipe
-                </Button>
-                <Button onClick={() => {history.push(`/recipes/${recipeId}`)}} variant="danger">
-                    Cancel
-                </Button>
-            </div>
-        </Form>
+                </Form.Group>
+                <Form.Group controlId="instructionsData">
+                    <Form.Label className="font-weight-bold">Instructions</Form.Label>
+                    <div className="row clearfix">
+                        <div name="instructions" className="col-12 column">
+                            <Table className="mb-2" size="sm" striped bordered hover>
+                                <thead>
+                                    <tr>
+                                        <th className="text-center"></th>
+                                        <th className="col-10 text-center"></th>
+                                        <th className="text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {instructions.map((val, idx) => {
+                                        return (
+                                            <InstructionInput
+                                                key={`instruction-${idx}`}
+                                                idx={idx}
+                                                instructions={instructions}
+                                                handleInstructionChange={handleInstructionChange}
+                                                deleteInstruction={deleteInstruction}
+                                            />
+                                        );
+                                    })}
+                                </tbody>
+                            </Table>
+                            <div className="d-flex justify-content-center">
+                                <Button onClick={addInstruction} className="btn confirmBtn pt-0 pb-0 shadow-sm" size="sm">
+                                    Add Instruction
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </Form.Group>
+                <fieldset>
+                    <Form.Group as={Row} className="align-items-center">
+                        <Form.Label as="legend" column sm={2} className="font-weight-bold">
+                            Skill Level
+                        </Form.Label>
+                        <Row sm={10}>
+                            <Form.Check
+                                defaultChecked={skillLevel === 'Easy'}
+                                type="radio"
+                                label="Easy"
+                                name="formHorizontalRadios"
+                                id="Easy"
+                                onClick={() => setSkillLevel('Easy')}
+                                className="mr-3"
+                            />
+                            <Form.Check
+                                defaultChecked={skillLevel === 'Intermediate'}
+                                type="radio"
+                                label="Intermediate"
+                                name="formHorizontalRadios"
+                                id="Intermediate"
+                                onClick={() => setSkillLevel('Intermediate')}
+                                className="mr-3"
+                            />
+                            <Form.Check
+                                defaultChecked={skillLevel === 'Advanced'}
+                                type="radio"
+                                label="Advanced"
+                                name="formHorizontalRadios"
+                                id="Advanced"
+                                onClick={() => setSkillLevel('Advanced')}
+                            />
+                        </Row>
+                    </Form.Group>
+                </fieldset>
+                <Form.Row>
+                    <Form.Group as={Col} controlId="formServings" className="mr-5">
+                    <Form.Label className="font-weight-bold">Servings&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
+                    <Form.Control
+                        size="sm"
+                        value={servings}
+                        type="number"
+                        name="servings"
+                        onChange={e => setServings(parseInt(e.target.value))}
+                        pattern="\d+"
+                        required
+                    />
+                </Form.Group>
+                <Form.Group as={Col} controlId="formPrepTime" className="mr-1">
+                    <Form.Label className="font-weight-bold">Prep Time&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
+                    <Form.Control
+                        size="sm"
+                        value={prepTime}
+                        type="number"
+                        name="prepTime"
+                        onChange={e => setPrepTime(parseInt(e.target.value))}
+                        pattern="\d+"
+                        required
+                    />
+                </Form.Group>
+                <Form.Group as={Col} controlId="formCookTime" className="mr-1">
+                    <Form.Label className="font-weight-bold">Cook Time</Form.Label>
+                    <Form.Control
+                        size="sm"
+                        value={cookTime}
+                        type="number"
+                        name="cookTime"
+                        onChange={e => setCookTime(parseInt(e.target.value))}
+                        pattern="\d+"
+                    />
+                </Form.Group>
+                <Form.Group as={Col} controlId="formWaitTime">
+                    <Form.Label className="font-weight-bold">Wait Time</Form.Label>
+                    <Form.Control
+                        size="sm"
+                        value={waitTime}
+                        type="number"
+                        name="waitTime"
+                        onChange={e => setWaitTime(parseInt(e.target.value))}
+                        pattern="\d+"
+                    />
+                </Form.Group>
+                </Form.Row>
+                <Form.Group>
+                    <Form.Label className="font-weight-bold">Photo</Form.Label>
+                    <Form.Group>
+                    { existingPhotoUrl &&
+                        <div className="mb-2">
+                            Current Photo:
+                            <Container>
+                                <Row className="align-items-center">
+                                    <Image src={existingPhotoUrl} rounded thumbnail style={{maxWidth: `100px`}} className="mr-3"/>
+                                    {deleteExistingPhoto &&
+                                        <div>
+                                            <div><small className="text-danger">This image will be deleted after you save changes.</small></div>
+                                            <Button onClick={() => handleCancel()} className="btn btn-dark pt-0 pb-0 shadow-sm" size="sm">
+                                                Cancel Delete
+                                            </Button>
+                                        </div>
+                                    }
+                                    {!deleteExistingPhoto &&
+                                        <i onClick={() => setDeleteExistingPhoto(true)} className="cancelIcon clickable fas fa-times mr-1"></i>
+                                    }
+                                </Row>
+                            </Container>
+                        </div>
+                    }
+                </Form.Group>
+                    <InputGroup>
+                        <InputGroup.Prepend>
+                            <InputGroup.Text onClick={() => {setPhotoSource('upload')}}>
+                                <i className={
+                                    photoSource === 'upload'
+                                        ? 'text-primary fas fa-file-upload'
+                                        : 'text-light fas fa-file-upload'
+                                }></i>
+                            </InputGroup.Text>
+                            <InputGroup.Text onClick={() => {setPhotoSource('link')}}>
+                                <i className={
+                                    photoSource === 'link'
+                                    ? 'text-primary fas fa-link'
+                                    : 'text-light fas fa-link'
+                                }></i>
+                            </InputGroup.Text>
+                        </InputGroup.Prepend>
+                        {photoSource === 'upload' && (
+                            <FormFile
+                                label={file && fileName && fileSize
+                                    ? fileName + ' (' + formatFileSize(fileSize) + ')'
+                                    : "Choose file (.jpg, .png)"
+                                }
+                                custom
+                                accept=".jpg, .jpeg, .png"
+                                onChange={getFile}
+                            />
+                        )}
+                        {photoSource === 'link' && (
+                            <Form.Control
+                                value={newPhotoUrl}
+                                placeholder="Paste image URL"
+                                onChange={(e) => handleNewLinkedPhoto(e)}
+                            />
+                        )}
+                    </InputGroup>
+                    {fileSize > MAX_FILE_SIZE && photoSource === 'upload' && <small className="text-danger">File size exceeds 2MB maximum. Please select a smaller file.</small>}
+                </Form.Group>
+                <div className="d-flex justify-content-center">
+                    <Button
+                        className="mr-2 confirmBtn"
+                        type="submit"
+                        // variant="dark"
+                        disabled={!title || !servings || !prepTime}
+                    >
+                        Save Recipe
+                    </Button>
+                    <Button onClick={() => {history.push(`/recipes/${recipeId}`)}} variant="light">
+                        Cancel
+                    </Button>
+                </div>
+            </Form>
+        </>
     );
 };
 
