@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 
 const InstructionInput = ({ idx, instructions, handleInstructionChange, deleteInstruction }) => {
     return (

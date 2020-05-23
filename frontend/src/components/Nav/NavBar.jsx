@@ -14,7 +14,7 @@ const NavBar = () => {
 
     return (
         <Jumbotron className="mb-4">
-            <Navbar expand="md" variant="dark" className="p-0 bg-dark fixed-top navBack">
+            <Navbar expand variant="dark" className="p-0 bg-dark fixed-top navBack">
                 <Container>
                     <Navbar.Brand>
                         <Link to="/">
