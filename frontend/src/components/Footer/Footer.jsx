@@ -13,7 +13,7 @@ const Footer = () => {
                     <Nav className=" mr-auto">
                         <Nav.Item>
                             <Link className="navLink nav-link" to="/terms">
-                                <small>Terms of Service</small>
+                                <small>Terms of Use</small>
                             </Link>
                         </Nav.Item>
                     </Nav>
