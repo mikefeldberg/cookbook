@@ -6,7 +6,7 @@ import Nav from 'react-bootstrap/Nav';
 
 const Footer = () => {
     return (
-        <Navbar expand="md" variant="dark" className="p-0 bg-dark navBack mt-auto">
+        <Navbar expand variant="dark" className="p-0 bg-dark navBack mt-auto">
             <>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse className="justify-content-center" id="basic-navbar-nav">
