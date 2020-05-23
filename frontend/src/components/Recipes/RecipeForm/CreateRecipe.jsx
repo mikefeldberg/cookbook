@@ -200,7 +200,7 @@ const CreateRecipe = ({ history }) => {
                 <h2>Add a New Recipe</h2>
                 <Form onSubmit={(e) => handleSubmit(e, createRecipe)} className="mb-3">
                     <Form.Group controlId="formName">
-                        <Form.Label className="font-weight-bold">Title&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
+                        <Form.Label><span className="font-weight-bold">Title</span>*</Form.Label>
                         <Form.Control
                             size="sm"
                             value={title}
@@ -326,52 +326,52 @@ const CreateRecipe = ({ history }) => {
                         </Form.Group>
                     </fieldset>
                     <Form.Row>
-                    <Form.Group as={Col} controlId="formServings" className="mr-5">
-                        <Form.Label className="font-weight-bold">Servings&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
-                        <Form.Control
-                            size="sm"
-                            value={servings}
-                            type="number"
-                            name="servings"
-                            onChange={(e) => setServings(parseInt(e.target.value))}
-                            pattern="\d+"
-                            required
-                        />
-                    </Form.Group>
-                    <Form.Group as={Col} controlId="formPrepTime" className="mr-1">
-                        <Form.Label className="font-weight-bold">Prep Time&nbsp;<small className="text-secondary">(Required)</small></Form.Label>
-                        <Form.Control
-                            size="sm"
-                            value={prepTime}
-                            type="number"
-                            name="prepTime"
-                            onChange={(e) => setPrepTime(parseInt(e.target.value))}
-                            pattern="\d+"
-                            required
-                        />
-                    </Form.Group>
-                    <Form.Group as={Col} controlId="formCookTime" className="mr-1">
-                        <Form.Label className="font-weight-bold">Cook Time</Form.Label>
-                        <Form.Control
-                            size="sm"
-                            value={cookTime}
-                            type="number"
-                            name="cookTime"
-                            onChange={(e) => setCookTime(parseInt(e.target.value))}
-                            pattern="\d+"
-                        />
-                    </Form.Group>
-                    <Form.Group as={Col} controlId="formWaitTime" className="font-weight-bold">
-                        <Form.Label className="font-weight-bold">Wait Time</Form.Label>
-                        <Form.Control
-                            size="sm"
-                            value={waitTime}
-                            type="number"
-                            name="waitTime"
-                            onChange={(e) => setWaitTime(parseInt(e.target.value))}
-                            pattern="\d+"
-                        />
-                    </Form.Group>
+                        <Form.Group as={Col} controlId="formServings" className="mr-5">
+                            <Form.Label><span className="font-weight-bold">Servings</span>*</Form.Label>
+                            <Form.Control
+                                size="sm"
+                                value={servings}
+                                type="number"
+                                name="servings"
+                                onChange={(e) => setServings(parseInt(e.target.value))}
+                                pattern="\d+"
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group as={Col} controlId="formPrepTime" className="mr-1">
+                            <Form.Label><span className="font-weight-bold">Prep Time</span>*&nbsp;<small className="text-secondary">(in minutes)</small></Form.Label>
+                            <Form.Control
+                                size="sm"
+                                value={prepTime}
+                                type="number"
+                                name="prepTime"
+                                onChange={(e) => setPrepTime(parseInt(e.target.value))}
+                                pattern="\d+"
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group as={Col} controlId="formCookTime" className="mr-1">
+                            <Form.Label className="font-weight-bold">Cook Time&nbsp;<small className="text-secondary">(in minutes)</small></Form.Label>
+                            <Form.Control
+                                size="sm"
+                                value={cookTime}
+                                type="number"
+                                name="cookTime"
+                                onChange={(e) => setCookTime(parseInt(e.target.value))}
+                                pattern="\d+"
+                            />
+                        </Form.Group>
+                        <Form.Group as={Col} controlId="formWaitTime" className="font-weight-bold">
+                            <Form.Label className="font-weight-bold">Wait Time&nbsp;<small className="text-secondary">(in minutes)</small></Form.Label>
+                            <Form.Control
+                                size="sm"
+                                value={waitTime}
+                                type="number"
+                                name="waitTime"
+                                onChange={(e) => setWaitTime(parseInt(e.target.value))}
+                                pattern="\d+"
+                            />
+                        </Form.Group>
                     </Form.Row>
                     <Form.Group>
                         <Form.Label className="font-weight-bold">Photo</Form.Label>
