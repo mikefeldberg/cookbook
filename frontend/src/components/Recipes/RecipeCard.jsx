@@ -55,9 +55,9 @@ const RecipeCard = ({ recipe }) => {
                 <ListGroup variant="flush">
                     <ListGroup.Item>
                         <ShowMoreText
-                            lines={3}
-                            more='Show more'
-                            less='Show less'
+                            lines={7}
+                            more='Read more'
+                            less='Read less'
                             onClick={() => setIsExpanded(!isExpanded)}
                             expanded={isExpanded}
                             anchorClass='link'

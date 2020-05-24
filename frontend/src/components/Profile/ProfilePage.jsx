@@ -34,7 +34,7 @@ const ProfilePage = ({ match }) => {
         return (
             <>
                 <Tabs defaultActiveKey="user">
-                    <Tab eventKey="user" title={profileUsername}>
+                    <Tab eventKey="user" title="User Bio">
                         <UserTab profile={data.profile}/>
                     </Tab>
                     <Tab eventKey="recipes" title="Recipes">

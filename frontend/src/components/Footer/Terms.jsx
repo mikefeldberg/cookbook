@@ -5,7 +5,7 @@ const Terms = () => {
         <div>
             <h2>Terms of Use</h2>
             <p>
-                Welcome to Feldberg's Cookbook, a service provided by Under Development LLC (“<strong>we</strong>”, “
+                Welcome to Feldberg’s Cookbook, a service provided by Under Development LLC (“<strong>we</strong>”, “
                 <strong>our</strong>”, or “<strong>us</strong>”).
             </p>
             <p>
@@ -413,8 +413,7 @@ const Terms = () => {
                 all other cases, if you discover Content that infringes or violates any of your other rights, which you
                 believe is defamatory, pornographic, obscene, racist, or otherwise liable to cause widespread offense,
                 or which constitutes impersonation, abuse, spam, or otherwise violates these Terms of Use or applicable
-                law, please report this to us at
-                <a href="mailto:feldbergscookbook@gmail.com">feldbergscookbook@gmail.com</a>.
+                law, please report this to us at <a href="mailto:feldbergscookbook@gmail.com">feldbergscookbook@gmail.com</a>.
             </p>
 
             <h5>Third party websites and services</h5>
