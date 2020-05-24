@@ -51,6 +51,7 @@ const Login = () => {
                             type="email"
                             placeholder=""
                             name="email"
+                            required
                             ref={register({
                                 required: {
                                     value: true,
@@ -66,6 +67,7 @@ const Login = () => {
                             type="password"
                             placeholder=""
                             name="password"
+                            required
                             ref={register({
                                 required: {
                                     value: true,
@@ -85,7 +87,7 @@ const Login = () => {
                         >
                             Not a user? Register here!
                         </Button>
-                        <Button disabled={!formState.isValid} className="w-50 p-1" variant="primary" type="submit">
+                        <Button className="w-50 p-1" variant="primary" type="submit">
                             Login
                         </Button>
                     </ButtonGroup>
