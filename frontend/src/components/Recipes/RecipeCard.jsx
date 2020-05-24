@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
+import ShowMoreText from 'react-show-more-text';
 
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -10,6 +11,7 @@ import Image from 'react-bootstrap/Image';
 const RecipeCard = ({ recipe }) => {
     const match = useRouteMatch();
     const url = match.url
+    const [isExpanded, setIsExpanded] = useState(false)
 
     return (
         <Card className="shadow mb-4">
@@ -29,7 +31,6 @@ const RecipeCard = ({ recipe }) => {
                 </Card.Title>
                 { !url.includes('profile') &&
                     <Card.Text>
-                        {/* Added by  */}
                         <Link
                             style={{ textDecoration: 'none' }}
                             to={`/profile/${recipe.user.username}`}
@@ -52,7 +53,18 @@ const RecipeCard = ({ recipe }) => {
             </Card.Body>
             { recipe.description &&
                 <ListGroup variant="flush">
-                    <ListGroup.Item>{recipe.description}</ListGroup.Item>
+                    <ListGroup.Item>
+                        <ShowMoreText
+                            lines={3}
+                            more='Show more'
+                            less='Show less'
+                            onClick={() => setIsExpanded(!isExpanded)}
+                            expanded={isExpanded}
+                            anchorClass='link'
+                        >
+                            {recipe.description}
+                        </ShowMoreText>
+                    </ListGroup.Item>
                 </ListGroup>
             }
             <ListGroup variant="flush">
