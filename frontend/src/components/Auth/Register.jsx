@@ -64,6 +64,7 @@ const Register = () => {
                             type="text"
                             placeholder=""
                             name="username"
+                            required
                             ref={register({
                                 required: true,
                                 pattern: {
@@ -86,6 +87,7 @@ const Register = () => {
                             type="email"
                             placeholder=""
                             name="email"
+                            required
                             ref={register({
                                 required: true,
                                 pattern: {
@@ -104,6 +106,7 @@ const Register = () => {
                             type="password"
                             placeholder=""
                             name="password"
+                            required
                             ref={register({
                                 required: true,
                                 minLength: {
@@ -135,7 +138,7 @@ const Register = () => {
                         >
                             Already registered? Login here!
                         </Button>
-                        <Button disabled={!formState.isValid} className="w-50 p-1" variant="primary" type="submit">
+                        <Button className="w-50 p-1" variant="primary" type="submit">
                             Register
                         </Button>
                     </ButtonGroup>

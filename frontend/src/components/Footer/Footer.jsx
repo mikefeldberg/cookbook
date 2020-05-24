@@ -6,14 +6,14 @@ import Nav from 'react-bootstrap/Nav';
 
 const Footer = () => {
     return (
-        <Navbar expand="md" variant="dark" className="p-0 bg-dark navBack mt-auto">
+        <Navbar expand variant="dark" className="p-0 bg-dark navBack mt-auto">
             <>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse className="justify-content-center" id="basic-navbar-nav">
                     <Nav className=" mr-auto">
                         <Nav.Item>
                             <Link className="navLink nav-link" to="/terms">
-                                <small>Terms of Service</small>
+                                <small>Terms of Use</small>
                             </Link>
                         </Nav.Item>
                     </Nav>
