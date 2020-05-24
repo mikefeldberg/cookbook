@@ -22,7 +22,7 @@ const UserNav = ({ currentUser }) => {
         <>
             <Nav>
                 <Nav.Item className="mr-2">
-                    <Link className="nav-link navLink" to="/recipes/new">
+                    <Link className="nav-link navLink hideOnMobile" to="/recipes/new">
                         Add Recipe
                     </Link>
                 </Nav.Item>

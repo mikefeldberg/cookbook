@@ -72,7 +72,6 @@ const ProfileComment = ({ comment }) => {
                     <Link style={{ textDecoration: 'none' }} to={`/recipes/${comment.recipe.id}`}>
                         <Image
                             width={64}
-                            height={64}
                             className="rounded mr-3"
                             src={
                                 comment.recipe.photos.length > 0
