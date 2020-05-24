@@ -57,10 +57,29 @@ code {
   background-size: cover;
 }
 
-.heroText {
+.jumbotron-text h3 {
+  font-size: 3.5rem;
+  text-shadow: -7px 7px 0px #00e6e6,
+  -14px 14px 0px #01cccc,
+  -21px 21px 0px #00bdbd;
+}
+
+.jumbotron-text h1 {
+  font-size: 6rem;
   text-shadow: -10px 10px 0px #00e6e6,
   -20px 20px 0px #01cccc,
   -30px 30px 0px #00bdbd;
+}
+
+@media (max-width: 699px) {
+  .jumbotron-text h3 {
+    margin-top: 2rem;
+    font-size: 2.5rem;
+  }
+
+  .jumbotron-text h1 {
+    font-size: 3.5rem;
+  }
 }
 
 h1, h2, h3, h4 {

@@ -3,6 +3,7 @@ import React from 'react';
 const Terms = () => {
     return (
         <div>
+            <h2>Terms of Use</h2>
             <p>
                 Welcome to Feldberg's Cookbook, a service provided by Under Development LLC (“<strong>we</strong>”, “
                 <strong>our</strong>”, or “<strong>us</strong>”).
