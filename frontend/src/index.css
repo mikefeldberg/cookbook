@@ -176,6 +176,7 @@ table, caption, tbody, tfoot, thead, tr, th, td {
   margin-top: -3px;
 }
 
+
 .ingredientsList {
   list-style: none;
   padding-left: 0;
@@ -201,5 +202,9 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 @media (max-width: 699px) {
   .hideOnMobile {
     display: none;
+  }
+
+  #basic-navbar-nav .dropdown-menu {
+    margin-left: -110px !important;
   }
 }
