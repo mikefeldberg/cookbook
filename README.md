@@ -2,7 +2,7 @@
 
 Feldberg’s Cookbook is a recipe sharing site.
 
-<a href="https://feldbergscookbook.com">https://feldbergscookbook.com</a>
+<a href="https://feldbergscookbook.com" target="_blank">https://feldbergscookbook.com</a>
 
 <img src="https://i.imgur.com/J3k1cPU.jpg" width="600px" />
 
@@ -38,4 +38,4 @@ Users can view and upload their favorite home recipes.
 
 ## Project Management
 
-<a href="https://trello.com/b/DxvNkRVG/feldbergs-cookbook">Trello Board</a>
+<a href="https://trello.com/b/DxvNkRVG/feldbergs-cookbook" target="_blank">Trello Board</a>
