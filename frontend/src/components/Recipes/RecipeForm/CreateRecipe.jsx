@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 import { Redirect, Prompt } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 
 import Form from 'react-bootstrap/Form';
