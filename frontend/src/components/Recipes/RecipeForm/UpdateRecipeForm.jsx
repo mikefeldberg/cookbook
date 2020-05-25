@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Prompt } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -20,6 +20,7 @@ const MAX_FILE_SIZE = 2097152;
 
 const UpdateRecipeForm = ({ recipe }) => {
     const history = useHistory();
+    const [navigationIsBlocked, setNavigationIsBlocked] = useState(true)
     const [updateRecipe] = useMutation(UPDATE_RECIPE_MUTATION);
     const [createRecipePhoto] = useMutation(CREATE_RECIPE_PHOTO_MUTATION);
     const [deleteRecipePhoto] = useMutation(DELETE_RECIPE_PHOTO_MUTATION);
@@ -135,7 +136,7 @@ const UpdateRecipeForm = ({ recipe }) => {
         }
     }
 
-    const handleCancel = () => {
+    const handleCancelDelete = () => {
         setDeleteExistingPhoto(false);
         setFile(null);
         setFileName('');
@@ -143,8 +144,15 @@ const UpdateRecipeForm = ({ recipe }) => {
         setNewPhotoUrl('');
     }
 
+    const handleCancel = async () => {
+        await setNavigationIsBlocked(false);
+        history.push(`/recipes/${recipeId}`);
+    }
+
     const handleSubmit = async (e, updateRecipe) => {
         e.preventDefault();
+        setNavigationIsBlocked(false)
+
         removeListIds();
 
         if (deleteExistingPhoto) {
@@ -226,6 +234,10 @@ const UpdateRecipeForm = ({ recipe }) => {
 
     return (
         <>
+            <Prompt
+                when={navigationIsBlocked}
+                message='You have unsaved changes. Are you sure you want to leave this page?'
+            />
             <h2>Update Recipe</h2>
             <Form onSubmit={e => handleSubmit(e, updateRecipe)} className="mb-3">
                 <Form.Group controlId="formName">
@@ -416,7 +428,7 @@ const UpdateRecipeForm = ({ recipe }) => {
                                     {deleteExistingPhoto &&
                                         <div>
                                             <div><small className="text-danger">This image will be deleted after you save changes.</small></div>
-                                            <Button onClick={() => handleCancel()} className="btn btn-dark pt-0 pb-0 shadow-sm" size="sm">
+                                            <Button onClick={() => handleCancelDelete()} className="btn btn-dark pt-0 pb-0 shadow-sm" size="sm">
                                                 Cancel Delete
                                             </Button>
                                         </div>
@@ -471,12 +483,11 @@ const UpdateRecipeForm = ({ recipe }) => {
                     <Button
                         className="mr-2 confirmBtn"
                         type="submit"
-                        // variant="dark"
                         disabled={!title || !servings || !prepTime}
                     >
                         Save Recipe
                     </Button>
-                    <Button onClick={() => {history.push(`/recipes/${recipeId}`)}} variant="light">
+                    <Button onClick={handleCancel} variant="light">
                         Cancel
                     </Button>
                 </div>
