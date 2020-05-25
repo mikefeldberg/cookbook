@@ -181,6 +181,7 @@ class CreateRecipe(graphene.Mutation):
         if user.is_anonymous:
             raise GraphQLError('Log in to add a recipe')
 
+        # from IPython import embed; embed()
         new_recipe = Recipe(
             title=recipe['title'],
             description=recipe['description'],

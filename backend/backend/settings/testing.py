@@ -1,4 +1,4 @@
 from .base import *
 
-TESING = True
+TESTING = True
 DEBUG = True
