@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
+import { Redirect, Prompt } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
-import { Redirect } from 'react-router-dom';
 
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -18,7 +19,9 @@ import { AuthContext } from '../../../App';
 const MAX_FILE_SIZE = 2097152;
 
 const CreateRecipe = ({ history }) => {
+    window.onbeforeunload = () => true
     const currentUser = useContext(AuthContext);
+    const [navigationIsBlocked, setNavigationIsBlocked] = useState(true)
     const [createRecipePhoto] = useMutation(CREATE_RECIPE_PHOTO_MUTATION);
     const [createRecipe] = useMutation(CREATE_RECIPE_MUTATION, {
         update(cache, { data: { createRecipe } }) {
@@ -121,8 +124,15 @@ const CreateRecipe = ({ history }) => {
         }
     }
 
+    const handleCancel = async () => {
+        await setNavigationIsBlocked(false);
+        history.push(`/`);
+    }
+
     const handleSubmit = async (e, createRecipe) => {
         e.preventDefault();
+
+        setNavigationIsBlocked(false)
 
         const recipe = {
             title,
@@ -197,6 +207,10 @@ const CreateRecipe = ({ history }) => {
     if (currentUser) {
         return (
             <>
+                <Prompt
+                    when={navigationIsBlocked}
+                    message='You have unsaved changes. Are you sure you want to leave this page?'
+                />
                 <h2>Add a New Recipe</h2>
                 <Form onSubmit={(e) => handleSubmit(e, createRecipe)} className="mb-3">
                     <Form.Group controlId="formName">
@@ -417,12 +431,11 @@ const CreateRecipe = ({ history }) => {
                         <Button
                             className="mr-2 confirmBtn"
                             type="submit"
-                            // variant="dark"
                             disabled={!title || !servings || !prepTime}
                         >
                             Save Recipe
                         </Button>
-                        <Button onClick={() => {history.push(`/`)}} variant="light">
+                        <Button onClick={handleCancel} variant="light">
                             Cancel
                         </Button>
                     </div>
