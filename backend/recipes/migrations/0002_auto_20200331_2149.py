@@ -2,8 +2,7 @@
 import os
 from django.db import migrations
 from ..recipe_data import recipes as recipe_data
-from recipes.models import User
-from django.contrib.auth import get_user_model
+from django.conf import settings
 
 
 def seed_recipes(apps, schema_editor):
@@ -11,20 +10,15 @@ def seed_recipes(apps, schema_editor):
     Ingredient = apps.get_model('recipes', 'Ingredient')
     Instruction = apps.get_model('recipes', 'Instruction')
     Photo = apps.get_model('recipes', 'Photo')
+    User = apps.get_model(settings.AUTH_USER_MODEL)
 
-    User.objects.create_superuser(
-        os.getenv('ADMIN_USERNAME'),
-        os.getenv('ADMIN_EMAIL'),
-        os.getenv('ADMIN_PASSWORD'),
-    )
-
-    user = get_user_model()(
+    user = User(
         username=os.getenv('DEFAULT_USER_USERNAME'),
         email=os.getenv('DEFAULT_USER_EMAIL'),
     )
-    user.set_password(os.getenv('DEFAULT_USER_PASSWORD'))
+
     user.save()
-    
+
     new_ingredients = []
     new_instructions = []
     new_photos = []
