@@ -18,7 +18,6 @@ import { AuthContext } from '../../../App';
 const MAX_FILE_SIZE = 2097152;
 
 const CreateRecipe = ({ history }) => {
-    window.onbeforeunload = () => true
     const currentUser = useContext(AuthContext);
     const [navigationIsBlocked, setNavigationIsBlocked] = useState(true)
     const [createRecipePhoto] = useMutation(CREATE_RECIPE_PHOTO_MUTATION);
