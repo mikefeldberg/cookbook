@@ -148,11 +148,14 @@ class CreatePasswordResetRequest(graphene.Mutation):
 
     def mutate(self, info, email):
         RESET_PASSWORD_EXPIRES_IN = {'minutes': 11}
+        MAX_PASSWORD_RESET_REQUEST_COUNT = 5
 
+        email = email.lower()
         user = get_user_model().objects.filter(email=email).first()
-        reset_code = uuid.uuid4()
+        active_request_count = PasswordResetRequest.objects.filter(user=user, expires_at__gte=timezone.now()).count()
 
-        if user:
+        if user and active_request_count < MAX_PASSWORD_RESET_REQUEST_COUNT:
+            reset_code = uuid.uuid4()
             new_password_reset_request = PasswordResetRequest(
                 reset_code=reset_code,
                 user=user,

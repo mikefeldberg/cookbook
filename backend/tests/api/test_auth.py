@@ -1,4 +1,4 @@
-from recipes.models import User
+from recipes.models import User, PasswordResetRequest
 from unittest.mock import patch, ANY
 from django.contrib.auth import get_user_model
 from tests import fixtures
@@ -9,7 +9,7 @@ class AuthTestCase(JSONWebTokenTestCase):
     def setUp(self):
         self.user = fixtures.create_user(username='test_user', email='test_user@email.com')
 
-        self.create_user_query = '''
+        self.create_user_mutation = '''
             mutation ($username: String!, $email: String!, $password: String!) {
                 createUser(username: $username, email: $email, password: $password) {
                     user {
@@ -20,7 +20,7 @@ class AuthTestCase(JSONWebTokenTestCase):
             }
         '''
 
-        self.token_auth_query = '''
+        self.token_auth_mutation = '''
             mutation ($username: String!, $password: String!) {
                 tokenAuth(username: $username, password: $password) {
                     token
@@ -28,11 +28,20 @@ class AuthTestCase(JSONWebTokenTestCase):
             }
         '''
 
-    def test_create_user_and_login(self):
-        """
-        Test creating a user, logging in with correct creds, logging in with incorrect creds
-        """
+        self.create_password_reset_request_mutation = '''
+            mutation ($email: String!) {
+                createPasswordResetRequest(email: $email) {
+                    passwordResetRequest {
+                        resetCode
+                        user {
+                            id
+                        }
+                    }
+                }
+            }
+        '''
 
+    def test_create_user(self):
         self.assertEquals(User.objects.count(), 1)
 
         variables = {
@@ -41,7 +50,7 @@ class AuthTestCase(JSONWebTokenTestCase):
             'password': 'password',
         }
 
-        resp = self.client.execute(self.create_user_query, variables)
+        resp = self.client.execute(self.create_user_mutation, variables)
 
         expected_result = {
             'username': 'chef_1',
@@ -52,55 +61,70 @@ class AuthTestCase(JSONWebTokenTestCase):
         self.assertEquals(resp.errors, None)
         self.assertEquals(User.objects.count(), 2)
 
+    def test_token_auth_success(self):
         correct_creds = {
-            'username': 'chef_1@email.com',
+            'username': 'test_user@email.com',
             'password': 'password',
         }
 
-        resp = self.client.execute(self.token_auth_query, correct_creds)
+        resp = self.client.execute(self.token_auth_mutation, correct_creds)
 
         self.assertEquals(type(resp.data['tokenAuth']['token']), str)
         self.assertEquals(resp.errors, None)
 
-        incorrect_creds = {
-            'username': 'chef_1@email.com',
+    def test_token_auth_invalid_creds(self):
+        invalid_creds = {
+            'username': 'test_user@email.com',
             'password': 'P@ssword',
         }
 
-        resp = self.client.execute(self.token_auth_query, incorrect_creds)
+        resp = self.client.execute(self.token_auth_mutation, invalid_creds)
 
         expected_error = 'Please enter valid credentials'
 
         self.assertIn(expected_error, resp.errors[0].message)
         self.assertEquals(resp.data['tokenAuth'], None)
 
-    # TODO
-    def z_test_create_user_duplicate_username(self):
+    def test_password_reset_request_success_case_insensitive(self):
         variables = {
-            'username': 'test_user',
-            'email': 'chef_1@email.com',
-            'password': 'password',
+            'email': 'TEST_USER@email.com',
         }
 
-        resp = self.client.execute(self.create_user_query, variables)
+        resp = self.client.execute(self.create_password_reset_request_mutation, variables)
 
-        expected_error = 'duplicate key value violates unique constraint "recipes_user_username_key"'
-
-        self.assertIn(expected_error, resp.errors[0].message)
-        self.assertEquals(User.objects.count(), 1)
-
-    # TODO
-    def z_test_create_user_duplicate_email(self):
-        variables = {
-            'username': 'chef_1',
-            'email': 'test_user@email.com',
-            'password': 'password',
+        expected_result = {
+            'resetCode': ANY,
+            'user': {
+                'id': str(self.user.id),
+            }
         }
 
-        resp = self.client.execute(self.create_user_query, variables)
+        self.assertEquals(resp.data['createPasswordResetRequest']['passwordResetRequest'], expected_result)
+        self.assertEquals(resp.errors, None)
+        self.assertEquals(PasswordResetRequest.objects.count(), 1)
 
-        expected_error = 'duplicate key value violates unique constraint "recipes_user_email_key"'
+    def test_password_reset_request_max_request_count_reached(self):
+        variables = {
+            'email': self.user.email,
+        }
 
-        self.assertIn(expected_error, resp.errors[0].message)
-        self.assertEquals(User.objects.count(), 2)
+        for i in list(range(1, 6)):
+            resp = self.client.execute(self.create_password_reset_request_mutation, variables)
+
+            expected_result = {
+                'resetCode': ANY,
+                'user': {
+                    'id': str(self.user.id),
+                }
+            }
+
+            self.assertEquals(resp.data['createPasswordResetRequest']['passwordResetRequest'], expected_result)
+            self.assertEquals(resp.errors, None)
+            self.assertEquals(PasswordResetRequest.objects.count(), i)
+
+        resp = self.client.execute(self.create_password_reset_request_mutation, variables)
+
+        self.assertEquals(resp.data['createPasswordResetRequest']['passwordResetRequest'], None)
+        self.assertEquals(resp.errors, None)
+        self.assertEquals(PasswordResetRequest.objects.count(), 5)
 
