@@ -1,4 +1,4 @@
-from recipes.models import User, Recipe, Ingredient, Instruction, Photo, Comment
+from recipes.models import User, Recipe, Ingredient, Instruction, Photo, Comment, Favorite
 from recipes.recipe_data import recipes as seeded_recipes
 from django.contrib.auth import get_user_model
 import uuid
@@ -64,6 +64,12 @@ def create_comment(recipe_id, user_id, comment_args=None):
     return Comment.objects.create(
         content=comment['content'],
         rating=comment['rating'],
+        user_id=user_id,
+        recipe_id=recipe_id,
+    )
+
+def create_favorite(recipe_id, user_id):
+    return Favorite.objects.create(
         user_id=user_id,
         recipe_id=recipe_id,
     )
