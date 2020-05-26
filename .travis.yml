@@ -1,13 +1,27 @@
-language: generic
 sudo: required
 services:
   - docker
 
-before_install:
-  - docker build -t mikefeldberg/cookbook -f ./frontend/Dockerfile.dev ./frontend
-
-script:
-  - docker run -e CI=true mikefeldberg/cookbook npm test
+matrix:
+  include:
+    - stage: "test"
+      name: "test frontend"
+      language: node_js
+      node_js:
+        - '14'
+      before_install:
+        - docker build -t mikefeldberg/cookbook-frontend -f ./frontend/Dockerfile.dev ./frontend
+      script:
+        - docker run -e CI=true mikefeldberg/cookbook-frontend npm test
+    - stage: "test"
+      name: "test backend"
+      language: python
+      python:
+        - '3.7'
+      before_install:
+        - docker build -t mikefeldberg/cookbook-backend ./backend
+      script:
+        - docker run mikefeldberg/cookbook-backend sh -c "python manage.py test --settings=backend.settings.testing --keepdb"
 
 after_success:
   - docker build -t mikefeldberg/cookbook-frontend ./frontend
@@ -42,3 +56,48 @@ deploy:
       branch: master
     access_key_id: $AWS_ACCESS_KEY
     secret_access_key: $AWS_SECRET_KEY
+
+# language: generic
+# sudo: required
+# services:
+#   - docker
+
+# before_install:
+#   - docker build -t mikefeldberg/cookbook -f ./frontend/Dockerfile.dev ./frontend
+
+# script:
+#   - docker run -e CI=true mikefeldberg/cookbook npm test
+
+# after_success:
+#   - docker build -t mikefeldberg/cookbook-frontend ./frontend
+#   - docker build -t mikefeldberg/cookbook-nginx ./nginx
+#   - docker build -t mikefeldberg/cookbook-backend ./backend
+
+#   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+#   - docker push mikefeldberg/cookbook-frontend
+#   - docker push mikefeldberg/cookbook-nginx
+#   - docker push mikefeldberg/cookbook-backend
+
+# deploy:
+#   - provider: elasticbeanstalk
+#     region: 'us-west-1'
+#     app: $AWS_DEV_APP
+#     env: $AWS_DEV_ENV
+#     bucket_name: $AWS_BUCKET_NAME
+#     bucket_path: $AWS_DEV_APP
+#     on:
+#       branch: develop
+#     access_key_id: $AWS_ACCESS_KEY
+#     secret_access_key: $AWS_SECRET_KEY
+
+#   - provider: elasticbeanstalk
+#     region: 'us-west-1'
+#     app: $AWS_PROD_APP
+#     env: $AWS_PROD_ENV
+#     bucket_name: $AWS_BUCKET_NAME
+#     bucket_path: $AWS_PROD_APP
+#     on:
+#       branch: master
+#     access_key_id: $AWS_ACCESS_KEY
+#     secret_access_key: $AWS_SECRET_KEY
