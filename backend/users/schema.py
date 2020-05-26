@@ -75,6 +75,7 @@ class UserType(DjangoObjectType):
 
         return photos
 
+
 class PasswordResetRequestType(DjangoObjectType):
     email = graphene.String()
 

@@ -42,6 +42,10 @@ class RecipeTestCase(JSONWebTokenTestCase):
                         comments {
                             id
                         }
+                        user {
+                            id
+                            username
+                        }
                         favorites {
                             id
                             user {
@@ -154,12 +158,18 @@ class RecipeTestCase(JSONWebTokenTestCase):
             'favoriteCount': 0,
             'photos': [],
             'comments': [],
+            'user': {
+                'id': str(self.user.id),
+                'username': self.user.username,
+            },
             'favorites': [],
         }
 
         self.assertEquals(resp.data['createRecipe']['recipe'], expected_result)
         self.assertEquals(resp.errors, None)
         self.assertEquals(Recipe.objects.count(), 1)
+        new_recipe = Recipe.objects.first()
+        self.assertEquals(new_recipe.user.id, self.user.id)
 
     def test_create_recipe_missing_required_fields(self):
         variables = {
