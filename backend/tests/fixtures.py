@@ -1,4 +1,4 @@
-from recipes.models import User, Recipe, Ingredient, Instruction, Photo
+from recipes.models import User, Recipe, Ingredient, Instruction, Photo, Comment
 from recipes.recipe_data import recipes as seeded_recipes
 from django.contrib.auth import get_user_model
 import uuid
@@ -51,3 +51,19 @@ def create_recipe(user_id, recipe_args=None):
     Instruction.objects.bulk_create(new_instructions)
 
     return new_recipe
+
+def create_comment(recipe_id, user_id, comment_args=None):
+    comment = {
+        'content': 'Best pancakes ever',
+        'rating': 5.0,
+    }
+
+    if comment_args:
+        comment.update(comment_args)
+
+    return Comment.objects.create(
+        content=comment['content'],
+        rating=comment['rating'],
+        user_id=user_id,
+        recipe_id=recipe_id,
+    )

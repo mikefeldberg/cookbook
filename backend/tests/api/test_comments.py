@@ -10,7 +10,6 @@ from graphql_jwt.testcases import JSONWebTokenTestCase
 class CommentTestCase(JSONWebTokenTestCase):
     def setUp(self):
         self.user = fixtures.create_user()
-        self.client.authenticate(self.user)
         self.recipe = fixtures.create_recipe(user_id=self.user.id)
 
         self.create_comment_mutation = '''
@@ -34,7 +33,7 @@ class CommentTestCase(JSONWebTokenTestCase):
             }
         '''
 
-        self.update_recipe_mutation = '''
+        self.update_comment_mutation = '''
             mutation ($comment: CommentInput!) {
                 updateComment(comment: $comment) {
                     comment {
@@ -55,7 +54,7 @@ class CommentTestCase(JSONWebTokenTestCase):
             }
         '''
 
-        self.delete_recipe_mutation = '''
+        self.delete_comment_mutation = '''
             mutation($commentId: String!) {
                 deleteComment(commentId: $commentId) {
                     comment {
@@ -67,6 +66,8 @@ class CommentTestCase(JSONWebTokenTestCase):
         '''
 
     def test_create_comment_success_without_rating(self):
+        self.client.authenticate(self.user)
+
         variables = {
             'comment': {
                 'content': 'Best pancakes ever',
@@ -99,138 +100,372 @@ class CommentTestCase(JSONWebTokenTestCase):
 
         self.assertEquals(resp.errors, None)
         self.assertEquals(Comment.objects.count(), 1)
+        self.assertEquals(self.recipe.rating, 0)
+        self.assertEquals(self.recipe.rating_count, 0)
 
-    # def test_create_recipe_missing_required_fields(self):
-    #     variables = {
-    #         'recipe': {
-    #             'title': 'Blueberry Buttermilk Pancakes',
-    #             'description': 'The perfect lazy Sunday breakfast.',
-    #             'skillLevel': 'Easy',
-    #         }
-    #     }
+    def test_create_comment_success_with_rating_calculation(self):
+        self.client.authenticate(self.user)
 
-    #     resp = self.client.execute(self.create_recipe_mutation, variables)
+        variables = {
+            'comment': {
+                'content': 'Bestest pancakes ever',
+                'rating': 5,
+                'recipeId': str(self.recipe.id),
+            }
+        }
 
-    #     expected_error = 'Variable "$recipe" got invalid value'
+        resp = self.client.execute(self.create_comment_mutation, variables)
 
-    #     self.assertIn(expected_error, resp.errors[0].message)
-    #     self.assertEquals(Recipe.objects.count(), 0)
+        self.recipe.refresh_from_db()
 
-    # def test_update_recipe_success(self):
-    #     recipe = fixtures.create_recipe(user_id=self.user.id)
+        self.assertEquals(Comment.objects.count(), 1)
+        self.assertEquals(self.recipe.rating_count, 1)
+        self.assertEquals(self.recipe.rating, 5)
 
-    #     variables = {
-    #         'recipe': {
-    #             'id': str(recipe.id),
-    #             'title': 'Not pancakes',
-    #             'description': 'The perfect lazy Sunday breakfast.',
-    #             'skillLevel': 'Easy',
-    #             'prepTime': 66,
-    #             'cookTime': 66,
-    #             'waitTime': 66,
-    #             'servings': 66,
-    #             'ingredients': [{
-    #                 'quantity': '1',
-    #                 'name': 'cake',
-    #                 'preparation': 'panned',
-    #             }, {
-    #                 'quantity': '1 cup',
-    #                 'name': 'blueberries',
-    #                 'preparation': 'fresh or frozen'
-    #             }],
-    #             'instructions': [{
-    #                 'content': 'Prepare your dry mix in the large bowl: Sift together the flour, baking powder, baking soda, and salt.',
-    #                 'order': 1,
-    #             }, {
-    #                 'content': 'Separate egg whites and yolks between the other two bowls: whites in the larger bowl, yolks in the smaller.',
-    #                 'order': 2,
-    #             }],
-    #         }
-    #     }
+        variables = {
+            'comment': {
+                'content': 'Okayest pancakes ever',
+                'rating': 3,
+                'recipeId': str(self.recipe.id),
+            }
+        }
 
-    #     resp = self.client.execute(self.update_recipe_mutation, variables)
+        resp = self.client.execute(self.create_comment_mutation, variables)
 
-    #     expected_result = {
-    #         'id': str(recipe.id),
-    #         'title': 'Not pancakes',
-    #         'description': 'The perfect lazy Sunday breakfast.',
-    #         'skillLevel': 'Easy',
-    #         'prepTime': 66,
-    #         'cookTime': 66,
-    #         'waitTime': 66,
-    #         'totalTime': 198,
-    #         'servings': 66,
-    #         'ingredients': [{
-    #             'quantity': '1',
-    #             'name': 'cake',
-    #             'preparation': 'panned',
-    #         }, {
-    #             'quantity': '1 cup',
-    #             'name': 'blueberries',
-    #             'preparation': 'fresh or frozen'
-    #         }],
-    #         'instructions': [{
-    #             'content': 'Prepare your dry mix in the large bowl: Sift together the flour, baking powder, baking soda, and salt.',
-    #             'order': 1,
-    #         }, {
-    #             'content': 'Separate egg whites and yolks between the other two bowls: whites in the larger bowl, yolks in the smaller.',
-    #             'order': 2,
-    #         }],
-    #         'photos': [],
-    #     }
+        self.recipe.refresh_from_db()
 
-    #     self.assertEquals(resp.data['updateRecipe']['recipe'], expected_result)
-    #     self.assertEquals(resp.errors, None)
-    #     self.assertEquals(Recipe.objects.count(), 1)
+        self.assertEquals(Comment.objects.count(), 2)
+        self.assertEquals(self.recipe.rating_count, 2)
+        self.assertEquals(self.recipe.rating, 4)
 
-    #     updated_recipe = Recipe.objects.first()
-    #     self.assertEquals(updated_recipe.title, variables['recipe']['title'])
+    def test_create_comment_no_user(self):
+        variables = {
+            'comment': {
+                'content': 'Best pancakes ever',
+                'rating': 0,
+                'recipeId': str(self.recipe.id),
+            }
+        }
 
-    # def test_update_recipe_missing_required_fields(self):
-    #     recipe = fixtures.create_recipe(user_id=self.user.id)
+        resp = self.client.execute(self.create_comment_mutation, variables)
 
-    #     variables = {
-    #         'recipe': {
-    #             'id': str(recipe.id),
-    #             'title': 'Not pancakes',
-    #         }
-    #     }
+        expected_error = 'Log in to rate or comment'
 
-    #     resp = self.client.execute(self.update_recipe_mutation, variables)
+        self.assertIn(expected_error, resp.errors[0].message)
+        self.assertEquals(Comment.objects.count(), 0)
+        self.assertEquals(self.recipe.rating_count, 0)
+        self.assertEquals(self.recipe.rating, 0)
 
-    #     expected_error = 'Variable "$recipe" got invalid value'
+    def test_create_comment_missing_recipe_id(self):
+        self.client.authenticate(self.user)
 
-    #     self.assertIn(expected_error, resp.errors[0].message)
-    #     self.assertEquals(Recipe.objects.count(), 1)
-    #     recipe_from_db = Recipe.objects.first()
-    #     self.assertNotEquals(recipe_from_db.title, variables['recipe']['title'])
+        variables = {
+            'comment': {
+                'content': 'Bestest pancakes ever',
+                'rating': 5,
+            }
+        }
 
-    # def test_delete_recipe_success(self):
-    #     recipe = fixtures.create_recipe(user_id=self.user.id)
+        resp = self.client.execute(self.create_comment_mutation, variables)
 
-    #     variables = {
-    #         'recipeId': str(recipe.id),
-    #     }
+        self.recipe.refresh_from_db()
 
-    #     resp = self.client.execute(self.delete_recipe_mutation, variables)
+        expected_error = 'recipe_id'
 
-    #     expected_result = {
-    #         'id': str(recipe.id),
-    #     }
+        self.assertIn(expected_error, resp.errors[0].message)
+        self.assertEquals(Comment.objects.count(), 0)
+        self.assertEquals(self.recipe.rating_count, 0)
+        self.assertEquals(self.recipe.rating, 0)
 
-    #     self.assertEquals(Recipe.objects.filter(deleted_at=None).count(), 0)
+    def test_create_comment_blank_recipe_id(self):
+        self.client.authenticate(self.user)
 
-    # def test_delete_recipe_missing_id(self):
-    #     recipe = fixtures.create_recipe(user_id=self.user.id)
+        variables = {
+            'comment': {
+                'content': 'Bestest pancakes ever',
+                'rating': 5,
+                'recipeId': '',
+            }
+        }
 
-    #     variables = {
-    #         'recipeId': None,
-    #     }
+        resp = self.client.execute(self.create_comment_mutation, variables)
 
-    #     resp = self.client.execute(self.delete_recipe_mutation, variables)
+        self.recipe.refresh_from_db()
 
-    #     expected_result = {
-    #         'id': str(recipe.id),
-    #     }
+        expected_error = 'is not a valid UUID'
 
-    #     self.assertEquals(Recipe.objects.filter(deleted_at=None).count(), 1)
+        self.assertIn(expected_error, resp.errors[0].message)
+        self.assertEquals(Comment.objects.count(), 0)
+        self.assertEquals(self.recipe.rating_count, 0)
+        self.assertEquals(self.recipe.rating, 0)
+
+    def test_update_comment_success_with_rating_calculation(self):
+        self.client.authenticate(self.user)
+
+        variables = {
+            'comment': {
+                'content': 'Best pancakes ever',
+                'rating': 5,
+                'recipeId': str(self.recipe.id),
+            }
+        }
+
+        resp = self.client.execute(self.create_comment_mutation, variables)
+
+        created_comment = resp.data['createComment']['comment']
+
+        variables = {
+            'comment': {
+                'id': created_comment['id'],
+                'content': 'My pancake had a hair in it',
+                'rating': 1,
+                'recipeId': str(self.recipe.id),
+            }
+        }
+
+        resp = self.client.execute(self.update_comment_mutation, variables)
+
+        self.recipe.refresh_from_db()
+
+        expected_result = {
+            'id': created_comment['id'],
+            'content': 'My pancake had a hair in it',
+            'rating': 1,
+            'createdAt': ANY,
+            'updatedAt': ANY,
+            'recipe': {
+                'id': str(self.recipe.id),
+            },
+            'user': {
+                'id': str(self.user.id),
+                'username': self.user.username,
+            },
+        }
+
+        self.assertEquals(Comment.objects.count(), 1)
+        self.assertEquals(self.recipe.rating_count, 1)
+        self.assertEquals(self.recipe.rating, 1)
+
+    def test_update_comment_unauthorized(self):
+        comment = fixtures.create_comment(recipe_id=self.recipe.id, user_id=self.user.id)
+        self.user_2 = fixtures.create_user(username='test_user_2', email='test_user_2@email.com')
+        self.client.authenticate(self.user_2)
+
+        variables = {
+            'comment': {
+                'id': str(comment.id),
+                'content': 'My pancake had a hair in it',
+                'rating': 1,
+                'recipeId': str(self.recipe.id),
+            }
+        }
+
+        resp = self.client.execute(self.update_comment_mutation, variables)
+
+        expected_error = 'Update not permitted.'
+
+        self.assertIn(expected_error, resp.errors[0].message)
+        not_updated_comment = Comment.objects.first()
+        self.assertEquals(not_updated_comment.content, comment.content)
+
+    def test_update_comment_missing_recipe_id(self):
+        self.client.authenticate(self.user)
+
+        variables = {
+            'comment': {
+                'content': 'Best pancakes ever',
+                'rating': 5,
+                'recipeId': str(self.recipe.id),
+            }
+        }
+
+        resp = self.client.execute(self.create_comment_mutation, variables)
+
+        created_comment = resp.data['createComment']['comment']
+
+        variables = {
+            'comment': {
+                'id': created_comment['id'],
+                'content': 'My pancake had a hair in it',
+                'rating': 1,
+            }
+        }
+
+        resp = self.client.execute(self.update_comment_mutation, variables)
+
+        self.recipe.refresh_from_db()
+
+        expected_result = {
+            'id': created_comment['id'],
+            'content': 'My pancake had a hair in it',
+            'rating': 1,
+            'createdAt': ANY,
+            'updatedAt': ANY,
+            'recipe': {
+                'id': str(self.recipe.id),
+            },
+            'user': {
+                'id': str(self.user.id),
+                'username': self.user.username,
+            },
+        }
+
+        from IPython import embed; embed()
+
+        self.assertEquals(Comment.objects.count(), 1)
+        self.assertEquals(self.recipe.rating_count, 1)
+        self.assertEquals(self.recipe.rating, 1)
+
+    def test_update_comment_missing_comment_id(self):
+        self.client.authenticate(self.user)
+
+        variables = {
+            'comment': {
+                'content': 'Best pancakes ever',
+                'rating': 5,
+                'recipeId': str(self.recipe.id),
+            }
+        }
+
+        resp = self.client.execute(self.create_comment_mutation, variables)
+
+        created_comment = resp.data['createComment']['comment']
+
+        variables = {
+            'comment': {
+                'content': 'My pancake had a hair in it',
+                'rating': 1,
+                'recipeId': str(self.recipe.id),
+            }
+        }
+
+        resp = self.client.execute(self.update_comment_mutation, variables)
+
+        self.recipe.refresh_from_db()
+
+        expected_error = 'id'
+
+        self.assertIn(expected_error, resp.errors[0].message)
+        self.assertEquals(self.recipe.rating_count, 1)
+        self.assertEquals(self.recipe.rating, 5)
+
+    def test_delete_comment_success_without_rating(self):
+        self.client.authenticate(self.user)
+
+        variables = {
+            'comment': {
+                'content': 'Best pancakes ever',
+                'rating': 0,
+                'recipeId': str(self.recipe.id),
+            }
+        }
+
+        resp = self.client.execute(self.create_comment_mutation, variables)
+
+        self.recipe.refresh_from_db()
+
+        created_comment = resp.data['createComment']['comment']
+
+        self.assertEquals(Comment.objects.count(), 1)
+        self.assertEquals(self.recipe.rating_count, 0)
+        self.assertEquals(self.recipe.rating, 0)
+
+        variables = {
+            'commentId': created_comment['id'],
+        }
+
+        resp = self.client.execute(self.delete_comment_mutation, variables)
+
+        deleted_comment = resp.data['deleteComment']['comment']
+
+        expected_result = {
+            'rating': 0,
+            'recipeId': str(self.recipe.id),
+        }
+
+        self.assertEquals(deleted_comment, expected_result)
+
+        self.assertEquals(Comment.objects.filter(deleted_at=None).count(), 0)
+        self.assertEquals(self.recipe.rating_count, 0)
+        self.assertEquals(self.recipe.rating, 0)
+
+    def test_delete_comment_success_with_rating_calculation(self):
+        self.client.authenticate(self.user)
+
+        variables = {
+            'comment': {
+                'content': 'Best pancakes ever',
+                'rating': 5,
+                'recipeId': str(self.recipe.id),
+            }
+        }
+
+        resp = self.client.execute(self.create_comment_mutation, variables)
+
+        self.recipe.refresh_from_db()
+
+        created_comment = resp.data['createComment']['comment']
+
+        self.assertEquals(Comment.objects.count(), 1)
+        self.assertEquals(self.recipe.rating_count, 1)
+        self.assertEquals(self.recipe.rating, 5)
+
+        variables = {
+            'commentId': created_comment['id'],
+        }
+
+        resp = self.client.execute(self.delete_comment_mutation, variables)
+
+        self.recipe.refresh_from_db()
+
+        deleted_comment = resp.data['deleteComment']['comment']
+
+        expected_result = {
+            'rating': 5,
+            'recipeId': str(self.recipe.id),
+        }
+
+        self.assertEquals(deleted_comment, expected_result)
+
+        self.assertEquals(Comment.objects.filter(deleted_at=None).count(), 0)
+        self.assertEquals(self.recipe.rating_count, 0)
+        self.assertEquals(self.recipe.rating, 0)
+
+    def test_delete_comment_unauthorized(self):
+        comment = fixtures.create_comment(recipe_id=self.recipe.id, user_id=self.user.id)
+        self.user_2 = fixtures.create_user(username='test_user_2', email='test_user_2@email.com')
+        self.client.authenticate(self.user_2)
+
+        variables = {
+            'commentId': str(comment.id),
+        }
+
+        resp = self.client.execute(self.delete_comment_mutation, variables)
+
+        expected_error = 'Delete not permitted.'
+
+        self.assertIn(expected_error, resp.errors[0].message)
+        self.assertEquals(Comment.objects.filter(deleted_at=None).count(), 1)
+
+    def test_delete_comment_missing_id(self):
+        self.client.authenticate(self.user)
+
+        variables = {
+            'comment': {
+                'content': 'Best pancakes ever',
+                'rating': 5,
+                'recipeId': str(self.recipe.id),
+            }
+        }
+
+        resp = self.client.execute(self.create_comment_mutation, variables)
+
+        self.recipe.refresh_from_db()
+
+        variables = {
+            'commentId': None,
+        }
+
+        resp = self.client.execute(self.delete_comment_mutation, variables)
+
+        self.assertEquals(Comment.objects.filter(deleted_at=None).count(), 1)
