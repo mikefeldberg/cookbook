@@ -6,6 +6,9 @@ from django.conf import settings
 
 
 def seed_recipes(apps, schema_editor):
+    if settings.TESTING:
+        return
+
     Recipe = apps.get_model('recipes', 'Recipe')
     Ingredient = apps.get_model('recipes', 'Ingredient')
     Instruction = apps.get_model('recipes', 'Instruction')

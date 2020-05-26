@@ -303,6 +303,12 @@ export const CREATE_RECIPE_MUTATION = gql`
                 servings
                 ingredients {
                     name
+                    preparation
+                    quantity
+                }
+                instructions {
+                    order
+                    content
                 }
                 rating
                 ratingCount
@@ -336,14 +342,24 @@ export const UPDATE_RECIPE_MUTATION = gql`
                 id
                 title
                 description
+                skillLevel
+                prepTime
+                cookTime
+                waitTime
+                totalTime
+                servings
                 ingredients {
-                    quantity
-                    preparation
                     name
+                    preparation
+                    quantity
                 }
                 instructions {
-                    content
                     order
+                    content
+                }
+                photos {
+                    id
+                    url
                 }
             }
         }
