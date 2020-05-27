@@ -21,8 +21,6 @@ jobs:
     - '3.7'
     before_install:
     - docker-compose -f docker-compose.test.yml up --exit-code-from api
-    # script:
-    # - docker run mikefeldberg/cookbook-backend
   - stage: build containers
     script:
     - docker build -t mikefeldberg/cookbook-frontend ./frontend
