@@ -327,8 +327,6 @@ class CreateComment(graphene.Mutation):
             recipe.rating_count += 1
             recipe.save()
 
-        # from IPython import embed; embed()
-
         return CreateComment(comment=new_comment)
 
 

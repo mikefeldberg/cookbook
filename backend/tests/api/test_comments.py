@@ -295,26 +295,11 @@ class CommentTestCase(JSONWebTokenTestCase):
 
         self.recipe.refresh_from_db()
 
-        expected_result = {
-            'id': created_comment['id'],
-            'content': 'My pancake had a hair in it',
-            'rating': 1,
-            'createdAt': ANY,
-            'updatedAt': ANY,
-            'recipe': {
-                'id': str(self.recipe.id),
-            },
-            'user': {
-                'id': str(self.user.id),
-                'username': self.user.username,
-            },
-        }
+        expected_error = 'recipe_vid'
 
-        from IPython import embed; embed()
-
-        self.assertEquals(Comment.objects.count(), 1)
+        self.assertIn(expected_error, resp.errors[0].message)
         self.assertEquals(self.recipe.rating_count, 1)
-        self.assertEquals(self.recipe.rating, 1)
+        self.assertEquals(self.recipe.rating, 5)
 
     def test_update_comment_missing_comment_id(self):
         self.client.authenticate(self.user)
