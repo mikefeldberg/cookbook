@@ -1,106 +1,59 @@
 sudo: required
 services:
-  - docker
-
+- docker
 env:
   global:
-    - DJANGO_SECRET_KEY=Secret
-    - DJANGO_DEBUG=False
-
+  - secure: BK2Wvjp0WGxgKxkMcu+bRc1yDMMmNlZr3CUmcbQQ+uP+4KrRIfUCCPGa2HJ4JMtZZOSZQg0hJ3IhdGMah9JqyHbGRiItssk3Els8TinJuVVcZ75h5EW94w5GS06glMfsuAcEYSDgFZ9xC/SVqrXEybSPtABgkLty1igArCESO75w6cU8E6re1MeYneDZ6dObQs+Oaz/oxI9QQ9fT8V5UPYfHoIKJTwnitAfuNLPV5aa2obI0HpzVVcc6u8F1FJItjCO8uVTSzWHQnA7a743kT1Fb406yTalB0jnnAO+L28b2BsxiKWdnaWyJNl582Y7ErK7t3DvpsxFAGqM1/YjdIHDRp5za2lQl6P0DYMyXXLL5O8Eb03z800wm2dXVAJEYzBBsy7eBIEzDdcO7bFMWowd95FK+0qUvS8lxbFHMk4ZXN9+95tGnuoYJqsyH/ff5V/kq1xsqpvk4S25mefM9Ysy4pPcsqTQzu5+sL4a2+NJGRpAmuUyXQPTYuemr6Ab95HorF2LHjZZO5T/PWnl7R0zKQy6N4TP1u9WKdge5M8n2zOTlBEPbDxsUKuvM91Nbhzqr6u77JDCfppxLHrEAGVfjUXtoeuxydEkNC/BpWs7EgQw46mXsiStXzE4nuQfZjGJsG6RcIplyYv2bllkDPyVCDFC8wFgCfwZgTAfCNDg=
+  - secure: XeZBoRwXRdr106SYk8gwPliB058kEXdEiLvNExviWILRe+4FpDBhlvdYu/8rPMY7F4uGnj+NREH3XOIWGyYMRvlsfRbAquy29juLKsI5pE2KR5w0qS5yWKFKimTWnoWRSc3B3xshZHlyBd45xjsBH+jUaUQBGAPyAf9TyfEo6w3RGKr994On1+9VWqWIthoQvLq7uX0Ua9WtCVP5jrCQOHG9Uv1YhEQdABuS6bqXpTjaoJRjMbKOH1gLkvMvZcRtgi255tAffuQOVxxIfi2IsBV41FZUUrRO8khKO9XxnXlwD7WrVP7tDwgCnv6pau5NurGho8o6x22drucL7Foty1yoEkiztfMJGgJAHOPPEm6WnTe5ucuygc9QqA1hi/hDp46mu2dZpFHgP3X8uAAkxuC9luVlDRKFMYdcJlKXhpYEOG3i3/e/sZFK+AQuJX9Q9TbJBX59oM2KeDe6EhtSHRgUzdU4+xgnenqo1yLlQlYXnV6R42OKayuko6sFxwI0iJRPZ0FY+O3Cm3gf3VX2MTLHKHgUqva+LU0S9WHLeugrjdyiKc6zOi2iWsKaYjdhkYhMcxXSeG+u61gfrTLf2UIrSGd+Ho4EclpUQQqe4Jkfqp0VBJrl1GbzQzSDKpje+ja9VOlEn8cXPPASY1EMOor8DQeXyvR0wHHWfivnQHU=
 jobs:
   include:
-    - stage: "test"
-      name: "test frontend"
-      language: generic
-      before_install:
-        - docker build -t mikefeldberg/cookbook-frontend -f ./frontend/Dockerfile.dev ./frontend
-      script:
-        - docker run -e CI=true mikefeldberg/cookbook-frontend npm test
-    - stage: "test"
-      name: "test backend"
-      language: generic
-
-      before_install:
-        - docker build -t mikefeldberg/cookbook-backend -f ./backend/Dockerfile.dev ./backend
-      script:
-        - docker run mikefeldberg/cookbook-backend
-    - stage: "build containers"
-      script:
-      - docker build -t mikefeldberg/cookbook-frontend ./frontend
-      - docker build -t mikefeldberg/cookbook-nginx ./nginx
-      - docker build -t mikefeldberg/cookbook-backend ./backend
-
-      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-
-      - docker push mikefeldberg/cookbook-frontend
-      - docker push mikefeldberg/cookbook-nginx
-      - docker push mikefeldberg/cookbook-backend
-    - stage: "deploy to aws"
-      deploy:
-        - provider: elasticbeanstalk
-          region: 'us-west-1'
-          app: $AWS_DEV_APP
-          env: $AWS_DEV_ENV
-          bucket_name: $AWS_BUCKET_NAME
-          bucket_path: $AWS_DEV_APP
-          on:
-            branch: develop
-          access_key_id: $AWS_ACCESS_KEY
-          secret_access_key: $AWS_SECRET_KEY
-
-        - provider: elasticbeanstalk
-          region: 'us-west-1'
-          app: $AWS_PROD_APP
-          env: $AWS_PROD_ENV
-          bucket_name: $AWS_BUCKET_NAME
-          bucket_path: $AWS_PROD_APP
-          on:
-            branch: master
-          access_key_id: $AWS_ACCESS_KEY
-          secret_access_key: $AWS_SECRET_KEY
-
-
-# language: generic
-# sudo: required
-# services:
-#   - docker
-
-# before_install:
-#   - docker build -t mikefeldberg/cookbook -f ./frontend/Dockerfile.dev ./frontend
-
-# script:
-#   - docker run -e CI=true mikefeldberg/cookbook npm test
-
-# after_success:
-#   - docker build -t mikefeldberg/cookbook-frontend ./frontend
-#   - docker build -t mikefeldberg/cookbook-nginx ./nginx
-#   - docker build -t mikefeldberg/cookbook-backend ./backend
-
-#   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-
-#   - docker push mikefeldberg/cookbook-frontend
-#   - docker push mikefeldberg/cookbook-nginx
-#   - docker push mikefeldberg/cookbook-backend
-
-# deploy:
-#   - provider: elasticbeanstalk
-#     region: 'us-west-1'
-#     app: $AWS_DEV_APP
-#     env: $AWS_DEV_ENV
-#     bucket_name: $AWS_BUCKET_NAME
-#     bucket_path: $AWS_DEV_APP
-#     on:
-#       branch: develop
-#     access_key_id: $AWS_ACCESS_KEY
-#     secret_access_key: $AWS_SECRET_KEY
-
-#   - provider: elasticbeanstalk
-#     region: 'us-west-1'
-#     app: $AWS_PROD_APP
-#     env: $AWS_PROD_ENV
-#     bucket_name: $AWS_BUCKET_NAME
-#     bucket_path: $AWS_PROD_APP
-#     on:
-#       branch: master
-#     access_key_id: $AWS_ACCESS_KEY
-#     secret_access_key: $AWS_SECRET_KEY
+  - stage: test
+    name: test frontend
+    language: generic
+    before_install:
+    - docker build -t mikefeldberg/cookbook-frontend -f ./frontend/Dockerfile.dev
+      ./frontend
+    script:
+    - docker run -e CI=true mikefeldberg/cookbook-frontend npm test
+  - stage: test
+    name: test backend
+    language: python
+    python:
+    - '3.7'
+    before_install:
+    - docker build -t mikefeldberg/cookbook-backend -f ./backend/Dockerfile.dev ./backend
+    script:
+    - export DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY
+    - export DJANGO_DEBUG=$DJANGO_DEBUG
+    - docker run mikefeldberg/cookbook-backend
+  - stage: build containers
+    script:
+    - docker build -t mikefeldberg/cookbook-frontend ./frontend
+    - docker build -t mikefeldberg/cookbook-nginx ./nginx
+    - docker build -t mikefeldberg/cookbook-backend ./backend
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    - docker push mikefeldberg/cookbook-frontend
+    - docker push mikefeldberg/cookbook-nginx
+    - docker push mikefeldberg/cookbook-backend
+  - stage: deploy to aws
+    deploy:
+    - provider: elasticbeanstalk
+      region: us-west-1
+      app: "$AWS_DEV_APP"
+      env: "$AWS_DEV_ENV"
+      bucket_name: "$AWS_BUCKET_NAME"
+      bucket_path: "$AWS_DEV_APP"
+      on:
+        branch: develop
+      access_key_id: "$AWS_ACCESS_KEY"
+      secret_access_key: "$AWS_SECRET_KEY"
+    - provider: elasticbeanstalk
+      region: us-west-1
+      app: "$AWS_PROD_APP"
+      env: "$AWS_PROD_ENV"
+      bucket_name: "$AWS_BUCKET_NAME"
+      bucket_path: "$AWS_PROD_APP"
+      on:
+        branch: master
+      access_key_id: "$AWS_ACCESS_KEY"
+      secret_access_key: "$AWS_SECRET_KEY"
