@@ -67,7 +67,7 @@ class CommentInput(graphene.InputObjectType):
     id = graphene.String(required=False)
     content = graphene.String()
     rating = graphene.Int()
-    recipe_id = graphene.String(required=False)
+    recipe_id = graphene.String()
 
 
 class FavoriteType(DjangoObjectType):

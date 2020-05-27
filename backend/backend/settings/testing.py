@@ -1,4 +1,5 @@
 from .base import *
 
-TESING = True
+TESTING = True
 DEBUG = True
+SECRET_KEY='Secret'

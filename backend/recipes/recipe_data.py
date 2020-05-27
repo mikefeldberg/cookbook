@@ -40,7 +40,7 @@ recipes = [
         'servings': 8,
     },
     {
-        'title': 'Borsh',
+        'title': 'Borsch',
         'photo': 'https://feldbergscookbook-photos.s3-us-west-1.amazonaws.com/photo_01E6C6ATD2QN2BT3TGDSNJY2MX.JPG',
         'description': 'Classic Ukranian beet soup. Can be made as hearty or light as you like. I tend to opt for a heartier/denser version and I use a 12qt stockpot for this recipe. So, if you like your soup more soupy, feel free to reduce the vegetable quantities by 20-30% of what’s listed below',
         'ingredients': [
