@@ -6,24 +6,20 @@ jobs:
   include:
     - stage: "test"
       name: "test frontend"
-      language: node_js
-      node_js:
-        - '14'
+      language: generic
       before_install:
         - docker build -t mikefeldberg/cookbook-frontend -f ./frontend/Dockerfile.dev ./frontend
       script:
         - docker run -e CI=true mikefeldberg/cookbook-frontend npm test
     - stage: "test"
       name: "test backend"
-      language: python
-      python:
-        - '3.7'
+      language: generic
       before_install:
         - docker build -t mikefeldberg/cookbook-backend -f ./backend/Dockerfile.dev ./backend
       script:
         - docker run mikefeldberg/cookbook-backend
     - stage: "build containers"
-      after_success:
+      script:
       - docker build -t mikefeldberg/cookbook-frontend ./frontend
       - docker build -t mikefeldberg/cookbook-nginx ./nginx
       - docker build -t mikefeldberg/cookbook-backend ./backend
