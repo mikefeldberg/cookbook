@@ -146,7 +146,7 @@ class FavoriteTestCase(JSONWebTokenTestCase):
 
         self.recipe.refresh_from_db()
 
-        self.assertEquals(resp.data['deleteFavorite'], expected_result)
+        self.assertEquals(resp.data['deleteFavoritex'], expected_result)
         self.assertEquals(self.recipe.favorite_count, 0)
         self.assertEquals(Favorite.objects.filter(deleted_at=None).count(), 0)
 
