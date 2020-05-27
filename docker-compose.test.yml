@@ -1,0 +1,22 @@
+version: '3'
+services:
+    postgres:
+        image: postgres:latest
+        environment:
+            - POSTGRES_DB=cookbook_test
+            - POSTGRES_PASSWORD=postgres_password
+    api:
+        depends_on:
+            - postgres
+        build:
+            dockerfile: ./Dockerfile.test
+            context: ./backend
+        environment:
+            - PGHOST=postgres
+            - PGPORT=5432
+            - PGDATABASE=cookbook_test
+            - PGUSER=postgres
+            - PGPASSWORD=postgres_password
+        volumes:
+            - ./backend:/usr/src/app
+        command: manage.py test --settings=backend.settings.testing --keepdb

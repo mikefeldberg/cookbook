@@ -9,5 +9,8 @@ COPY Pipfile Pipfile.lock /usr/src/app/
 RUN pip install pipenv && pipenv install --system
 COPY . /usr/src/app/
 
+# ENTRYPOINT ["sh", "/usr/src/app/entrypoint.dev.sh"]
+# ENTRYPOINT ["/usr/src/app/entrypoint.dev.sh"]
+
 ENTRYPOINT ["python"]
-CMD ["manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["manage.py", "test", "--settings=backend.settings.testing", "--keepdb"]

@@ -480,16 +480,16 @@ export const DELETE_COMMENT_MUTATION = gql`
 export const CREATE_FAVORITE_MUTATION = gql`
     mutation ($favorite: FavoriteInput!) {
         createFavorite(favorite: $favorite) {
-                favorite {
-                    user {
-                        id
-                        username
-                    }
-                    recipe {
-                        id
-                        title
-                    }
+            favorite {
+                user {
+                    id
+                    username
                 }
+                recipe {
+                    id
+                    title
+                }
+            }
         }
     }
 `
