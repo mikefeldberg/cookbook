@@ -14,6 +14,9 @@ jobs:
     - stage: "test"
       name: "test backend"
       language: generic
+      env:
+        - DJANGO_SECRET_KEY=Secret
+        - DJANGO_DEBUG=False
       before_install:
         - docker build -t mikefeldberg/cookbook-backend -f ./backend/Dockerfile.dev ./backend
       script:
