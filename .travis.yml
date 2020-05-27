@@ -2,6 +2,11 @@ sudo: required
 services:
   - docker
 
+env:
+  global:
+    - DJANGO_SECRET_KEY=Secret
+    - DJANGO_DEBUG=False
+
 jobs:
   include:
     - stage: "test"
@@ -14,10 +19,7 @@ jobs:
     - stage: "test"
       name: "test backend"
       language: generic
-      env:
-        global:
-          - DJANGO_SECRET_KEY=Secret
-          - DJANGO_DEBUG=False
+
       before_install:
         - docker build -t mikefeldberg/cookbook-backend -f ./backend/Dockerfile.dev ./backend
       script:
