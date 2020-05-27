@@ -20,6 +20,7 @@ boto3 = "*"
 django-filter = "*"
 ulid-py = "*"
 gunicorn = "*"
+pendulum = "*"
 
 [requires]
 python_version = "3.7"
