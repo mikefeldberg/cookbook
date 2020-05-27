@@ -1,6 +1,7 @@
 sudo: required
 services:
 - docker
+- postgresql
 env:
   global:
   - secure: BK2Wvjp0WGxgKxkMcu+bRc1yDMMmNlZr3CUmcbQQ+uP+4KrRIfUCCPGa2HJ4JMtZZOSZQg0hJ3IhdGMah9JqyHbGRiItssk3Els8TinJuVVcZ75h5EW94w5GS06glMfsuAcEYSDgFZ9xC/SVqrXEybSPtABgkLty1igArCESO75w6cU8E6re1MeYneDZ6dObQs+Oaz/oxI9QQ9fT8V5UPYfHoIKJTwnitAfuNLPV5aa2obI0HpzVVcc6u8F1FJItjCO8uVTSzWHQnA7a743kT1Fb406yTalB0jnnAO+L28b2BsxiKWdnaWyJNl582Y7ErK7t3DvpsxFAGqM1/YjdIHDRp5za2lQl6P0DYMyXXLL5O8Eb03z800wm2dXVAJEYzBBsy7eBIEzDdcO7bFMWowd95FK+0qUvS8lxbFHMk4ZXN9+95tGnuoYJqsyH/ff5V/kq1xsqpvk4S25mefM9Ysy4pPcsqTQzu5+sL4a2+NJGRpAmuUyXQPTYuemr6Ab95HorF2LHjZZO5T/PWnl7R0zKQy6N4TP1u9WKdge5M8n2zOTlBEPbDxsUKuvM91Nbhzqr6u77JDCfppxLHrEAGVfjUXtoeuxydEkNC/BpWs7EgQw46mXsiStXzE4nuQfZjGJsG6RcIplyYv2bllkDPyVCDFC8wFgCfwZgTAfCNDg=
@@ -22,6 +23,8 @@ jobs:
     - '3.7'
     before_install:
     - docker build -t mikefeldberg/cookbook-backend -f ./backend/Dockerfile.dev ./backend
+    before_script:
+    - psql -c 'create database cookbook;' -U postgres
     script:
     - docker run mikefeldberg/cookbook-backend
   - stage: build containers
