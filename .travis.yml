@@ -15,18 +15,17 @@ jobs:
       ./frontend
     script:
     - docker run -e CI=true mikefeldberg/cookbook-frontend npm test
-  # - stage: test
-  #   name: test backend
-  #   language: python
-  #   python:
-  #   - '3.7'
-    # script:
-    # - docker build -t mikefeldberg/cookbook-backend -f ./backend/Dockerfile.dev ./backend
-    # - docker run mikefeldberg/cookbook-backend
+  - stage: test
+    name: test backend
+    language: python
+    python:
+    - '3.7'
+    before_install:
+    - docker build -t mikefeldberg/cookbook-backend -f ./backend/Dockerfile.dev ./backend
+    script:
+    - docker run mikefeldberg/cookbook-backend
   - stage: build containers
     script:
-    - docker build -t mikefeldberg/cookbook-backend -f ./backend/Dockerfile.dev ./backend
-    - docker run mikefeldberg/cookbook-backend
     - docker build -t mikefeldberg/cookbook-frontend ./frontend
     - docker build -t mikefeldberg/cookbook-nginx ./nginx
     - docker build -t mikefeldberg/cookbook-backend ./backend
