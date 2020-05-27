@@ -23,8 +23,6 @@ jobs:
     before_install:
     - docker build -t mikefeldberg/cookbook-backend -f ./backend/Dockerfile.dev ./backend
     script:
-    - export DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY
-    - export DJANGO_DEBUG=$DJANGO_DEBUG
     - docker run mikefeldberg/cookbook-backend
   - stage: build containers
     script:
