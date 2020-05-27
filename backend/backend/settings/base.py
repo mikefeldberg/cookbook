@@ -101,7 +101,7 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'cookbook',
+            'NAME': 'cookbook_test_db',
         }
     }
 

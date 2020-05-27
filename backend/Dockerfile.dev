@@ -14,4 +14,3 @@ COPY . /usr/src/app/
 
 ENTRYPOINT ["python"]
 CMD ["manage.py", "test", "--settings=backend.settings.testing", "--keepdb"]
-
