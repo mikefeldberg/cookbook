@@ -21,7 +21,7 @@ jobs:
       before_install:
         - docker build -t mikefeldberg/cookbook-backend -f ./backend/Dockerfile.dev ./backend
       script:
-        - docker run mikefeldberg/cookbook-backend sh -c "python manage.py test --settings=backend.settings.testing --keepdb"
+        - docker run mikefeldberg/cookbook-backend sh -c "manage.py test --settings=backend.settings.testing --keepdb"
     - stage: "build containers"
       after_success:
       - docker build -t mikefeldberg/cookbook-frontend ./frontend
