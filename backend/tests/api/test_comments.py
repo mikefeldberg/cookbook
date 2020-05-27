@@ -295,7 +295,7 @@ class CommentTestCase(JSONWebTokenTestCase):
 
         self.recipe.refresh_from_db()
 
-        expected_error = 'recipe_vid'
+        expected_error = 'recipe_id'
 
         self.assertIn(expected_error, resp.errors[0].message)
         self.assertEquals(self.recipe.rating_count, 1)
