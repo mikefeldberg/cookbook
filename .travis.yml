@@ -11,7 +11,7 @@ jobs:
     name: test frontend
     language: generic
     before_install:
-    - docker-compose -f docker-compose.test.yml up
+    - docker build -t mikefeldberg/cookbook-frontend -f ./frontend/Dockerfile.dev ./frontend
     script:
     - docker run -e CI=true mikefeldberg/cookbook-frontend npm test
   - stage: test
@@ -20,9 +20,9 @@ jobs:
     python:
     - '3.7'
     before_install:
-    - docker build -t mikefeldberg/cookbook-backend -f ./backend/Dockerfile.dev ./backend
-    script:
-    - docker run mikefeldberg/cookbook-backend
+    - docker-compose -f docker-compose.test.yml up
+    # script:
+    # - docker run mikefeldberg/cookbook-backend
   - stage: build containers
     script:
     - docker build -t mikefeldberg/cookbook-frontend ./frontend
