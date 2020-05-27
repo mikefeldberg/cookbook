@@ -9,7 +9,7 @@ services:
         depends_on:
             - postgres
         build:
-            dockerfile: ./Dockerfile.dev
+            dockerfile: ./Dockerfile.test
             context: ./backend
         environment:
             - PGHOST=postgres
