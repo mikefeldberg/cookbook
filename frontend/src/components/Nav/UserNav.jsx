@@ -4,9 +4,10 @@ import { useApolloClient } from '@apollo/react-hooks';
 
 import Nav from 'react-bootstrap/Nav';
 import Dropdown from 'react-bootstrap/Dropdown';
-import Image from 'react-bootstrap/Image';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
+
+import UserAvatar from '../Shared/UserAvatar';
 
 const UserNav = ({ currentUser }) => {
     const client = useApolloClient();
@@ -27,15 +28,7 @@ const UserNav = ({ currentUser }) => {
                     </Link>
                 </Nav.Item>
             </Nav>
-            <Link to={`/profile/${currentUser.username}`}>
-                <Image
-                    width={32}
-                    height={32}
-                    className="border-light rounded-circle mr-1 shadow-sm"
-                    alt={currentUser.username}
-                    src={currentUser.photos.length > 0 ? currentUser.photos[0].url : `/avatar_placeholder.png`}
-                />
-            </Link>
+            <UserAvatar user={currentUser} size='sm' />
             <Dropdown drop="down">
                 <Dropdown.Toggle variant="dark" id="dropdown-basic"></Dropdown.Toggle>
                 <Dropdown.Menu>
