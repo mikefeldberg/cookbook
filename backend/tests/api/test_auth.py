@@ -5,7 +5,6 @@ from tests import fixtures
 from graphql_jwt.testcases import JSONWebTokenTestCase
 
 
-
 class AuthTestCase(JSONWebTokenTestCase):
     def setUp(self):
         self.user = fixtures.create_user(username='test_user', email='test_user@email.com')
