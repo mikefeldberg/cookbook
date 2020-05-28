@@ -21,10 +21,7 @@ jobs:
     before_install:
     - docker-compose -f docker-compose.test.yml up --exit-code-from api
   - stage: build containers
-    on:
-      branch:
-      - develop
-      - master
+    if: (branch = develop) OR (branch = master)
     script:
     - docker build -t mikefeldberg/cookbook-frontend ./frontend
     - docker build -t mikefeldberg/cookbook-nginx ./nginx
@@ -34,6 +31,7 @@ jobs:
     - docker push mikefeldberg/cookbook-nginx
     - docker push mikefeldberg/cookbook-backend
   - stage: deploy to aws
+    if: (branch = develop) OR (branch = master)
     deploy:
     - provider: elasticbeanstalk
       region: us-west-1
