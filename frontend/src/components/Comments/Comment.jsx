@@ -7,7 +7,6 @@ import moment from 'moment';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import Image from 'react-bootstrap/Image';
 
 import { UPDATE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries';
 import { AuthContext } from '../../App';
