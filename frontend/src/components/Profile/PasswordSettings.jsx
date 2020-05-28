@@ -36,7 +36,7 @@ const PasswordSettings = () => {
     if (currentUser) {
         return (
             <>
-                <Form className="mx-auto w-50" onSubmit={handleSubmit(onSubmit)}>
+                <Form className="mx-auto w-50 fullWidthOnMobile" onSubmit={handleSubmit(onSubmit)}>
                     <Form.Group>
                         <Form.Label>Please enter a new password</Form.Label>
                         <Form.Control
