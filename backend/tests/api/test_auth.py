@@ -5,6 +5,7 @@ from tests import fixtures
 from graphql_jwt.testcases import JSONWebTokenTestCase
 
 
+
 class AuthTestCase(JSONWebTokenTestCase):
     def setUp(self):
         self.user = fixtures.create_user(username='test_user', email='test_user@email.com')
@@ -85,7 +86,8 @@ class AuthTestCase(JSONWebTokenTestCase):
         self.assertIn(expected_error, resp.errors[0].message)
         self.assertEquals(resp.data['tokenAuth'], None)
 
-    def test_password_reset_request_success_case_insensitive(self):
+    @patch('users.schema.send_password_reset_email')
+    def test_password_reset_request_success_case_insensitive(self, mock_send_password_reset_email):
         variables = {
             'email': 'TEST_USER@email.com',
         }
@@ -103,7 +105,10 @@ class AuthTestCase(JSONWebTokenTestCase):
         self.assertEquals(resp.errors, None)
         self.assertEquals(PasswordResetRequest.objects.count(), 1)
 
-    def test_password_reset_request_max_request_count_reached(self):
+        mock_send_password_reset_email.assert_called_once_with('test_user@email.com', ANY)
+
+    @patch('users.schema.send_password_reset_email')
+    def test_password_reset_request_max_request_count_reached(self, mock_send_password_reset_email):
         variables = {
             'email': self.user.email,
         }
@@ -127,4 +132,6 @@ class AuthTestCase(JSONWebTokenTestCase):
         self.assertEquals(resp.data['createPasswordResetRequest']['passwordResetRequest'], None)
         self.assertEquals(resp.errors, None)
         self.assertEquals(PasswordResetRequest.objects.count(), 5)
+
+        self.assertEquals(mock_send_password_reset_email.call_count, 5)
 
