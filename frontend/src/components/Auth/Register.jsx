@@ -57,7 +57,7 @@ const Register = () => {
     if (!currentUser) {
         return (
             <>
-                <Form className="mb-5 mx-auto w-50" onSubmit={handleSubmit(onSubmit)}>
+                <Form className="mb-5 mx-auto w-50 fullWidthOnMobile" onSubmit={handleSubmit(onSubmit)}>
                     <Form.Group>
                         <Form.Label>Username</Form.Label>
                         <Form.Control

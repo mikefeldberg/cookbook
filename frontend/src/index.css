@@ -223,6 +223,10 @@ table, caption, tbody, tfoot, thead, tr, th, td {
     display: none;
   }
 
+  .fullWidthOnMobile {
+    width: 100% !important;
+  }
+
   #basic-navbar-nav .dropdown-menu {
     margin-left: -110px !important;
   }

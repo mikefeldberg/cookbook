@@ -31,7 +31,7 @@ const RecipeCard = ({ recipe }) => {
                     <Link style={{ textDecoration: 'none' }} to={`/recipes/${recipe.id}`}><span className="link">{recipe.title}</span></Link>
                 </Card.Title>
                 { !url.includes('profile') &&
-                    <UserAvatar user={recipe.user} size='sm' />
+                    <UserAvatar user={recipe.user} size='sm' showLabel={true}/>
                 }
             </Card.Body>
             { recipe.description &&
