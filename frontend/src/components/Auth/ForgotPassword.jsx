@@ -29,7 +29,7 @@ const ForgotPassword = () => {
     if (!currentUser) {
         return (
             <>
-                <Form className="mx-auto w-50 mb-5" onSubmit={handleSubmit(onSubmit)}>
+                <Form className="mb-5 mx-auto w-50 fullWidthOnMobile" onSubmit={handleSubmit(onSubmit)}>
                     <Form.Group>
                         <Form.Label>Please enter the email address you registered with</Form.Label>
                         <Form.Control
