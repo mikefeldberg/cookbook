@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormFile from 'react-bootstrap/FormFile';
 import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Image from 'react-bootstrap/Image';
@@ -181,8 +182,8 @@ const PhotoSettings = ({ profile }) => {
 
     return (
         <>
-            <Form onSubmit={(e) => handleSubmit(e, createUserPhoto)}>
-                <Form.Group>
+            <Form className="mx-auto w-50 fullWidthOnMobile" onSubmit={(e) => handleSubmit(e, createUserPhoto)}>
+                <Form.Group className="mb-1">
                     <Form.Label>Link or upload a profile photo</Form.Label>
                     <InputGroup>
                         <InputGroup.Prepend>
@@ -213,7 +214,6 @@ const PhotoSettings = ({ profile }) => {
                         </InputGroup.Prepend>
                         {photoSource === 'upload' && (
                             <FormFile
-                                className="mr-2"
                                 label={
                                     file && fileName && fileSize
                                         ? fileName + ' (' + formatFileSize(fileSize) + ')'
@@ -226,21 +226,11 @@ const PhotoSettings = ({ profile }) => {
                         )}
                         {photoSource === 'link' && (
                             <Form.Control
-                                className="mr-2"
                                 value={newPhotoUrl}
                                 placeholder="Paste image URL"
                                 onChange={(e) => handlePhotoUrlInput(e)}
                             />
                         )}
-                        <InputGroup.Append>
-                            <Button
-                                type="submit"
-                                variant="primary"
-                                disabled={!((file && photoSource === 'upload') || (newPhotoUrl && photoSource === 'link') || (deleteExistingPhoto)) }
-                            >
-                                Save Photo
-                            </Button>
-                        </InputGroup.Append>
                     </InputGroup>
                     {fileSize > MAX_FILE_SIZE && photoSource === 'upload' && (
                         <small className="text-danger">
@@ -249,6 +239,15 @@ const PhotoSettings = ({ profile }) => {
                     )}
                     {photoStatus.length > 0 && <small className="text-success">Photo {photoStatus}</small>}
                 </Form.Group>
+                <ButtonGroup className="w-100">
+                        <Button
+                            type="submit"
+                            variant="primary"
+                            disabled={!((file && photoSource === 'upload') || (newPhotoUrl && photoSource === 'link') || (deleteExistingPhoto)) }
+                        >
+                            Save Photo
+                        </Button>
+                    </ButtonGroup>
                 <Form.Group>
                     { existingPhotoUrl &&
                         <div className="mb-2">

@@ -7,10 +7,10 @@ import moment from 'moment';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import Image from 'react-bootstrap/Image';
 
 import { UPDATE_COMMENT_MUTATION, GET_RECIPE_QUERY } from '../../queries/queries';
 import { AuthContext } from '../../App';
+import UserAvatar from '../Shared/UserAvatar';
 import CommentToolbar from './CommentToolbar';
 import EditCommentStarRating from './EditCommentStarRating';
 
@@ -93,19 +93,7 @@ const Comment = ({ comment, newRatingIsDisabled, setNewRatingIsDisabled }) => {
         <div className="shadow-sm border mb-2 rounded">
             <Row className="p-2">
                 <Col md={1}>
-                    <Link style={{ textDecoration: 'none' }} to={`/profile/${comment.user.username}`}>
-                        <Image
-                            width={64}
-                            height={64}
-                            className="rounded mr-3"
-                            alt={comment.user.username}
-                            src={comment.user.photos.length > 0
-                                ? comment.user.photos[0].url
-                                :
-                                `/avatar_placeholder.png`
-                            }
-                        />
-                    </Link>
+                    <UserAvatar user={comment.user} size='med' />
                 </Col>
                 <Col>
                     <Row noGutters>

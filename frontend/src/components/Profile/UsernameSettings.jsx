@@ -54,7 +54,7 @@ const UsernameSettings = () => {
 
     return (
         <>
-            <Form className="mx-auto w-50" onSubmit={handleSubmit(onSubmit)}>
+            <Form className="mx-auto w-50 fullWidthOnMobile" onSubmit={handleSubmit(onSubmit)}>
                 <Form.Group className="mb-1">
                     <Form.Label>Enter a new username</Form.Label>
                     <Form.Control
@@ -81,7 +81,7 @@ const UsernameSettings = () => {
                 <ButtonGroup className="w-100 mb-3" aria-label="Basic example">
                     <Button
                         disabled={!formState.isValid || formIsSubmitted}
-                        className="w-50 p-1"
+                        className="p-1"
                         variant="primary"
                         type="submit"
                     >
