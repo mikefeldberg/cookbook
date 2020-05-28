@@ -6,7 +6,8 @@ import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import Image from 'react-bootstrap/Image';
+
+import UserAvatar from '../Shared/UserAvatar';
 
 const RecipeCard = ({ recipe }) => {
     const match = useRouteMatch();
@@ -30,25 +31,7 @@ const RecipeCard = ({ recipe }) => {
                     <Link style={{ textDecoration: 'none' }} to={`/recipes/${recipe.id}`}><span className="link">{recipe.title}</span></Link>
                 </Card.Title>
                 { !url.includes('profile') &&
-                    <Card.Text>
-                        <Link
-                            style={{ textDecoration: 'none' }}
-                            to={`/profile/${recipe.user.username}`}
-                        >
-                            <Image
-                                width={32}
-                                height={32}
-                                className="border-light rounded-circle mr-1 shadow-sm"
-                                alt={recipe.user.username}
-                                src={recipe.user.photos.length > 0
-                                    ? recipe.user.photos[0].url
-                                    :
-                                    `/avatar_placeholder.png`
-                                }
-                            />
-                            <span className="link">{recipe.user.username}</span>
-                        </Link>
-                    </Card.Text>
+                    <UserAvatar user={recipe.user} size='sm' showLabel={true}/>
                 }
             </Card.Body>
             { recipe.description &&

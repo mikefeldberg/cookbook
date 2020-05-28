@@ -6,6 +6,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
+TESTING = False
 DEBUG = os.environ.get('DJANGO_DEBUG')
 
 ALLOWED_HOSTS = ['api']

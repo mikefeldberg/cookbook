@@ -176,6 +176,26 @@ table, caption, tbody, tfoot, thead, tr, th, td {
   margin-top: -3px;
 }
 
+.user-avatar {
+  background-clip: padding-box;
+  float: left;
+  background-size: cover;
+  background-position: center center;
+}
+
+.user-avatar-sm {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin: -2px 5px 0 0;
+}
+
+.user-avatar-med {
+  width: 64px;
+  height: 64px;
+  border-radius: 10%;
+}
+
 .ingredientsList {
   list-style: none;
   padding-left: 0;
@@ -201,6 +221,10 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 @media (max-width: 699px) {
   .hideOnMobile {
     display: none;
+  }
+
+  .fullWidthOnMobile {
+    width: 100% !important;
   }
 
   #basic-navbar-nav .dropdown-menu {
