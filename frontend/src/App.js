@@ -6,6 +6,7 @@ import Container from 'react-bootstrap/Container';
 
 import { ME_QUERY } from './queries/queries';
 import NavBar from './components/Nav/NavBar';
+import Banner from './components/Nav/Banner';
 import Register from './components/Auth/Register';
 import Login from './components/Auth/Login';
 import Logout from './components/Auth/Logout';
@@ -18,7 +19,6 @@ import UpdateRecipe from './components/Recipes/RecipeForm/UpdateRecipe';
 import ProfilePage from './components/Profile/ProfilePage';
 import Footer from './components/Footer/Footer';
 import Terms from './components/Footer/Terms';
-
 
 export const AuthContext = React.createContext();
 
@@ -33,6 +33,7 @@ const App = () => {
             <Router>
                 <AuthContext.Provider value={currentUser}>
                     <NavBar />
+                    <Banner />
                     <Container className="content">
                         <Switch>
                             <Route exact path="/" component={RecipesList} />

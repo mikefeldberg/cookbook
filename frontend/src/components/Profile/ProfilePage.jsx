@@ -32,46 +32,44 @@ const ProfilePage = ({ match }) => {
         const favorites = data.profile.favoriteSet;
 
         return (
-            <>
-                <Tabs defaultActiveKey="user">
-                    <Tab eventKey="user" title="User Bio">
-                        <UserTab profile={data.profile}/>
-                    </Tab>
-                    <Tab eventKey="recipes" title="Recipes">
-                        <CardColumns className={recipes.length > 0 ? '' : 'mb-5'}>
-                            {recipes.length > 0
-                                ? recipes.map((recipe) => <RecipeCard key={recipe.id} recipe={recipe} />)
-                                : currentUser && currentUser.username === username
-                                ? `You haven't added any recipes`
-                                : `${profileUsername} hasn't added any recipes`
-                            }
-                        </CardColumns>
-                    </Tab>
-                    <Tab eventKey="favorites" title="Favorites">
-                        <CardColumns className={favorites.length > 0 ? '' : 'mb-5'}>
-                            {favorites.length > 0
-                                ? favorites.map((favorite) => <RecipeCard key={favorite.id} recipe={favorite.recipe} />)
-                                : currentUser && currentUser.username === username
-                                ? `You haven't saved any favorites`
-                                : `${profileUsername} hasn't saved any favorites`
-                            }
-                        </CardColumns>
-                    </Tab>
-                    <Tab eventKey="comments" title="Comments">
-                        {comments.length > 0
-                            ? comments.map((comment) => <ProfileComment key={comment.id} comment={comment} />)
+            <Tabs defaultActiveKey="user">
+                <Tab eventKey="user" title="User Bio">
+                    <UserTab profile={data.profile}/>
+                </Tab>
+                <Tab eventKey="recipes" title="Recipes">
+                    <CardColumns className={recipes.length > 0 ? '' : 'mb-5'}>
+                        {recipes.length > 0
+                            ? recipes.map((recipe) => <RecipeCard key={recipe.id} recipe={recipe} />)
                             : currentUser && currentUser.username === username
-                            ? `You haven't left any comments`
-                            : `${profileUsername} hasn't left any comments`
+                            ? `You haven't added any recipes`
+                            : `${profileUsername} hasn't added any recipes`
                         }
-                    </Tab>
-                    {currentUser && currentUser.username === data.profile.username &&
-                        <Tab eventKey="settings" title="Settings">
-                            <SettingsTab profile={data.profile} />
-                        </Tab>
+                    </CardColumns>
+                </Tab>
+                <Tab eventKey="favorites" title="Favorites">
+                    <CardColumns className={favorites.length > 0 ? '' : 'mb-5'}>
+                        {favorites.length > 0
+                            ? favorites.map((favorite) => <RecipeCard key={favorite.id} recipe={favorite.recipe} />)
+                            : currentUser && currentUser.username === username
+                            ? `You haven't saved any favorites`
+                            : `${profileUsername} hasn't saved any favorites`
+                        }
+                    </CardColumns>
+                </Tab>
+                <Tab eventKey="comments" title="Comments">
+                    {comments.length > 0
+                        ? comments.map((comment) => <ProfileComment key={comment.id} comment={comment} />)
+                        : currentUser && currentUser.username === username
+                        ? `You haven't left any comments`
+                        : `${profileUsername} hasn't left any comments`
                     }
-                </Tabs>
-            </>
+                </Tab>
+                {currentUser && currentUser.username === data.profile.username &&
+                    <Tab eventKey="settings" title="Settings">
+                        <SettingsTab profile={data.profile} />
+                    </Tab>
+                }
+            </Tabs>
         );
     }
 };

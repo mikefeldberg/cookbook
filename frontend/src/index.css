@@ -51,12 +51,6 @@ code {
   cursor: default;
 }
 
-
-.jumbotron {
-  background-image: url("https://i.imgur.com/6qqdwwH.png");
-  background-size: cover;
-}
-
 .jumbotron-text h3 {
   font-size: 3.5rem;
   text-shadow: -7px 7px 0px #00e6e6,
@@ -69,6 +63,19 @@ code {
   text-shadow: -10px 10px 0px #00e6e6,
   -20px 20px 0px #01cccc,
   -30px 30px 0px #00bdbd;
+}
+
+/* .jumbotron {
+  display: none;
+} */
+
+.jumbotron {
+  background-image: url("https://i.imgur.com/6qqdwwH.png");
+  background-size: cover;
+}
+
+.hero-hide {
+  display: none;
 }
 
 @media (max-width: 699px) {

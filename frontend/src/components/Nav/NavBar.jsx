@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
-import Jumbotron from 'react-bootstrap/Jumbotron';
+// import Jumbotron from 'react-bootstrap/Jumbotron';
 import Navbar from 'react-bootstrap/Navbar';
 
 import { AuthContext } from '../../App';
@@ -13,13 +13,13 @@ const NavBar = () => {
     const currentUser = useContext(AuthContext);
 
     return (
-        <Jumbotron className="mb-4">
-            <Navbar expand variant="dark" className="p-0 bg-dark fixed-top navBack">
-                <Container>
+        <Container>
+            <Navbar expand variant="light" className="p-0 bg-light fixed-top">
+                <Container className="pl-3 pr-3">
                     <Navbar.Brand>
                         <Link to="/">
                             <img
-                                src="/logo_white_border.png"
+                                src="/logo_black_border.png"
                                 width="30"
                                 height="30"
                                 className="d-inline-block align-top"
@@ -33,13 +33,7 @@ const NavBar = () => {
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-            <Container>
-                <div className="text-center jumbotron-text">
-                    <h3 className="text-white text-left">Feldberg’s</h3>
-                    <h1 className="text-white text-left ml-5">Cookbook</h1>
-                </div>
-            </Container>
-        </Jumbotron>
+        </Container>
     );
 };
 

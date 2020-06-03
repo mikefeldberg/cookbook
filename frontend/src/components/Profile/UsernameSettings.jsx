@@ -54,7 +54,7 @@ const UsernameSettings = () => {
 
     return (
         <>
-            <Form className="mx-auto w-50 fullWidthOnMobile" onSubmit={handleSubmit(onSubmit)}>
+            <Form className="mb-5 mx-auto w-50 fullWidthOnMobile" onSubmit={handleSubmit(onSubmit)}>
                 <Form.Group className="mb-1">
                     <Form.Label>Enter a new username</Form.Label>
                     <Form.Control

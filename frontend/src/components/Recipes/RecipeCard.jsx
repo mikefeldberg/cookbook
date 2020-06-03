@@ -13,6 +13,7 @@ const RecipeCard = ({ recipe }) => {
     const match = useRouteMatch();
     const url = match.url
     const [isExpanded, setIsExpanded] = useState(false)
+    console.log(url)
 
     return (
         <Card className="shadow mb-4">
