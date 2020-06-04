@@ -87,7 +87,6 @@ const Recipe = ({ recipe, favorited }) => {
 
     return (
         <Container>
-            {dimensions.width}
             <Row noGutters className="align-items-center">
                 <h1>{recipe.title}&nbsp;</h1>
                 {currentUser && recipe.user.id === currentUser.id && (

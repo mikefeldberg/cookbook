@@ -26,19 +26,30 @@ const RecipeCard = ({ recipe, index }) => {
             setInFavorites(favoritedUserIds.includes(currentUser.id))
             console.log(inFavorites)
         }
-    })
-
-    // const [createFavorite] = useMutation(CREATE_FAVORITE_MUTATION);
-    const [deleteFavorite] = useMutation(DELETE_FAVORITE_MUTATION);
+    });
 
     const [createFavorite] = useMutation(CREATE_FAVORITE_MUTATION, {
         update(cache, { data: { createFavorite } }) {
             const recipeId = createFavorite.favorite.recipe.id;
-            const data = cache.readQuery({ query: GET_RECIPES_QUERY, variables: { id: recipeId } });
+            const data = cache.readQuery({ query: GET_RECIPES_QUERY });
             const recipes = [ ...data.recipes ];
-            debugger
+            const recipe = recipes[index]
+            recipe.favorites.push(createFavorite.favorite)
 
-            recipe.favorites.push({ user: { id: currentUser.id, __typename: 'UserType' }, __typename: 'FavoriteType' });
+            cache.writeQuery({
+                query: GET_RECIPES_QUERY,
+                data: { recipes },
+            });
+        },
+    });
+
+    const [deleteFavorite] = useMutation(DELETE_FAVORITE_MUTATION, {
+        update(cache, { data: { deleteFavorite } }) {
+            const recipeId = deleteFavorite.recipeId;
+            const data = cache.readQuery({ query: GET_RECIPES_QUERY });
+            const recipes = [ ...data.recipes ];
+            const recipe = recipes[index]
+            recipe.favorites.pop();
 
             cache.writeQuery({
                 query: GET_RECIPES_QUERY,

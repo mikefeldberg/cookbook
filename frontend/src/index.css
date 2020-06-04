@@ -38,6 +38,7 @@ code {
 .star {
   font-size: 1.6em;
   margin: 0;
+  transition: color 0.4s ease;
 }
 
 .star:hover, .glow > .star {
@@ -145,6 +146,7 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 
 .cancelIcon, .confirmIcon, .editIcon, .deleteIcon {
   color: #b4b4b4;
+  transition: color 0.4s ease;
 }
 
 .cancelIcon:hover {

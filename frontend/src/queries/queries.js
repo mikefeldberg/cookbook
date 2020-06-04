@@ -487,6 +487,7 @@ export const CREATE_FAVORITE_MUTATION = gql`
     mutation ($favorite: FavoriteInput!) {
         createFavorite(favorite: $favorite) {
             favorite {
+                id
                 user {
                     id
                     username
