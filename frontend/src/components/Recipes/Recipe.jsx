@@ -112,18 +112,22 @@ const Recipe = ({ recipe, favorited }) => {
                     </span>
                 )}
                 {inFavorites && (
-                    <i
-                        style={{ cursor: pointer }}
+                    <div
                         onClick={() => removeFromFavorites(recipe.id, deleteFavorite)}
-                        className="text-danger fas fa-heart"
-                    ></i>
+                    >
+                        <i
+                            className="fas fa-heart unfav-heart"
+                        ></i>
+                    </div>
                 )}
                 {!inFavorites && (
-                    <i
-                        style={{ cursor: pointer }}
+                    <div
                         onClick={() => addToFavorites(recipe.id, createFavorite)}
-                        className="text-danger far fa-heart"
-                    ></i>
+                    >
+                        <i
+                            className="far fa-heart fav-heart"
+                        ></i>
+                    </div>
                 )}
                 &nbsp;
                 {recipe.favorites.length > 0 && <span>({recipe.favorites.length})</span>}

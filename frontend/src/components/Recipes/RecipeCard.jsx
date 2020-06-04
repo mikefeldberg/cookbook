@@ -80,53 +80,18 @@ const RecipeCard = ({ recipe, index }) => {
         }
     };
 
-    // const [createFavorite] = useMutation(CREATE_FAVORITE_MUTATION, {
-    //     update(cache, { data: { createFavorite } }) {
-    //         const recipeId = createFavorite.favorite.recipe.id;
-    //         const data = cache.readQuery({ query: GET_RECIPES_QUERY, variables: { id: recipeId } });
-    //         const recipe = data.recipe;
-
-    //         recipe.favorites.push({ user: { id: currentUser.id, __typename: 'UserType' }, __typename: 'FavoriteType' });
-
-    //         cache.writeQuery({
-    //             query: GET_RECIPE_QUERY,
-    //             data: { recipe },
-    //         });
-    //     },
-    // });
-
-    // const [deleteFavorite] = useMutation(DELETE_FAVORITE_MUTATION, {
-    //     update(cache, { data: { deleteFavorite } }) {
-    //         const recipeId = deleteFavorite.recipeId;
-    //         const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables: { id: recipeId } });
-
-    //         const recipe = data.recipe;
-    //         recipe.favorites.pop();
-
-    //         cache.writeQuery({
-    //             query: GET_RECIPE_QUERY,
-    //             data: { recipe },
-    //         });
-    //     },
-    // });
-
     return (
         <Card className="shadow mb-4 border-0">
-            {/* <i
-                onClick={() => addToFavorites()}
-                className="fas fa-heart fa-lg card-btn-background"
-            ></i> */}
-
             {inFavorites && (
                 <i
                     onClick={() => removeFromFavorites()}
-                    className="fas fa-heart fa-lg clickable heart-btn heart-unfav"
+                    className="fas fa-heart fa-lg clickable card-heart-btn card-heart-unfav"
                 ></i>
             )}
             {!inFavorites && (
                 <i
                     onClick={() => addToFavorites()}
-                    className="far fa-heart fa-lg clickable heart-btn heart-fav"
+                    className="far fa-heart fa-lg clickable card-heart-btn card-heart-fav"
                 ></i>
             )}
 

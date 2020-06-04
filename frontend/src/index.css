@@ -241,46 +241,49 @@ table, caption, tbody, tfoot, thead, tr, th, td {
   }
 }
 
-.heart-btn {
+.card-heart-btn {
   position: absolute;
   top: 12px;
   right: 10px;
-}
-
-.heart-fav {
-  color: white;
-  transition: color 0.5s ease;
-}
-
-.heart-fav:hover {
-  color: red;
-}
-
-.heart-unfav {
-  color: rgb(212, 0, 0);
-  transition: color 0.5s ease;
-}
-
-.heart-unfav:hover {
-  color: white;
-}
-
-.card-btn-background {
-  /* border-radius: 50%; */
-  position: absolute;
-  top: 12px;
-  right: 10px;
-  /* background-color: rgba(255, 255, 255, 0.2); */
-  /* color: rgba(255, 0, 0, 0.5); */
-  color: white;
-  border: 0;
   cursor: pointer;
-  /* padding: 10px 7px; */
 }
 
-.card-btn-background:hover {
-  /* background-color: rgba(255, 255, 255, 0.5); */
-  color: rgba(255, 0, 0, 1);
+.card-heart-fav {
+  color: white;
+  transition: color 0.5s ease;
+}
+
+.card-heart-fav:hover {
+  color: #ff1e61;
+}
+
+.card-heart-unfav {
+  color: #ff1e61;
+  transition: color 0.5s ease;
+}
+
+.card-heart-unfav:hover {
+  color: white;
+}
+
+.fav-heart {
+  cursor: pointer;
+  color: grey;
+  transition: color 0.5s ease;
+}
+
+.unfav-heart {
+  cursor: pointer;
+  color: #ff1e61;
+  transition: color 0.5s ease;
+}
+
+.fav-heart:hover {
+  color: #ff1e61;
+}
+
+.unfav-heart:hover {
+  color: grey;
 }
 
 .corner-shadow {
