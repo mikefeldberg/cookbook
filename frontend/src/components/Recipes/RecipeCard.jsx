@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
+import { useMutation } from '@apollo/react-hooks';
 import ShowMoreText from 'react-show-more-text';
 
 import Card from 'react-bootstrap/Card';
@@ -7,17 +8,119 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
+import { AuthContext } from '../../App';
+import { GET_RECIPES_QUERY, CREATE_FAVORITE_MUTATION, DELETE_FAVORITE_MUTATION } from '../../queries/queries';
 import UserAvatar from '../Shared/UserAvatar';
 
-const RecipeCard = ({ recipe }) => {
+const RecipeCard = ({ recipe, index }) => {
+    const currentUser = useContext(AuthContext);
     const match = useRouteMatch();
     const url = match.url
     const [isExpanded, setIsExpanded] = useState(false)
+    const [inFavorites, setInFavorites] = useState(false)
     console.log(url)
 
+    useEffect(() => {
+        if (currentUser) {
+            const favoritedUserIds = recipe.favorites.map(f => f.user.id)
+            setInFavorites(favoritedUserIds.includes(currentUser.id))
+            console.log(inFavorites)
+        }
+    })
+
+    // const [createFavorite] = useMutation(CREATE_FAVORITE_MUTATION);
+    const [deleteFavorite] = useMutation(DELETE_FAVORITE_MUTATION);
+
+    const [createFavorite] = useMutation(CREATE_FAVORITE_MUTATION, {
+        update(cache, { data: { createFavorite } }) {
+            const recipeId = createFavorite.favorite.recipe.id;
+            const data = cache.readQuery({ query: GET_RECIPES_QUERY, variables: { id: recipeId } });
+            const recipes = [ ...data.recipes ];
+            debugger
+
+            recipe.favorites.push({ user: { id: currentUser.id, __typename: 'UserType' }, __typename: 'FavoriteType' });
+
+            cache.writeQuery({
+                query: GET_RECIPES_QUERY,
+                data: { recipes },
+            });
+        },
+    });
+
+    const addToFavorites = async () => {
+        if (currentUser) {
+            const favorite = {
+                recipeId: recipe.id,
+            };
+
+            if (!inFavorites) {
+                setInFavorites(true);
+                await createFavorite({ variables: { favorite } });
+            }
+        }
+    };
+
+    const removeFromFavorites = async () => {
+        if (currentUser) {
+            if (inFavorites) {
+                setInFavorites(false);
+                await deleteFavorite({ variables: { recipeId: recipe.id } });
+            }
+        }
+    };
+
+    // const [createFavorite] = useMutation(CREATE_FAVORITE_MUTATION, {
+    //     update(cache, { data: { createFavorite } }) {
+    //         const recipeId = createFavorite.favorite.recipe.id;
+    //         const data = cache.readQuery({ query: GET_RECIPES_QUERY, variables: { id: recipeId } });
+    //         const recipe = data.recipe;
+
+    //         recipe.favorites.push({ user: { id: currentUser.id, __typename: 'UserType' }, __typename: 'FavoriteType' });
+
+    //         cache.writeQuery({
+    //             query: GET_RECIPE_QUERY,
+    //             data: { recipe },
+    //         });
+    //     },
+    // });
+
+    // const [deleteFavorite] = useMutation(DELETE_FAVORITE_MUTATION, {
+    //     update(cache, { data: { deleteFavorite } }) {
+    //         const recipeId = deleteFavorite.recipeId;
+    //         const data = cache.readQuery({ query: GET_RECIPE_QUERY, variables: { id: recipeId } });
+
+    //         const recipe = data.recipe;
+    //         recipe.favorites.pop();
+
+    //         cache.writeQuery({
+    //             query: GET_RECIPE_QUERY,
+    //             data: { recipe },
+    //         });
+    //     },
+    // });
+
     return (
-        <Card className="shadow mb-4">
-            <Link to={`/recipes/${recipe.id}`}>
+        <Card className="shadow mb-4 border-0">
+            {/* <i
+                onClick={() => addToFavorites()}
+                className="fas fa-heart fa-lg card-btn-background"
+            ></i> */}
+
+            {inFavorites && (
+                <i
+                    onClick={() => removeFromFavorites()}
+                    className="fas fa-heart fa-lg clickable heart-btn heart-unfav"
+                ></i>
+            )}
+            {!inFavorites && (
+                <i
+                    onClick={() => addToFavorites()}
+                    className="far fa-heart fa-lg clickable heart-btn heart-fav"
+                ></i>
+            )}
+
+            <Link  to={`/recipes/${recipe.id}`}>
+                {/* <div className="corner-shadow"></div> */}
                 <Card.Img
                     variant="top"
                     src={
@@ -26,6 +129,7 @@ const RecipeCard = ({ recipe }) => {
                             : `/recipe_placeholder.png`
                     }
                 />
+
             </Link>
             <Card.Body className="pt-3 pb-3">
                 <Card.Title>
@@ -37,7 +141,7 @@ const RecipeCard = ({ recipe }) => {
             </Card.Body>
             { recipe.description &&
                 <ListGroup variant="flush">
-                    <ListGroup.Item>
+                    <ListGroup.Item className="border-0 pt-0">
                         <ShowMoreText
                             lines={7}
                             more='Read more'
@@ -52,14 +156,16 @@ const RecipeCard = ({ recipe }) => {
                 </ListGroup>
             }
             <ListGroup variant="flush">
-                <ListGroup.Item className="text-center">
+                <ListGroup.Item className="text-center border-0 p-0 pb-1">
                     <Row>
                         {recipe.ratingCount > 0 ? (
                             <Col className="p-0 text-right" ><span style={{ color: 'gold' }}>{'★'.repeat(recipe.rating)}</span>&nbsp;({recipe.ratingCount})&nbsp;|</Col>
                         ) : (
                             <Col className="p-0 text-right" style={{ color: 'grey', cursor: 'default' }}>{'☆'.repeat(5)}&nbsp;|</Col>
                         )}
-                        <Col className="p-0 text-left">&nbsp;<i className="text-danger fas fa-heart"></i>&nbsp;({recipe.favorites.length})</Col>
+                        <Col className="p-0 text-left">&nbsp;<i className="text-danger fas fa-heart"></i>&nbsp;
+                            <small>({recipe.favorites.length})</small>
+                        </Col>
                     </Row>
                 </ListGroup.Item>
             </ListGroup>

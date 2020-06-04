@@ -39,6 +39,12 @@ export const PROFILE_QUERY = gql`
                 ratingCount
                 favorites {
                     id
+                    user {
+                        id
+                    }
+                }
+                user {
+                    id
                 }
             }
             commentSet {

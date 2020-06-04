@@ -11,11 +11,6 @@ BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET')
 DEFAULT_EXPIRATION = 3600
 
 def create_presigned_post(request, extension):
-    if extension == 'jpeg':
-        extension = 'jpg'
-
-    from IPython import embed; embed()
-
     s3_client = boto3.client('s3')
     object_name = 'photo_{}.{}'.format(ulid.new(), extension)
 

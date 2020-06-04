@@ -238,3 +238,70 @@ table, caption, tbody, tfoot, thead, tr, th, td {
     margin-left: -110px !important;
   }
 }
+
+.heart-btn {
+  position: absolute;
+  top: 12px;
+  right: 10px;
+}
+
+.heart-fav {
+  color: white;
+  transition: color 0.5s ease;
+}
+
+.heart-fav:hover {
+  color: red;
+}
+
+.heart-unfav {
+  color: rgb(212, 0, 0);
+  transition: color 0.5s ease;
+}
+
+.heart-unfav:hover {
+  color: white;
+}
+
+.card-btn-background {
+  /* border-radius: 50%; */
+  position: absolute;
+  top: 12px;
+  right: 10px;
+  /* background-color: rgba(255, 255, 255, 0.2); */
+  /* color: rgba(255, 0, 0, 0.5); */
+  color: white;
+  border: 0;
+  cursor: pointer;
+  /* padding: 10px 7px; */
+}
+
+.card-btn-background:hover {
+  /* background-color: rgba(255, 255, 255, 0.5); */
+  color: rgba(255, 0, 0, 1);
+}
+
+.corner-shadow {
+  box-shadow:
+    inset
+      -10px 10px rgba(0,0,0,.1);
+  -webkit-transform: perspective(auto) rotateX(90deg);
+  -o-transform: perspective(auto) rotateX(90deg);
+  -moz-transform: perspective(auto) rotateX(90deg);
+  transform: perspective(auto) rotateX(90deg);
+  -webkit-transform-origin: 0% 100%;
+  -moz-transform-origin: 0% 100%;
+  -o-transform-origin: 0% 100%;
+  transform-origin: 0% 100%;
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 50px;
+  width: 50px;
+  border-top-right-radius: 15%;
+}
+
+/* .send-to-back {
+  z-index: -1
+} */
