@@ -70,6 +70,7 @@ export const PROFILE_QUERY = gql`
                 recipe {
                     id
                     title
+                    description
                     photos {
                         id
                         url
@@ -82,6 +83,9 @@ export const PROFILE_QUERY = gql`
                     user {
                         id
                         username
+                        photos {
+                            url
+                        }
                     }
                 }
             }

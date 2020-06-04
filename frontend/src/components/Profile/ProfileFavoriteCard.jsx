@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { Link, useRouteMatch } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import ShowMoreText from 'react-show-more-text';
 
@@ -11,30 +11,10 @@ import Row from 'react-bootstrap/Row';
 import UserAvatar from '../Shared/UserAvatar';
 
 const ProfileFavoriteCard = ({ recipe, index }) => {
-    const match = useRouteMatch();
-    const url = match.url
     const [isExpanded, setIsExpanded] = useState(false)
 
     return (
         <Card className="shadow mb-4 border-0">
-            {/* <i
-                onClick={() => addToFavorites()}
-                className="fas fa-heart fa-lg card-btn-background"
-            ></i> */}
-
-            {inFavorites && (
-                <i
-                    onClick={() => removeFromFavorites()}
-                    className="text-danger fas fa-heart card-btn-background clickable"
-                ></i>
-            )}
-            {!inFavorites && (
-                <i
-                    onClick={() => addToFavorites()}
-                    className="text-danger far fa-heart card-btn-background clickable"
-                ></i>
-            )}
-
             <Link to={`/recipes/${recipe.id}`}>
                 <Card.Img
                     variant="top"
@@ -49,9 +29,7 @@ const ProfileFavoriteCard = ({ recipe, index }) => {
                 <Card.Title>
                     <Link style={{ textDecoration: 'none' }} to={`/recipes/${recipe.id}`}><span className="link">{recipe.title}</span></Link>
                 </Card.Title>
-                { !url.includes('profile') &&
-                    <UserAvatar user={recipe.user} size='sm' showLabel={true}/>
-                }
+                <UserAvatar user={recipe.user} size='sm' showLabel={true}/>
             </Card.Body>
             { recipe.description &&
                 <ListGroup variant="flush">
@@ -77,7 +55,7 @@ const ProfileFavoriteCard = ({ recipe, index }) => {
                         ) : (
                             <Col className="p-0 text-right" style={{ color: 'grey', cursor: 'default' }}>{'☆'.repeat(5)}&nbsp;|</Col>
                         )}
-                        <Col className="p-0 text-left">&nbsp;<i className="text-danger fas fa-heart"></i>&nbsp;
+                        <Col className="p-0 text-left">&nbsp;<i className="fas fa-heart heart-color"></i>&nbsp;
                             <small>({recipe.favorites.length})</small>
                         </Col>
                     </Row>

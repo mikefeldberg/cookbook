@@ -10,7 +10,8 @@ import { AuthContext } from '../../App';
 import { PROFILE_QUERY } from '../../queries/queries';
 import UserTab from './UserTab';
 import ProfileComment from './ProfileComment';
-import RecipeCard from '../Recipes/RecipeCard';
+import ProfileRecipeCard from './ProfileRecipeCard';
+import ProfileFavoriteCard from './ProfileFavoriteCard';
 import SettingsTab from './SettingsTab';
 
 const ProfilePage = ({ match }) => {
@@ -39,7 +40,7 @@ const ProfilePage = ({ match }) => {
                 <Tab eventKey="recipes" title="Recipes">
                     <CardColumns className={recipes.length > 0 ? '' : 'mb-5'}>
                         {recipes.length > 0
-                            ? recipes.map((recipe) => <RecipeCard key={recipe.id} recipe={recipe} />)
+                            ? recipes.map((recipe) => <ProfileRecipeCard key={recipe.id} recipe={recipe} />)
                             : currentUser && currentUser.username === username
                             ? `You haven't added any recipes`
                             : `${profileUsername} hasn't added any recipes`
@@ -49,7 +50,7 @@ const ProfilePage = ({ match }) => {
                 <Tab eventKey="favorites" title="Favorites">
                     <CardColumns className={favorites.length > 0 ? '' : 'mb-5'}>
                         {favorites.length > 0
-                            ? favorites.map((favorite) => <RecipeCard key={favorite.id} recipe={favorite.recipe} />)
+                            ? favorites.map((favorite) => <ProfileFavoriteCard key={favorite.id} recipe={favorite.recipe} />)
                             : currentUser && currentUser.username === username
                             ? `You haven't saved any favorites`
                             : `${profileUsername} hasn't saved any favorites`

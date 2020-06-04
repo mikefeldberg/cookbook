@@ -286,6 +286,10 @@ table, caption, tbody, tfoot, thead, tr, th, td {
   color: grey;
 }
 
+.heart-color {
+  color: #ff1e61;
+}
+
 .corner-shadow {
   box-shadow:
     inset

@@ -139,7 +139,7 @@ const RecipeCard = ({ recipe, index }) => {
                         ) : (
                             <Col className="p-0 text-right" style={{ color: 'grey', cursor: 'default' }}>{'☆'.repeat(5)}&nbsp;|</Col>
                         )}
-                        <Col className="p-0 text-left">&nbsp;<i className="text-danger fas fa-heart"></i>&nbsp;
+                        <Col className="p-0 text-left">&nbsp;<i className="fas fa-heart heart-color"></i>&nbsp;
                             <small>({recipe.favorites.length})</small>
                         </Col>
                     </Row>
