@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
 import Moment from 'react-moment';
+import { Link as ScrollLink, animateScroll as scroll } from "react-scroll"
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -106,10 +107,19 @@ const Recipe = ({ recipe, favorited }) => {
                         <span>({recipe.ratingCount})&nbsp;|&nbsp;</span>
                     </>
                 ) : (
+                    <ScrollLink
+                        activeClass="active"
+                        to="comment-section"
+                        spy={true}
+                        smooth={true}
+                        offset={-70}
+                        duration={500}
+                    >
                     <span style={{ color: 'grey', cursor: 'default' }}>
                         {'☆'.repeat(5)}
                         &nbsp;|&nbsp;
                     </span>
+                    </ScrollLink>
                 )}
                 {inFavorites && (
                     <div
@@ -265,6 +275,7 @@ const Recipe = ({ recipe, favorited }) => {
                     ))}
                 </ol>
             </>
+            <div id="comment-section"></div>
             <CommentSection recipeId={recipe.id} comments={recipe.comments} />
         </Container>
     );
