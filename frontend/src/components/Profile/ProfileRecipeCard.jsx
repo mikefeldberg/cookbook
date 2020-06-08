@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { Link, useRouteMatch } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import ShowMoreText from 'react-show-more-text';
 
@@ -8,11 +8,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
-import UserAvatar from '../Shared/UserAvatar';
-
 const ProfileRecipeCard = ({ recipe }) => {
-    const match = useRouteMatch();
-    const url = match.url
     const [isExpanded, setIsExpanded] = useState(false)
 
     return (

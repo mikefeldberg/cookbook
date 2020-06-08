@@ -2,14 +2,13 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
-// import Jumbotron from 'react-bootstrap/Jumbotron';
 import Navbar from 'react-bootstrap/Navbar';
 
 import { AuthContext } from '../../App';
 import UserNav from './UserNav';
 import AnonNav from './AnonNav';
 
-const NavBar = () => {
+const Header = () => {
     const currentUser = useContext(AuthContext);
 
     return (
@@ -37,4 +36,4 @@ const NavBar = () => {
     );
 };
 
-export default NavBar;
+export default Header;

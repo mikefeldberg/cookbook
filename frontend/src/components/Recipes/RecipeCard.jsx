@@ -26,11 +26,10 @@ const RecipeCard = ({ recipe, index }) => {
             setInFavorites(favoritedUserIds.includes(currentUser.id))
             console.log(inFavorites)
         }
-    });
+    }, [currentUser, recipe.favorites, inFavorites]);
 
     const [createFavorite] = useMutation(CREATE_FAVORITE_MUTATION, {
         update(cache, { data: { createFavorite } }) {
-            const recipeId = createFavorite.favorite.recipe.id;
             const data = cache.readQuery({ query: GET_RECIPES_QUERY });
             const recipes = [ ...data.recipes ];
             const recipe = recipes[index]
@@ -45,7 +44,6 @@ const RecipeCard = ({ recipe, index }) => {
 
     const [deleteFavorite] = useMutation(DELETE_FAVORITE_MUTATION, {
         update(cache, { data: { deleteFavorite } }) {
-            const recipeId = deleteFavorite.recipeId;
             const data = cache.readQuery({ query: GET_RECIPES_QUERY });
             const recipes = [ ...data.recipes ];
             const recipe = recipes[index]

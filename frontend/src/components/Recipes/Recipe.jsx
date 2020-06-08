@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
 import Moment from 'react-moment';
-import { Link as ScrollLink, animateScroll as scroll } from "react-scroll"
+import { Link as ScrollLink } from "react-scroll"
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -21,7 +21,6 @@ const Recipe = ({ recipe, favorited }) => {
         width: window.innerWidth
     })
     const [inFavorites, setInFavorites] = useState(favorited);
-    const [pointer] = useState(currentUser ? 'pointer' : '');
 
     useEffect(() => {
         const handleResize = () => {

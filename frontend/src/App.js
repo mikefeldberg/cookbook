@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/react-hooks';
 import Container from 'react-bootstrap/Container';
 
 import { ME_QUERY } from './queries/queries';
-import NavBar from './components/Nav/NavBar';
+import Header from './components/Nav/Header';
 import Banner from './components/Nav/Banner';
 import Register from './components/Auth/Register';
 import Login from './components/Auth/Login';
@@ -32,7 +32,7 @@ const App = () => {
         <div className="App">
             <Router>
                 <AuthContext.Provider value={currentUser}>
-                    <NavBar />
+                    <Header />
                     <Banner />
                     <Container className="content">
                         <Switch>
