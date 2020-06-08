@@ -13,7 +13,7 @@ const Header = () => {
 
     return (
         <Container>
-            <Navbar expand variant="light" className="p-0 bg-light fixed-top">
+            <Navbar expand variant="light" className="p-0 bg-light fixed-top shadow">
                 <Container className="pl-3 pr-3">
                     <Navbar.Brand>
                         <Link to="/">
