@@ -61,7 +61,7 @@ const RecipeSpecs = ({ recipe }) => {
                             {(recipe.totalTime - (recipe.totalTime % 60)) / 60 > 0
                                 ? (recipe.totalTime - (recipe.totalTime % 60)) / 60 + 'h'
                                 : ''}{' '}
-                            {recipe.totalTime % 60 > 0 ? (recipe.totalTime % 60) + 'm' : ''} &nbsp;|&nbsp;
+                            {recipe.totalTime % 60 > 0 ? (recipe.totalTime % 60) + 'm' : ''}
                         </span>
                     </>
                 ) : (
