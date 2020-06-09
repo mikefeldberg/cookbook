@@ -5,7 +5,8 @@ import { useQuery } from '@apollo/react-hooks';
 import Container from 'react-bootstrap/Container';
 
 import { ME_QUERY } from './queries/queries';
-import NavBar from './components/Nav/NavBar';
+import Header from './components/Nav/Header';
+import Banner from './components/Nav/Banner';
 import Register from './components/Auth/Register';
 import Login from './components/Auth/Login';
 import Logout from './components/Auth/Logout';
@@ -19,7 +20,6 @@ import ProfilePage from './components/Profile/ProfilePage';
 import Footer from './components/Footer/Footer';
 import Terms from './components/Footer/Terms';
 
-
 export const AuthContext = React.createContext();
 
 const App = () => {
@@ -32,7 +32,8 @@ const App = () => {
         <div className="App">
             <Router>
                 <AuthContext.Provider value={currentUser}>
-                    <NavBar />
+                    <Header />
+                    <Banner />
                     <Container className="content">
                         <Switch>
                             <Route exact path="/" component={RecipesList} />
