@@ -30,7 +30,7 @@ const UserNav = ({ currentUser }) => {
             </Nav>
             <UserAvatar user={currentUser} size='sm' />
             <Dropdown drop="down">
-                <Dropdown.Toggle variant="dark" id="dropdown-basic"></Dropdown.Toggle>
+                <Dropdown.Toggle variant="light" id="dropdown-basic"></Dropdown.Toggle>
                 <Dropdown.Menu>
                     <Dropdown.Item className="p-0">
                         <ButtonGroup className="w-100">

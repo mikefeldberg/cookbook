@@ -30,7 +30,7 @@ const RecipeNav = ({ setSearchResults }) => {
     }
 
     return (
-        <ButtonToolbar className="justify-content-between mb-4 mx-auto" aria-label="Toolbar with Button groups">
+        <ButtonToolbar className="justify-content-between mb-3 mx-auto" aria-label="Toolbar with Button groups">
             <ButtonGroup className="mr-2" aria-label="First group">
             </ButtonGroup>
             <InputGroup>

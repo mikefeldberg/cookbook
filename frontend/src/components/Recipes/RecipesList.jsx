@@ -22,7 +22,7 @@ const RecipesList = () => {
                 <CardColumns>
                     { searchResults.length > 0 ?
                         searchResults.map(recipe => (<RecipeCard key={recipe.id} recipe={recipe} />)) :
-                        recipes.map(recipe => (<RecipeCard key={recipe.id} recipe={recipe} />))
+                        recipes.map(recipe => (<RecipeCard key={recipe.id} recipe={recipe} index={recipes.indexOf(recipe, recipes)}/>))
                     }
                 </CardColumns>
             </>
