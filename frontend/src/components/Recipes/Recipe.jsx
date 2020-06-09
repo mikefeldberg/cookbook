@@ -13,6 +13,7 @@ import { AuthContext } from '../../App';
 import { GET_RECIPE_QUERY, CREATE_FAVORITE_MUTATION, DELETE_FAVORITE_MUTATION } from '../../queries/queries';
 import CommentSection from '../Comments/CommentSection';
 import RecipeToolbar from './RecipeToolbar';
+import RecipeSpecs from './RecipeSpecs';
 
 const Recipe = ({ recipe, favorited }) => {
     const currentUser = useContext(AuthContext);
@@ -144,60 +145,6 @@ const Recipe = ({ recipe, favorited }) => {
             {dimensions.width >= 1000 &&
                 <Row className="mb-5 align-items-center">
                     <Col>
-                            <Image
-                                rounded
-                                src={
-                                    recipe.photos.length > 0
-                                        ? recipe.photos[0].url
-                                        : `/recipe_placeholder.png`
-                                }
-                                fluid
-                                className="shadow-lg"
-                            />
-                    </Col>
-                    <Col className="align-content-around">
-                        <Row className="mb-2">{recipe.description}</Row>
-                        <Row className="mb-2">Difficulty: {recipe.skillLevel}</Row>
-                        <Row className="mb-2">
-                            { recipe.prepTime > 0 ? (
-                                <span>
-                                    Prep: {(recipe.prepTime - recipe.prepTime % 60) / 60 > 0 ? (
-                                        recipe.prepTime - recipe.prepTime % 60) / 60 + 'h' : ''} {recipe.prepTime % 60 > 0 ? recipe.prepTime % 60 + 'm' : ''} &nbsp;|&nbsp;
-                                </span>
-                            ) : (
-                                ''
-                            )}
-                            { recipe.cookTime > 0 ? (
-                                <span>
-                                    Cook: {(recipe.cookTime - recipe.cookTime % 60) / 60 > 0 ? (
-                                        recipe.cookTime - recipe.cookTime % 60) / 60 + 'h' : ''} {recipe.cookTime % 60 > 0 ? recipe.cookTime % 60 + 'm' : ''} &nbsp;|&nbsp;
-                                </span>
-                            ) : (
-                                ''
-                            )}
-                            { recipe.waitTime > 0 ? (
-                                <span>
-                                    Wait: {(recipe.waitTime - recipe.waitTime % 60) / 60 > 0 ? (
-                                        recipe.waitTime - recipe.waitTime % 60) / 60 + 'h' : ''} {recipe.waitTime % 60 > 0 ? recipe.waitTime % 60 + 'm' : ''} &nbsp;|&nbsp;
-                                </span>
-                            ) : (
-                                ''
-                            )}
-                            { recipe.totalTime > 0 ? (
-                                <span>
-                                    Total: {(recipe.totalTime - recipe.totalTime % 60) / 60 > 0 ? (
-                                        recipe.totalTime - recipe.totalTime % 60) / 60 + 'h' : ''} {recipe.totalTime % 60 > 0 ? recipe.totalTime % 60 + 'm' : ''}
-                                </span>
-                            ) : (
-                                ''
-                            )}
-                        </Row>
-                        <Row>Servings: {recipe.servings}</Row>
-                    </Col>
-                </Row>
-            }
-            {dimensions.width < 1000 &&
-                <Col className="p-0 mb-5 align-items-center">
                         <Image
                             rounded
                             src={
@@ -206,47 +153,26 @@ const Recipe = ({ recipe, favorited }) => {
                                     : `/recipe_placeholder.png`
                             }
                             fluid
-                            className="mb-3 shadow-lg"
+                            className="shadow-lg"
                         />
-                    <Col className="align-content-around">
-                        <Row className="mb-2">{recipe.description}</Row>
-                        <Row className="mb-2">Difficulty: {recipe.skillLevel}</Row>
-                        <Row className="mb-2">
-                            { recipe.prepTime > 0 ? (
-                                <span>
-                                    Prep: {(recipe.prepTime - recipe.prepTime % 60) / 60 > 0 ? (
-                                        recipe.prepTime - recipe.prepTime % 60) / 60 + 'h' : ''} {recipe.prepTime % 60 > 0 ? recipe.prepTime % 60 + 'm' : ''} &nbsp;|&nbsp;
-                                </span>
-                            ) : (
-                                ''
-                            )}
-                            { recipe.cookTime > 0 ? (
-                                <span>
-                                    Cook: {(recipe.cookTime - recipe.cookTime % 60) / 60 > 0 ? (
-                                        recipe.cookTime - recipe.cookTime % 60) / 60 + 'h' : ''} {recipe.cookTime % 60 > 0 ? recipe.cookTime % 60 + 'm' : ''} &nbsp;|&nbsp;
-                                </span>
-                            ) : (
-                                ''
-                            )}
-                            { recipe.waitTime > 0 ? (
-                                <span>
-                                    Wait: {(recipe.waitTime - recipe.waitTime % 60) / 60 > 0 ? (
-                                        recipe.waitTime - recipe.waitTime % 60) / 60 + 'h' : ''} {recipe.waitTime % 60 > 0 ? recipe.waitTime % 60 + 'm' : ''} &nbsp;|&nbsp;
-                                </span>
-                            ) : (
-                                ''
-                            )}
-                            { recipe.totalTime > 0 ? (
-                                <span>
-                                    Total: {(recipe.totalTime - recipe.totalTime % 60) / 60 > 0 ? (
-                                        recipe.totalTime - recipe.totalTime % 60) / 60 + 'h' : ''} {recipe.totalTime % 60 > 0 ? recipe.totalTime % 60 + 'm' : ''}
-                                </span>
-                            ) : (
-                                ''
-                            )}
-                        </Row>
-                        <Row>Servings: {recipe.servings}</Row>
                     </Col>
+                    <RecipeSpecs recipe={recipe} />
+                </Row>
+            }
+
+            {dimensions.width < 1000 &&
+                <Col className="p-0 mb-5 align-items-center">
+                    <Image
+                        rounded
+                        src={
+                            recipe.photos.length > 0
+                                ? recipe.photos[0].url
+                                : `/recipe_placeholder.png`
+                        }
+                        fluid
+                        className="mb-3 shadow-lg"
+                    />
+                    <RecipeSpecs recipe={recipe} />
                 </Col>
             }
             <>
