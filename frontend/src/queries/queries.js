@@ -39,6 +39,12 @@ export const PROFILE_QUERY = gql`
                 ratingCount
                 favorites {
                     id
+                    user {
+                        id
+                    }
+                }
+                user {
+                    id
                 }
             }
             commentSet {
@@ -64,6 +70,7 @@ export const PROFILE_QUERY = gql`
                 recipe {
                     id
                     title
+                    description
                     photos {
                         id
                         url
@@ -76,6 +83,9 @@ export const PROFILE_QUERY = gql`
                     user {
                         id
                         username
+                        photos {
+                            url
+                        }
                     }
                 }
             }
@@ -481,6 +491,7 @@ export const CREATE_FAVORITE_MUTATION = gql`
     mutation ($favorite: FavoriteInput!) {
         createFavorite(favorite: $favorite) {
             favorite {
+                id
                 user {
                     id
                     username

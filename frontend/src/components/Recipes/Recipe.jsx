@@ -1,7 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
 import Moment from 'react-moment';
+import { Link as ScrollLink } from "react-scroll"
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -12,11 +13,26 @@ import { AuthContext } from '../../App';
 import { GET_RECIPE_QUERY, CREATE_FAVORITE_MUTATION, DELETE_FAVORITE_MUTATION } from '../../queries/queries';
 import CommentSection from '../Comments/CommentSection';
 import RecipeToolbar from './RecipeToolbar';
+import RecipeSpecs from './RecipeSpecs';
 
 const Recipe = ({ recipe, favorited }) => {
     const currentUser = useContext(AuthContext);
+    const [dimensions, setDimensions] = useState({
+        height: window.innerHeight,
+        width: window.innerWidth
+    })
     const [inFavorites, setInFavorites] = useState(favorited);
-    const [pointer] = useState(currentUser ? 'pointer' : '');
+
+    useEffect(() => {
+        const handleResize = () => {
+            setDimensions({
+                height: window.innerHeight,
+                width: window.innerWidth
+            })
+        }
+        console.log(dimensions)
+        window.addEventListener('resize', handleResize)
+    })
 
     const [createFavorite] = useMutation(CREATE_FAVORITE_MUTATION, {
         update(cache, { data: { createFavorite } }) {
@@ -80,7 +96,7 @@ const Recipe = ({ recipe, favorited }) => {
                     </div>
                 )}
             </Row>
-            <Row noGutters className="mb-11">
+            <Row noGutters className="mb-1">
                 Added by&nbsp;<Link style={{ textDecoration: 'none' }} to={`/profile/${recipe.user.username}`}><span className="link">{recipe.user.username}</span></Link>&nbsp;
                 <Moment from={new Date()}>{recipe.createdAt}</Moment>
             </Row>
@@ -91,30 +107,44 @@ const Recipe = ({ recipe, favorited }) => {
                         <span>({recipe.ratingCount})&nbsp;|&nbsp;</span>
                     </>
                 ) : (
+                    <ScrollLink
+                        activeClass="active"
+                        to="comment-section"
+                        spy={true}
+                        smooth={true}
+                        offset={-70}
+                        duration={500}
+                    >
                     <span style={{ color: 'grey', cursor: 'default' }}>
                         {'☆'.repeat(5)}
                         &nbsp;|&nbsp;
                     </span>
+                    </ScrollLink>
                 )}
                 {inFavorites && (
-                    <i
-                        style={{ cursor: pointer }}
+                    <div
                         onClick={() => removeFromFavorites(recipe.id, deleteFavorite)}
-                        className="text-danger fas fa-heart"
-                    ></i>
+                    >
+                        <i
+                            className="fas fa-heart unfav-heart"
+                        ></i>
+                    </div>
                 )}
                 {!inFavorites && (
-                    <i
-                        style={{ cursor: pointer }}
+                    <div
                         onClick={() => addToFavorites(recipe.id, createFavorite)}
-                        className="text-danger far fa-heart"
-                    ></i>
+                    >
+                        <i
+                            className="far fa-heart fav-heart"
+                        ></i>
+                    </div>
                 )}
                 &nbsp;
                 {recipe.favorites.length > 0 && <span>({recipe.favorites.length})</span>}
             </Row>
-            <Row className="mb-5 align-items-center">
-                <Col>
+            {dimensions.width >= 1000 &&
+                <Row className="mb-5 align-items-center">
+                    <Col>
                         <Image
                             rounded
                             src={
@@ -125,47 +155,26 @@ const Recipe = ({ recipe, favorited }) => {
                             fluid
                             className="shadow-lg"
                         />
+                    </Col>
+                    <RecipeSpecs recipe={recipe} />
+                </Row>
+            }
+
+            {dimensions.width < 1000 &&
+                <Col className="p-0 mb-5 align-items-center">
+                    <Image
+                        rounded
+                        src={
+                            recipe.photos.length > 0
+                                ? recipe.photos[0].url
+                                : `/recipe_placeholder.png`
+                        }
+                        fluid
+                        className="mb-3 shadow-lg"
+                    />
+                    <RecipeSpecs recipe={recipe} />
                 </Col>
-                <Col className="align-content-around">
-                    <Row className="mb-2">{recipe.description}</Row>
-                    <Row className="mb-2">Difficulty: {recipe.skillLevel}</Row>
-                    <Row className="mb-2">
-                        { recipe.prepTime > 0 ? (
-                            <span>
-                                Prep: {(recipe.prepTime - recipe.prepTime % 60) / 60 > 0 ? (
-                                    recipe.prepTime - recipe.prepTime % 60) / 60 + 'h' : ''} {recipe.prepTime % 60 > 0 ? recipe.prepTime % 60 + 'm' : ''} &nbsp;|&nbsp;
-                            </span>
-                        ) : (
-                            ''
-                        )}
-                        { recipe.cookTime > 0 ? (
-                            <span>
-                                Cook: {(recipe.cookTime - recipe.cookTime % 60) / 60 > 0 ? (
-                                    recipe.cookTime - recipe.cookTime % 60) / 60 + 'h' : ''} {recipe.cookTime % 60 > 0 ? recipe.cookTime % 60 + 'm' : ''} &nbsp;|&nbsp;
-                            </span>
-                        ) : (
-                            ''
-                        )}
-                        { recipe.waitTime > 0 ? (
-                            <span>
-                                Wait: {(recipe.waitTime - recipe.waitTime % 60) / 60 > 0 ? (
-                                    recipe.waitTime - recipe.waitTime % 60) / 60 + 'h' : ''} {recipe.waitTime % 60 > 0 ? recipe.waitTime % 60 + 'm' : ''} &nbsp;|&nbsp;
-                            </span>
-                        ) : (
-                            ''
-                        )}
-                        { recipe.totalTime > 0 ? (
-                            <span>
-                                Total: {(recipe.totalTime - recipe.totalTime % 60) / 60 > 0 ? (
-                                    recipe.totalTime - recipe.totalTime % 60) / 60 + 'h' : ''} {recipe.totalTime % 60 > 0 ? recipe.totalTime % 60 + 'm' : ''}
-                            </span>
-                        ) : (
-                            ''
-                        )}
-                    </Row>
-                    <Row>Servings: {recipe.servings}</Row>
-                </Col>
-            </Row>
+            }
             <>
                 <h1>Ingredients</h1>
                 <ul className="ingredientsList">
@@ -191,6 +200,7 @@ const Recipe = ({ recipe, favorited }) => {
                     ))}
                 </ol>
             </>
+            <div id="comment-section"></div>
             <CommentSection recipeId={recipe.id} comments={recipe.comments} />
         </Container>
     );

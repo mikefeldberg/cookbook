@@ -38,6 +38,7 @@ code {
 .star {
   font-size: 1.6em;
   margin: 0;
+  transition: color 0.4s ease;
 }
 
 .star:hover, .glow > .star {
@@ -49,12 +50,6 @@ code {
   font-size: 1.6em;
   margin: 0;
   cursor: default;
-}
-
-
-.jumbotron {
-  background-image: url("https://i.imgur.com/6qqdwwH.png");
-  background-size: cover;
 }
 
 .jumbotron-text h3 {
@@ -69,6 +64,15 @@ code {
   text-shadow: -10px 10px 0px #00e6e6,
   -20px 20px 0px #01cccc,
   -30px 30px 0px #00bdbd;
+}
+
+.jumbotron {
+  background-image: url("https://i.imgur.com/6qqdwwH.png");
+  background-size: cover;
+}
+
+.hero-hide {
+  display: none;
 }
 
 @media (max-width: 699px) {
@@ -138,6 +142,7 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 
 .cancelIcon, .confirmIcon, .editIcon, .deleteIcon {
   color: #b4b4b4;
+  transition: color 0.4s ease;
 }
 
 .cancelIcon:hover {
@@ -230,4 +235,92 @@ table, caption, tbody, tfoot, thead, tr, th, td {
   #basic-navbar-nav .dropdown-menu {
     margin-left: -110px !important;
   }
+}
+
+.card-heart-btn {
+  position: absolute;
+  top: 12px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.card-heart-btn-fav {
+  color: white;
+  transition: color 0.5s ease;
+}
+
+.card-heart-btn-fav:hover {
+  color: #ff1e61;
+}
+
+.card-heart-btn-unfav {
+  color: #ff1e61;
+  transition: color 0.5s ease;
+}
+
+.card-heart-btn-unfav:hover {
+  color: white;
+}
+
+.heart-background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 60px;
+  background:
+    linear-gradient(
+      45deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0) 49%,
+      rgba(0,0,0,0.01) 50%,
+      rgba(0,0,0,0.15) 75%,
+      rgba(0,0,0,0.4) 97%,
+      rgba(0,0,0,0) 98%,
+      rgba(0,0,0,0) 100%
+    );
+  -webkit-transition: background 0.5s ease;
+  -ms-transition: background 0.5s ease;
+  transition: background 0.5s ease;
+  overflow: hidden;
+}
+
+.fav-heart {
+  cursor: pointer;
+  color: grey;
+  -webkit-transition: color 0.5s ease;
+  -ms-transition: color 0.5s ease;
+  transition: color 0.5s ease;
+}
+
+.unfav-heart {
+  cursor: pointer;
+  color: #ff1e61;
+  -webkit-transition: color 0.5s ease;
+  -ms-transition: color 0.5s ease;
+  transition: color 0.5s ease;
+}
+
+.fav-heart:hover {
+  color: #ff1e61;
+  -webkit-transition: color 0.5s ease;
+  -ms-transition: color 0.5s ease;
+  transition: color 0.5s ease;
+}
+
+.unfav-heart:hover {
+  color: grey;
+  -webkit-transition: color 0.5s ease;
+  -ms-transition: color 0.5s ease;
+  transition: color 0.5s ease;
+}
+
+.heart-color {
+  color: #ff1e61;
+}
+
+.card-shadow {
+  -webkit-box-shadow: 0 .25rem .5rem rgba(0,0,0,.15)!important;
+  -moz-box-shadow: 0 .25rem .5rem rgba(0,0,0,.15)!important;
+  box-shadow: 0 .25rem .5rem rgba(0,0,0,.15)!important;
 }

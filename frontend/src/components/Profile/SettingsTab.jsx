@@ -11,7 +11,7 @@ const SettingsTab = ({ profile }) => {
     return (
         <Accordion className="border-bottom">
             <Card key="photo">
-                <Accordion.Toggle as={Card.Header} eventKey="photo">
+                <Accordion.Toggle as={Card.Header} eventKey="photo" className="clickable">
                     Add or update profile photo
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="photo">
@@ -21,7 +21,7 @@ const SettingsTab = ({ profile }) => {
                 </Accordion.Collapse>
             </Card>
             <Card key="password">
-                <Accordion.Toggle as={Card.Header} eventKey="password">
+                <Accordion.Toggle as={Card.Header} eventKey="password" className="clickable">
                     Change password
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="password">
@@ -31,7 +31,7 @@ const SettingsTab = ({ profile }) => {
                 </Accordion.Collapse>
             </Card>
             <Card key="username">
-                <Accordion.Toggle as={Card.Header} eventKey="username">
+                <Accordion.Toggle as={Card.Header} eventKey="username" className="clickable">
                     Change username
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="username">
