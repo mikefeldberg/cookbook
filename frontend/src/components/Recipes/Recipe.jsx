@@ -88,6 +88,9 @@ const Recipe = ({ recipe, favorited }) => {
 
     return (
         <Container>
+            <div className="shadow-sm">SMALL</div>
+            <div className="shadow">REG</div>
+            <div className="shadow-lg">LARGE</div>
             <Row noGutters className="align-items-center">
                 <h1>{recipe.title}&nbsp;</h1>
                 {currentUser && recipe.user.id === currentUser.id && (
@@ -96,7 +99,7 @@ const Recipe = ({ recipe, favorited }) => {
                     </div>
                 )}
             </Row>
-            <Row noGutters className="mb-11">
+            <Row noGutters className="mb-1">
                 Added by&nbsp;<Link style={{ textDecoration: 'none' }} to={`/profile/${recipe.user.username}`}><span className="link">{recipe.user.username}</span></Link>&nbsp;
                 <Moment from={new Date()}>{recipe.createdAt}</Moment>
             </Row>

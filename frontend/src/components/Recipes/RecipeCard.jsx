@@ -79,7 +79,7 @@ const RecipeCard = ({ recipe, index }) => {
     };
 
     return (
-        <Card className="shadow mb-4 border-0">
+        <Card className="card-shadow mt-3 mb-3 border-0">
             <div className="heart-background">
             </div>
             {inFavorites && (

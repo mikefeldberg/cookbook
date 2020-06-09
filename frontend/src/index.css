@@ -363,3 +363,17 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 .heart-color {
   color: #ff1e61;
 }
+
+.card-shadow {
+  -webkit-box-shadow: 0 .25rem .5rem rgba(0,0,0,.15)!important;
+  -moz-box-shadow: 0 .25rem .5rem rgba(0,0,0,.15)!important;
+  box-shadow: 0 .25rem .5rem rgba(0,0,0,.15)!important;
+}
+
+.small-shadow {
+  box-shadow: 0 .25rem .5rem rgba(0,0,0,.095)!important;
+}
+
+.reg-shadow {
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
