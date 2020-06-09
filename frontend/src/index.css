@@ -86,17 +86,6 @@ code {
   }
 }
 
-@media (max-width: 699px) {
-  .jumbotron-text h3 {
-    margin-top: 2rem;
-    font-size: 2.5rem;
-  }
-
-  .jumbotron-text h1 {
-    font-size: 3.5rem;
-  }
-}
-
 h1, h2, h3, h4 {
   font-family: 'Fugaz One', sans-serif;
 }
