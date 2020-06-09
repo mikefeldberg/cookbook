@@ -15,25 +15,25 @@ import UserAvatar from '../Shared/UserAvatar';
 const RecipeCard = ({ recipe, index }) => {
     const currentUser = useContext(AuthContext);
     const match = useRouteMatch();
-    const url = match.url
-    const [isExpanded, setIsExpanded] = useState(false)
-    const [inFavorites, setInFavorites] = useState(false)
-    console.log(url)
+    const url = match.url;
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [inFavorites, setInFavorites] = useState(false);
+    console.log(url);
 
     useEffect(() => {
         if (currentUser) {
-            const favoritedUserIds = recipe.favorites.map(f => f.user.id)
-            setInFavorites(favoritedUserIds.includes(currentUser.id))
-            console.log(inFavorites)
+            const favoritedUserIds = recipe.favorites.map((f) => f.user.id);
+            setInFavorites(favoritedUserIds.includes(currentUser.id));
+            console.log(inFavorites);
         }
     }, [currentUser, recipe.favorites, inFavorites]);
 
     const [createFavorite] = useMutation(CREATE_FAVORITE_MUTATION, {
         update(cache, { data: { createFavorite } }) {
             const data = cache.readQuery({ query: GET_RECIPES_QUERY });
-            const recipes = [ ...data.recipes ];
-            const recipe = recipes[index]
-            recipe.favorites.push(createFavorite.favorite)
+            const recipes = [...data.recipes];
+            const recipe = recipes[index];
+            recipe.favorites.push(createFavorite.favorite);
 
             cache.writeQuery({
                 query: GET_RECIPES_QUERY,
@@ -45,8 +45,8 @@ const RecipeCard = ({ recipe, index }) => {
     const [deleteFavorite] = useMutation(DELETE_FAVORITE_MUTATION, {
         update(cache, { data: { deleteFavorite } }) {
             const data = cache.readQuery({ query: GET_RECIPES_QUERY });
-            const recipes = [ ...data.recipes ];
-            const recipe = recipes[index]
+            const recipes = [...data.recipes];
+            const recipe = recipes[index];
             recipe.favorites.pop();
 
             cache.writeQuery({
@@ -80,64 +80,67 @@ const RecipeCard = ({ recipe, index }) => {
 
     return (
         <Card className="shadow mb-4 border-0">
+            <div className="heart-background">
+            </div>
             {inFavorites && (
                 <i
                     onClick={() => removeFromFavorites()}
-                    className="fas fa-heart fa-lg clickable card-heart-btn card-heart-unfav"
+                    className="fas fa-heart fa-lg clickable card-heart-btn card-heart-btn-unfav"
                 ></i>
             )}
             {!inFavorites && (
                 <i
                     onClick={() => addToFavorites()}
-                    className="far fa-heart fa-lg clickable card-heart-btn card-heart-fav"
+                    className="far fa-heart fa-lg clickable card-heart-btn card-heart-btn-fav"
                 ></i>
             )}
 
-            <Link  to={`/recipes/${recipe.id}`}>
-                {/* <div className="corner-shadow"></div> */}
+            <Link to={`/recipes/${recipe.id}`}>
                 <Card.Img
+                    id="card-photo"
                     variant="top"
-                    src={
-                        recipe.photos.length > 0
-                            ? recipe.photos[0].url
-                            : `/recipe_placeholder.png`
-                    }
+                    src={recipe.photos.length > 0 ? recipe.photos[0].url : `/recipe_placeholder.png`}
                 />
-
             </Link>
             <Card.Body className="pt-3 pb-3">
                 <Card.Title>
-                    <Link style={{ textDecoration: 'none' }} to={`/recipes/${recipe.id}`}><span className="link">{recipe.title}</span></Link>
+                    <Link style={{ textDecoration: 'none' }} to={`/recipes/${recipe.id}`}>
+                        <span className="link">{recipe.title}</span>
+                    </Link>
                 </Card.Title>
-                { !url.includes('profile') &&
-                    <UserAvatar user={recipe.user} size='sm' showLabel={true}/>
-                }
+                {!url.includes('profile') && <UserAvatar user={recipe.user} size="sm" showLabel={true} />}
             </Card.Body>
-            { recipe.description &&
+            {recipe.description && (
                 <ListGroup variant="flush">
                     <ListGroup.Item className="border-0 pt-0">
                         <ShowMoreText
                             lines={7}
-                            more='Read more'
-                            less='Read less'
+                            more="Read more"
+                            less="Read less"
                             onClick={() => setIsExpanded(!isExpanded)}
                             expanded={isExpanded}
-                            anchorClass='link'
+                            anchorClass="link"
                         >
                             {recipe.description}
                         </ShowMoreText>
                     </ListGroup.Item>
                 </ListGroup>
-            }
+            )}
             <ListGroup variant="flush">
                 <ListGroup.Item className="text-center border-0 p-0 pb-1">
                     <Row>
                         {recipe.ratingCount > 0 ? (
-                            <Col className="p-0 text-right" ><span style={{ color: 'gold' }}>{'★'.repeat(recipe.rating)}</span>&nbsp;({recipe.ratingCount})&nbsp;|</Col>
+                            <Col className="p-0 text-right">
+                                <span style={{ color: 'gold' }}>{'★'.repeat(recipe.rating)}</span>&nbsp;(
+                                {recipe.ratingCount})&nbsp;|
+                            </Col>
                         ) : (
-                            <Col className="p-0 text-right" style={{ color: 'grey', cursor: 'default' }}>{'☆'.repeat(5)}&nbsp;|</Col>
+                            <Col className="p-0 text-right" style={{ color: 'grey', cursor: 'default' }}>
+                                {'☆'.repeat(5)}&nbsp;|
+                            </Col>
                         )}
-                        <Col className="p-0 text-left">&nbsp;<i className="fas fa-heart heart-color"></i>&nbsp;
+                        <Col className="p-0 text-left">
+                            &nbsp;<i className="fas fa-heart heart-color"></i>&nbsp;
                             <small>({recipe.favorites.length})</small>
                         </Col>
                     </Row>
