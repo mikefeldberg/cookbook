@@ -18,13 +18,11 @@ const RecipeCard = ({ recipe, index }) => {
     const url = match.url;
     const [isExpanded, setIsExpanded] = useState(false);
     const [inFavorites, setInFavorites] = useState(false);
-    console.log(url);
 
     useEffect(() => {
         if (currentUser) {
             const favoritedUserIds = recipe.favorites.map((f) => f.user.id);
             setInFavorites(favoritedUserIds.includes(currentUser.id));
-            console.log(inFavorites);
         }
     }, [currentUser, recipe.favorites, inFavorites]);
 
@@ -141,7 +139,7 @@ const RecipeCard = ({ recipe, index }) => {
                         )}
                         <Col className="p-0 text-left">
                             &nbsp;<i className="fas fa-heart heart-color"></i>&nbsp;
-                            <small>({recipe.favorites.length})</small>
+                            ({recipe.favorites.length})
                         </Col>
                     </Row>
                 </ListGroup.Item>
