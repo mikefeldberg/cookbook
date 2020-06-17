@@ -3,7 +3,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 
 
-FROM_EMAIL = os.getenv('EMAIL_HOST_USER')
+FROM_EMAIL = os.getenv('SES_PASSWORD_RESET_EMAIL')
 DOMAIN_URL = os.getenv('DOMAIN_URL')
 
 
