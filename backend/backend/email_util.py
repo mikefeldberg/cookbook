@@ -5,6 +5,7 @@ from django.core.mail import send_mail
 
 PASSWORD_RESET_FROM_EMAIL = os.getenv('SES_PASSWORD_RESET_EMAIL')
 DOMAIN_URL = os.getenv('DOMAIN_URL')
+FAIL_SILENTLY = os.getenv('SES_FAIL_SILENTLY')
 
 def send_password_reset_email(email, reset_code):
     reset_link = '{}/reset_password/{}'.format(DOMAIN_URL, reset_code)
@@ -30,5 +31,5 @@ def send_password_reset_email(email, reset_code):
         html_message=html_message,
         from_email=PASSWORD_RESET_FROM_EMAIL,
         recipient_list=[email],
-        fail_silently=True,
+        fail_silently=FAIL_SILENTLY,
     )
