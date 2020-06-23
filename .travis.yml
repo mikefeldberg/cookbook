@@ -41,13 +41,8 @@ jobs:
       bucket_path: "$AWS_DEV_APP"
       on:
         branch: develop
-<<<<<<< HEAD
-      access_key_id: "$AWS_ACCESS_KEY"
-      secret_access_key: "$AWS_SECRET_KEY"
-=======
       access_key_id: "$AWS_TRAVIS_ACCESS_KEY"
       secret_access_key: "$AWS_TRAVIS_SECRET_KEY"
->>>>>>> develop
     - provider: elasticbeanstalk
       region: us-west-1
       app: "$AWS_PROD_APP"
@@ -56,10 +51,5 @@ jobs:
       bucket_path: "$AWS_PROD_APP"
       on:
         branch: master
-<<<<<<< HEAD
-      access_key_id: "$AWS_ACCESS_KEY"
-      secret_access_key: "$AWS_SECRET_KEY"
-=======
       access_key_id: "$AWS_TRAVIS_ACCESS_KEY"
       secret_access_key: "$AWS_TRAVIS_SECRET_KEY"
->>>>>>> develop
