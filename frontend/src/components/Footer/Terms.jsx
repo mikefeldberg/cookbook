@@ -266,7 +266,7 @@ const Terms = () => {
                 servers or systems operated by the operators of any Linked Service, or to require that any user of the
                 Platform or any Linked Service deletes any item of Your Content. To ensure the deletion of Your Content
                 from our systems and servers, please submit a deletion request to{' '}
-                <a href="mailto:feldbergscookbook@gmail.com">feldbergscookbook@gmail.com</a>. Deletion requests must be
+                <a href="mailto:copyright@feldbergscookbook.com">copyright@feldbergscookbook.com</a>. Deletion requests must be
                 sent from the email address used to register your account in order to be processed.
             </p>
 
@@ -367,7 +367,7 @@ const Terms = () => {
 
             <p>
                 If you discover any content on the Platform that you believe infringes your copyright, please report
-                this to us at <a href="mailto:feldbergscookbook@gmail.com">feldbergscookbook@gmail.com</a>, and include
+                this to us at <a href="mailto:copyright@feldbergscookbook.com">copyright@feldbergscookbook.com</a>, and include
                 the words “Copyright Claim” in the subject line. Please make sure that you include the following
                 information:
             </p>
@@ -409,11 +409,11 @@ const Terms = () => {
             </ul>
             <p>
                 If you discover any Content that you believe to be in violation of your trademark rights, please report
-                this to us by email at <a href="mailto:feldbergscookbook@gmail.com">feldbergscookbook@gmail.com</a>. In
+                this to us by email at <a href="mailto:support@feldbergscookbook.com">support@feldbergscookbook.com</a>. In
                 all other cases, if you discover Content that infringes or violates any of your other rights, which you
                 believe is defamatory, pornographic, obscene, racist, or otherwise liable to cause widespread offense,
                 or which constitutes impersonation, abuse, spam, or otherwise violates these Terms of Use or applicable
-                law, please report this to us at <a href="mailto:feldbergscookbook@gmail.com">feldbergscookbook@gmail.com</a>.
+                law, please report this to us at <a href="mailto:support@feldbergscookbook.com">support@feldbergscookbook.com</a>.
             </p>
 
             <h5>Third party websites and services</h5>
@@ -653,7 +653,7 @@ const Terms = () => {
                 modifications to this Agreement must be made in writing.
             </p>
 
-            <p>Last Updated: April 29, 2020</p>
+            <p>Last Updated: June 22, 2020</p>
         </div>
     );
 };
