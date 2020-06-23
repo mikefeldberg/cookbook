@@ -78,8 +78,7 @@ const RecipeCard = ({ recipe, index }) => {
 
     return (
         <Card className="card-shadow mt-3 mb-3 border-0">
-            <div className="heart-background">
-            </div>
+            <div className="heart-background"></div>
             {inFavorites && (
                 <i
                     onClick={() => removeFromFavorites()}
@@ -129,8 +128,7 @@ const RecipeCard = ({ recipe, index }) => {
                     <Row>
                         {recipe.ratingCount > 0 ? (
                             <Col className="p-0 text-right">
-                                <span style={{ color: 'gold' }}>{'★'.repeat(recipe.rating)}</span>&nbsp;(
-                                {recipe.ratingCount})&nbsp;|
+                                <span style={{ color: 'gold' }}>{'★'.repeat(recipe.rating)}</span>&nbsp;({recipe.ratingCount})&nbsp;|
                             </Col>
                         ) : (
                             <Col className="p-0 text-right" style={{ color: 'grey', cursor: 'default' }}>
@@ -138,8 +136,7 @@ const RecipeCard = ({ recipe, index }) => {
                             </Col>
                         )}
                         <Col className="p-0 text-left">
-                            &nbsp;<i className="fas fa-heart heart-color"></i>&nbsp;
-                            ({recipe.favorites.length})
+                            &nbsp;<i className="fas fa-heart heart-color"></i>&nbsp;({recipe.favorites.length})
                         </Col>
                     </Row>
                 </ListGroup.Item>
