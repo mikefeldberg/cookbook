@@ -29,7 +29,7 @@ def send_password_reset_email(email, reset_code):
                                             <td style="padding:20px 0px;text-align:center;color:#202124"
                                                 valign="top">
                                                 <a href="https://feldbergscookbook.com" target="_blank">
-                                                    <img src="https://i.imgur.com/cOdzskx.png" alt="G1" width="30" height="auto"
+                                                    <img src="https://i.imgur.com/cOdzskx.png" width="30" height="auto"
                                                         style="width:60px;height:auto;border:0" aria-hidden="true" valign="top"
                                                         class="CToWUd">
                                                 </a>
@@ -57,9 +57,7 @@ def send_password_reset_email(email, reset_code):
                                                     style="padding:5px; font-size:10px;line-height:12px;text-align:middle;text-decoration:none;color:#fff;font-family:'Muli',Arial,sans-serif!important"
                                                 >
                                                     You have received this email in association with your Feldberg’s Cookbook membership. If you believe you received this email in error please contact us at
-                                                        <a style="text-decoration: none; color: #e1e1e1" href="mailto:support@feldbergscookbook.com">
-                                                            support@feldbergscookbook.com
-                                                        </a>
+                                                        <a style="text-decoration: none; color: #e1e1e1" href="mailto:support@feldbergscookbook.com">support@feldbergscookbook.com</a>.
                                                 </div>
                                             </td>
                                         </tr>
@@ -108,73 +106,74 @@ def send_welcome_email(email):
     '''
 
     html_message = '''
-        <tbody>
-            <tr>
-                <td style="width:600px;vertical-align:top;padding-top:32px">
-                    <div style="max-width:600px;margin:0 auto; font-family:Arial, Helvetica, sans-serif">
-                        <div style="padding-right:30px;padding-left:30px;padding-bottom:30px">
-                            <table
-                            style="background-color:#19A2B8;table-layout:fixed;border:1px solid #19A2B8;padding:0;margin-top:0px;width:100%;border-collapse:collapse;text-align:center">
-                                <tbody>
-                                    <tr style="background-color:white">
-                                        <td style="padding:20px 0px;text-align:center;color:#202124"
-                                            valign="top">
-                                            <a href="https://feldbergscookbook.com" target="_blank">
-                                                <img src="https://i.imgur.com/cOdzskx.png" alt="G1" width="30" height="auto"
-                                                    style="width:60px;height:auto;border:0" aria-hidden="true" valign="top"
-                                                    class="CToWUd">
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr style="background-color:white">
-                                        <td style="text-align:center; padding:20px;border:none">
-                                            <h1>Welcome to<br>Feldberg’s Cookbook!</h1>
-                                        </td>
-                                    </tr>
-                                    <tr style="background-color:white">
-                                        <td style="text-align:left; padding:20px">
-                                            Thanks for signing up! Now you can:
-                                            <ul>
-                                                <li>Save recipes to your Favorites List</li>
-                                                <li>Create your own recipes and upload photos</li>
-                                                <li>Review, rate, and comment on recipes</li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td
-                                            style="border-collapse:collapse;font-size:0px;word-break:break-word;text-align:justify">
-                                            <div
-                                                style="padding:5px; font-size:10px;line-height:12px;text-align:middle;text-decoration:none;color:#fff;font-family:'Muli',Arial,sans-serif!important"
-                                            >
-                                                You have received this email in association with your Feldberg’s Cookbook membership. If you believe you received this email in error please contact us at
-                                                    <a style="text-decoration: none; color: #e1e1e1" href="mailto:support@feldbergscookbook.com">
-                                                        support@feldbergscookbook.com
-                                                    </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td
-                                            style="border-collapse:collapse;font-size:0px;word-break:break-word; text-align: center">
-                                            <div
-                                                style="font-size:10px;line-height:30px;text-align:middle;text-decoration:none;color:#fff;font-family:'Muli',Arial,sans-serif!important">
-                                                © 2020 Under Development LLC
+        <table cellspacing="0" cellpadding="0" border="0" width="100%" valign="top">
+            <tbody>
+                <tr>
+                    <td style="width:600px;vertical-align:top;padding-top:32px">
+                        <div style="max-width:600px;margin:0 auto; font-family:Arial, Helvetica, sans-serif">
+                            <div style="padding-right:30px;padding-left:30px;padding-bottom:30px">
+                                <table
+                                style="background-color:#19A2B8;table-layout:fixed;border:1px solid #19A2B8;padding:0;margin-top:0px;width:100%;border-collapse:collapse;text-align:center">
+                                    <tbody>
+                                        <tr style="background-color:white">
+                                            <td style="padding:20px 0px;text-align:center;color:#202124"
+                                                valign="top">
+                                                <a href="https://feldbergscookbook.com" target="_blank">
+                                                    <img src="https://i.imgur.com/cOdzskx.png" width="30" height="auto"
+                                                        style="width:60px;height:auto;border:0" aria-hidden="true" valign="top"
+                                                        class="CToWUd">
                                                 </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                            </td>
+                                        </tr>
+                                        <tr style="background-color:white">
+                                            <td style="text-align:center; padding:20px;border:none">
+                                                <h1 style="margin:0">Welcome to</h1>
+                                                <h1 style="margin:0">Feldberg’s Cookbook!</h1>
+                                            </td>
+                                        </tr>
+                                        <tr style="background-color:white">
+                                            <td style="text-align:left; padding:20px">
+                                                Thanks for signing up! Now you can:
+                                                <ul>
+                                                    <li>Save recipes to your Favorites List</li>
+                                                    <li>Create your own recipes and upload photos</li>
+                                                    <li>Review, rate, and comment on recipes</li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                style="border-collapse:collapse;font-size:0px;word-break:break-word;text-align:justify">
+                                                <div
+                                                    style="padding:5px; font-size:10px;line-height:12px;text-align:middle;text-decoration:none;color:#fff;font-family:'Muli',Arial,sans-serif!important"
+                                                >
+                                                    You have received this email in association with your Feldberg’s Cookbook membership. If you believe you received this email in error please contact us at
+                                                        <a style="text-decoration: none; color: #e1e1e1" href="mailto:support@feldbergscookbook.com">support@feldbergscookbook.com</a>.
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                style="border-collapse:collapse;font-size:0px;word-break:break-word; text-align: center">
+                                                <div
+                                                    style="font-size:10px;line-height:30px;text-align:middle;text-decoration:none;color:#fff;font-family:'Muli',Arial,sans-serif!important">
+                                                    © 2020 Under Development LLC
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     '''
 
     send_mail(
-        subject='Reset your Feldberg’s Cookbook password',
+        subject='Welcome to Feldberg’s Cookbook!',
         message=message,
         html_message=html_message,
         from_email=NOREPLY_EMAIL,
