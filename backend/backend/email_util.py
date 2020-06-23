@@ -30,8 +30,7 @@ def send_password_reset_email(email, reset_code):
                                                 valign="top">
                                                 <a href="https://feldbergscookbook.com" target="_blank">
                                                     <img src="https://i.imgur.com/cOdzskx.png" width="30" height="auto"
-                                                        style="width:60px;height:auto;border:0" aria-hidden="true" valign="top"
-                                                        class="CToWUd">
+                                                        style="width:60px;height:auto;border:0" aria-hidden="true" valign="top">
                                                 </a>
                                             </td>
                                         </tr>
@@ -101,8 +100,9 @@ def send_welcome_email(email):
         -Create your own recipes and upload photos
         -Review, rate, and comment on recipes
 
-        You have received this email in association with your Feldberg’s Cookbook membership. If you believe you received this email in error please contact us at support@feldbergscookbook.com.
+        Happy cooking!
 
+        You have received this email in association with your Feldberg’s Cookbook membership. If you believe you received this email in error please contact us at support@feldbergscookbook.com.
     '''
 
     html_message = '''
@@ -120,8 +120,7 @@ def send_welcome_email(email):
                                                 valign="top">
                                                 <a href="https://feldbergscookbook.com" target="_blank">
                                                     <img src="https://i.imgur.com/cOdzskx.png" width="30" height="auto"
-                                                        style="width:60px;height:auto;border:0" aria-hidden="true" valign="top"
-                                                        class="CToWUd">
+                                                        style="width:60px;height:auto;border:0" aria-hidden="true" valign="top">
                                                 </a>
                                             </td>
                                         </tr>
@@ -139,6 +138,7 @@ def send_welcome_email(email):
                                                     <li>Create your own recipes and upload photos</li>
                                                     <li>Review, rate, and comment on recipes</li>
                                                 </ul>
+                                                Happy cooking!
                                             </td>
                                         </tr>
                                         <tr>
