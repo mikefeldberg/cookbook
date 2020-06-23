@@ -12,10 +12,10 @@ DEBUG = os.environ.get('DJANGO_DEBUG')
 ALLOWED_HOSTS = ['api']
 
 EMAIL_USE_TLS = True
-EMAIL_HOST = os.environ.get('SES_SMTP_HOST')
-EMAIL_PORT = os.environ.get('SES_SMTP_PORT')
-EMAIL_HOST_USER = os.environ.get('SES_SMTP_USERNAME')
-EMAIL_HOST_PASSWORD = os.environ.get('SES_SMTP_PASSWORD')
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 
 
 # Application definition

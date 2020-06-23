@@ -5,7 +5,7 @@ import uuid
 from graphene_django import DjangoObjectType
 from graphql import GraphQLError
 from django_filters import FilterSet
-from backend.email_util import send_password_reset_email
+from backend.email_util import send_welcome_email, send_password_reset_email
 from django.utils import timezone
 from datetime import timedelta
 from backend.s3 import create_presigned_url
@@ -137,6 +137,8 @@ class CreateUser(graphene.Mutation):
         )
         user.set_password(password)
         user.save()
+
+        send_welcome_email(email.lower())
 
         return CreateUser(user=user)
 
