@@ -102,7 +102,7 @@ const RecipeCard = ({ recipe, index }) => {
             <Card.Body className="pt-3 pb-3">
                 <Card.Title>
                     <Link style={{ textDecoration: 'none' }} to={`/recipes/${recipe.id}`}>
-                        <span className="link">{recipe.title}</span>
+                        <span className="title">{recipe.title}</span>
                     </Link>
                 </Card.Title>
                 {!url.includes('profile') && <UserAvatar user={recipe.user} size="sm" showLabel={true} />}
@@ -118,7 +118,7 @@ const RecipeCard = ({ recipe, index }) => {
                             expanded={isExpanded}
                             anchorClass="link"
                         >
-                            {recipe.description}
+                            <span className="text-danger">{recipe.description}</span>
                         </ShowMoreText>
                     </ListGroup.Item>
                 </ListGroup>

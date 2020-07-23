@@ -87,8 +87,16 @@ code {
 }
 
 h1, h2, h3, h4 {
-  font-family: 'Fugaz One', sans-serif;
+  font-family: 'Ultra', sans-serif;
 }
+
+.title {
+  font-family: 'Ultra', sans-serif;
+  text-decoration: none;
+  color: rgb(59, 59, 59)
+}
+
+
 
 .link {
   text-decoration: none;
