@@ -176,7 +176,7 @@ const Recipe = ({ recipe, favorited }) => {
                 </Col>
             }
             <>
-                <h1>Ingredients</h1>
+                <h2>Ingredients</h2>
                 <ul className="ingredientsList">
                     {recipe.ingredients.map(ingredient => (
                         <li key={ingredient.id}>
@@ -193,7 +193,7 @@ const Recipe = ({ recipe, favorited }) => {
                 </ul>
             </>
             <>
-                <h1>Instructions</h1>
+                <h2>Instructions</h2>
                 <ol>
                     {recipe.instructions.map(instruction => (
                         <li key={instruction.id}>{instruction.content}</li>

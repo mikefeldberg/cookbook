@@ -32,7 +32,7 @@ const CommentSection = ({ recipeId, comments }) => {
 
     return (
         <>
-            <h1>Comments</h1>
+            <h2>Comments</h2>
             <CreateComment
                 recipeId={recipeId}
                 newRatingIsDisabled={newRatingIsDisabled}
