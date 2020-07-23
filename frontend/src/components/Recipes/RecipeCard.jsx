@@ -103,7 +103,7 @@ const RecipeCard = ({ recipe, index }) => {
             <Card.Body className="pt-3 pb-3">
                 <Card.Title>
                     <Link style={{ textDecoration: 'none' }} to={`/recipes/${recipe.id}`}>
-                        <span className="title">{recipe.title}</span>
+                        <span className="text-dark">{recipe.title}</span>
                     </Link>
                 </Card.Title>
                 {!url.includes('profile') && <UserAvatar user={recipe.user} size="sm" showLabel={true} />}
@@ -119,27 +119,26 @@ const RecipeCard = ({ recipe, index }) => {
                             expanded={isExpanded}
                             anchorClass="link"
                         >
-                            <span className="text-danger">{recipe.description}</span>
+                            {recipe.description}
                         </ShowMoreText>
                     </ListGroup.Item>
                 </ListGroup>
             )}
             <ListGroup variant="flush">
-                <ListGroup.Item className="text-center border-0 p-0 pb-1">
-                    <Row>
-                        {recipe.ratingCount > 0 ? (
-                            <Col className="p-0 text-right">
-                                <span style={{ color: 'gold' }}>{'★'.repeat(recipe.rating)}</span>&nbsp;({recipe.ratingCount})&nbsp;|
-                            </Col>
-                        ) : (
-                            <Col className="p-0 text-right" style={{ color: 'grey', cursor: 'default' }}>
-                                {'☆'.repeat(5)}&nbsp;|
-                            </Col>
-                        )}
-                        <Col className="p-0 text-left">
-                            &nbsp;<i className="fas fa-heart heart-color"></i>&nbsp;({recipe.favorites.length})
-                        </Col>
-                    </Row>
+                <ListGroup.Item className="border-0 pt-0">
+                    {recipe.ratingCount > 0 ? (
+                        <>
+                            <span style={{ color: 'gold' }}>{'★'.repeat(recipe.rating)}</span>&nbsp;(
+                            {recipe.ratingCount})&nbsp;<span style={{ color: 'rgb(134, 134, 134)' }}>|</span>
+                        </>
+                    ) : (
+                        <>
+                            <span style={{ color: '#bdbdbd' }}>{'☆'.repeat(5)}</span>&nbsp;<span style={{ color: 'rgb(134, 134, 134)' }}>|</span>
+                        </>
+                    )}
+                    <>
+                        &nbsp;<i className="fas fa-heart heart-color"></i>&nbsp;({recipe.favorites.length})
+                    </>
                 </ListGroup.Item>
             </ListGroup>
         </Card>
