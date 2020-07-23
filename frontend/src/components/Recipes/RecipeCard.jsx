@@ -77,7 +77,7 @@ const RecipeCard = ({ recipe, index }) => {
     };
 
     return (
-        <Card className="card-shadow mt-3 mb-3 border-0">
+        <Card className="mt-3 mb-3 border-light">
             <div className="heart-background"></div>
             {inFavorites && (
                 <i
@@ -97,6 +97,7 @@ const RecipeCard = ({ recipe, index }) => {
                     id="card-photo"
                     variant="top"
                     src={recipe.photos.length > 0 ? recipe.photos[0].url : `/recipe_placeholder.png`}
+                    className="border-light"
                 />
             </Link>
             <Card.Body className="pt-3 pb-3">
