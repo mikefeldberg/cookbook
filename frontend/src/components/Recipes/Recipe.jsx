@@ -142,6 +142,7 @@ const Recipe = ({ recipe, favorited }) => {
                 &nbsp;
                 {recipe.favorites.length > 0 && <span>({recipe.favorites.length})</span>}
             </Row>
+
             {dimensions.width >= 1000 &&
                 <Row className="mb-5 align-items-center">
                     <Col>
@@ -159,7 +160,6 @@ const Recipe = ({ recipe, favorited }) => {
                     <RecipeSpecs recipe={recipe} />
                 </Row>
             }
-
             {dimensions.width < 1000 &&
                 <Col className="p-0 mb-5 align-items-center">
                     <Image
@@ -175,6 +175,7 @@ const Recipe = ({ recipe, favorited }) => {
                     <RecipeSpecs recipe={recipe} />
                 </Col>
             }
+
             <>
                 <h2>Ingredients</h2>
                 <ul className="ingredientsList">

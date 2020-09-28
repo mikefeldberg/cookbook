@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #b9a8a812;
 }
 
 code {
@@ -86,15 +87,12 @@ code {
   }
 }
 
-h1 {
+h1, h3, h4, h5 {
   font-family: 'Ultra', sans-serif;
 }
 
-h2, h3, h4 {
-  font-family: 'Open Sans', sans-serif;
-}
-
 h2 {
+  font-family: 'Open Sans', sans-serif;
   font-weight: 600;
 }
 
@@ -195,6 +193,15 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 
 .dropdownUnformat {
   margin-top: -3px;
+}
+
+.featured-recipe {
+  background-clip: padding-box;
+  float: left;
+  background-size: cover;
+  background-position: center center;
+  width: 384px;
+  height: 384px;
 }
 
 .user-avatar {

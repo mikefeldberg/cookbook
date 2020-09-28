@@ -103,7 +103,7 @@ const RecipeCard = ({ recipe, index }) => {
             <Card.Body className="pt-3 pb-3">
                 <Card.Title>
                     <Link style={{ textDecoration: 'none' }} to={`/recipes/${recipe.id}`}>
-                        <span className="text-dark">{recipe.title}</span>
+                        <span style={{ fontWeight: '600' }} className="text-dark">{recipe.title}</span>
                     </Link>
                 </Card.Title>
                 {!url.includes('profile') && <UserAvatar user={recipe.user} size="sm" showLabel={true} />}

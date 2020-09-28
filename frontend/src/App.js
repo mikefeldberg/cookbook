@@ -33,8 +33,8 @@ const App = () => {
             <Router>
                 <AuthContext.Provider value={currentUser}>
                     <Header />
-                    <Banner />
-                    <Container className="content">
+                    {/* <Banner /> */}
+                    <Container className="content pt-5">
                         <Switch>
                             <Route exact path="/" component={RecipesList} />
                             <Route exact path="/register" component={Register} />

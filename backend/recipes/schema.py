@@ -95,6 +95,7 @@ class RecipeType(DjangoObjectType):
     rating_count = graphene.Int(required=False)
     favorite_count = graphene.Int(required=False)
     comment_count = graphene.Int(required=False)
+    featured = graphene.Boolean()
 
     class Meta:
         model = Recipe
@@ -135,6 +136,7 @@ class RecipeInput(graphene.InputObjectType):
 
 class Query(graphene.ObjectType):
     recipes = graphene.List(RecipeType, search_terms=graphene.String())
+    featured_recipes = graphene.List(RecipeType, featured=graphene.Boolean())
     recipe = graphene.Field(RecipeType, id=graphene.String(required=True))
     ratings = graphene.List(CommentType, recipe_id=graphene.String(required=True))
     comment = graphene.Field(CommentType, id=graphene.String(required=True))
@@ -160,6 +162,9 @@ class Query(graphene.ObjectType):
             )
 
         return Recipe.objects.filter(query, deleted_at=None).distinct('id')
+
+    def resolve_featured_recipes(self, info, featured):
+        return Recipe.objects.filter(featured=True, deleted_at=None)
 
     def resolve_comment(self, info, id):
         return Comment.objects.filter(id=id, deleted_at=None)

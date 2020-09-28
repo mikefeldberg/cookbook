@@ -102,7 +102,6 @@ export const GET_USERS_QUERY = gql`
         users {
             id
             username
-            email
             dateJoined
         }
         recipeSet {
@@ -252,10 +251,35 @@ export const GET_RECIPE_QUERY = gql`
             user {
                 id
                 username
-                email
             }
             createdAt
             updatedAt
+        }
+    }
+`
+
+export const GET_FEATURED_RECIPES_QUERY = gql `
+    query getFeaturedRecipesQuery($featured: Boolean!) {
+        featuredRecipes (featured: $featured) {
+            id
+            title
+            description
+            photos {
+                url
+            }
+            favorites {
+                user {
+                    id
+                }
+            }
+            rating
+            ratingCount
+            user {
+                username
+                photos {
+                    url
+                }
+            }
         }
     }
 `

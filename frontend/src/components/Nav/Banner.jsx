@@ -8,8 +8,8 @@ const Banner = () => {
         <Jumbotron className="rounded-0">
             <Container>
                 <div className="text-center jumbotron-text">
-                    <h3 className="text-white text-left">Feldberg’s</h3>
-                    <h1 className="text-white text-left ml-5">Cookbook</h1>
+                    <h3 className="text-white text-left">x</h3>
+                    <h1 className="text-white text-left ml-5">x</h1>
                 </div>
             </Container>
         </Jumbotron>

@@ -38,6 +38,7 @@ recipes = [
         'cook_time': 30,
         'total_time': 50,
         'servings': 8,
+        'featured': True,
     },
     {
         'title': 'Borsch',
@@ -200,6 +201,7 @@ recipes = [
         'cook_time': 25,
         'total_time': 40,
         'servings': 4,
+        'featured': True,
     },
     {
         'title': 'Pan Roasted Chicken Thighs',
@@ -289,5 +291,6 @@ recipes = [
         'cook_time': 50,
         'total_time': 60,
         'servings': 4,
+        'featured': True,
     },
 ]
