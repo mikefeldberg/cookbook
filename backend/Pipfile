@@ -21,6 +21,7 @@ django-filter = "*"
 ulid-py = "*"
 gunicorn = "*"
 pendulum = "*"
+imgix = "*"
 
 [requires]
 python_version = "3.7"

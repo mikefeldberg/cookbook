@@ -9,6 +9,7 @@ from backend.email_util import send_welcome_email, send_password_reset_email
 from django.utils import timezone
 from datetime import timedelta
 from backend.s3 import create_presigned_url
+from backend.imgix import ub
 
 from recipes.models import Recipe, Comment, Favorite, PasswordResetRequest, UserPhoto
 
@@ -71,7 +72,13 @@ class UserType(DjangoObjectType):
         photos = UserPhoto.objects.filter(user_id=self.id, deleted_at=None).order_by('-created_at')
         for p in photos:
             if BUCKET_NAME in p.url:
-                p.url = create_presigned_url(p.url.split('com/')[1])
+                # p.url = create_presigned_url(p.url.split('com/')[1])
+                presigned_url = create_presigned_url(p.url.split('com/')[1])
+                presigned_s3_key = presigned_url.split('com/')[1]
+                print(presigned_s3_key)
+                imgix_url = ub.create_url(presigned_s3_key, {'w': 100, 'h': 100})
+                print(imgix_url)
+                p.url = imgix_url
 
         return photos
 

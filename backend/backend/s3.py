@@ -23,6 +23,7 @@ def create_presigned_post(request, extension):
 
     except ClientError as e:
         logging.error(e)
+
         return HttpResponseServerError()
 
     return JsonResponse(response)
@@ -39,8 +40,10 @@ def create_presigned_url(object_name):
             },
             ExpiresIn=DEFAULT_EXPIRATION
         )
+
     except ClientError as e:
         logging.error(e)
+
         return None
 
     return response
