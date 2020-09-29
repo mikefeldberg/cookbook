@@ -1,3 +1,6 @@
+import os
 from imgix import UrlBuilder
 
-ub = UrlBuilder("feldbergscookbook.imgix.net", include_library_param=False)
+IMGIX_TOKEN = os.getenv("IMGIX_TOKEN")
+
+ub = UrlBuilder("feldbergscookbook.imgix.net", sign_key=IMGIX_TOKEN, include_library_param=False)
